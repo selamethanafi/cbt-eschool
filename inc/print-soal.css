@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    color: #000;
+    background-color: #fff;
+}
+.card-body  {
+    padding:5px;
+}
+.oke  {
+    padding:15px;
+}
+img {
+    max-width: 400px;
+    max-height: 300px;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    margin: 10px 0;
+}
+
+label.note-form-label {
+    display: none !important;
+}
+
+table th,
+table td {
+    text-align: left !important;
+}
+
+.form-check-label strong {
+    width: 24px;
+    display: inline-block;
+}
+
+.mb-4.p-3.border.rounded.bg-white {
+    border: none !important;
+    border-bottom: 1px solid grey !important;
+}
+.custom-card {
+    border: 1px solid #343a40;
+    border-radius: 10px;
+    padding-bottom:2px !important;
+}
+
+.custom-card-header {
+    border-bottom: 1px solid #343a40;
+    background-color: #f8f9fa;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.custom-radio-spacing {
+    margin-right: 100px;
+}
+
+input[type="radio"]:not(:checked),
+input[type="checkbox"]:not(:checked) {
+    border-color: black;
+}
+
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+    background-color: green;
+    border-color: green;
+}
+hr {
+    border: none;
+    border-top: 2px solid #000 !important;
+    margin: 1rem 0;
+    display: block !important;
+    visibility: visible !important;
+}
+.soal-header {
+    background-color: #888 !important;
+    padding: 5px !important;
+    color: white !important;
+    margin: 0;
+}
+
+.soal-nomor {
+    background-color: #000 !important;
+    padding: 5px !important;
+    color: white !important;
+}

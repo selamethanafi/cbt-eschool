@@ -1,0 +1,45 @@
+<?php
+$currentPage = basename($_SERVER['PHP_SELF']);
+?>
+<nav id="sidebar" class="sidebar js-sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand" href="#">
+                    <span class="align-middle">Aplikasi CBT</span>
+                </a>
+
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header">Menu Utama</li>
+
+                    <li class="sidebar-item <?= ($currentPage == 'dashboard.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="dashboard.php">
+                            <i class="align-middle fas fa-home"></i> <span class="align-middle">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item <?= ($currentPage == 'ujian.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="ujian.php">
+                            <i class="align-middle fas fa-edit"></i> <span class="align-middle">Ujian</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item <?= ($currentPage == 'hasil.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="hasil.php">
+                            <i class="align-middle fas fa-chart-line"></i> <span class="align-middle">Hasil Ujian</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item <?= ($currentPage == 'pengaturan.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="setting.php">
+                            <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="logout.php">
+                            <i class="align-middle fas fa-sign-out-alt"></i> <span class="align-middle">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>

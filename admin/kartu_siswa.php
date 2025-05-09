@@ -1,0 +1,165 @@
+<?php
+session_start();
+include '../koneksi/koneksi.php';
+include '../inc/functions.php';
+require_once '../assets/phpqrcode/qrlib.php';
+
+// Cek jika sudah login
+check_login('admin');
+// Pastikan koneksi berhasil
+if (!$koneksi) {
+    die("Koneksi database gagal: " . mysqli_connect_error());
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartu Siswa</title>
+<?php include '../inc/css.php'; ?>
+</head>
+
+<body>
+    <div class="wrapper">
+
+    <?php include 'sidebar.php'; ?>
+
+<div class="main">
+    <?php include 'navbar.php'; ?>
+            <!-- /Navbar -->
+            <!-- Content -->
+            <main class="content">
+                <div class="container-fluid p-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Kartu Siswa</h5>
+                                </div>
+                                <div class="card-body col-md-12">
+                                    <!-- Form Filter -->
+                                    <form method="GET" class="mb-3 d-flex flex-wrap gap-2">
+                                        <select name="kelas" class="form-select" style="width: auto;">
+                                                <option value="">Pilih Kelas</option>
+                                                <option value="all" <?php echo (isset($_GET['kelas']) && $_GET['kelas'] === 'all') ? 'selected' : ''; ?>>Semua Kelas</option>
+                                                <?php
+                                                $kelas_query = mysqli_query($koneksi, "SELECT DISTINCT CONCAT(kelas, rombel) AS kelas_rombel FROM siswa ORDER BY kelas_rombel ASC");
+                                                while ($k = mysqli_fetch_assoc($kelas_query)) {
+                                                    $kelas_val = $k['kelas_rombel'];
+                                                    $selected = (isset($_GET['kelas']) && $_GET['kelas'] === $kelas_val) ? 'selected' : '';
+                                                    echo "<option value='$kelas_val' $selected>$kelas_val</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        <input type="text" name="nama" class="form-control" placeholder="Cari nama..." style="width: 200px;" value="<?php echo isset($_GET['nama']) ? htmlspecialchars($_GET['nama']) : ''; ?>">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <a href="kartu_siswa.php" class="btn btn-outline-secondary">Reset</a>
+                                    </form>
+                                    <button class="btn btn-outline-danger" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
+                                    <br><br>
+                                    
+
+                                    <?php 
+                                    $qr_temp_dir = '../assets/temp_qr/';
+                                    if (!file_exists($qr_temp_dir)) {
+                                        mkdir($qr_temp_dir, 0777, true);
+                                    }
+
+                                    // Filter query berdasarkan kelas dan nama
+                                    $where = [];
+                                    if (!empty($_GET['kelas']) && $_GET['kelas'] !== 'all') {
+                                        $kelas = mysqli_real_escape_string($koneksi, $_GET['kelas']);
+                                        $where[] = "CONCAT(kelas, rombel) = '$kelas'";
+                                    }
+                                    if (!empty($_GET['nama'])) {
+                                        $nama = mysqli_real_escape_string($koneksi, $_GET['nama']);
+                                        $where[] = "nama_siswa LIKE '%$nama%'";
+                                    }
+                                    $where_sql = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
+                                    $sql = "SELECT * FROM siswa $where_sql ORDER BY nama_siswa ASC";
+                                    $result = mysqli_query($koneksi, $sql);
+                                    ?>
+                                    <?php
+                                    if (empty($_GET['kelas']) && empty($_GET['nama'])) {
+                                        echo '<div class="alert alert-primary">Silakan pilih kelas atau cari nama untuk menampilkan kartu siswa.</div>';
+                                    }
+                                    ?>
+
+                                    <?php if (($result && mysqli_num_rows($result) > 0) && (!empty($_GET['kelas']) || !empty($_GET['nama']))): ?>
+                                        <div class="row col-lg-12" id="canvas_div_pdf">
+
+                                        <?php while ($row = mysqli_fetch_assoc($result)):
+                                            include '../inc/encrypt.php';
+                                            $encoded = $row['password'];
+                                            $decoded = base64_decode($encoded);
+                                            $iv_length = openssl_cipher_iv_length($method);
+                                            $iv2 = substr($decoded, 0, $iv_length);
+                                            $encrypted_data = substr($decoded, $iv_length);
+                                            $decrypted = openssl_decrypt($encrypted_data, $method, $rahasia, 0, $iv2);
+                                            $qr_filename = $qr_temp_dir . $row['username'] . '.png';
+
+                                            if (!file_exists($qr_filename)) {
+                                                QRcode::png($row['username'], $qr_filename, QR_ECLEVEL_L, 3);
+                                            }
+                                        ?>
+                                            <div class="col-lg-6 col-md-6 mb-4">
+                                                <div class="border p-3 h-100 kartu">
+                                                    <div class="row">
+                                                        <div class="col-4 text-center">
+                                                            <img src="<?php echo $qr_filename; ?>" alt="QR" style="width: 100%;">
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <table class="table table-sm mb-0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th style="height:60px; vertical-align: middle;" scope="row">Nama</th>
+                                                                        <td style="height:60px;"><?php echo htmlspecialchars($row['nama_siswa']); ?></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row">Username</th>
+                                                                        <td><?php echo htmlspecialchars($row['username']); ?></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row">Password</th>
+                                                                        <td><?php echo htmlspecialchars($decrypted); ?></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="row">Kelas</th>
+                                                                        <td><?php echo htmlspecialchars($row['kelas'] . $row['rombel']); ?></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endwhile; ?>
+                                        </div>
+                                    <?php else: ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+<?php include '../inc/js.php'; ?>
+<script src="../assets/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
+<script>
+    function exportPDF() {
+        var element = document.getElementById('canvas_div_pdf');
+        html2pdf().set({
+            margin: 0.2,
+            filename: 'KartuUjian.pdf',
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 2, logging: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        }).from(element).save();
+    }
+</script>
+</body>
+</html>
