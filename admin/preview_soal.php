@@ -26,8 +26,8 @@ $kode_soal = $_GET['kode_soal'];
        .card img {
         max-width: 400px !important;
         max-height: 300px !important;
-        height: auto;
-        width: auto;
+        height: 100%;
+        width: 100%;
         object-fit: contain;
         display: block;
         margin: 10px 0;
