@@ -3,7 +3,12 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
-
+// Periksa apakah id_soal dan aksi ada di parameter GET
+if (!isset($_GET['id_soal']) || !isset($_GET['aksi'])) {
+    $_SESSION['error'] = 'ID Soal atau Aksi tidak ditemukan.';
+    header('Location: soal.php');
+    exit;
+}
 $id_soal = $_GET['id_soal'];
 $aksi = $_GET['aksi'];
 
