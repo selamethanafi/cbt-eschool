@@ -113,7 +113,24 @@ check_login('admin');
   <script src="../assets/datatables/buttons.html5.min.js"></script>
   <script>
     const table = $('#siswaTable').DataTable({
-  dom: 'frtip',
+  dom: 
+        // Baris 1: Export buttons + Search box
+        '<"row mb-3"' +
+            '<"col-md-6 d-flex align-items-center">' +
+            '<"col-md-6 d-flex justify-content-end"f>' +
+        '>' +
+        // Baris 2: Length dropdown + pagination
+        '<"row mb-3"' +
+            '<"col-md-6 d-flex align-items-center"l>' +
+            '<"col-md-6 d-flex justify-content-end"p>' +
+        '>' +
+        // Table
+        't' +
+        // Baris 3: Info + pagination bawah
+        '<"row mt-3"' +
+            '<"col-md-6 d-flex align-items-center"i>' +
+            '<"col-md-6 d-flex justify-content-end"p>' +
+        '>',
   paging: true,
   lengthChange: true,
   searching: true,

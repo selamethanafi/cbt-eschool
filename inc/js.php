@@ -79,41 +79,58 @@
         setInterval(checkIfEncDeleted, 500);
 
         document.addEventListener('DOMContentLoaded', function () {
-    const sound = document.getElementById('notif-sound');  // Elemen suara
-    const toasts = document.querySelectorAll('#toast-container .toast');  // Semua toast
+        const sound = document.getElementById('notif-sound');  // Elemen suara
+        const toasts = document.querySelectorAll('#toast-container .toast');  // Semua toast
 
-    // Cek apakah toast sudah pernah ditampilkan di session
-    const toastShown = sessionStorage.getItem('toastDisplayed');
+        // Daftar class background yang tersedia di Bootstrap
+        const bgClasses = [
+            'bg-primary', 'bg-secondary', 'bg-success', 'bg-danger',
+            'bg-warning', 'bg-info', 'bg-light', 'bg-dark',
+            'bg-body', 'bg-transparent'
+        ];
 
-    if (!toastShown) {
-        // Tambahkan event listener untuk klik pertama di halaman
-        const onClick = () => {
-            toasts.forEach((toastEl, index) => {
-                // Delay pertama 500ms, selanjutnya kelipatan 3 detik
-                const delayTime = index === 0 ? 500 : (index * 3000);
+        // Fungsi untuk memilih class acak dari daftar
+        function getRandomBgClass() {
+            const randomIndex = Math.floor(Math.random() * bgClasses.length);
+            return bgClasses[randomIndex];
+        }
 
-                setTimeout(() => {
-                    toastEl.classList.remove('opacity-0');  
-                    const toast = new bootstrap.Toast(toastEl);
-                    toast.show();
+        // Cek apakah toast sudah pernah ditampilkan di session
+        const toastShown = sessionStorage.getItem('toastDisplayed');
 
-                    // Mainkan suara
-                    if (sound) {
-                        sound.currentTime = 0;
-                        sound.play().catch(() => {});
-                    }
-                }, delayTime);
-            });
+        if (!toastShown) {
+            // Tambahkan event listener untuk klik pertama di halaman
+            const onClick = () => {
+                toasts.forEach((toastEl, index) => {
+                    // Pilih class background acak dan hapus class sebelumnya
+                    toastEl.classList.remove(...bgClasses);  // Hapus class lama
+                    toastEl.classList.add(getRandomBgClass());  // Tambahkan class acak
+                    toastEl.style.borderRadius = '20px';
 
-            // Simpan flag agar tidak ditampilkan lagi selama sesi ini
-            sessionStorage.setItem('toastDisplayed', 'true');
+                    // Delay pertama 500ms, selanjutnya kelipatan 3 detik
+                    const delayTime = index === 0 ? 500 : (index * 3000);
 
-            // Hapus event listener agar tidak dipanggil lagi
-            document.body.removeEventListener('click', onClick);
-        };
+                    setTimeout(() => {
+                        toastEl.classList.remove('opacity-0');  
+                        const toast = new bootstrap.Toast(toastEl);
+                        toast.show();
 
-        document.body.addEventListener('click', onClick);
-    }
-});
+                        // Mainkan suara
+                        if (sound) {
+                            sound.currentTime = 0;
+                            sound.play().catch(() => {});
+                        }
+                    }, delayTime);
+                });
 
-        </script>
+                // Simpan flag agar tidak ditampilkan lagi selama sesi ini
+                sessionStorage.setItem('toastDisplayed', 'true');
+
+                // Hapus event listener agar tidak dipanggil lagi
+                document.body.removeEventListener('click', onClick);
+            };
+
+            document.body.addEventListener('click', onClick);
+        }
+    });
+</script>
