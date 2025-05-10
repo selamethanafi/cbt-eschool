@@ -67,6 +67,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
+                    <li class="sidebar-item <?= ($currentPage == 'online.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="online.php">
+                            <i class="align-middle fas fa-chalkboard-teacher"></i> <span class="align-middle">Who's Online</span>
+                        </a>
+                    </li>
+
                     <li class="sidebar-item <?= ($currentPage == 'setting.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="setting.php">
                             <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan</span>

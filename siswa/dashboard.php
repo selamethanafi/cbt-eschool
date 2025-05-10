@@ -37,5 +37,6 @@ include '../inc/datasiswa.php';
         </div>
     </div>
 <?php include '../inc/js.php'; ?>
+<?php include '../inc/check_activity.php'; ?>
 </body>
 </html>
