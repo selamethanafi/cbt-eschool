@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Bulan Mei 2025 pada 03.48
+-- Waktu pembuatan: 10 Bulan Mei 2025 pada 15.45
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -92,7 +92,9 @@ CREATE TABLE `jawaban_siswa` (
   `id_siswa` int(11) NOT NULL,
   `nama_siswa` text NOT NULL,
   `kode_soal` varchar(50) NOT NULL,
+  `total_soal` text NOT NULL,
   `jawaban_siswa` text DEFAULT NULL,
+  `waktu_sisa` text NOT NULL,
   `waktu_dijawab` timestamp NOT NULL DEFAULT current_timestamp(),
   `status_ujian` enum('Aktif','Non-Aktif') DEFAULT 'Aktif'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -101,8 +103,8 @@ CREATE TABLE `jawaban_siswa` (
 -- Dumping data untuk tabel `jawaban_siswa`
 --
 
-INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`, `jawaban_siswa`, `waktu_dijawab`, `status_ujian`) VALUES
-(1, 1, 'Jokowi JK	', 'SR9-01', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Benar],[4:Teknik Mozaik:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Seni Rupa Murni:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_2]', '2025-05-09 14:48:36', 'Non-Aktif');
+INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_soal`, `jawaban_siswa`, `waktu_sisa`, `waktu_dijawab`, `status_ujian`) VALUES
+(1, 1, 'Jokowi JK	', 'SR9-01', '', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Benar],[4:Teknik Mozaik:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Seni Rupa Murni:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_2]', '35', '2025-05-09 14:48:36', 'Non-Aktif');
 
 -- --------------------------------------------------------
 
@@ -113,10 +115,12 @@ INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`
 CREATE TABLE `nilai` (
   `id_nilai` int(11) NOT NULL,
   `id_siswa` int(11) NOT NULL,
+  `nama_siswa` text NOT NULL,
   `kode_soal` text NOT NULL,
   `total_soal` int(11) NOT NULL,
   `jawaban_benar` varchar(100) NOT NULL,
   `jawaban_salah` varchar(100) NOT NULL,
+  `jawaban_siswa` text NOT NULL,
   `nilai` text NOT NULL,
   `tanggal_ujian` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -125,20 +129,20 @@ CREATE TABLE `nilai` (
 -- Dumping data untuk tabel `nilai`
 --
 
-INSERT INTO `nilai` (`id_nilai`, `id_siswa`, `kode_soal`, `total_soal`, `jawaban_benar`, `jawaban_salah`, `nilai`, `tanggal_ujian`) VALUES
-(1, 1, 'SR9-01', 50, '90', '10', '90', '2025-05-09 07:08:22'),
-(2, 12, 'SR9-01', 50, '85', '15', '85', '2025-06-09 07:08:22'),
-(3, 5, 'SR9-01', 50, '90', '10', '90', '2025-06-11 07:08:22'),
-(4, 4, 'SR9-01', 50, '50', '50', '50', '2025-04-22 07:08:22'),
-(5, 2, 'SR9-01', 50, '85', '15', '85', '2025-05-08 08:20:30'),
-(6, 5, 'SR9-01', 50, '85', '15', '85', '2025-05-08 08:20:30'),
-(7, 3, 'SR9-01', 50, '85', '15', '85', '2025-05-08 08:20:30'),
-(8, 13, 'SR9-01', 50, '85', '15', '85', '2025-04-15 08:20:30'),
-(9, 14, 'SR9-01', 50, '85', '15', '85', '2025-02-10 08:20:30'),
-(10, 15, 'SR9-01', 50, '82', '18', '82', '2025-03-12 08:20:30'),
-(12, 16, 'SR9-01', 50, '85', '15', '85', '2025-02-10 08:20:30'),
-(17, 17, 'SR9-01', 50, '85', '15', '85', '2025-02-10 08:20:30'),
-(18, 5, 'BINDO7-1', 50, '85', '15', '85', '2025-05-08 08:20:30');
+INSERT INTO `nilai` (`id_nilai`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_soal`, `jawaban_benar`, `jawaban_salah`, `jawaban_siswa`, `nilai`, `tanggal_ujian`) VALUES
+(1, 1, '', 'SR9-01', 50, '90', '10', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Benar],[4:Teknik Mozaik:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Seni Rupa Murni:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_2]', '90', '2025-05-09 07:08:22'),
+(2, 12, '', 'SR9-01', 50, '85', '15', '', '85', '2025-06-09 07:08:22'),
+(3, 5, '', 'SR9-01', 50, '90', '10', '', '90', '2025-06-11 07:08:22'),
+(4, 4, '', 'SR9-01', 50, '50', '50', '', '50', '2025-04-22 07:08:22'),
+(5, 2, '', 'SR9-01', 50, '85', '15', '', '85', '2025-05-08 08:20:30'),
+(6, 5, '', 'SR9-01', 50, '85', '15', '', '85', '2025-05-08 08:20:30'),
+(7, 3, '', 'SR9-01', 50, '85', '15', '', '85', '2025-05-08 08:20:30'),
+(8, 13, '', 'SR9-01', 50, '85', '15', '', '85', '2025-04-15 08:20:30'),
+(9, 14, '', 'SR9-01', 50, '85', '15', '', '85', '2025-02-10 08:20:30'),
+(10, 15, '', 'SR9-01', 50, '82', '18', '', '82', '2025-03-12 08:20:30'),
+(12, 16, '', 'SR9-01', 50, '85', '15', '', '85', '2025-02-10 08:20:30'),
+(17, 17, '', 'SR9-01', 50, '85', '15', '', '85', '2025-02-10 08:20:30'),
+(18, 5, '', 'BINDO7-1', 50, '85', '15', '', '85', '2025-05-08 08:20:30');
 
 -- --------------------------------------------------------
 
