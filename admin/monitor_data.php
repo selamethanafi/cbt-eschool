@@ -20,6 +20,9 @@ $orderBy = $columns[$orderColumn];
 $where = "";
 if (!empty($searchValue)) {
     $where = "WHERE s.nama_siswa LIKE '%$searchValue%' OR js.kode_soal LIKE '%$searchValue%'";
+} else {
+    // Jika tidak ada pencarian, hanya tampilkan yang status_ujian = 'Aktif'
+    $where = "WHERE js.status_ujian = 'Aktif'";
 }
 
 $query = "SELECT js.*, s.nama_siswa

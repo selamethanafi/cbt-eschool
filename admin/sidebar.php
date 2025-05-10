@@ -54,6 +54,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             <i class="align-middle fas fa-laptop"></i> <span class="align-middle">Monitoring Ujian</span>
                         </a>
                     </li>
+                    
+                    <li class="sidebar-item <?= ($currentPage == 'reset_login.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="reset_login.php">
+                            <i class="align-middle fas fa-redo"></i> <span class="align-middle">Reset Login</span>
+                        </a>
+                    </li>
 
                     <li class="sidebar-item <?= ($currentPage == 'hasil.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="hasil.php">
@@ -64,12 +70,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     <li class="sidebar-item <?= ($currentPage == 'setting.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="setting.php">
                             <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item <?= ($currentPage == 'reset_login.php') ? 'active' : '' ?>">
-                        <a class="sidebar-link" href="reset_login.php">
-                            <i class="align-middle fas fa-redo"></i> <span class="align-middle">Reset Login</span>
                         </a>
                     </li>
 
