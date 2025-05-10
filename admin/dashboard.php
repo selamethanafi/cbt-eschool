@@ -24,6 +24,19 @@ while ($row = mysqli_fetch_assoc($rekap_query)) {
     $rekap_data['labels'][] = date('M Y', strtotime($row['bulan'] . '-01'));
     $rekap_data['jumlah'][] = $row['jumlah'];
 }
+// Ambil data rata-rata nilai per kode_soal
+$kode_soal_query = mysqli_query($koneksi, "
+    SELECT kode_soal, ROUND(AVG(nilai), 2) AS rata_rata 
+    FROM nilai 
+    GROUP BY kode_soal
+");
+
+$kode_soal_data = [];
+while ($row = mysqli_fetch_assoc($kode_soal_query)) {
+    $kode_soal_data['labels'][] = $row['kode_soal'];
+    $kode_soal_data['rata'][] = $row['rata_rata'];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,44 +64,64 @@ while ($row = mysqli_fetch_assoc($rekap_query)) {
                                     <div class="row">
                                         <!-- Statistik Siswa -->
                                         <div class="col-md-4">
-                                            <div class="card text-white bg-primary mb-3">
-                                                <div class="card-body">
-                                                    <h5 class="card-title text-white">Jumlah Siswa</h5>
+                                            <div class="card text-dark bg-white border border-primary mb-3">
+                                                <div class="card-body bg-light">
+                                                    <h5 class="card-title text-dark">Jumlah Siswa</h5>
                                                     <p class="card-text"><?php echo $total_siswa; ?> siswa terdaftar</p>
+                                                    <a href="tambah_siswa.php" class="btn btn-outline-primary">
+                                                        <i class="fas fa-plus"></i> Tambah Siswa
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Statistik Soal -->
                                         <div class="col-md-4">
-                                            <div class="card text-white bg-success mb-3">
+                                            <div class="card text-dark bg-white border border-danger mb-3">
                                                 <div class="card-body">
-                                                    <h5 class="card-title text-white">Jumlah Soal</h5>
+                                                    <h5 class="card-title text-dark">Jumlah Soal</h5>
                                                     <p class="card-text"><?php echo $total_soal; ?> soal tersedia</p>
+                                                    <a href="tambah_soal.php" class="btn btn-outline-danger">
+                                                        <i class="fas fa-plus"></i> Tambah Soal
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Statistik Ujian -->
                                         <div class="col-md-4">
-                                            <div class="card text-white bg-warning mb-3">
+                                            <div class="card text-dark bg-white border border-secondary mb-3">
                                                 <div class="card-body">
-                                                    <h5 class="card-title text-white">Jumlah Ujian</h5>
-                                                    <p class="card-text"><?php echo $total_ujian; ?> ujian Selesai</p>
+                                                    <h5 class="card-title text-dark">Ujian</h5>
+                                                    <p class="card-text"><?php echo $total_ujian; ?> Siswa Selesai</p>
+                                                    <a href="tambah_soal.php" class="btn btn-outline-secondary">
+                                                        <i class="fas fa-edit"></i> Nilai
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-                                            <div class="col-md-8">
+                                            <div class="col-lg-8 md-6">
                                                 <div class="card mb-3">
                                                     <div class="card-header">
-                                                        <h5 class="card-title mb-0">Rekap Jumlah Siswa Mengikuti Ujian per Bulan</h5>
+                                                        <h5 class="card-title mb-0">Rekap Peserta Ujian</h5>
                                                     </div>
                                                     <div class="card-body">
-                                                        <canvas id="chartRekapUjian" height="100"></canvas>
+                                                        <canvas id="chartRekapUjian" style="height: 400px; width: 100%;"></canvas>
                                                     </div>
                                                 </div>
-                                              
                                             </div>
+                                            <!-- Statistik Nilai per Kode Soal -->
+                                        <div class="col-lg-4 md-6">
+                                            <div class="card mb-3">
+                                                <div class="card-header">
+                                                    <h5 class="card-title mb-0">Statistik Nilai</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas id="chartKodeSoal" style="height: 400px; width: 100%;"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                 </div>
                             </div>
                         </div>
@@ -130,7 +163,57 @@ while ($row = mysqli_fetch_assoc($rekap_query)) {
             }
         }
     });
-    
+    // Grafik Statistik Nilai per Kode Soal
+const ctxKode = document.getElementById('chartKodeSoal').getContext('2d');
+const chartKodeSoal = new Chart(ctxKode, {
+    type: 'bar',
+    data: {
+        labels: <?php echo json_encode($kode_soal_data['labels']); ?>,
+        datasets: [{
+            label: 'Rata-rata Nilai',
+            data: <?php echo json_encode($kode_soal_data['rata']); ?>,
+            backgroundColor: 'rgba(153, 102, 255, 0.2)', // warna soft
+            borderWidth: 1,
+            borderRadius: 20, // lebih bulat ujung bar
+            barThickness: 10 // bar tipis
+        }]
+    },
+    options: {
+        indexAxis: 'y', // horizontal
+        responsive: true,
+        animation: {
+            duration: 1200,
+            easing: 'easeOutCubic' // animasi smooth modern
+        },
+        scales: {
+            x: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                    stepSize: 10
+                },
+                grid: {
+                    drawBorder: false,
+                    color: 'rgba(0,0,0,0.05)' // grid halus
+                }
+            },
+            y: {
+                ticks: {
+                    autoSkip: false
+                },
+                grid: {
+                    display: false // hilangkan garis grid Y
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false // buang legend supaya clean
+            }
+        }
+    }
+});
+
 </script>
 </body>
 </html>
