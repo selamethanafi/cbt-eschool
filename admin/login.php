@@ -59,13 +59,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         background: #121212;
     }
     .glass-card {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 15px;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-    }
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 2rem;
+    max-width: 100%;
+    margin: auto;
+}
     input, input::placeholder {
         color: white !important;
     }
@@ -83,12 +86,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     label {
         color: white;
     }
+    @media (max-width: 576px) {
+    .glass-card {
+        padding: 1.5rem;
+    }
+
+    .glass-card input {
+        font-size: 14px;
+    }
+}
   </style>
 </head>
 <body class="d-flex align-items-center justify-content-center" style="height: 100vh;">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-4">
+      <div class="col-md-6 col-lg-4"> 
       <div class="position-relative">
     <!-- Pita label -->
     <div style="
@@ -116,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <form action="" method="POST" class="mt-3" id="loginForm">
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <div class="mb-3">
-              <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
             </div>
             <div class="mb-3 position-relative">
               <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>

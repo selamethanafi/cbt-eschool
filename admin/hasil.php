@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                     </div>
                                 </form>
-                                <hr>
+                                
                                 <!-- Tabel akan muncul di sini -->
                                 <div id="nilaiTable" class="d-none table-wrapper"></div>
                             </div>
