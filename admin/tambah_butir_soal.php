@@ -362,79 +362,106 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="../assets/datatables/datatables.js"></script>
     <script src="../assets/summernote/summernote-bs5.js"></script>
     <script>
-    function bersihkanHTML(html) {
-        return html.replace(/<(?!\/?(img|br)\b)[^>]*>/gi, '');
-    }
+    //function bersihkanHTML(html) {
+        //return html.replace(/<(?!\/?(img|br)\b)[^>]*>/gi, '');
+   // }
 
-    $(document).ready(function () {
-        var configEditor = {
-            height: 300,
-            callbacks: {
-                onImageUpload: function (files) {
-                    var editor = this;
-                    uploadImage(files[0], editor);
-                },
-                onMediaDelete: function (target) {
-                    var imageUrl = target[0].src;
-
-                    $.ajax({
-                        url: 'hapus_gambar_editor.php',
-                        method: 'POST',
-                        data: { src: imageUrl },
-                        success: function (response) {
-                            console.log('Gambar dihapus:', response);
-                        },
-                        error: function (err) {
-                            console.error('Gagal menghapus gambar:', err);
-                        }
-                    });
-                },
-                onChange: function (contents, $editable) {
-                    let bersih = bersihkanHTML(contents);
-                    if (bersih !== contents) {
-                        $(this).summernote('code', bersih);
-                    }
-                }
+        $(document).ready(function () {
+    var configEditor = {
+        height: 300,
+        callbacks: {
+            // Hanya tempel teks polos (tanpa format)
+            onPaste: function (e) {
+                e.preventDefault();
+                var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
+                var text = clipboardData.getData('text/plain');
+                document.execCommand("insertText", false, text);
             },
-            toolbar: [
-                ['insert', ['picture']],
-                ['view', ['codeview']]
-            ]
-        };
 
-        $('#pertanyaan').summernote(configEditor);
+            // Upload gambar
+            onImageUpload: function (files) {
+                var editor = this;
+                uploadImage(files[0], editor);
+            },
 
-        $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4').summernote({
+            // Hapus file saat gambar dihapus dari editor
+            onMediaDelete: function (target) {
+                var imageUrl = target[0].src;
+                $.ajax({
+                    url: 'hapus_gambar_editor.php',
+                    method: 'POST',
+                    data: { src: imageUrl },
+                    success: function (response) {
+                        console.log('Gambar dihapus:', response);
+                    },
+                    error: function (err) {
+                        console.error('Gagal menghapus gambar:', err);
+                    }
+                });
+            },
+
+            // Bersihkan tag saat blur (selesai mengetik)
+            onBlur: function () {
+                var contents = $(this).summernote('code');
+
+                // Simpan gambar kalau ada
+                var images = $('<div>').html(contents).find('img').clone();
+                var textOnly = $('<div>').html(contents).text().trim();
+
+                // Gabungkan kembali teks dan gambar (jika ada)
+                var cleanHtml = textOnly;
+                if (images.length > 0) {
+                    cleanHtml += '<br>' + $('<div>').append(images).html();
+                }
+
+                // Set kembali isi editor dengan konten bersih
+                $(this).summernote('code', cleanHtml);
+            }
+        },
+        toolbar: [
+            ['insert', ['picture']],
+            ['view', ['codeview']]
+        ]
+    };
+
+    // Untuk pertanyaan
+    $('#pertanyaan').summernote(configEditor);
+
+    // Untuk pilihan, kompleks, dan bs
+    $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4')
+        .summernote({
             ...configEditor,
             height: 80
         });
-    });
+});
 
-    function uploadImage(file, editor) {
-        let formData = new FormData();
-        formData.append('file', file);
+// Upload file gambar via AJAX
+function uploadImage(file, editor) {
+    let formData = new FormData();
+    formData.append('file', file);
 
-        $.ajax({
-            url: 'uploadeditor.php',
-            method: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                try {
-                    var url = JSON.parse(response).url;
-                    $(editor).summernote('insertImage', url, function ($image) {
-                        $image.attr('id', 'gbrsoal'); // Tambahkan atribut id jika perlu
-                    });
-                } catch (e) {
-                    console.error('Invalid response format:', e);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Upload error:', error);
+    $.ajax({
+        url: 'uploadeditor.php',
+        method: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            try {
+                var url = JSON.parse(response).url;
+                $(editor).summernote('insertImage', url, function ($image) {
+                    $image.attr('id', 'gbrsoal');
+                });
+            } catch (e) {
+                console.error('Invalid response format:', e);
             }
-        });
-    }
+        },
+        error: function (xhr, status, error) {
+            console.error('Upload error:', error);
+        }
+    });
+}
+
 
         function showFields(tipeSoal) {
             const fieldSets = {

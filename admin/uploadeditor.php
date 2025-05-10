@@ -2,7 +2,6 @@
 if ($_FILES['file']['name']) {
     $allowedMimeTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/GIF', 'image/JPG', 'image/PNG', 'image/JPEG'];
     $allowedExtensions = ['gif', 'jpg', 'jpeg', 'png', 'GIF', 'JPG', 'JPEG', 'PNG'];
-
     // Get file info
     $fileName = $_FILES['file']['name'];
     $fileTmpName = $_FILES['file']['tmp_name'];
@@ -69,10 +68,8 @@ if ($_FILES['file']['name']) {
                     imagegif($thumb, $filePath);
                     break;
             }
-
             imagedestroy($thumb);
             imagedestroy($source);
-
             // Return the file URL
             echo json_encode(['url' => $filePath]);
         } else {

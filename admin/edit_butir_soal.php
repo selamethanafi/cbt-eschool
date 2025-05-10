@@ -365,30 +365,67 @@ exit();
 <?php include '../inc/js.php'; ?>
     <script src="../assets/summernote/summernote-bs5.js"></script>
     <script>
-        function bersihkanHTML(html) {
-            return html.replace(/<(?!\/?(img|br)\b)[^>]*>/gi, '');
-        }
+        //function bersihkanHTML(html) {
+            //return html.replace(/<(?!\/?(img|br)\b)[^>]*>/gi, '');
+        //}
 
-        $(document).ready(function() {
-            var configEditor = {
-                height: 300,
-                callbacks: {
-                    onImageUpload: function(files) {
-                        var editor = this;
-                        uploadImage(files[0], editor);
+        $(document).ready(function () {
+        var configEditor = {
+        height: 300,
+        callbacks: {
+            // Hanya tempel teks polos (tanpa format)
+            onPaste: function (e) {
+                e.preventDefault();
+                var clipboardData = e.originalEvent.clipboardData || window.clipboardData;
+                var text = clipboardData.getData('text/plain');
+                document.execCommand("insertText", false, text);
+            },
+
+            // Upload gambar
+            onImageUpload: function (files) {
+                var editor = this;
+                uploadImage(files[0], editor);
+            },
+
+            // Hapus file saat gambar dihapus dari editor
+            onMediaDelete: function (target) {
+                var imageUrl = target[0].src;
+                $.ajax({
+                    url: 'hapus_gambar_editor.php',
+                    method: 'POST',
+                    data: { src: imageUrl },
+                    success: function (response) {
+                        console.log('Gambar dihapus:', response);
                     },
-                    onChange: function(contents, $editable) {
-                        let bersih = bersihkanHTML(contents);
-                        if (bersih !== contents) {
-                            $(this).summernote('code', bersih);
-                        }
+                    error: function (err) {
+                        console.error('Gagal menghapus gambar:', err);
                     }
-                },
-                toolbar: [
-                    ['insert', ['picture']],
-                    ['view', ['codeview']]
-                ]
-            };
+                });
+            },
+
+            // Bersihkan tag saat blur (selesai mengetik)
+            onBlur: function () {
+                var contents = $(this).summernote('code');
+
+                // Simpan gambar kalau ada
+                var images = $('<div>').html(contents).find('img').clone();
+                var textOnly = $('<div>').html(contents).text().trim();
+
+                // Gabungkan kembali teks dan gambar (jika ada)
+                var cleanHtml = textOnly;
+                if (images.length > 0) {
+                    cleanHtml += '<br>' + $('<div>').append(images).html();
+                }
+
+                // Set kembali isi editor dengan konten bersih
+                $(this).summernote('code', cleanHtml);
+            }
+        },
+        toolbar: [
+            ['insert', ['picture']],
+            ['view', ['codeview']]
+        ]
+    };
 
             $('#pertanyaan').summernote(configEditor);
             $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4').summernote({
