@@ -68,7 +68,7 @@ if ($_FILES['file']['name']) {
             }
 
             // Return correct URL path for browser
-            $publicPath = '/cbt-app/gambar/' . $newFileName;
+            $publicPath = '/' . explode('/', $_SERVER['SCRIPT_NAME'])[1] . '/gambar/' . $newFileName;
 $imgTag = '<img id="gbrsoal" src="' . $publicPath . '">';
 echo json_encode(['img' => $imgTag, 'url' => $publicPath]);
         } else {
