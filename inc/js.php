@@ -1,3 +1,21 @@
+<div id="toast-container">
+                                                    <?php 
+                                                        $ujian_terdekat = mysqli_query($koneksi, "SELECT * FROM soal WHERE tanggal > NOW() ORDER BY tanggal ASC");
+                                                        mysqli_data_seek($ujian_terdekat, 0); while ($ujian = mysqli_fetch_assoc($ujian_terdekat)): 
+                                                    ?>
+                                                    <div class="toast align-items-center text-white bg-primary border-0 mb-2 opacity-0"
+                                                        role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="6000">
+                                                        <div class="d-flex">
+                                                            <div class="toast-body">
+                                                                <i class="far fa-calendar-check me-2"></i>
+                                                                Ujian <?php echo $ujian['kode_soal']; ?> dimulai pada <?php echo date('d M Y', strtotime($ujian['tanggal'])); ?>
+                                                            </div>
+                                                            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                                                data-bs-dismiss="toast" aria-label="Close"></button>
+                                                        </div>
+                                                    </div>
+                                                    <?php endwhile; ?>
+                                                </div>
 <footer class="footer mt-auto py-3 bg-dark">
     <div class="container-fluid">
         <div class="row text-grey">
@@ -13,6 +31,7 @@
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/sweetalert.js"></script>
 <script src="../assets/datatables/datatables.js"></script>
+<audio id="notif-sound" src="../assets/notif.mp3" preload="auto"></audio>
         <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Ambil semua elemen dengan data-bs-toggle="collapse"
@@ -58,4 +77,43 @@
             }
         }
         setInterval(checkIfEncDeleted, 500);
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const sound = document.getElementById('notif-sound');  // Elemen suara
+    const toasts = document.querySelectorAll('#toast-container .toast');  // Semua toast
+
+    // Cek apakah toast sudah pernah ditampilkan di session
+    const toastShown = sessionStorage.getItem('toastDisplayed');
+
+    if (!toastShown) {
+        // Tambahkan event listener untuk klik pertama di halaman
+        const onClick = () => {
+            toasts.forEach((toastEl, index) => {
+                // Delay pertama 500ms, selanjutnya kelipatan 3 detik
+                const delayTime = index === 0 ? 500 : (index * 3000);
+
+                setTimeout(() => {
+                    toastEl.classList.remove('opacity-0');  
+                    const toast = new bootstrap.Toast(toastEl);
+                    toast.show();
+
+                    // Mainkan suara
+                    if (sound) {
+                        sound.currentTime = 0;
+                        sound.play().catch(() => {});
+                    }
+                }, delayTime);
+            });
+
+            // Simpan flag agar tidak ditampilkan lagi selama sesi ini
+            sessionStorage.setItem('toastDisplayed', 'true');
+
+            // Hapus event listener agar tidak dipanggil lagi
+            document.body.removeEventListener('click', onClick);
+        };
+
+        document.body.addEventListener('click', onClick);
+    }
+});
+
         </script>

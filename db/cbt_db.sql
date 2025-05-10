@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Bulan Mei 2025 pada 22.50
+-- Waktu pembuatan: 09 Bulan Mei 2025 pada 21.25
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -70,13 +70,12 @@ CREATE TABLE `butir_soal` (
 INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `tipe_soal`, `pilihan_1`, `pilihan_2`, `pilihan_3`, `pilihan_4`, `jawaban_benar`, `status_soal`, `created_at`) VALUES
 (52, 1, 'SR9-01', 'Suatu cara memperbanyak gambar dengan alat cetak merupakan pengertian dari ...', 'Pilihan Ganda', 'Seni musik', 'Seni budaya', 'Seni mencetak', 'Seni tari', 'pilihan_3', 'Aktif', '2025-05-06 09:12:13'),
 (55, 4, 'SR9-01', 'Jodohkan antara kolom A (istilah seni rupa) dengan kolom B (penjelasan atau contoh yang sesuai)!', 'Menjodohkan', NULL, NULL, NULL, NULL, 'Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu', 'Aktif', '2025-05-06 09:23:24'),
-(127, 1, 'BINDO7-1', 'asdasd', 'Pilihan Ganda', 'asd', 'asdasd', 'asdasd', 'asd', 'pilihan_4', 'Aktif', '2025-05-07 22:06:43'),
+(127, 1, 'BINDO7-1', 'Pertanyaan', 'Pilihan Ganda', 'asd', 'asdasd', 'asdasd', 'asd', 'pilihan_4', 'Aktif', '2025-05-07 22:06:43'),
 (129, 2, 'BINDO7-1', 'Apakah ini shin tae yong ?<br>\r\n<img src=\"/cbt-app/gambar/681cd9623ae54.png\" id=\"gbrsoal\" style=\"\"><br>', 'Pilihan Ganda Kompleks', 'sfsdf', 'sdfsdf', 'sdfsdf', 'sdfsdf', 'pilihan_1,pilihan_2,pilihan_4', 'Aktif', '2025-05-07 22:07:14'),
 (131, 3, 'BINDO7-1', '<img src=\"/cbt-app/gambar/681cf6516e647.png\" id=\"gbrsoal\" style=\"\"><br>', 'Benar/Salah', 'sdfsdf', 'sdfsdfs', 'sdfsdf', 'gdfdgdg', 'Benar|Benar|Salah|Benar', 'Aktif', '2025-05-07 22:08:01'),
 (132, 4, 'BINDO7-1', 'dfgdfgdg', 'Menjodohkan', NULL, NULL, NULL, NULL, 'pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3', 'Aktif', '2025-05-07 22:08:29'),
 (133, 5, 'BINDO7-1', 'rtertert', 'Uraian', NULL, NULL, NULL, NULL, 'r', 'Aktif', '2025-05-07 22:08:42'),
 (137, 2, 'SR9-01', 'jawab pernyataan berikut', 'Benar/Salah', 'Seni rupa terapan diciptakan hanya untuk dinikmati', 'Seni rupa terapan diciptakan hanya untuk dijual', '', '', 'Salah|Salah', 'Aktif', '2025-05-07 22:18:24'),
-(145, 6, '', 'fgdgd', 'Pilihan Ganda', 'fgd', 'fg', 'fgd', 'fgd', 'pilihan_1', 'Aktif', '2025-05-07 22:45:37'),
 (152, 3, 'SR9-01', 'jawab petanyaan', 'Benar/Salah', 'weq', 'asd', '', '', 'Benar|Salah', 'Aktif', '2025-05-07 23:06:04'),
 (154, 6, 'SR9-01', 'benar apa salah', 'Benar/Salah', '<img src=\"/cbt-app/gambar/681d11adf3f4b.png\" id=\"gbrsoal\" style=\"\"><br>', '<img src=\"/cbt-app/gambar/681cd99beef50.png\" id=\"gbrsoal\" style=\"\"><br>', '', '', 'Salah|Benar', 'Aktif', '2025-05-07 23:07:49'),
 (159, 7, 'SR9-01', 'fgdgdfgdgdgd', 'Pilihan Ganda Kompleks', 'fgdfgd', 'fgdfgd', 'fgd', 'fgd', 'pilihan_1,pilihan_3,pilihan_4', 'Aktif', '2025-05-07 23:11:28'),
@@ -91,12 +90,19 @@ INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `t
 CREATE TABLE `jawaban_siswa` (
   `id_jawaban` int(11) NOT NULL,
   `id_siswa` int(11) NOT NULL,
+  `nama_siswa` text NOT NULL,
   `kode_soal` varchar(50) NOT NULL,
-  `tipe_soal` enum('Pilihan Ganda','Pilihan Ganda Kompleks','Benar/Salah','Uraian','Menjodohkan') NOT NULL,
   `jawaban_siswa` text DEFAULT NULL,
   `waktu_dijawab` timestamp NOT NULL DEFAULT current_timestamp(),
   `status_ujian` enum('Aktif','Non-Aktif') DEFAULT 'Aktif'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `jawaban_siswa`
+--
+
+INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`, `jawaban_siswa`, `waktu_dijawab`, `status_ujian`) VALUES
+(1, 1, 'Jokowi JK	', 'SR9-01', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Benar],[4:Teknik Mozaik:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Seni Rupa Murni:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_2]', '2025-05-09 14:48:36', 'Non-Aktif');
 
 -- --------------------------------------------------------
 
@@ -159,7 +165,7 @@ INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, 
 (3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif'),
 (4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif'),
 (5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif'),
-(12, 'Intan', 'g/vyJS2pKV1J+hzFfU3ZD3J3OVdjN2tpdWhyL01uaG9kYTdpbEE9PQ==', '124132', '7', 'A', 'Nonaktif');
+(12, 'Intan sadira destiana kartika', 'g/vyJS2pKV1J+hzFfU3ZD3J3OVdjN2tpdWhyL01uaG9kYTdpbEE9PQ==', '124132', '7', 'A', 'Nonaktif');
 
 -- --------------------------------------------------------
 
@@ -176,6 +182,7 @@ CREATE TABLE `soal` (
   `waktu_ujian` int(11) DEFAULT 60,
   `tanggal` date DEFAULT curdate(),
   `status` text NOT NULL DEFAULT 'Nonaktif',
+  `kunci` text NOT NULL,
   `token` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -183,9 +190,9 @@ CREATE TABLE `soal` (
 -- Dumping data untuk tabel `soal`
 --
 
-INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `waktu_ujian`, `tanggal`, `status`, `token`) VALUES
-(7, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-07', 'Nonaktif', ''),
-(10, 'BINDO7-1', 'B. Indo', 'Bahasa Indonesia', '7', 90, '2025-10-08', 'Nonaktif', '');
+INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `waktu_ujian`, `tanggal`, `status`, `kunci`, `token`) VALUES
+(1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-16', 'Nonaktif', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4]', ''),
+(10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-10-08', 'Nonaktif', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3],[5:r]', '');
 
 --
 -- Indexes for dumped tables
@@ -251,13 +258,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT untuk tabel `butir_soal`
 --
 ALTER TABLE `butir_soal`
-  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- AUTO_INCREMENT untuk tabel `jawaban_siswa`
 --
 ALTER TABLE `jawaban_siswa`
-  MODIFY `id_jawaban` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `nilai`
@@ -275,7 +282,7 @@ ALTER TABLE `siswa`
 -- AUTO_INCREMENT untuk tabel `soal`
 --
 ALTER TABLE `soal`
-  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

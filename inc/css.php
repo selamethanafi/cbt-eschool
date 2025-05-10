@@ -3,6 +3,15 @@
 <link href="../assets/fontawesome/css/all.min.css" rel="stylesheet">
 <link href="../assets/adminkit/static/css/app.css" rel="stylesheet">
 <link href="../assets/datatables/datatables.css" rel="stylesheet">
+<style>
+  #toast-container {
+    position: fixed !important;
+    bottom: 1rem;
+    right: 1rem;
+    left: auto !important;
+    z-index: 9999;
+  }
+</style>
 <!--<style>
 #soal.sidebar-dropdown a {
     background-color: rgba(0, 0, 0, 0.15); /* Warna gelap dengan transparansi */

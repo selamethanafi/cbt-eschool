@@ -11,7 +11,19 @@ $total_siswa = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) AS tot
 $total_soal = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM soal"))['total'];
 $total_ujian = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM nilai"))['total'];
 
-$ujian_terdekat = mysqli_query($koneksi, "SELECT * FROM soal WHERE tanggal > NOW() ORDER BY tanggal ASC");
+// Ambil data jumlah siswa ikut ujian per bulan
+$rekap_query = mysqli_query($koneksi, "
+    SELECT DATE_FORMAT(tanggal_ujian, '%Y-%m') AS bulan, COUNT(*) AS jumlah 
+    FROM nilai 
+    GROUP BY bulan 
+    ORDER BY bulan ASC
+");
+
+$rekap_data = [];
+while ($row = mysqli_fetch_assoc($rekap_query)) {
+    $rekap_data['labels'][] = date('M Y', strtotime($row['bulan'] . '-01'));
+    $rekap_data['jumlah'][] = $row['jumlah'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,22 +78,17 @@ $ujian_terdekat = mysqli_query($koneksi, "SELECT * FROM soal WHERE tanggal > NOW
                                                 </div>
                                             </div>
                                         </div>
-
-                                        
-                                            <div class="col-md-4">
-                                                <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                                    <h5><strong>Pengingat:</strong></h5><hr>
-                                                        <?php while ($ujian = mysqli_fetch_assoc($ujian_terdekat)): ?>
-                                                        <p><i class="far fa-calendar-check" aria-hidden="true"></i> Ujian <?php echo $ujian['kode_soal']; ?> akan dimulai pada <?php echo date('d M Y', strtotime($ujian['tanggal'])); ?></p>
-                                                        <?php endwhile; ?>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                            <div class="col-md-8">
+                                                <div class="card mb-3">
+                                                    <div class="card-header">
+                                                        <h5 class="card-title mb-0">Rekap Jumlah Siswa Mengikuti Ujian per Bulan</h5>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <canvas id="chartRekapUjian" height="100"></canvas>
+                                                    </div>
                                                 </div>
+                                              
                                             </div>
-                                      
-
-                                    </div>
-
-                                    
                                 </div>
                             </div>
                         </div>
@@ -91,5 +98,39 @@ $ujian_terdekat = mysqli_query($koneksi, "SELECT * FROM soal WHERE tanggal > NOW
         </div>
     </div>
     <?php include '../inc/js.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    const ctx = document.getElementById('chartRekapUjian').getContext('2d');
+    const chartRekapUjian = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: <?php echo json_encode($rekap_data['labels']); ?>,
+            datasets: [{
+                label: 'Jumlah Siswa',
+                data: <?php echo json_encode($rekap_data['jumlah']); ?>,
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                tension: 0.4, // Semakin tinggi nilainya (0–1), semakin bergelombang
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            animation: {
+                duration: 2000,
+                easing: 'easeInOutQuart' // efek animasi gelombang halus
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        }
+    });
+    
+</script>
 </body>
 </html>

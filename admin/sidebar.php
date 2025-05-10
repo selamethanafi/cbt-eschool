@@ -16,25 +16,26 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li class="sidebar-item <?= ($currentPage == 'soal.php') ? 'active' : '' ?> <?= ($currentPage == 'edit_soal.php') ? 'active' : '' ?>  
+                        <?= ($currentPage == 'tambah_soal.php') ? 'active' : '' ?> <?= ($currentPage == 'edit_butir_soal.php') ? 'active' : '' ?> 
+                        <?= ($currentPage == 'tambah_butir_soal.php') ? 'active' : '' ?> <?= ($currentPage == 'preview_soal.php') ? 'active' : '' ?> 
+                        <?= ($currentPage == 'daftar_butir_soal.php') ? 'active' : '' ?> <?= ($currentPage == 'upload-gambar.php') ? 'active' : '' ?> 
+                        <?= ($currentPage == 'kartu_siswa.php') ? 'active' : '' ?>">
                     <a data-bs-toggle="collapse" href="#soal" class="sidebar-link collapsed">
                         <i class="align-middle fa fa-file"></i> <span class="align-middle">Manajemen Ujian </span><i class="fa fa-chevron-down ms-auto float-end"></i>
                     </a>
                     <ul id="soal" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item <?= ($currentPage == 'soal.php') ? 'active' : '' ?> <?= ($currentPage == 'edit_soal.php') ? 'active' : '' ?>  
-                        <?= ($currentPage == 'tambah_soal.php') ? 'active' : '' ?> <?= ($currentPage == 'edit_butir_soal.php') ? 'active' : '' ?> 
-                        <?= ($currentPage == 'tambah_butir_soal.php') ? 'active' : '' ?> <?= ($currentPage == 'preview_soal.php') ? 'active' : '' ?> 
-                        <?= ($currentPage == 'daftar_butir_soal.php') ? 'active' : '' ?>">
+                        <li class="sidebar-item">
                             <a class="sidebar-link" href="soal.php">
                                 <i class="align-middle fas fa-book"></i> <span class="align-middle">Bank Soal</span>
                             </a>
                         </li>
-                        <li class="sidebar-item <?= ($currentPage == 'upload-gambar.php') ? 'active' : '' ?>">
+                        <li class="sidebar-item">
                             <a class="sidebar-link" href="upload-gambar.php">
                                 <i class="align-middle fas fa-upload"></i> <span class="align-middle">Upload Gambar</span>
                             </a>
                         </li>
-                        <li class="sidebar-item <?= ($currentPage == 'kartu_siswa.php') ? 'active' : '' ?>">
+                        <li class="sidebar-item">
                             <a class="sidebar-link" href="kartu_siswa.php">
                                 <i class="align-middle fa fa-id-card"></i> <span class="align-middle">Cetak Kartu Ujian</span>
                             </a>
