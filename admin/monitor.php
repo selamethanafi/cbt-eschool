@@ -33,20 +33,22 @@ check_login('admin');
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="card-title mb-0">Monitor Ujian <i class="fa fa-refresh fa-spin" style="color:green;" aria-hidden="true"></i></h5>
-                                    <sup>Automatically refresh page every 1 minute</sup>
+                                    <sup>Automatically refresh data every 1 minute</sup>
                                 </div>
                                 <div class="card-body">
-                                    <table id="monitor" class="table table-bordered table-striped" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Nama Siswa</th>
-                                                <th>Kode Soal</th>
-                                                <th>Waktu Sisa</th>
-                                                <th>Waktu Mulai</th>
-                                                <th>Status Ujian</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                                    <div class="table-wrapper">
+                                        <table id="monitor" class="table table-bordered table-striped" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama Siswa</th>
+                                                    <th>Kode Soal</th>
+                                                    <th>Waktu Sisa</th>
+                                                    <th>Waktu Mulai</th>
+                                                    <th>Status Ujian</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -54,20 +54,21 @@ check_login('admin');
                                             </select>
                                         </div>
                                     </div>
-
-                                    <table id="tabelReset" class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Nama Siswa</th>
-                                                <th>Kelas</th>
-                                                <th>Rombel</th>
-                                                <th>Kode Soal</th>
-                                                <th>Status Ujian</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                                    <div class="table-wrapper">                                
+                                        <table id="tabelReset" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nama Siswa</th>
+                                                    <th>Kelas</th>
+                                                    <th>Rombel</th>
+                                                    <th>Kode Soal</th>
+                                                    <th>Status Ujian</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

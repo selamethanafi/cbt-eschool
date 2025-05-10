@@ -16,6 +16,13 @@
   animation-duration: 2s;
   animation-iteration-count: infinite;
 }
+.table-wrapper {
+            overflow-x: auto; /* Enable horizontal scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile */
+        }
+        table th, table td {
+    text-align: left !important;
+}
 </style>
 <!--<style>
 #soal.sidebar-dropdown a {

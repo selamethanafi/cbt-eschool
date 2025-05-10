@@ -34,7 +34,7 @@ check_login('admin');
                 <div class="card-header">
                   <h5 class="card-title mb-0">Daftar Siswa</h5>
                 </div>
-                <div class="card-body table-wrapper">
+                <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                     <div class="btn-group" role="group" aria-label="Button group">
                       <a href="tambah_siswa.php" class="btn btn-primary">
@@ -48,6 +48,7 @@ check_login('admin');
                       </button>
                     </div>
                   </div>
+                  <div class=" table-wrapper">
                   <table id="siswaTable" class="table table-striped nowrap">
                   <thead>
                       <tr>
@@ -97,7 +98,7 @@ check_login('admin');
                       ?>
                     </tbody>
                   </table>
-
+                    </div>       
                 </div>
               </div>
             </div>

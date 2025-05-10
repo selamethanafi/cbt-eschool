@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = mysqli_query($koneksi, $query);
 
         if ($result && mysqli_num_rows($result) > 0) {
-            echo '<table class="table table-bordered" id="nilaiTableData">
+            echo '<table class="table table-bordered table-responsive" id="nilaiTableData">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -75,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hasil Ujian</title>
     <?php include '../inc/css.php'; ?>
     <!-- DataTables CSS -->
@@ -125,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </form>
                                 <hr>
                                 <!-- Tabel akan muncul di sini -->
-                                <div id="nilaiTable" class="d-none"></div>
+                                <div id="nilaiTable" class="d-none table-wrapper"></div>
                             </div>
                         </div>
                     </div>
