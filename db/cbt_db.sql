@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Bulan Mei 2025 pada 20.41
+-- Waktu pembuatan: 11 Bulan Mei 2025 pada 01.08
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -182,25 +182,27 @@ CREATE TABLE `siswa` (
   `username` varchar(200) NOT NULL,
   `kelas` varchar(100) NOT NULL,
   `rombel` varchar(100) NOT NULL,
-  `status` text NOT NULL DEFAULT 'Nonaktif'
+  `status` text NOT NULL DEFAULT 'Nonaktif',
+  `last_activity` datetime DEFAULT NULL,
+  `page_url` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `siswa`
 --
 
-INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`) VALUES
-(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif'),
-(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif'),
-(3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif'),
-(4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif'),
-(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif'),
-(12, 'Intan sadira destiana kartika', 'g/vyJS2pKV1J+hzFfU3ZD3J3OVdjN2tpdWhyL01uaG9kYTdpbEE9PQ==', '124132', '7', 'A', 'Nonaktif'),
-(13, 'Erina', 'FQOm8MYUIes79E36AQv1AU5VMVdUanhIaTBVTURVS0hXckFRUXc9PQ==', '7217317', '9', 'A', 'Nonaktif'),
-(14, 'Phoebe', '/pUodVDzsKAbUdhVWOg6s202UC9ybUpLRW5OT3paYnpIaHBGM2c9PQ==', '122345', '7', 'C', 'Nonaktif'),
-(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174731', '7', 'D', 'Nonaktif'),
-(16, 'Denny', '3tNjgpDyVjS9ZDzs0WtChlUzZHlLTnZ0MUVJS25JZGR3ckxIcUE9PQ==', '64134', '8', 'F', 'Nonaktif'),
-(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '2527', '8', 'D', 'Nonaktif');
+INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `last_activity`, `page_url`) VALUES
+(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '2025-05-11 05:44:17', 'http://localhost/cbt-eschool/siswa/dashboard.php'),
+(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', NULL, ''),
+(3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', NULL, ''),
+(4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', NULL, ''),
+(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', NULL, ''),
+(12, 'Intan sadira destiana kartika', 'g/vyJS2pKV1J+hzFfU3ZD3J3OVdjN2tpdWhyL01uaG9kYTdpbEE9PQ==', '124132', '7', 'A', 'Nonaktif', '2025-05-11 06:06:00', 'http://localhost/cbt-eschool/siswa/dashboard.php'),
+(13, 'Erina', 'FQOm8MYUIes79E36AQv1AU5VMVdUanhIaTBVTURVS0hXckFRUXc9PQ==', '7217317', '9', 'A', 'Nonaktif', NULL, ''),
+(14, 'Phoebe', '/pUodVDzsKAbUdhVWOg6s202UC9ybUpLRW5OT3paYnpIaHBGM2c9PQ==', '122345', '7', 'C', 'Nonaktif', NULL, ''),
+(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174731', '7', 'D', 'Nonaktif', NULL, ''),
+(16, 'Denny', '3tNjgpDyVjS9ZDzs0WtChlUzZHlLTnZ0MUVJS25JZGR3ckxIcUE9PQ==', '64134', '8', 'F', 'Nonaktif', NULL, ''),
+(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '2527', '8', 'D', 'Nonaktif', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -226,8 +228,8 @@ CREATE TABLE `soal` (
 --
 
 INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `waktu_ujian`, `tanggal`, `status`, `kunci`, `token`) VALUES
-(1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-16', 'Aktif', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:ewt],[9:saya jua:asdasd],[10:Benar|Salah],[11:asdsasd],[12:pilihan_2]', 'EOLAGZ'),
-(10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-10-08', 'Nonaktif', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3],[5:r]', '');
+(1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-16', 'Nonaktif', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:ewt],[9:saya jua\r\n\r\n:asdasd],[10:Benar|Salah],[11:asdsasd],[12:pilihan_2]', ''),
+(10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-10-08', 'Nonaktif', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3],[5:r],[6:Benar|Salah]', '');
 
 --
 -- Indexes for dumped tables
