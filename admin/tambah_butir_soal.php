@@ -367,7 +367,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    // }
 
         $(document).ready(function () {
-    var configEditor = {
+        var configEditor = {
         height: 300,
         callbacks: {
             // Hanya tempel teks polos (tanpa format)
@@ -424,43 +424,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ]
     };
 
-    // Untuk pertanyaan
-    $('#pertanyaan').summernote(configEditor);
+            // Untuk pertanyaan
+            $('#pertanyaan').summernote(configEditor);
 
-    // Untuk pilihan, kompleks, dan bs
-    $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4')
-        .summernote({
-            ...configEditor,
-            height: 80
-        });
-});
-
-// Upload file gambar via AJAX
-function uploadImage(file, editor) {
-    let formData = new FormData();
-    formData.append('file', file);
-
-    $.ajax({
-        url: 'uploadeditor.php',
-        method: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (response) {
-            try {
-                var url = JSON.parse(response).url;
-                $(editor).summernote('insertImage', url, function ($image) {
-                    $image.attr('id', 'gbrsoal');
+            // Untuk pilihan, kompleks, dan bs
+            $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4')
+                .summernote({
+                    ...configEditor,
+                    height: 80
                 });
-            } catch (e) {
-                console.error('Invalid response format:', e);
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error('Upload error:', error);
+            });
+
+        // Upload file gambar via AJAX
+            function uploadImage(file, editor) {
+            let formData = new FormData();
+            formData.append('file', file);
+
+            $.ajax({
+                url: 'uploadeditor.php',
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    try {
+                        var url = JSON.parse(response).url;
+                        $(editor).summernote('insertImage', url, function ($image) {
+                            $image.attr('id', 'gbrsoal');
+                        });
+                    } catch (e) {
+                        console.error('Invalid response format:', e);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Upload error:', error);
+                }
+            });
         }
-    });
-}
 
 
         function showFields(tipeSoal) {
