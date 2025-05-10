@@ -57,10 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             echo '</tbody></table>';
         } else {
-            echo '<div class="alert alert-warning">Data tidak ditemukan.</div>';
+            echo '<div class="alert alert-primary alert-dismissible fade show col-md-6" role="alert">
+                    Data tidak ditemukan.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
         }
     } else {
-        echo '<div class="alert alert-danger">Filter belum lengkap.</div>';
+        echo '<div class="alert alert-danger alert-dismissible fade show col-md-6" role="alert">
+                    Filter belum lengkap.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
     }
     exit;
 }
@@ -102,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" name="kode_soal" id="kode_soal" required>
+                                            <select class="form-control" name="kode_soal" id="kode_soal">
                                                 <option value="">-Pilih Kode Soal-</option>
                                                 <?php
                                                 $qSoal = mysqli_query($koneksi, "SELECT DISTINCT kode_soal FROM nilai");
