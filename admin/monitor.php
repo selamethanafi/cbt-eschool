@@ -32,7 +32,8 @@ check_login('admin');
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="card-title mb-0">Monitor Ujian</h5>
+                                    <h5 class="card-title mb-0">Monitor Ujian <i class="fa fa-refresh fa-spin" style="color:green;" aria-hidden="true"></i></h5>
+                                    <sup>Automatically refresh page every 1 minute</sup>
                                 </div>
                                 <div class="card-body">
                                     <table id="monitor" class="table table-bordered table-striped" style="width:100%">

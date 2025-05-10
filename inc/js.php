@@ -85,8 +85,7 @@
         // Daftar class background yang tersedia di Bootstrap
         const bgClasses = [
             'bg-primary', 'bg-secondary', 'bg-success', 'bg-danger',
-            'bg-warning', 'bg-info', 'bg-light', 'bg-dark',
-            'bg-body', 'bg-transparent'
+            'bg-warning', 'bg-info', 'bg-dark'
         ];
 
         // Fungsi untuk memilih class acak dari daftar

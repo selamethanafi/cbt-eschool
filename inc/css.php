@@ -11,6 +11,11 @@
     left: auto !important;
     z-index: 9999;
   }
+  .fa-beat, .fa-bounce, .fa-fade, .fa-beat-fade, .fa-flip, .fa-pulse, .fa-shake, .fa-spin, .fa-spin-pulse
+{
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
 </style>
 <!--<style>
 #soal.sidebar-dropdown a {
