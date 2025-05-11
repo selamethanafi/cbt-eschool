@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Login Admin
     </div>
         <div class="card shadow p-4 glass-card">
-          <center><img src="../assets/images/codelite2.png" width="200" height="auto"></center>
+          <center><img src="../assets/images/<?= htmlspecialchars($pengaturan['logo_sekolah'] ?? 'codelite2.png') ?>" width="200" height="auto"></center>
           <?php if (!empty($error)): ?>
             <div id="customAlert" class="text-danger text-center my-3" role="alert" style="font-weight: bold;">
               <?php echo htmlspecialchars($error); ?>

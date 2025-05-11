@@ -24,23 +24,45 @@ if (isset($_SESSION['siswa_logged_in']) && $_SESSION['siswa_logged_in'] === true
     exit;
 }
 
+// Tampilkan pesan jika login ganda (token tidak cocok)
+if (isset($_GET['status']) && $_GET['status'] === 'multi') {
+    $error = 'Login dibatalkan: akun sedang aktif di perangkat lain.';
+}
+
 // Proses form login
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
     $captcha_input = $_POST['captcha'] ?? '';
 
-    // Validasi CAPTCHA
     if ((int)$captcha_input !== $_SESSION['captcha_answer']) {
         $error = 'Captcha salah!';
     } else {
-        // Jika CAPTCHA benar, lanjutkan dengan autentikasi username dan password
         if (authenticate_user($username, $password, 'siswa')) {
             unset($_SESSION['captcha_question'], $_SESSION['captcha_answer']);
             header("Location: dashboard.php");
             exit;
         } else {
-            $error = 'Username atau password salah!';
+            // Cek apakah login gagal karena sesi sudah aktif
+            $settings = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT login_ganda FROM pengaturan WHERE id = 1"));
+            $allow_multiple = ($settings['login_ganda'] == 'izinkan');
+
+            if (!$allow_multiple) {
+                $query = "SELECT session_token FROM siswa WHERE username = ?";
+                $stmt = mysqli_prepare($koneksi, $query);
+                mysqli_stmt_bind_param($stmt, "s", $username);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+                $user = mysqli_fetch_assoc($result);
+
+                if ($user && !empty($user['session_token'])) {
+                    $error = 'Akun sedang aktif di perangkat lain.';
+                } else {
+                    $error = 'Username atau password salah!';
+                }
+            } else {
+                $error = 'Username atau password salah!';
+            }
         }
     }
 }
@@ -68,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         height: 100%;
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
-        background: rgba(255, 255, 255, 0.86); /* Efek gelap */
+        background: rgba(255, 255, 255, 0.86);
         z-index: 1;
     }
     .glass-card {
@@ -100,15 +122,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         color: white;
     }
     @media (max-width: 576px) {
-    .glass-card {
-        padding: 1.5rem;
+        .glass-card {
+            padding: 1.5rem;
+        }
+        .glass-card input {
+            font-size: 14px;
+        }
     }
-
-    .glass-card input {
-        font-size: 14px;
-    }
-}
-  
   </style>
 </head>
 <body class="d-flex align-items-center justify-content-center" style="height: 100vh;">
@@ -117,58 +137,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="row justify-content-center">
                 <div class="col-md-6 col-lg-4"> 
                 <div class="position-relative">
-    <!-- Pita label -->
-    <div style="
-        position: absolute;
-        top: -12px;
-        left: -12px;
-        background-color:rgb(253, 129, 13);
-        color: white;
-        padding: 6px 12px;
-        font-weight: bold;
-        border-radius: 5px 0 5px 0;
-        font-size: 13px;
-        z-index: 10;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    ">
-        Login Siswa
-    </div>
-                    <div class="card shadow p-4 glass-card">
-                    <center><img src="../assets/images/codelite2.png" width="200" height="auto"></center>
-                    <?php if (!empty($error)): ?>
-                        <div id="customAlert" class="text-danger text-center my-3" role="alert" style="font-weight: bold;">
-                        <?php echo htmlspecialchars($error); ?>
-                        </div>
-                    <?php endif; ?>
-                    <form action="" method="POST" class="mt-3" id="loginForm">
-                        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-                        <div class="mb-3">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
-                        </div>
-                        <div class="mb-3 position-relative">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                        <span class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor:pointer;" onclick="togglePassword()">
-                            <i style="color:grey;" class="fa fa-eye" id="togglePasswordIcon"></i>
-                        </span>
-                        </div>
-                        <div class="mb-3">
-                        <label for="captcha" class="form-label">
-                            Berapa hasil dari: <b><?php echo $_SESSION['captcha_question']; ?></b> ?
-                        </label>
-                        <input type="number" class="form-control" id="captcha" name="captcha" placeholder="Jawaban" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100" id="loginButton">Login <i class="fa fa-sign-in"></i></button>
-                    </form><br>
-                    <div id="enc" style="font-size:13px;">
-                        <p></p>
+                    <div style="
+                        position: absolute;
+                        top: -12px;
+                        left: -12px;
+                        background-color:rgb(253, 129, 13);
+                        color: white;
+                        padding: 6px 12px;
+                        font-weight: bold;
+                        border-radius: 5px 0 5px 0;
+                        font-size: 13px;
+                        z-index: 10;
+                        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+                    ">
+                        Login Siswa
                     </div>
+                    <div class="card shadow p-4 glass-card">
+                        <center><img src="../assets/images/codelite2.png" width="200" height="auto"></center>
+                        <?php if (!empty($error)): ?>
+                            <div id="customAlert" class="text-danger text-center my-3" role="alert" style="font-weight: bold;">
+                                <?php echo htmlspecialchars($error); ?>
+                            </div>
+                        <?php endif; ?>
+                        <form action="" method="POST" class="mt-3" id="loginForm">
+                            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                            </div>
+                            <div class="mb-3 position-relative">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                                <span class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor:pointer;" onclick="togglePassword()">
+                                    <i style="color:grey;" class="fa fa-eye" id="togglePasswordIcon"></i>
+                                </span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="captcha" class="form-label">
+                                    Berapa hasil dari: <b><?php echo $_SESSION['captcha_question']; ?></b> ?
+                                </label>
+                                <input type="number" class="form-control" id="captcha" name="captcha" placeholder="Jawaban" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" id="loginButton">Login <i class="fa fa-sign-in"></i></button>
+                        </form><br>
+                        <div id="enc" style="font-size:13px;">
+                            <p></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-  <script src="../assets/bootstrap-5.3.6/js/bootstrap.bundle.min.js"></script>
-  <script>
+</body>
+<script src="../assets/bootstrap-5.3.6/js/bootstrap.bundle.min.js"></script>
+<script>
     function togglePassword() {
         const passwordInput = document.getElementById('password');
         const icon = document.getElementById('togglePasswordIcon');
@@ -182,6 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             icon.classList.add("fa-eye");
         }
     }
+
     setTimeout(() => {
         const alert = document.getElementById('customAlert');
         if (alert) {
@@ -192,14 +213,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }, 4000);
 
     document.addEventListener("DOMContentLoaded", function() {
-      var base64Text = "<?php echo $encryptedText; ?>"; 
-      if(base64Text) {
-        var decodedText = atob(base64Text); 
-        document.getElementById("enc").innerHTML = decodedText; 
-      }
+        var base64Text = "<?php echo $encryptedText; ?>"; 
+        if(base64Text) {
+            var decodedText = atob(base64Text); 
+            document.getElementById("enc").innerHTML = decodedText; 
+        }
     });
 
-     function checkIfEncDeleted() {
+    function checkIfEncDeleted() {
         var encElement = document.getElementById("enc");
 
         if (!encElement) {
@@ -207,7 +228,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             loginButton.disabled = true;  
             loginButton.style.cursor = "not-allowed";  
             loginButton.style.opacity = "0.6";  
-
             window.location.href = "../error_page.php";  
         }
     }
@@ -220,6 +240,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             event.preventDefault();  
         }
     });
-  </script>
-</body>
+</script>
 </html>

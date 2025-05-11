@@ -13,8 +13,8 @@ $count_query = "SELECT COUNT(*) as total FROM siswa WHERE last_activity >= '$thr
 $count_result = mysqli_query($koneksi, $count_query);
 $total = mysqli_fetch_assoc($count_result)['total'];
 
-// Ambil data sesuai halaman
-$query = "SELECT nama_siswa, kelas, rombel, last_activity, page_url 
+// Ambil data sesuai halaman (termasuk id_siswa)
+$query = "SELECT id_siswa, nama_siswa, kelas, rombel, last_activity, page_url 
           FROM siswa 
           WHERE last_activity >= '$threshold' 
           ORDER BY nama_siswa ASC 
@@ -30,6 +30,11 @@ while ($row = mysqli_fetch_assoc($result)) {
         ? '<span class="badge bg-success">Online</span>' 
         : '<span class="badge bg-secondary">Offline</span>';
 
+    // Tambahkan tombol force logout
+    $action = $is_online 
+        ? '<button class="btn btn-sm btn-danger force-logout" data-id="'.$row['id_siswa'].'">Force Logout</button>'
+        : '';
+
     $data[] = [
         $nomor++,
         htmlspecialchars($row['nama_siswa']),
@@ -37,7 +42,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         htmlspecialchars($row['rombel']),
         $row['last_activity'] ?? '-',
         htmlspecialchars($row['page_url']),
-        $status
+        $status,
+        $action,
+        $row['id_siswa'] // Tambahkan ID siswa untuk referensi
     ];
 }
 

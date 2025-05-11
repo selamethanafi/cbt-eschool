@@ -51,29 +51,83 @@ let currentPage = 1;
 const cardsPerPage = 12;
 let totalPages = 1;
 
+// Pastikan SweetAlert sudah diinclude di header
+function forceLogout(studentId, studentName) {
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: `Anda yakin ingin memaksa logout ${studentName}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ya, Logout!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const btn = $(`.force-logout[data-id="${studentId}"]`);
+            btn.html('<i class="fa fa-spinner fa-spin"></i> Memproses...');
+            btn.prop('disabled', true);
+
+            $.ajax({
+                url: 'force_logout.php',
+                method: 'POST',
+                data: { id_siswa: studentId },
+                dataType: 'json'
+            }).done(function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: response.message,
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        fetchData(); // Refresh data
+                    });
+                } else {
+                    Swal.fire('Gagal!', response.message, 'error');
+                }
+            }).fail(function(xhr) {
+                const errorMsg = xhr.responseJSON?.message || 'Terjadi kesalahan pada server';
+                Swal.fire('Error!', errorMsg, 'error');
+            }).always(function() {
+                btn.html('<i class="fa fa-sign-out"></i> Force Logout');
+                btn.prop('disabled', false);
+            });
+        }
+    });
+}
+
+// Update renderCards untuk menyertakan nama siswa
 function renderCards(data) {
     let html = '';
-    data.forEach(function (row) {
+    data.forEach(function(row) {
         html += `
         <div class="col-6 col-lg-3 col-xl-2 col-sm-4 col-md-3">
-                        <div class="card text-dark bg-white border border-secondary">
-                        <div class="card-header bg-light py-2" style="height:50px; display:flex; align-items:center;">
-                            <h5 class="mb-1">${row[1]}</h5>
-                        </div>
-                            <div class="card-body">
-                                    <p class="mb-1"><strong>Kelas:</strong> ${row[2]} ${row[3]}</p>
-                                    <p class="mb-1"><strong>Last Active:</strong> ${row[4]}</p>
-                                    <p class="mb-1"><strong></strong> ${row[5]}</p>
-                            </div>
-                            <div class="card-footer bg-light py-2">
-                                ${row[6]}
-                            </div>
-                        </div>
-                    </div>`;
+            <div class="card text-dark bg-white border border-secondary">
+                <div class="card-header bg-light py-2" style="height:50px; display:flex; align-items:center;">
+                    <h5 class="mb-1">${row[1]}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-1"><strong>Kelas:</strong> ${row[2]} ${row[3]}</p>
+                    <p class="mb-1"><strong>Last Active:</strong> ${row[4]}</p>
+                    <p class="mb-1"><strong>Halaman:</strong> ${row[5]}</p>
+                    ${row[6]}
+                </div>
+                <div class="card-footer bg-light py-2 d-flex justify-content-between align-items-center">
+                    
+                    <button style="border-radius:30px;" class="btn btn-sm btn-outline-danger force-logout" 
+                            data-id="${row[8]}" 
+                            onclick="forceLogout('${row[8]}', '${row[1].replace(/'/g, "\\'")}')">
+                        <i class="fa fa-sign-out"></i> Force Logout
+                    </button>
+                </div>
+            </div>
+        </div>`;
     });
     $('#card-container').html(html);
 }
-
 function renderPagination() {
     const maxVisiblePages = 3; // jumlah halaman yang terlihat di tengah
     let html = '';

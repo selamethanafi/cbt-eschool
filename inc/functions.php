@@ -2,8 +2,12 @@
 include '../koneksi/koneksi.php'; // Pastikan koneksi sudah ada
 include_once '../inc/encrypt.php'; // berisi $method dan $rahasia
 
+$pengaturan = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT nama_aplikasi FROM pengaturan WHERE id = 1"));
+
 // Fungsi untuk pengecekan login user
 function check_login($role) {
+    global $koneksi;
+
     // Daftar role yang valid
     $valid_roles = ['admin', 'siswa'];
 
@@ -17,6 +21,7 @@ function check_login($role) {
         header("Location: login.php");
         exit;
     }
+
 }
 
 // Fungsi untuk autentikasi user pakai mysqli
@@ -27,7 +32,6 @@ function authenticate_user($username, $password_input, $role) {
         return false;
     }
 
-    // Pilih tabel berdasarkan role
     $table = ($role == 'admin') ? 'admins' : 'siswa';
     $query = "SELECT * FROM $table WHERE username = ?";
 
@@ -44,17 +48,35 @@ function authenticate_user($username, $password_input, $role) {
         $stored_password = $user['password'];
 
         if ($role === 'admin') {
-            // Verifikasi untuk admin pakai password_hash
             if (verify_admin_password($password_input, $stored_password)) {
                 $_SESSION[$role . '_logged_in'] = true;
-                $_SESSION[$role . '_id'] = $user['id']; // ID admin diambil dari field 'id'
+                $_SESSION[$role . '_id'] = $user['id'];
                 return true;
             }
         } else {
-            // Verifikasi untuk siswa pakai dekripsi
+            // Cek apakah siswa dipaksa logout oleh admin
+            if (!empty($user['force_logout'])) {
+                // Reset force_logout dan session_token
+                mysqli_query($koneksi, "UPDATE siswa SET force_logout = FALSE, session_token = NULL WHERE id_siswa = " . $user['id_siswa']);
+                return false;
+            }
+
+            $settings = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT login_ganda FROM pengaturan WHERE id = 1"));
+            $allow_multiple = ($settings['login_ganda'] == 'izinkan');
+
+            if (!$allow_multiple && !empty($user['session_token'])) {
+                return false;
+            }
+
             if (verify_siswa_password($password_input, $stored_password)) {
+                $session_token = bin2hex(random_bytes(32));
+                $update = mysqli_prepare($koneksi, "UPDATE $table SET session_token = ?, force_logout = FALSE WHERE id_siswa = ?");
+                mysqli_stmt_bind_param($update, "si", $session_token, $user['id_siswa']);
+                mysqli_stmt_execute($update);
+
                 $_SESSION[$role . '_logged_in'] = true;
-                $_SESSION[$role . '_id'] = $user['id_siswa']; // ID siswa diambil dari field 'id_siswa'
+                $_SESSION[$role . '_id'] = $user['id_siswa'];
+                $_SESSION[$role . '_token'] = $session_token;
                 return true;
             }
         }
@@ -72,6 +94,10 @@ function verify_admin_password($password_input, $stored_password) {
 function verify_siswa_password($password_input, $stored_password) {
     global $method, $rahasia;
 
+    if (empty($password_input) || empty($stored_password)) {
+        return false;
+    }
+
     $decoded = base64_decode($stored_password);
     $iv_length = openssl_cipher_iv_length($method);
     $iv = substr($decoded, 0, $iv_length);
@@ -85,6 +111,7 @@ function verify_siswa_password($password_input, $stored_password) {
 
     return ($decrypted_password === $password_input);
 }
+
 
 // Fungsi untuk mendapatkan informasi kredensial yang terenkripsi
 function get_encrypted_credit() {
