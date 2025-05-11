@@ -94,7 +94,7 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
                                                 <div class="card-body">
                                                     <h5 class="card-title text-dark">Ujian</h5>
                                                     <p class="card-text"><?php echo $total_ujian; ?> Siswa Selesai</p>
-                                                    <a href="tambah_soal.php" class="btn btn-outline-secondary">
+                                                    <a href="hasil.php" class="btn btn-outline-secondary">
                                                         <i class="fas fa-edit"></i> Nilai
                                                     </a>
                                                 </div>
