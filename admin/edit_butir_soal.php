@@ -191,6 +191,12 @@ exit();
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <link href="../assets/summernote/summernote-bs5.css" rel="stylesheet">
     <style>
+    .note-editable img {
+    max-width: 400px !important;
+    max-height: 400px !important;
+    height: auto;
+    width: auto;
+}
         label.note-form-label{display:none;!important}
         .no-click {
   pointer-events: none;

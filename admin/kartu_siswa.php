@@ -56,7 +56,14 @@ if (!$koneksi) {
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                         <a href="kartu_siswa.php" class="btn btn-outline-secondary">Reset</a>
                                     </form>
-                                    <button class="btn btn-outline-danger" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
+                                    <!--<button class="btn btn-outline-danger" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>-->
+                                    <?php if (!empty($_GET['kelas']) || !empty($_GET['nama'])): ?>
+                                    <a href="print_kartu.php?kelas=<?php echo urlencode($_GET['kelas']); ?>&nama=<?php echo urlencode($_GET['nama']); ?>" 
+                                        target="_blank" class="btn btn-danger">
+                                        <i class="fa-solid fa-file-pdf"></i> Download Pdf
+                                    </a>
+                                <?php endif; ?>
+
                                     <br><br>
                                     
 
@@ -103,7 +110,7 @@ if (!$koneksi) {
                                                 QRcode::png($row['username'], $qr_filename, QR_ECLEVEL_L, 3);
                                             }
                                         ?>
-                                            <div class="col-lg-6 col-md-6 mb-4">
+                                            <div class="col-lg-4 col-md-6 mb-4">
                                                 <div class="border p-3 h-100 kartu">
                                                     <div class="row">
                                                         <div class="col-4 text-center">
@@ -154,10 +161,10 @@ if (!$koneksi) {
         var element = document.getElementById('canvas_div_pdf');
         html2pdf().set({
             margin: 0.2,
-            filename: 'KartuUjian.pdf',
+            filename: 'KartuUjianCbt.pdf',
             image: { type: 'jpeg', quality: 1 },
             html2canvas: { scale: 2, logging: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
         }).from(element).save();
     }
 </script>

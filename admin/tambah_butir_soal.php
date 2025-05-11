@@ -172,32 +172,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <link href="../assets/summernote/summernote-bs5.css" rel="stylesheet">
     <style>
-        .table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        .dataTables_paginate {
-            display: block;
-            text-align: center;
-            margin-top: 10px;
-        }
-        .dataTables_paginate .paginate_button {
-            padding: 5px 10px;
-            margin: 0 5px;
-            background-color: #f4f4f4;
-            border: 1px solid #ddd;
-            cursor: pointer;
-        }
-        .dataTables_paginate .paginate_button:hover {
-            background-color: #007bff;
-            color: white;
-        }
-        table img {
-            max-width: 150px;
-            height: auto;
-            object-fit: contain;
-        }
-        label.note-form-label{display:none;!important}
+           .note-editable img {
+    max-width: 400px !important;
+    max-height: 400px !important;
+    height: auto;
+    width: auto;
+}
     </style>
 </head>
 <body>
