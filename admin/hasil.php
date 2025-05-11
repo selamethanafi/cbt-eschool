@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="card-body">
                                 <!-- Form Filter -->
-                                <form id="filterForm" method="POST">
+                                <form id="filterForm" method="POST"  class="col-md-8 mb-3  flex-wrap gap-2">
                                     <div class="row">
                                         <div class="col-md-3">
                                             <select class="form-control" name="kelas_rombel" id="kelas_rombel">
