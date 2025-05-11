@@ -31,9 +31,9 @@ check_login('admin');
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0">Monitor Ujian <i class="fa fa-refresh fa-spin" style="color:green;" aria-hidden="true"></i></h5>
-                                    <sup>Automatically refresh data every 1 minute</sup>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">Monitor Ujian</h5>
+                                    <small id="last-updated" class="text-muted"></small>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-wrapper">
@@ -60,7 +60,7 @@ check_login('admin');
     </div>
 <?php include '../inc/js.php'; ?>
 <script>
-$(document).ready(function() {
+$(document).ready(function () {
     var table = $('#monitor').DataTable({
         processing: true,
         serverSide: true,
@@ -78,16 +78,27 @@ $(document).ready(function() {
         columnDefs: [
             { targets: 4, orderable: false, searchable: false }
         ],
-        // Refresh setiap 1 menit
-        initComplete: function() {
+        initComplete: function () {
+            // Panggil pertama kali
+            updateTimestamp();
+
+            // Ulangi setiap 1 menit
             setInterval(function () {
-                table.ajax.reload(null, false); // false = tidak reset posisi halaman
-            }, 60000); // 60.000 ms = 1 menit
+                table.ajax.reload(null, false); // Reload data tanpa reset halaman
+                updateTimestamp();
+            }, 60000); // 60 detik
         }
     });
+
+    function updateTimestamp() {
+        let now = new Date();
+        let formatted = now.toLocaleTimeString();
+        $('#last-updated').html(
+            '<i class="fa fa-refresh fa-spin me-1" style="color:green;" aria-hidden="true"></i>' +
+            'Terakhir diperbarui: ' + formatted
+        );
+    }
 });
 </script>
-
 </body>
-
 </html>
