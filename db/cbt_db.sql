@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 11 Bulan Mei 2025 pada 01.08
+-- Waktu pembuatan: 11 Bulan Mei 2025 pada 21.38
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -73,8 +73,8 @@ INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `t
 (127, 1, 'BINDO7-1', '<img style=\"\" src=\"../gambar/681f9154c46e8.png\" id=\"gbrsoal\"><br>\r\n\r\nPertanyaan<br>', 'Pilihan Ganda', 'asd', 'asdasd', 'asdasd', 'asd', 'pilihan_4', 'Aktif', '2025-05-07 22:06:43'),
 (129, 2, 'BINDO7-1', '<img style=\"\" src=\"../gambar/681f91673e178.png\" id=\"gbrsoal\"><br>', 'Pilihan Ganda Kompleks', 'sfsdf', 'sdfsdf', 'sdfsdf', 'sdfsdf', 'pilihan_1,pilihan_2,pilihan_4', 'Aktif', '2025-05-07 22:07:14'),
 (131, 3, 'BINDO7-1', '<img style=\"\" src=\"../gambar/681f917dea885.png\" id=\"gbrsoal\"><br>', 'Benar/Salah', 'sdfsdf', 'sdfsdfs', 'sdfsdf', 'gdfdgdg', 'Benar|Benar|Salah|Benar', 'Aktif', '2025-05-07 22:08:01'),
-(132, 4, 'BINDO7-1', 'dfgdfgdg', 'Menjodohkan', NULL, NULL, NULL, NULL, 'pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3', 'Aktif', '2025-05-07 22:08:29'),
-(133, 5, 'BINDO7-1', 'rtertert', 'Uraian', NULL, NULL, NULL, NULL, 'r', 'Aktif', '2025-05-07 22:08:42'),
+(132, 4, 'BINDO7-1', 'Siapakah Saya ?<br><img src=\"../gambar/681fe67a0b85d.jpeg\" id=\"gbrsoal\" style=\"width: 25%;\">', 'Menjodohkan', NULL, NULL, NULL, NULL, 'pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3', 'Aktif', '2025-05-07 22:08:29'),
+(133, 5, 'BINDO7-1', 'perhatikan tabel<br><img src=\"../gambar/681fe8683b18f.png\" id=\"gbrsoal\" style=\"\">', 'Uraian', NULL, NULL, NULL, NULL, 'icon', 'Aktif', '2025-05-07 22:08:42'),
 (137, 2, 'SR9-01', 'jawab pernyataan berikut', 'Benar/Salah', 'Seni rupa terapan diciptakan hanya untuk dinikmati', 'Seni rupa terapan diciptakan hanya untuk dijual', '', '', 'Salah|Salah', 'Aktif', '2025-05-07 22:18:24'),
 (152, 3, 'SR9-01', 'jawab petanyaan', 'Benar/Salah', 'weq', 'asd', '', '', 'Benar|Salah', 'Aktif', '2025-05-07 23:06:04'),
 (154, 6, 'SR9-01', 'benar apa salah', 'Benar/Salah', '<img style=\"width: 100%;\" src=\"../gambar/681f91d575243.png\" id=\"gbrsoal\"><br>', '<img style=\"width: 100%;\" src=\"../gambar/681f924a3e359.png\" id=\"gbrsoal\"><br>', '', '', 'Salah|Benar', 'Aktif', '2025-05-07 23:07:49'),
@@ -85,7 +85,8 @@ INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `t
 (165, 11, 'SR9-01', 'sdfsd sdfsdf sdfsdfsfsf', 'Benar/Salah', '<p>sdfsdf</p>', 'sdfsdf', '', '', 'Benar|Salah', 'Aktif', '2025-05-10 18:17:23'),
 (166, 12, 'SR9-01', 'aat saya mau xvxvcsdf dsfsdf<br><img src=\"../gambar/681f9a391e6ec.png\" id=\"gbrsoal\" style=\"\">', 'Uraian', NULL, NULL, NULL, NULL, 'asdsasd', 'Aktif', '2025-05-10 18:21:20'),
 (167, 13, 'SR9-01', 'sata juga mau makan<br><img src=\"../gambar/681f993b9b957.png\" id=\"gbrsoal\" style=\"\">', 'Pilihan Ganda', 'asdasd', 'asdasd', 'asdsad', 'asdasd', 'pilihan_2', 'Aktif', '2025-05-10 18:22:14'),
-(168, 6, 'BINDO7-1', 'saya juga akan membelinya<br><img src=\"../gambar/681f9d009ea6e.png\" id=\"gbrsoal\" style=\"width: 50%;\">', 'Benar/Salah', 'benar', 'afaf', '', '', 'Benar|Salah', 'Aktif', '2025-05-10 18:39:22');
+(168, 6, 'BINDO7-1', 'saya juga akan membelinya<br><img src=\"../gambar/681f9d009ea6e.png\" id=\"gbrsoal\" style=\"width: 50%;\">', 'Benar/Salah', 'benar', 'afaf', '', '', 'Benar|Salah', 'Aktif', '2025-05-10 18:39:22'),
+(169, 7, 'BINDO7-1', '<br><img src=\"../gambar/681fe6fb5bf13.png\" id=\"gbrsoal\" style=\"\">', 'Pilihan Ganda Kompleks', 'azis', 'Gus Azis', 'Zais', 'Dadok', 'pilihan_1,pilihan_2,pilihan_3', 'Aktif', '2025-05-10 23:53:54');
 
 -- --------------------------------------------------------
 
@@ -154,6 +155,29 @@ INSERT INTO `nilai` (`id_nilai`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_s
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `pengaturan`
+--
+
+CREATE TABLE `pengaturan` (
+  `id` int(11) NOT NULL DEFAULT 1,
+  `nama_aplikasi` varchar(100) DEFAULT 'CBT Siswa',
+  `logo_sekolah` varchar(255) DEFAULT '',
+  `warna_tema` varchar(10) DEFAULT '#0d6efd',
+  `waktu_sinkronisasi` int(11) DEFAULT 60,
+  `sembunyikan_nilai` tinyint(1) DEFAULT 0,
+  `login_ganda` enum('izinkan','blokir') DEFAULT 'blokir'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `pengaturan`
+--
+
+INSERT INTO `pengaturan` (`id`, `nama_aplikasi`, `logo_sekolah`, `warna_tema`, `waktu_sinkronisasi`, `sembunyikan_nilai`, `login_ganda`) VALUES
+(1, 'CBT-Eschool', 'codelite2.png', '#ff811a', 60, 1, 'blokir');
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `profil`
 --
 
@@ -183,26 +207,30 @@ CREATE TABLE `siswa` (
   `kelas` varchar(100) NOT NULL,
   `rombel` varchar(100) NOT NULL,
   `status` text NOT NULL DEFAULT 'Nonaktif',
+  `session_token` varchar(255) NOT NULL,
   `last_activity` datetime DEFAULT NULL,
-  `page_url` text NOT NULL
+  `page_url` text NOT NULL,
+  `force_logout` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `siswa`
 --
 
-INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `last_activity`, `page_url`) VALUES
-(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '2025-05-11 05:44:17', 'http://localhost/cbt-eschool/siswa/dashboard.php'),
-(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', NULL, ''),
-(3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', NULL, ''),
-(4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', NULL, ''),
-(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', NULL, ''),
-(12, 'Intan sadira destiana kartika', 'g/vyJS2pKV1J+hzFfU3ZD3J3OVdjN2tpdWhyL01uaG9kYTdpbEE9PQ==', '124132', '7', 'A', 'Nonaktif', '2025-05-11 06:06:00', 'http://localhost/cbt-eschool/siswa/dashboard.php'),
-(13, 'Erina', 'FQOm8MYUIes79E36AQv1AU5VMVdUanhIaTBVTURVS0hXckFRUXc9PQ==', '7217317', '9', 'A', 'Nonaktif', NULL, ''),
-(14, 'Phoebe', '/pUodVDzsKAbUdhVWOg6s202UC9ybUpLRW5OT3paYnpIaHBGM2c9PQ==', '122345', '7', 'C', 'Nonaktif', NULL, ''),
-(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174731', '7', 'D', 'Nonaktif', NULL, ''),
-(16, 'Denny', '3tNjgpDyVjS9ZDzs0WtChlUzZHlLTnZ0MUVJS25JZGR3ckxIcUE9PQ==', '64134', '8', 'F', 'Nonaktif', NULL, ''),
-(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '2527', '8', 'D', 'Nonaktif', NULL, '');
+INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `session_token`, `last_activity`, `page_url`, `force_logout`) VALUES
+(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '', NULL, 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '2025-05-11 23:31:30', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', '', '2025-05-11 23:31:31', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', '', '2025-05-11 23:31:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', '', '2025-05-11 23:24:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(12, 'Intan sadira destiana kartika', 'g/vyJS2pKV1J+hzFfU3ZD3J3OVdjN2tpdWhyL01uaG9kYTdpbEE9PQ==', '124132', '7', 'A', 'Nonaktif', '', '2025-05-12 01:35:18', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(13, 'Erina', 'FQOm8MYUIes79E36AQv1AU5VMVdUanhIaTBVTURVS0hXckFRUXc9PQ==', '721731', '9', 'A', 'Nonaktif', '', '2025-05-11 23:24:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(14, 'Phoebe', 'Dwl3VYW4ysVVEjO67sy6QmdYb2h0NjNFWjhlV3ViamtWY01hc0E9PQ==', '122345', '7', 'C', 'Nonaktif', '', NULL, 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174', '7', 'D', 'Nonaktif', '', '2025-05-11 23:24:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(16, 'Denny', 'N2ugxO2xwJR74bjbZQv19nYrMFVFbi9JTEk5MFNDeVdITWxmM0E9PQ==', '641343', '8', 'F', 'Nonaktif', '', '2025-05-11 23:24:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '252743', '8', 'D', 'Nonaktif', '', '2025-05-11 23:24:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(18, 'andy', '5IiPhwyWU7/GiyYe622atFErOVViUmNXOXRheVk0Z2U1V0tiK2c9PQ==', '876543', '8', 'D', 'Nonaktif', '', '2025-05-11 23:24:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(19, 'Didik', '2KIjejDqnfV8k42jKoKrPTFnTzIweEx1U1dka0VxQ2hKdkc4SFE9PQ==', '765432', '8', 'F', 'Nonaktif', '', '2025-05-11 23:24:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0);
 
 -- --------------------------------------------------------
 
@@ -262,6 +290,12 @@ ALTER TABLE `nilai`
   ADD PRIMARY KEY (`id_nilai`);
 
 --
+-- Indeks untuk tabel `pengaturan`
+--
+ALTER TABLE `pengaturan`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `profil`
 --
 ALTER TABLE `profil`
@@ -295,7 +329,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT untuk tabel `butir_soal`
 --
 ALTER TABLE `butir_soal`
-  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
+  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
 
 --
 -- AUTO_INCREMENT untuk tabel `jawaban_siswa`
@@ -313,7 +347,7 @@ ALTER TABLE `nilai`
 -- AUTO_INCREMENT untuk tabel `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `soal`
