@@ -28,7 +28,20 @@ $result = mysqli_query($koneksi, $query);
 
 $data = [];
 $nomor = $offset + 1;
+function formatTanggalIndonesia($datetime) {
+    if (!$datetime) return '-';
+    $bulan = [
+        1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    $timestamp = strtotime($datetime);
+    $tanggal = date('d', $timestamp);
+    $bulan_id = $bulan[(int)date('m', $timestamp)];
+    $tahun = date('Y', $timestamp);
+    $jam_menit = date('H:i', $timestamp);
 
+    return "$jam_menit, $tanggal $bulan_id $tahun";
+}
 while ($row = mysqli_fetch_assoc($result)) {
     $is_online = isset($row['last_activity']) && $row['last_activity'] >= $threshold;
     $status = $is_online 
@@ -40,7 +53,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         htmlspecialchars($row['nama_siswa']),
         htmlspecialchars($row['kelas']),
         htmlspecialchars($row['rombel']),
-        $row['last_activity'] ?? '-',
+        formatTanggalIndonesia($row['last_activity']),
         htmlspecialchars($row['page_url']),
         $status,
         $row['id_siswa']

@@ -12,8 +12,6 @@ check_login('admin');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Who's online</title>
     <?php include '../inc/css.php'; ?>
-    <!-- SweetAlert CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         /* Custom styles */
         .force-logout {
@@ -95,9 +93,6 @@ check_login('admin');
     </div>
     
     <?php include '../inc/js.php'; ?>
-    <!-- SweetAlert JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
     <script>
     let currentPage = 1;
     const cardsPerPage = 12;
@@ -125,12 +120,12 @@ check_login('admin');
             <div class="col-6 col-lg-3 col-xl-2 col-sm-6 col-md-4">
                 <div class="card text-dark bg-white border border-secondary">
                     <div class="card-header bg-light py-2" style="height:50px; display:flex; align-items:center;">
-                        <h5 class="mb-1">${row[1]}</h5>
+                        <h5 class="mb-1"><i class="fa fa-user-circle"></i> ${row[1]}</h5>
                     </div>
                     <div class="card-body">
                         <p class="mb-1">Kelas: ${row[2]} ${row[3]}</p>
-                        <p class="mb-1">Last Active: ${row[4]}</p>
-                        <p class="mb-1">${row[5]}</p>
+                        <p class="mb-1"><i class="fa fa-clock"></i> ${row[4]}</p>
+                        <p class="mb-1" style="font-size:12px;">${row[5]}</p>
                     </div>
                     <div class="card-footer bg-light py-2 d-flex justify-content-between align-items-center">
                         ${row[6]}

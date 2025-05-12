@@ -8,6 +8,23 @@ check_login('admin');
 $nama_aplikasi = $_POST['nama_aplikasi'];
 $warna_tema = $_POST['warna_tema'];
 $waktu_sinkronisasi = intval($_POST['waktu_sinkronisasi']);
+if ($waktu_sinkronisasi < 60) {
+    echo "
+    <script src='../assets/js/sweetalert.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Waktu sinkronisasi tidak boleh kurang dari 60 detik.',
+                icon: 'error',
+                confirmButtonText: 'Kembali'
+            }).then(() => {
+                window.location.href = 'setting.php';
+            });
+        });
+    </script>";
+    exit;
+}
 $sembunyikan_nilai = isset($_POST['sembunyikan_nilai']) ? 1 : 0;
 $login_ganda = $_POST['login_ganda'];
 

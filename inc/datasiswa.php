@@ -15,6 +15,7 @@ if (mysqli_stmt_execute($stmt)) {
     $result = mysqli_stmt_get_result($stmt);
     if ($user = mysqli_fetch_assoc($result)) {
         $nama_siswa = $user['nama_siswa'];
+        $kelas_siswa = $user['kelas'];
 
         // Cek apakah dipaksa logout oleh admin
         if (!empty($user['force_logout'])) {

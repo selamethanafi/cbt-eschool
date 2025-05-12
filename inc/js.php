@@ -1,32 +1,38 @@
-<div id="toast-container">
+                                                <div id="toast-container">
                                                     <?php 
                                                         $ujian_terdekat = mysqli_query($koneksi, "SELECT * FROM soal WHERE tanggal > NOW() ORDER BY tanggal ASC");
-                                                        mysqli_data_seek($ujian_terdekat, 0); while ($ujian = mysqli_fetch_assoc($ujian_terdekat)): 
-                                                    ?>
-                                                    <div class="toast align-items-center text-white bg-primary border-0 mb-2 opacity-0"
-                                                        role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="6000">
-                                                        <div class="d-flex">
-                                                            <div class="toast-body">
-                                                                <i class="far fa-calendar-check me-2"></i>
-                                                                Ujian <?php echo $ujian['kode_soal']; ?> dimulai pada <?php echo date('d M Y', strtotime($ujian['tanggal'])); ?>
+
+                                                        if (mysqli_num_rows($ujian_terdekat) > 0):
+                                                            mysqli_data_seek($ujian_terdekat, 0); 
+                                                            while ($ujian = mysqli_fetch_assoc($ujian_terdekat)): 
+                                                        ?>
+                                                            <div class="toast align-items-center text-white bg-primary border-0 mb-2 opacity-0"
+                                                                role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="6000">
+                                                                <div class="d-flex">
+                                                                    <div class="toast-body">
+                                                                        <i class="far fa-calendar-check me-2"></i>
+                                                                        Ujian <?php echo $ujian['kode_soal']; ?> dimulai pada <?php echo date('d M Y', strtotime($ujian['tanggal'])); ?>
+                                                                    </div>
+                                                                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                                                        data-bs-dismiss="toast" aria-label="Close"></button>
+                                                                </div>
                                                             </div>
-                                                            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                                                                data-bs-dismiss="toast" aria-label="Close"></button>
+                                                        <?php 
+                                                            endwhile;
+                                                        endif;
+                                                        ?>
+                                                </div>
+                                                <footer class="footer mt-auto py-3 bg-dark">
+                                                    <div class="container-fluid">
+                                                        <div class="row text-grey">
+                                                            <div class="col-6 text-start">
+                                                                <p class="mb-0">
+                                                                <a href="#" id="enc" style="color:grey;"></a>
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <?php endwhile; ?>
-                                                </div>
-<footer class="footer mt-auto py-3 bg-dark">
-    <div class="container-fluid">
-        <div class="row text-grey">
-            <div class="col-6 text-start">
-                <p class="mb-0">
-                   <a href="#" id="enc" style="color:grey;"></a>
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
+                                                </footer>
 <script src="../assets/adminkit/static/js/app.js"></script>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/sweetalert.js"></script>
