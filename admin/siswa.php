@@ -3,6 +3,21 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
+if (isset($_SESSION['alert'])) {
+    echo "
+    <script src='../assets/js/sweetalert.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: '".$_SESSION['alert']['title']."',
+                text: '".$_SESSION['alert']['message']."',
+                icon: '".$_SESSION['alert']['type']."',
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>";
+    unset($_SESSION['alert']); // Hapus session alert setelah ditampilkan
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -8,27 +8,19 @@ check_login('admin');
 if (isset($_POST['submit'])) {
     $nama = htmlspecialchars($_POST['nama_siswa']);
     $username = htmlspecialchars($_POST['username']);
-    $password = $_POST['password']; // Tidak perlu htmlspecialchars (akan dienkripsi)
+    $password = $_POST['password'];
     $kelas = htmlspecialchars($_POST['kelas']);
     $rombel = htmlspecialchars($_POST['rombel']);
 
     // Cek apakah username sudah ada
     $cek = mysqli_query($koneksi, "SELECT * FROM siswa WHERE username = '$username'");
     if (mysqli_num_rows($cek) > 0) {
-        echo "
-        <script src='../assets/js/sweetalert.js'></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    title: 'Gagal!',
-                    text: 'Username sudah digunakan!',
-                    icon: 'error',
-                    confirmButtonText: 'Kembali'
-                }).then(() => {
-                    window.location.href = 'tambah_siswa.php';
-                });
-            });
-        </script>";
+        $_SESSION['alert'] = [
+            'type' => 'error',
+            'title' => 'Gagal!',
+            'message' => 'Username sudah digunakan!'
+        ];
+        header('Location: siswa.php');
         exit;
     }
 
@@ -43,23 +35,15 @@ if (isset($_POST['submit'])) {
               VALUES ('$nama', '$username', '$final', '$kelas', '$rombel')";
     mysqli_query($koneksi, $query);
 
-    echo "
-    <script src='../assets/js/sweetalert.js'></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                title: 'Berhasil!',
-                text: 'Siswa berhasil ditambahkan!',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = 'siswa.php';
-            });
-        });
-    </script>";
+    $_SESSION['alert'] = [
+        'type' => 'success',
+        'title' => 'Berhasil!',
+        'message' => 'Siswa berhasil ditambahkan!'
+    ];
+    header('Location: siswa.php');
+    exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 

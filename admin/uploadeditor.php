@@ -66,9 +66,12 @@ if ($_FILES['file']['name']) {
                 imagedestroy($thumb);
                 imagedestroy($source);
             }
-
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'];
+$scriptPath = dirname($_SERVER['SCRIPT_NAME']);
+$basePath = rtrim(dirname($scriptPath, 1), '/');
             // Return correct URL path for browser
-            $publicPath = '/cbt-eschool/gambar/' . $newFileName;
+$publicPath = $protocol . $host . $basePath . '/gambar/' . $newFileName;
 $imgTag = '<img id="gbrsoal" src="' . $publicPath . '">';
 echo json_encode(['img' => $imgTag, 'url' => $publicPath]);
         } else {
