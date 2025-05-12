@@ -339,7 +339,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="../assets/bootstrap-5.3.6/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/adminkit/static/js/app.js"></script>
     <script src="../assets/js/sweetalert.js"></script>
-    <script src="../assets/datatables/datatables.js"></script>
     <script src="../assets/summernote/summernote-bs5.js"></script>
     <script>
     //function bersihkanHTML(html) {
