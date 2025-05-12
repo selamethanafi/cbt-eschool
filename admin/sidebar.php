@@ -79,6 +79,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
+                    <li class="sidebar-item <?= ($currentPage == 'faq.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="faq.php">
+                            <i class="align-middle fas fa-question-circle"></i> <span class="align-middle">FAQ</span>
+                        </a>
+                    </li>
+
                     <li class="sidebar-item">
                         <a class="sidebar-link btnLogout" href="logout.php">
                             <i class="align-middle fas fa-sign-out-alt"></i> <span class="align-middle">Logout</span>

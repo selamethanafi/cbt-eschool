@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 12 Bulan Mei 2025 pada 06.10
+-- Waktu pembuatan: 12 Bulan Mei 2025 pada 22.13
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -86,8 +86,31 @@ INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `t
 (166, 12, 'SR9-01', 'aat saya mau xvxvcsdf dsfsdf<br><img src=\"../gambar/681f9a391e6ec.png\" id=\"gbrsoal\" style=\"\">', 'Uraian', NULL, NULL, NULL, NULL, 'asdsasd', 'Aktif', '2025-05-10 18:21:20'),
 (167, 13, 'SR9-01', 'sata juga mau makan<br><img src=\"../gambar/681f993b9b957.png\" id=\"gbrsoal\" style=\"\">', 'Pilihan Ganda', 'asdasd', 'asdasd', 'asdsad', 'asdasd', 'pilihan_2', 'Aktif', '2025-05-10 18:22:14'),
 (168, 6, 'BINDO7-1', 'saya juga akan membelinya<br><img src=\"../gambar/681f9d009ea6e.png\" id=\"gbrsoal\" style=\"width: 50%;\">', 'Benar/Salah', 'benar', 'afaf', '', '', 'Benar|Salah', 'Aktif', '2025-05-10 18:39:22'),
-(169, 7, 'BINDO7-1', '<br><img src=\"../gambar/681fe6fb5bf13.png\" id=\"gbrsoal\" style=\"\">', 'Pilihan Ganda Kompleks', 'azis', 'Gus Azis', 'Zais', 'Dadok', 'pilihan_1,pilihan_2,pilihan_3', 'Aktif', '2025-05-10 23:53:54'),
-(170, 1, 'IPA9-01', 'Contoh soal', 'Pilihan Ganda', 'pilihan A', 'pilihan B', 'pilihan C', 'pilihan D', 'pilihan_3', 'Aktif', '2025-05-12 02:53:11');
+(169, 7, 'BINDO7-1', '<br><img src=\"../gambar/681fe6fb5bf13.png\" id=\"gbrsoal\" style=\"\">', 'Pilihan Ganda Kompleks', 'azis', 'Gus Azis', 'Zais', 'Dadok', 'pilihan_1,pilihan_2,pilihan_3', 'Aktif', '2025-05-10 23:53:54');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `faq`
+--
+
+CREATE TABLE `faq` (
+  `id` int(11) NOT NULL,
+  `question` text NOT NULL,
+  `answer` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `faq`
+--
+
+INSERT INTO `faq` (`id`, `question`, `answer`) VALUES
+(1, 'Bagaimana cara mengikuti ujian CBT?', 'Siswa dapat mengikuti ujian dengan login ke dashboard, memilih menu \'Ujian\', dan mengikuti instruksi yang tersedia.'),
+(2, 'Apa yang harus dilakukan jika lupa password?', 'Hubungi admin atau Guru untuk reset password'),
+(3, 'Apakah ujian dapat diulang jika koneksi terputus?', 'Jika koneksi terputus jawaban masih tersimpan dan kamu bisa melanjutkan ujian lagi. Silakan hubungi guru atau admin untuk informasi lebih lanjut.'),
+(4, 'Bagaimana cara melihat hasil ujian?', 'Setelah ujian selesai, hasil dapat dilihat pada menu \'Nilai\' di dashboard siswa.'),
+(5, 'Perangkat apa saja yang dapat digunakan untuk ujian CBT?', 'Ujian dapat diakses melalui komputer, laptop, atau perangkat mobile dengan koneksi internet yang stabil.'),
+(6, 'Saya tiba-tiba keluar dari aplikasi ujian. Bagaimana cara masuk kembali?', 'Silakan buka kembali aplikasi ujian seperti biasa,  Jika tidak bisa masuk atau muncul pesan error, segera hubungi pengawas atau admin ujian untuk reset login.');
 
 -- --------------------------------------------------------
 
@@ -219,20 +242,19 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `session_token`, `last_activity`, `page_url`, `force_logout`) VALUES
-(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', 'fb6066d875d6851cbe4bf2faa702e9ca0b1554cac536636ec21d4b58f06bdbe3', '2025-05-12 11:05:48', 'http://localhost/cbt-eschool/siswa/ujian.php', 0),
-(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(13, 'Erina', 'FQOm8MYUIes79E36AQv1AU5VMVdUanhIaTBVTURVS0hXckFRUXc9PQ==', '721731', '9', 'A', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(14, 'Phoebe', 'Dwl3VYW4ysVVEjO67sy6QmdYb2h0NjNFWjhlV3ViamtWY01hc0E9PQ==', '122345', '7', 'C', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174', '7', 'D', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(16, 'Denny', 'N2ugxO2xwJR74bjbZQv19nYrMFVFbi9JTEk5MFNDeVdITWxmM0E9PQ==', '641343', '8', 'F', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/ujian.php', 1),
-(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '252743', '8', 'D', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(18, 'andy', '5IiPhwyWU7/GiyYe622atFErOVViUmNXOXRheVk0Z2U1V0tiK2c9PQ==', '876543', '8', 'D', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(19, 'Didik', '2KIjejDqnfV8k42jKoKrPTFnTzIweEx1U1dka0VxQ2hKdkc4SFE9PQ==', '765432', '8', 'F', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(20, 'Robi', 'XpqGGiL6DfhOGnPqcV9EnUdLdTlEbzdwN1pyVE5wb2FJSStLdUE9PQ==', '252645', '9', 'G', 'Nonaktif', '', NULL, '', 0),
-(21, 'Intan', 'Ya+NHgRRNME9cYTmSRYUz2sxMS9tczlZMGJDaFd0NkN5TzErV0E9PQ==', '124132', '7', 'A', 'Nonaktif', '', NULL, '', 0);
+(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '2806c016a38bd9a88985f03c3aad7a62a9e390c39be417d24ce6d20a8a3b37ea', '2025-05-13 03:12:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '2025-05-12 23:31:49', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', '', '2025-05-12 23:31:58', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', '', '2025-05-12 23:32:04', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', '', '2025-05-12 23:32:10', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(13, 'Erina', 'FQOm8MYUIes79E36AQv1AU5VMVdUanhIaTBVTURVS0hXckFRUXc9PQ==', '721731', '9', 'A', 'Nonaktif', '', '2025-05-12 23:32:14', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(14, 'Phoebe', 'Dwl3VYW4ysVVEjO67sy6QmdYb2h0NjNFWjhlV3ViamtWY01hc0E9PQ==', '122345', '7', 'C', 'Nonaktif', '', '2025-05-12 23:32:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174', '7', 'D', 'Nonaktif', '', '2025-05-12 23:32:58', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(16, 'Denny', 'N2ugxO2xwJR74bjbZQv19nYrMFVFbi9JTEk5MFNDeVdITWxmM0E9PQ==', '641343', '8', 'F', 'Nonaktif', '', '2025-05-12 23:32:55', 'http://localhost/cbt-eschool/siswa/ujian.php', 1),
+(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '252743', '8', 'D', 'Nonaktif', '', '2025-05-12 23:32:51', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(18, 'andy', '5IiPhwyWU7/GiyYe622atFErOVViUmNXOXRheVk0Z2U1V0tiK2c9PQ==', '876543', '8', 'D', 'Nonaktif', '', '2025-05-12 23:32:47', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(20, 'Robi', 'XpqGGiL6DfhOGnPqcV9EnUdLdTlEbzdwN1pyVE5wb2FJSStLdUE9PQ==', '252645', '9', 'G', 'Nonaktif', '', '2025-05-12 23:32:26', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(21, 'Intan', 'Ya+NHgRRNME9cYTmSRYUz2sxMS9tczlZMGJDaFd0NkN5TzErV0E9PQ==', '124132', '7', 'A', 'Nonaktif', '', '2025-05-13 01:10:23', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0);
 
 -- --------------------------------------------------------
 
@@ -259,8 +281,7 @@ CREATE TABLE `soal` (
 
 INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `waktu_ujian`, `tanggal`, `status`, `kunci`, `token`) VALUES
 (1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-16', 'Aktif', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:ewt],[9:saya jua\r\n\r\n:asdasd],[10:Benar|Salah],[11:asdsasd],[12:pilihan_2]', 'GHPWAJ'),
-(10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-10-08', 'Aktif', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 'XMILAS'),
-(13, 'IPA9-01', 'IPA 01', 'IPA', '9', 90, '2025-05-13', 'Aktif', '[1:pilihan_3]', 'RVMXGB');
+(10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-10-08', 'Aktif', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 'XMILAS');
 
 --
 -- Indexes for dumped tables
@@ -278,6 +299,12 @@ ALTER TABLE `admins`
 --
 ALTER TABLE `butir_soal`
   ADD PRIMARY KEY (`id_soal`);
+
+--
+-- Indeks untuk tabel `faq`
+--
+ALTER TABLE `faq`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `jawaban_siswa`
@@ -335,6 +362,12 @@ ALTER TABLE `butir_soal`
   MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
 
 --
+-- AUTO_INCREMENT untuk tabel `faq`
+--
+ALTER TABLE `faq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT untuk tabel `jawaban_siswa`
 --
 ALTER TABLE `jawaban_siswa`
@@ -356,7 +389,7 @@ ALTER TABLE `siswa`
 -- AUTO_INCREMENT untuk tabel `soal`
 --
 ALTER TABLE `soal`
-  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
