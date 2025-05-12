@@ -45,8 +45,8 @@ function formatTanggalIndonesia($datetime) {
 while ($row = mysqli_fetch_assoc($result)) {
     $is_online = isset($row['last_activity']) && $row['last_activity'] >= $threshold;
     $status = $is_online 
-        ? '<span class="badge bg-success">Online</span>' 
-        : '<span class="badge bg-secondary">Offline</span>';
+        ? '<i class="fa fa-circle blinking" style="color:green;font-size:10px;" aria-hidden="true"></i>' 
+        : '<i class="fa fa-circle blinking" style="color:red;" aria-hidden="true"></i>';
 
     $data[] = [
         $nomor++,

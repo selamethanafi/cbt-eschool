@@ -56,6 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <h5 class="card-title mb-0">Tambah Soal</h5>
                                 </div>
                                 <div class="card-body">
+                                    <?php
+                                        // Ambil data kelas dari tabel siswa secara DISTINCT
+                                        $query_kelas = "SELECT DISTINCT kelas FROM siswa ORDER BY kelas ASC";
+                                        $result_kelas = mysqli_query($koneksi, $query_kelas);
+                                        ?>
                                     <form method="POST">
                                         <div class="mb-3">
                                             <label for="kode_soal" class="form-label">Kode Soal</label>
@@ -71,7 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </div>
                                         <div class="mb-3">
                                             <label for="kelas" class="form-label">Kelas</label>
-                                            <input type="text" class="form-control" id="kelas" name="kelas" required>
+                                            <select class="form-control" id="kelas" name="kelas" required>
+                                                <option value="">-- Pilih Kelas --</option>
+                                                <?php while ($kelas_row = mysqli_fetch_assoc($result_kelas)): ?>
+                                                    <option value="<?php echo $kelas_row['kelas']; ?>">
+                                                        <?php echo $kelas_row['kelas']; ?>
+                                                    </option>
+                                                <?php endwhile; ?>
+                                            </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="waktu_ujian" class="form-label">Waktu Ujian (Menit)</label>

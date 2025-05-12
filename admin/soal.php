@@ -171,7 +171,6 @@ if (!$result) {
     });
 </script>
 <?php unset($_SESSION['success']); endif; ?>
-
 <?php if (isset($_SESSION['error'])): ?>
 <script>
     Swal.fire({
@@ -183,6 +182,32 @@ if (!$result) {
     });
 </script>
 <?php unset($_SESSION['error']); endif; ?>
-
+<?php if (isset($_SESSION['success_message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '<?php echo $_SESSION['success_message']; ?>',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>
+    <?php unset($_SESSION['success_message']); ?>
+<?php endif; ?>
+<?php if (isset($_SESSION['warning_message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak Bisa Diedit!',
+                text: '<?php echo $_SESSION['warning_message']; ?>',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>
+    <?php unset($_SESSION['warning_message']); ?>
+<?php endif; ?>
 </body>
 </html>

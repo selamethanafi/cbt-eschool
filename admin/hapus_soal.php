@@ -10,28 +10,9 @@ if (isset($_GET['kode_soal'])) {
     $data_soal = mysqli_fetch_assoc($query_soal);
 
     if ($data_soal['status'] == 'Aktif') {
-        die('
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Peringatan</title>
-            <script src="../assets/js/sweetalert.js"></script>
-        </head>
-        <body>
-            <script>
-                Swal.fire({
-                    icon: "warning",
-                    title: "Tidak Bisa Dihapus!",
-                    text: "Soal ini sudah aktif dan tidak bisa dihapus!",
-                    showConfirmButton: false,
-                    timer: 2000
-                }).then(() => {
-                    window.location.href = "soal.php";
-                });
-            </script>
-        </body>
-        </html>
-        ');
+        $_SESSION['error'] = "Soal ini sudah aktif dan tidak bisa dihapus!.";
+    header('Location: soal.php');
+    exit();
     }
 
     // Hapus butir soal

@@ -157,12 +157,13 @@ if ($cekPengaturan && mysqli_num_rows($cekPengaturan) > 0) {
                         <p class="mb-1" style="font-size:12px;">${row[5]}</p>
                     </div>
                     <div class="card-footer bg-light py-2 d-flex justify-content-between align-items-center">
-                        ${row[6]}
+                   
                         <button class="btn btn-sm btn-outline-danger force-logout" style="border-radius:5px;"
                                 data-id="${row[7]}" 
                                 onclick="forceLogout('${row[7]}', '${row[1].replace(/'/g, "\\'")}')">
                             Force Logout
                         </button>
+                         ${row[6]}   
                     </div>
                 </div>
             </div>`;

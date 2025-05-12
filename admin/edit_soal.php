@@ -24,28 +24,9 @@ if (!$row) {
 
 // ✅ Jika soal status = aktif, tampilkan SweetAlert + redirect
 if ($row['status'] == 'Aktif') {
-    die('
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Peringatan</title>
-        <script src="../assets/js/sweetalert.js"></script>
-    </head>
-    <body>
-        <script>
-            Swal.fire({
-                icon: "warning",
-                title: "Tidak Bisa Diedit!",
-                text: "Soal ini sudah aktif dan tidak bisa diedit!",
-                showConfirmButton: false,
-                timer: 2000
-            }).then(() => {
-                window.location.href = "soal.php";
-            });
-        </script>
-    </body>
-    </html>
-    ');
+    $_SESSION['warning_message'] = 'Soal ini sudah aktif dan tidak bisa diedit!';
+    header('Location: soal.php');
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -68,20 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     WHERE id_soal = '$id_soal'";
 
     if (mysqli_query($koneksi, $update_query)) {
-        echo "
-    <script src='../assets/js/sweetalert.js'></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                title: 'Berhasil!',
-                text: 'Data soal berhasil diupdate!',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = 'soal.php';
-            });
-        });
-    </script>";
+        $_SESSION['success_message'] = 'Data soal berhasil diupdate!';
+        header('Location: soal.php');
         exit();
     } else {
         echo "Error: " . mysqli_error($koneksi);
@@ -117,6 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <h5 class="card-title mb-0">Edit Soal</h5>
                                 </div>
                                 <div class="card-body">
+                                    <?php
+                                        // Ambil data kelas dari tabel siswa secara DISTINCT
+                                        $query_kelas = "SELECT DISTINCT kelas FROM siswa ORDER BY kelas ASC";
+                                        $result_kelas = mysqli_query($koneksi, $query_kelas);
+                                        ?>
                                     <form method="POST">
                                         <div class="mb-3">
                                             <h2>Kode Soal : <?php echo $row['kode_soal']; ?></h2>
@@ -132,7 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </div>
                                         <div class="mb-3">
                                             <label for="kelas" class="form-label">Kelas</label>
-                                            <input type="text" class="form-control" id="kelas" name="kelas" value="<?php echo $row['kelas']; ?>" required>
+                                            <select class="form-control" id="kelas" name="kelas" required>
+                                                <option value="">-- Pilih Kelas --</option>
+                                                <?php while ($kelas_row = mysqli_fetch_assoc($result_kelas)): ?>
+                                                    <option value="<?php echo $kelas_row['kelas']; ?>" <?php echo ($kelas_row['kelas'] == $row['kelas']) ? 'selected' : ''; ?>>
+                                                        <?php echo $kelas_row['kelas']; ?>
+                                                    </option>
+                                                <?php endwhile; ?>
+                                            </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="waktu_ujian" class="form-label">Waktu Ujian (Menit)</label>
