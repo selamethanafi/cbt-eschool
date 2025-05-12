@@ -3,6 +3,26 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
+$showResetButton = false;
+
+// Cek apakah pengaturan login_ganda = 'blokir'
+$cekPengaturan = mysqli_query($koneksi, "SELECT login_ganda FROM pengaturan LIMIT 1");
+if (!$cekPengaturan) {
+    die('Query pengaturan gagal: ' . mysqli_error($koneksi));
+}
+if ($cekPengaturan && mysqli_num_rows($cekPengaturan) > 0) {
+    $dataPengaturan = mysqli_fetch_assoc($cekPengaturan);
+    if ($dataPengaturan['login_ganda'] == 'blokir') {
+        // Jika login_ganda = blokir, cek apakah ada siswa yang masih punya token_session
+        $cekToken = mysqli_query($koneksi, "SELECT COUNT(*) as jumlah FROM siswa WHERE session_token != ''");
+        if ($cekToken) {
+            $row = mysqli_fetch_assoc($cekToken);
+            if ($row['jumlah'] > 0) {
+                $showResetButton = true;
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,11 +98,20 @@ check_login('admin');
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div id="card-container" class="row gy-3"></div>
+                                    <div id="card-container" class="row gy-3">
+
+                                    
+                                    </div>
                                     <nav>
                                         <ul class="pagination justify-content-center mt-3" id="pagination"></ul>
                                     </nav>
+                                    <?php if ($showResetButton): ?>
+                                        <button id="btn-reset-credential" class="btn btn-outline-danger">
+                                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> clear credential login siswa
+                                        </button>
+                                    <?php endif; ?>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -296,6 +325,45 @@ check_login('admin');
             searchTimer = setTimeout(handleSearch, 500);
         });
     });
+
+    
+document.getElementById('btn-reset-credential').addEventListener('click', function() {
+    Swal.fire({
+        title: 'Yakin ingin reset semua credential login siswa?',
+        text: "Semua siswa akan logout secara paksa!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: 'Ya, reset sekarang!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'reset_credential.php';
+        }
+    });
+});
     </script>
+    <?php if (isset($_SESSION['success'])): ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil',
+    text: '<?= $_SESSION['success'] ?>',
+    confirmButtonColor: '#28a745'
+});
+</script>
+<?php unset($_SESSION['success']); endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Gagal',
+    text: '<?= $_SESSION['error'] ?>',
+    confirmButtonColor: '#dc3545'
+});
+</script>
+<?php unset($_SESSION['error']); endif; ?>
 </body>
 </html>

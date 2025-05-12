@@ -35,7 +35,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     </li>
 
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="logout.php">
+                        <a class="sidebar-link btnLogout" href="logout.php">
                             <i class="align-middle fas fa-sign-out-alt"></i> <span class="align-middle">Logout</span>
                         </a>
                     </li>

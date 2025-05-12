@@ -10,43 +10,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Cek apakah data siswa ada
     $data = mysqli_query($koneksi, "SELECT * FROM siswa WHERE id_siswa = '$id'");
     if (mysqli_num_rows($data) == 0) {
-        echo "
-        <script src='../assets/js/sweetalert.js'></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    title: 'Gagal!',
-                    text: 'Data siswa tidak ditemukan.',
-                    icon: 'error',
-                    confirmButtonText: 'Kembali'
-                }).then(() => {
-                    window.location.href = 'siswa.php';
-                });
-            });
-        </script>";
+        $_SESSION['error'] = 'Data siswa tidak ditemukan.';
+        header('Location: siswa.php');
         exit;
     }
 
     // Hapus data siswa
-    mysqli_query($koneksi, "DELETE FROM siswa WHERE id_siswa = '$id'");
+    if (mysqli_query($koneksi, "DELETE FROM siswa WHERE id_siswa = '$id'")) {
+        $_SESSION['success'] = 'Siswa berhasil dihapus.';
+    } else {
+        $_SESSION['error'] = 'Gagal menghapus siswa: ' . mysqli_error($koneksi);
+    }
 
-    echo "
-    <script src='../assets/js/sweetalert.js'></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                title: 'Berhasil!',
-                text: 'Siswa berhasil dihapus.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = 'siswa.php';
-            });
-        });
-    </script>";
+    header('Location: siswa.php');
+    exit;
 } else {
-    // Jika diakses tanpa POST
     header('Location: siswa.php');
     exit;
 }
-?>

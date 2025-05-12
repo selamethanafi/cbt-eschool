@@ -32,7 +32,6 @@ check_login('admin');
                                     <h5 class="card-title mb-0">Form Pengaturan</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="card-body">
                                         <?php
                                         $q = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1");
                                         $data = mysqli_fetch_assoc($q);
@@ -85,7 +84,6 @@ check_login('admin');
                                             <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
                                         </form>
 
-                                    </div>
 
                                 </div>
                             </div>
@@ -135,6 +133,29 @@ document.getElementById('logo_sekolah').addEventListener('change', function (e) 
     };
     reader.readAsDataURL(file);
 });
+
 </script>
+<?php if (isset($_SESSION['success'])): ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil!',
+    text: '<?= $_SESSION['success']; ?>',
+    confirmButtonColor: '#28a745'
+});
+</script>
+<?php unset($_SESSION['success']); endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Gagal!',
+    text: '<?= $_SESSION['error']; ?>',
+    confirmButtonColor: '#dc3545'
+});
+</script>
+<?php unset($_SESSION['error']); endif; ?>
+
 </body>
 </html>

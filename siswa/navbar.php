@@ -6,7 +6,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="logout.php">
+                            <a class="nav-link btnLogout" href="logout.php">
                                 <i class="fas fa-sign-out-alt"></i>
                             </a>
                         </li>

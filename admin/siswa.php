@@ -180,5 +180,27 @@ check_login('admin');
       });
     });
   </script>
+  <?php if (isset($_SESSION['success'])): ?>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Berhasil!',
+    text: '<?= $_SESSION['success']; ?>',
+    confirmButtonColor: '#28a745'
+});
+</script>
+<?php unset($_SESSION['success']); endif; ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Gagal!',
+    text: '<?= $_SESSION['error']; ?>',
+    confirmButtonColor: '#dc3545'
+});
+</script>
+<?php unset($_SESSION['error']); endif; ?>
+
 </body>
 </html>

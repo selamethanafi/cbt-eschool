@@ -9,20 +9,8 @@ $nama_aplikasi = $_POST['nama_aplikasi'];
 $warna_tema = $_POST['warna_tema'];
 $waktu_sinkronisasi = intval($_POST['waktu_sinkronisasi']);
 if ($waktu_sinkronisasi < 60) {
-    echo "
-    <script src='../assets/js/sweetalert.js'></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                title: 'Gagal!',
-                text: 'Waktu sinkronisasi tidak boleh kurang dari 60 detik.',
-                icon: 'error',
-                confirmButtonText: 'Kembali'
-            }).then(() => {
-                window.location.href = 'setting.php';
-            });
-        });
-    </script>";
+    $_SESSION['error'] = 'Waktu sinkronisasi tidak boleh kurang dari 60 detik.';
+    header('Location: setting.php');
     exit;
 }
 $sembunyikan_nilai = isset($_POST['sembunyikan_nilai']) ? 1 : 0;
@@ -52,14 +40,11 @@ if (!empty($_FILES['logo_sekolah']['name'])) {
             $logo_path = $nama_baru;
         }
     } else {
-        echo "<script>
-            alert('Upload gagal: hanya file gambar (.jpg/.png/.gif/.webp) maksimal 2MB yang diperbolehkan.');
-            window.location.href = 'setting.php';
-        </script>";
+        $_SESSION['error'] = 'Upload gagal: hanya file gambar (.jpg/.png/.gif/.webp) maksimal 2MB yang diperbolehkan.';
+        header('Location: setting.php');
         exit;
     }
 }
-
 
 // Cek apakah sudah ada data
 $query = mysqli_query($koneksi, "SELECT id FROM pengaturan WHERE id=1");
@@ -81,22 +66,11 @@ if (mysqli_num_rows($query) > 0) {
 
 // Eksekusi query
 if (mysqli_query($koneksi, $sql)) {
-     echo "
-    <script src='../assets/js/sweetalert.js'></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                title: 'Berhasil!',
-                text: 'Pengaturan berhasil disimpan!',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = 'setting.php';
-            });
-        });
-    </script>";
-
+    $_SESSION['success'] = 'Pengaturan berhasil disimpan!';
 } else {
-    echo "Gagal menyimpan pengaturan: " . mysqli_error($koneksi);
+    $_SESSION['error'] = 'Gagal menyimpan pengaturan: ' . mysqli_error($koneksi);
 }
+
+header('Location: setting.php');
+exit;
 ?>

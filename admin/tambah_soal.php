@@ -14,59 +14,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Cek duplikasi kode_soal
     $cek_kode = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
-if (mysqli_num_rows($cek_kode) > 0) {
-    echo '
-        <!DOCTYPE html>
-        <html lang="id">
-        <head>
-            <meta charset="UTF-8">
-            <title>Peringatan</title>
-            <script src="../assets/js/sweetalert.js"></script>
-        </head>
-        <body>
-            <script>
-                Swal.fire({
-                    icon: "error",
-                    title: "Kode Soal Sudah Ada!",
-                    text: "Harap pilih Kode soal yang lain.",
-                    confirmButtonText: "OK"
-                }).then(() => {
-                    window.history.back();
-                });
-            </script>
-        </body>
-        </html>';
+    if (mysqli_num_rows($cek_kode) > 0) {
+        $_SESSION['error'] = 'Kode Soal Sudah Ada! Harap pilih kode soal yang lain.';
+        header('Location: soal.php');
         exit;
-}
+    }
+
     $query = "INSERT INTO soal (kode_soal, nama_soal, mapel, kelas, waktu_ujian, tanggal)
               VALUES ('$kode_soal', '$nama_soal', '$mapel', '$kelas', '$waktu_ujian', '$tanggal')";
 
     if (mysqli_query($koneksi, $query)) {
-        echo '
-        <!DOCTYPE html>
-        <html lang="id">
-        <head>
-            <meta charset="UTF-8">
-            <title>Peringatan</title>
-            <script src="../assets/js/sweetalert.js"></script>
-        </head>
-        <body>
-            <script>
-                Swal.fire({
-                    icon: "success",
-                    title: "Sukses!",
-                    text: "Soal Berhasil Ditambahkan.",
-                    confirmButtonText: "OK"
-                }).then(() => {
-                    window.location.href = "soal.php";
-                });
-            </script>
-        </body>
-        </html>';
-        exit;
+        $_SESSION['success'] = 'Soal berhasil ditambahkan.';
     } else {
-        echo "Error: " . mysqli_error($koneksi);
+        $_SESSION['error'] = 'Gagal menambahkan soal: ' . mysqli_error($koneksi);
     }
+
+    header('Location: soal.php');
+    exit;
 }
 ?>
 
