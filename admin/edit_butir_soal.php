@@ -410,22 +410,22 @@ exit();
             },
 
             // Bersihkan tag saat blur (selesai mengetik)
-            onBlur: function () {
-                var contents = $(this).summernote('code');
+            //onBlur: function () {
+            //    var contents = $(this).summernote('code');
 
                 // Simpan gambar kalau ada
-                var images = $('<div>').html(contents).find('img').clone();
-                var textOnly = $('<div>').html(contents).text().trim();
+           //     var images = $('<div>').html(contents).find('img').clone();
+           //     var textOnly = $('<div>').html(contents).text().trim();
 
                 // Gabungkan kembali teks dan gambar (jika ada)
-                var cleanHtml = textOnly;
-                if (images.length > 0) {
-                    cleanHtml += '<br>' + $('<div>').append(images).html();
-                }
+            //    var cleanHtml = textOnly;
+           //     if (images.length > 0) {
+           //         cleanHtml += '<br>' + $('<div>').append(images).html();
+            ///    }
 
                 // Set kembali isi editor dengan konten bersih
-                $(this).summernote('code', cleanHtml);
-            }
+            //    $(this).summernote('code', cleanHtml);
+            //}
         },
         toolbar: [
             ['insert', ['picture']],
