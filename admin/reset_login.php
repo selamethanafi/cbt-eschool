@@ -63,6 +63,7 @@ check_login('admin');
                                                     <th>Kelas</th>
                                                     <th>Rombel</th>
                                                     <th>Kode Soal</th>
+                                                    <th>Tanggal Mulai Ujian</th>
                                                     <th>Status Ujian</th>
                                                     <th>Aksi</th>
                                                 </tr>
@@ -103,6 +104,7 @@ check_login('admin');
                     { data: 'kelas' },
                     { data: 'rombel' },
                     { data: 'kode_soal' },
+                    { data: 'waktu_dijawab' },
                     {
                         data: 'status_ujian',
                         render: function(data) {

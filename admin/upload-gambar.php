@@ -54,51 +54,56 @@ check_login('admin');
                                                     <th>Nama File</th>
                                                     <th>Preview</th>
                                                     <th>Path</th>
+                                                    <th>Ukuran</th>
                                                     <th>Tanggal Upload</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                    $directory = "../gambar/";
-                                                    $files = array_diff(scandir($directory), array('..', '.')); // Ambil file selain '.' dan '..'
+                                                $directory = "../gambar/";
+                                                $files = array_diff(scandir($directory), array('..', '.'));
+                                                $validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
-                                                    // Daftar ekstensi file gambar yang valid
-                                                    $validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                                                $images = array_filter($files, function($file) use ($validExtensions, $directory) {
+                                                    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                                                    return in_array($ext, $validExtensions) && is_file($directory . $file);
+                                                });
 
-                                                    // Filter hanya file gambar
-                                                    $images = array_filter($files, function($file) use ($validExtensions, $directory) {
-                                                        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-                                                        return in_array($ext, $validExtensions) && is_file($directory . $file);
-                                                    });
+                                                usort($images, function($a, $b) use ($directory) {
+                                                    return filemtime($directory . $b) - filemtime($directory . $a);
+                                                });
 
-                                                    // Urutkan berdasarkan waktu modifikasi (filemtime) terbaru
-                                                    usort($images, function($a, $b) use ($directory) {
-                                                        return filemtime($directory . $b) - filemtime($directory . $a); // Urutkan terbaru di atas
-                                                    });
-
-                                                    if (!empty($images)) {
-                                                        foreach ($images as $image) {
-                                                            // Ambil waktu modifikasi file
-                                                            $timestamp = filemtime($directory . $image);
-                                                            $uploadDate = date("d-m-Y H:i:s", $timestamp); // Format tanggal: dd-mm-yyyy hh:mm:ss
-                                                ?>
-                                                            <tr>
-                                                                <td><input type="checkbox" class="checkbox-delete" name="delete_files[]" value="<?= $image ?>"></td>
-                                                                <td><?= $image ?></td>
-                                                                <td><a href="../gambar/<?= $image ?>" target="_blank"><img src="../gambar/<?= $image ?>" width="100" alt="<?= $image ?>"></a></td>
-                                                                <td>
-                                                                    <button class="btn btn-outline-secondary copy-btn" data-target="imgTag<?= md5($image) ?>">Copy <i class="fa fa-copy"></i></button>
-                                                                    <code id="imgTag<?= md5($image) ?>"  style="display: none;">&lt;img src="../gambar/<?= $image ?>"&gt;</code>
-                                                                </td>
-                                                                <td><?= $uploadDate ?></td>
-                                                                <td><button type="button" class="btn btn-danger delete-single" data-file="<?= $image ?>">Hapus</button></td>
-                                                            </tr>
-                                                <?php
+                                                if (!empty($images)) {
+                                                    foreach ($images as $image) {
+                                                        $timestamp = filemtime($directory . $image);
+                                                        $uploadDate = date("H:i, d F Y", $timestamp);
+                                                        $fileSize = filesize($directory . $image);
+                                                        if ($fileSize >= 1048576) {
+                                                            $fileSizeFormatted = round($fileSize / 1048576, 2) . ' MB';
+                                                        } elseif ($fileSize >= 1024) {
+                                                            $fileSizeFormatted = round($fileSize / 1024, 2) . ' KB';
+                                                        } else {
+                                                            $fileSizeFormatted = $fileSize . ' B';
                                                         }
-                                                    } else {
-                                                        echo '<tr><td colspan="5">Tidak ada gambar yang diupload.</td></tr>';
+                                                ?>
+                                                        <tr>
+                                                            <td><input type="checkbox" class="checkbox-delete" name="delete_files[]" value="<?= $image ?>"></td>
+                                                            <td><?= $image ?></td>
+                                                            <td><a href="../gambar/<?= $image ?>" target="_blank"><img src="../gambar/<?= $image ?>" width="100" alt="<?= $image ?>"></a></td>
+                                                            <td>
+                                                                <button class="btn btn-outline-secondary copy-btn" data-target="imgTag<?= md5($image) ?>">Copy <i class="fa fa-copy"></i></button>
+                                                                <code id="imgTag<?= md5($image) ?>" style="display: none;">&lt;img src="../gambar/<?= $image ?>"&gt;</code>
+                                                            </td>
+                                                            <td><?= $fileSizeFormatted ?></td>
+                                                            <td><?= $uploadDate ?></td>
+                                                            <td><button type="button" class="btn btn-danger delete-single" data-file="<?= $image ?>">Hapus</button></td>
+                                                        </tr>
+                                                <?php
                                                     }
+                                                } else {
+                                                    echo '<tr><td colspan="7">Tidak ada gambar yang diupload.</td></tr>';
+                                                }
                                                 ?>
                                             </tbody>
                                         </table>
@@ -117,10 +122,10 @@ check_login('admin');
 
         </div>
     </div>
+
 <?php include '../inc/js.php'; ?>
-    <script>
-        $(document).ready(function() {
-    // Inisialisasi DataTables dengan 10 entri per halaman
+<script>
+$(document).ready(function() {
     var table = $('#gambarTable').DataTable({
         "paging": true,
         "lengthChange": false,
@@ -130,16 +135,14 @@ check_login('admin');
         "autoWidth": false,
         "responsive": true,
         "columnDefs": [
-        { "orderable": false, "targets": 0 }  // Nonaktifkan sort di kolom pertama (indeks 0)
-    ]
+            { "orderable": false, "targets": 0 }
+        ]
     });
 
-    // Select all checkbox functionality
     $('#selectAll').on('click', function() {
         $('.checkbox-delete').prop('checked', this.checked);
     });
 
-    // Hapus gambar terpilih
     $('#deleteImagesForm').on('submit', function(e) {
         e.preventDefault();
         let selectedFiles = [];
@@ -160,22 +163,11 @@ check_login('admin');
                 if (result.isConfirmed) {
                     $.post('hapus_gambar.php', {files: selectedFiles}, function(response) {
                         if (response.success) {
-                            // Tampilkan SweetAlert jika berhasil
-                            Swal.fire(
-                                'Berhasil!',
-                                'Gambar berhasil dihapus.',
-                                'success'
-                            ).then(() => {
-                                // Update DataTables setelah penghapusan
+                            Swal.fire('Berhasil!', 'Gambar berhasil dihapus.', 'success').then(() => {
                                 location.reload();
                             });
                         } else {
-                            // Tampilkan SweetAlert jika gagal
-                            Swal.fire(
-                                'Gagal!',
-                                'Beberapa gambar gagal dihapus.',
-                                'error'
-                            );
+                            Swal.fire('Gagal!', 'Beberapa gambar gagal dihapus.', 'error');
                         }
                     }, 'json');
                 }
@@ -185,7 +177,6 @@ check_login('admin');
         }
     });
 
-    // Hapus gambar satu per satu
     $('#gambarTable').on('click', '.delete-single', function() {
         const file = $(this).data('file');
         Swal.fire({
@@ -200,20 +191,11 @@ check_login('admin');
             if (result.isConfirmed) {
                 $.post('hapus_gambar.php', {files: [file]}, function(response) {
                     if (response.success) {
-                        Swal.fire(
-                            'Berhasil!',
-                            'Gambar berhasil dihapus.',
-                            'success'
-                        ).then(() => {
-                            // Update DataTables setelah penghapusan
+                        Swal.fire('Berhasil!', 'Gambar berhasil dihapus.', 'success').then(() => {
                             location.reload();
                         });
                     } else {
-                        Swal.fire(
-                            'Gagal!',
-                            'Gambar gagal dihapus.',
-                            'error'
-                        );
+                        Swal.fire('Gagal!', 'Gambar gagal dihapus.', 'error');
                     }
                 }, 'json');
             }
@@ -221,10 +203,8 @@ check_login('admin');
     });
 });
 
-
-        document.getElementById('formUpload').addEventListener('submit', function (e) {
+document.getElementById('formUpload').addEventListener('submit', function (e) {
     e.preventDefault();
-            
 
     const fileInput = document.getElementById('gambar');
     const files = fileInput.files;
@@ -255,7 +235,7 @@ check_login('admin');
     xhr.onload = function () {
         progressContainer.style.display = "none";
         if (xhr.status === 200) {
-            const results = JSON.parse(xhr.responseText);  // pastikan response adalah JSON
+            const results = JSON.parse(xhr.responseText);
             let html = '<ul style="text-align: left;">';
 
             results.forEach(res => {
@@ -265,13 +245,12 @@ check_login('admin');
 
             html += '</ul>';
 
-            // SweetAlert muncul setelah upload berhasil
             Swal.fire({
                 title: 'Hasil Upload',
                 html: html,
                 icon: 'info'
             }).then(() => {
-                location.reload(); // refresh daftar gambar jika perlu
+                location.reload();
             });
         } else {
             Swal.fire('Gagal', 'Terjadi kesalahan saat upload.', 'error');
@@ -293,6 +272,6 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
         });
     });
 });
-    </script>
+</script>
 </body>
 </html>

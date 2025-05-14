@@ -11,7 +11,7 @@ $filterKelas = $_GET['filterKelas'] ?? '';
 $filterStatus = $_GET['filterStatus'] ?? '';
 
 // Mapping kolom
-$columns = ['nama_siswa', 'kelas', 'rombel', 'kode_soal', 'status_ujian'];
+$columns = ['nama_siswa', 'kelas', 'rombel', 'kode_soal', 'waktu_dijawab', 'status_ujian'];
 $orderBy = $columns[$orderColumn - 1] ?? 'nama_siswa'; // -1 karena ada kolom "No" di depan
 
 // Filter query
@@ -52,7 +52,7 @@ $filteredTotal = mysqli_fetch_assoc($filteredQuery)['total'];
 
 // Ambil data utama
 $dataQuery = mysqli_query($koneksi, "
-    SELECT siswa.nama_siswa, siswa.kelas, siswa.rombel, jawaban_siswa.kode_soal, jawaban_siswa.status_ujian, siswa.id_siswa
+    SELECT siswa.nama_siswa, siswa.kelas, siswa.rombel, jawaban_siswa.kode_soal, jawaban_siswa.status_ujian, jawaban_siswa.waktu_dijawab, siswa.id_siswa
     FROM jawaban_siswa
     JOIN siswa ON siswa.id_siswa = jawaban_siswa.id_siswa
     $searchCondition
