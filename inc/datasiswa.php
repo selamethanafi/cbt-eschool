@@ -16,7 +16,8 @@ if (mysqli_stmt_execute($stmt)) {
     if ($user = mysqli_fetch_assoc($result)) {
         $nama_siswa = $user['nama_siswa'];
         $kelas_siswa = $user['kelas'];
-
+        $rombel_siswa = $user['rombel'];
+        $id_siswa = $user['id_siswa'];
         // Cek apakah dipaksa logout oleh admin
         if (!empty($user['force_logout'])) {
             mysqli_query($koneksi, "UPDATE siswa SET session_token = NULL, force_logout = FALSE WHERE id_siswa = $id_siswa");

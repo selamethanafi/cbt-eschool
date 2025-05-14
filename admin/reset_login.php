@@ -63,7 +63,7 @@ check_login('admin');
                                                     <th>Kelas</th>
                                                     <th>Rombel</th>
                                                     <th>Kode Soal</th>
-                                                    <th>Tanggal Mulai Ujian</th>
+                                                    <th>Waktu Mulai Ujian</th>
                                                     <th>Status Ujian</th>
                                                     <th>Aksi</th>
                                                 </tr>

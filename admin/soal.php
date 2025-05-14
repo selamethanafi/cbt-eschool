@@ -82,7 +82,7 @@ if (!$result) {
                                                     <td><?php echo $row['kelas']; ?></td>
 													<td><?php echo $row['jumlah_butir']; ?></td>
 													<td><i class="fa fa-clock" aria-hidden="true"></i> <?php echo $row['waktu_ujian']; ?></td>
-													<td><i class="fa fa-calendar" aria-hidden="true"></i> <?php echo $row['tanggal']; ?></td>
+													<td><i class="fa fa-calendar" aria-hidden="true"></i> <?php echo date('d M Y', strtotime($row['tanggal'])); ?></td>
                                                     <td>
                                                         <?php if ($row['status'] == 'Aktif') { ?>
 															<span class="badge bg-success">Aktif</span>

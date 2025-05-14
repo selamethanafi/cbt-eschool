@@ -81,7 +81,7 @@ function tampilkanUjian(data) {
                         <p class="mb-1"><i class="far fa-file-alt text-secondary me-1"></i> ${ujian.mapel}</p>
                         <p class="mb-1"><i class="fas fa-stopwatch text-secondary me-1"></i> ${ujian.waktu_ujian} menit</p>
                         <p class="mb-3"><i class="far fa-calendar text-secondary me-1"></i> ${ujian.tanggal}</p>
-                        <a href="mulai_ujian.php?kode=${ujian.kode_soal}" class="btn btn-outline-secondary mt-auto">Masuk Ujian</a>
+                        <a href="mulai_ujian.php?kode=${ujian.kode_soal}" class="btn btn-outline-secondary mt-auto"><i class="fa fa-sign-in" aria-hidden="true"></i> Masuk Ujian</a>
                     </div>
                 </div>
             </div>
