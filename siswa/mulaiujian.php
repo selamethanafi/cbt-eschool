@@ -178,6 +178,7 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
             flex: 1;
             overflow-y: auto;
             padding-bottom: 20px;
+            margin-bottom: 70px;
         }
         
         /* Loading Spinner Styles */

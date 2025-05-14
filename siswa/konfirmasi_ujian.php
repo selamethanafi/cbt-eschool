@@ -121,12 +121,34 @@ $_SESSION['konfirmasi_ujian'] = true;
         color: #212529;
         margin-left: 0.5rem;
     }
+    html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        main.content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        main.content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+            margin-bottom: 70px;
+        }
 </style>
 </head>
 <body>
+    <div style="height: 80px;"></div>
     <div class="wrapper">
         <div class="main">
-            <nav class="navbar navbar-expand navbar-light navbar-bg">
+            <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top shadow-sm">
                 <!-- Logo -->
                 <a class="navbar-brand ms-3" href="#">
                     <img src="../assets/images/cbticon.png" alt="Logo" style="height: 36px;">
@@ -190,7 +212,6 @@ $_SESSION['konfirmasi_ujian'] = true;
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="konfirmasi_token" value="ok">
-
                                                 <div class="col-auto">
                                                     <input type="text" name="token" class="form-control form-control-lg" placeholder="Token" required>
                                                 </div>
