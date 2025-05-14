@@ -4,6 +4,7 @@ include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('siswa'); // Pastikan siswa sudah login
 include '../inc/datasiswa.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,7 +82,7 @@ function tampilkanUjian(data) {
                         <p class="mb-1"><i class="far fa-file-alt text-secondary me-1"></i> ${ujian.mapel}</p>
                         <p class="mb-1"><i class="fas fa-stopwatch text-secondary me-1"></i> ${ujian.waktu_ujian} menit</p>
                         <p class="mb-3"><i class="far fa-calendar text-secondary me-1"></i> ${ujian.tanggal}</p>
-                        <a href="mulai_ujian.php?kode=${ujian.kode_soal}" class="btn btn-outline-secondary mt-auto"><i class="fa fa-sign-in" aria-hidden="true"></i> Masuk Ujian</a>
+                        <a href="konfirmasi_ujian.php?kode_soal=${ujian.kode_soal}" class="btn btn-outline-secondary mt-auto"><i class="fa fa-sign-in" aria-hidden="true"></i> Masuk Ujian</a>
                     </div>
                 </div>
             </div>
@@ -116,6 +117,23 @@ document.getElementById('searchInput').addEventListener('input', function () {
 // Jalankan saat load dan per 1 menit
 loadUjian();
 setInterval(loadUjian, 60000);
+
+
 </script>
+
+<?php if (isset($_SESSION['alert'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning!',
+                text: '<?php echo $_SESSION['warning_message']; ?>',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>
+    <?php unset($_SESSION['warning_message']); ?>
+<?php endif; ?>
 </body>
 </html>

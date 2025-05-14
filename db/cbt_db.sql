@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 14 Bulan Mei 2025 pada 10.17
+-- Waktu pembuatan: 15 Bulan Mei 2025 pada 01.06
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -140,7 +140,7 @@ CREATE TABLE `jawaban_siswa` (
 --
 
 INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_soal`, `jawaban_siswa`, `waktu_sisa`, `waktu_dijawab`, `status_ujian`) VALUES
-(1, 1, 'Jokowi JK	', 'SR9-01', '', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_2],[8:ewt],[9:saya jua:asdasd],[10:Benar|Salah],[11:asdsasd],[12:pilihan_3]', '45', '2025-05-10 16:04:37', 'Aktif'),
+(1, 1, 'Jokowi JK	', 'SR9-01', '', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_2],[8:ewt],[9:saya jua:asdasd],[10:Benar|Salah],[11:asdsasd],[12:pilihan_3]', '45', '2025-05-10 16:04:37', 'Non-Aktif'),
 (2, 3, 'Agum Gumelar', 'SR9-01', '', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Benar],[4:Teknik Mozaik:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Seni Rupa Murni:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_2]', '54', '2025-05-10 16:10:29', 'Aktif');
 
 -- --------------------------------------------------------
@@ -157,27 +157,12 @@ CREATE TABLE `nilai` (
   `total_soal` int(11) NOT NULL,
   `jawaban_benar` varchar(100) NOT NULL,
   `jawaban_salah` varchar(100) NOT NULL,
+  `jawaban_kurang` varchar(100) NOT NULL,
   `jawaban_siswa` text NOT NULL,
+  `kunci` text NOT NULL,
   `nilai` text NOT NULL,
   `tanggal_ujian` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `nilai`
---
-
-INSERT INTO `nilai` (`id_nilai`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_soal`, `jawaban_benar`, `jawaban_salah`, `jawaban_siswa`, `nilai`, `tanggal_ujian`) VALUES
-(1, 1, '', 'SR9-01', 50, '90', '10', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Benar],[4:Teknik Mozaik:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Seni Rupa Murni:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_2]', '90', '2025-05-09 07:08:22'),
-(2, 12, '', 'SR9-01', 50, '85', '15', '', '85', '2025-06-09 07:08:22'),
-(3, 5, '', 'SR9-01', 50, '90', '10', '', '90', '2025-06-11 07:08:22'),
-(4, 4, '', 'SR9-01', 50, '50', '50', '', '50', '2025-04-22 07:08:22'),
-(5, 2, '', 'SR9-01', 50, '85', '15', '', '85', '2025-05-08 08:20:30'),
-(6, 5, '', 'SR9-01', 50, '85', '15', '', '85', '2025-05-08 08:20:30'),
-(7, 3, '', 'SR9-01', 50, '85', '15', '', '85', '2025-05-08 08:20:30'),
-(8, 13, '', 'SR9-01', 50, '85', '15', '', '85', '2025-04-15 08:20:30'),
-(12, 16, '', 'SR9-01', 50, '85', '15', '', '85', '2025-02-10 08:20:30'),
-(17, 17, '', 'SR9-01', 50, '85', '15', '', '85', '2025-02-10 08:20:30'),
-(18, 5, '', 'BINDO7-1', 50, '85', '15', '', '85', '2025-05-08 08:20:30');
 
 -- --------------------------------------------------------
 
@@ -200,7 +185,7 @@ CREATE TABLE `pengaturan` (
 --
 
 INSERT INTO `pengaturan` (`id`, `nama_aplikasi`, `logo_sekolah`, `warna_tema`, `waktu_sinkronisasi`, `sembunyikan_nilai`, `login_ganda`) VALUES
-(1, 'CBT-Eschool v.1.0.0', 'codelite2.png', '#ff811a', 60, 0, 'izinkan');
+(1, 'CBT-Eschool v.1.0.0', 'codelite2.png', '#3673c4', 60, 0, 'izinkan');
 
 -- --------------------------------------------------------
 
@@ -245,13 +230,13 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `session_token`, `last_activity`, `page_url`, `force_logout`) VALUES
-(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '87b5ad3010704876556b41d171491182c9fc3392f056f91cb96d3241d9a76688', '2025-05-14 15:14:05', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '9b30ea9f8ba18677b08d934f7183b0aacdfdda33bdf71e1cc3cb62e53dbf478c', '2025-05-15 05:46:39', 'http://localhost/cbt-eschool/siswa/konfirmasi_ujian.php?kode_soal=SR9-01', 0),
 (2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '2025-05-12 23:31:49', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', '', '2025-05-12 23:31:58', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', '', '2025-05-12 23:32:04', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', '', '2025-05-12 23:32:10', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (13, 'Erina', 'FQOm8MYUIes79E36AQv1AU5VMVdUanhIaTBVTURVS0hXckFRUXc9PQ==', '721731', '9', 'A', 'Nonaktif', '', '2025-05-12 23:32:14', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(14, 'Phoebe', 'Dwl3VYW4ysVVEjO67sy6QmdYb2h0NjNFWjhlV3ViamtWY01hc0E9PQ==', '122345', '7', 'C', 'Nonaktif', '', '2025-05-12 23:32:19', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
+(14, 'Phoebe', 'Dwl3VYW4ysVVEjO67sy6QmdYb2h0NjNFWjhlV3ViamtWY01hc0E9PQ==', '122345', '7', 'C', 'Nonaktif', '', '2025-05-15 02:04:10', 'http://localhost/cbt-eschool/siswa/ujian.php', 0),
 (15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174', '7', 'D', 'Nonaktif', '', '2025-05-12 23:32:58', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (16, 'Denny', 'N2ugxO2xwJR74bjbZQv19nYrMFVFbi9JTEk5MFNDeVdITWxmM0E9PQ==', '641343', '8', 'F', 'Nonaktif', '', '2025-05-12 23:32:55', 'http://localhost/cbt-eschool/siswa/ujian.php', 1),
 (17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '252743', '8', 'D', 'Nonaktif', '', '2025-05-12 23:32:51', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
@@ -283,9 +268,9 @@ CREATE TABLE `soal` (
 --
 
 INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `waktu_ujian`, `tanggal`, `status`, `kunci`, `token`) VALUES
-(1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-16', 'Aktif', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:ewt],[9:saya jua\r\n\r\n:asdasd],[10:Benar|Salah],[11:asdsasd],[12:pilihan_2]', 'GHPWAJ'),
+(1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-14', 'Aktif', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:ewt],[9:saya jua\r\n\r\n:asdasd],[10:Benar|Salah],[11:asdsasd],[12:pilihan_2]', 'ADYCQB'),
 (10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-10-08', 'Aktif', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 'XMILAS'),
-(17, 'IPA9-01', 'IPA 01', 'IPA', '9', 90, '2025-05-19', 'Aktif', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', 'WJEMPA');
+(17, 'IPA9-01', 'IPA 01', 'IPA', '9', 90, '2025-05-19', 'Aktif', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', 'IBRSCU');
 
 --
 -- Indexes for dumped tables

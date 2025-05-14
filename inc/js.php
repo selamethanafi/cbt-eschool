@@ -22,7 +22,7 @@
                                                         endif;
                                                         ?>
                                                 </div>
-                                                <footer class="footer mt-auto py-3 bg-dark">
+                                                <footer class="footer mt-auto py-3 bg-dark sticky-bottom">
                                                     <div class="container-fluid">
                                                         <div class="row text-grey">
                                                             <div class="col-6 text-start">
