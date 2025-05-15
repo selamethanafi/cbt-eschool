@@ -6,48 +6,31 @@ check_login('siswa');
 include '../inc/datasiswa.php';
 
 $kode_soal = $_POST['kode_soal'] ?? $_GET['kode_soal'] ?? '';
+$id_siswa = $_SESSION['id_siswa'] ?? '';
 
-
-if (empty($kode_soal)) {
+if (empty($kode_soal) || empty($id_siswa)) {
     $_SESSION['alert'] = true;
-    $_SESSION['warning_message'] = 'Kode soal Tidak Tersedia';
+    $_SESSION['warning_message'] = 'Kode soal atau ID siswa tidak tersedia.';
     header('Location: ujian.php');
     exit;
 }
 
-// Get remaining time and answers
+// Ambil sisa waktu dari jawaban_siswa
 $waktu_sisa = 0;
 $get_waktu = mysqli_query($koneksi, "SELECT waktu_sisa, jawaban_siswa FROM jawaban_siswa WHERE kode_soal='$kode_soal' AND id_siswa='$id_siswa'");
 $jawaban_tersimpan = [];
 if ($w = mysqli_fetch_assoc($get_waktu)) {
     $waktu_sisa = (int)$w['waktu_sisa'];
     $string_jawaban = $w['jawaban_siswa'];
-    preg_match_all('/\[(\d+):([^\]]+)\]/', $string_jawaban, $matches, PREG_SET_ORDER);
-    
+    preg_match_all('/\[(\d+):(.*?)\]/', $string_jawaban, $matches, PREG_SET_ORDER);
     foreach ($matches as $match) {
         $nomor = (int)$match[1];
         $jawab = $match[2];
-        
-        // Handle matching questions
-        if (strpos($jawab, '|') !== false && substr_count($jawab, ':') > 1) {
-            $pasangan = explode('|', $jawab);
-            $hasil = [];
-            foreach ($pasangan as $p) {
-                if (substr_count($p, ':') === 1) {
-                    [$kiri, $kanan] = explode(':', $p, 2);
-                    $kiri = trim($kiri);
-                    $kanan = trim($kanan);
-                    if (!empty($kiri) && !empty($kanan)) {
-                        $hasil[$kiri] = $kanan;
-                    }
-                }
-            }
-            $jawaban_tersimpan[$nomor] = $hasil;
-        } 
-        // Other question types remain unchanged
-        elseif (strpos($jawab, '|') !== false) {
+        if (str_contains($jawab, '|') && str_contains($jawab, ':')) {
             $jawaban_tersimpan[$nomor] = explode('|', $jawab);
-        } elseif (strpos($jawab, ',') !== false) {
+        } elseif (str_contains($jawab, '|')) {
+            $jawaban_tersimpan[$nomor] = explode('|', $jawab);
+        } elseif (str_contains($jawab, ',')) {
             $jawaban_tersimpan[$nomor] = explode(',', $jawab);
         } else {
             $jawaban_tersimpan[$nomor] = $jawab;
@@ -55,7 +38,7 @@ if ($w = mysqli_fetch_assoc($get_waktu)) {
     }
 }
 
-// Get all questions
+// Ambil semua soal
 $q = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='$kode_soal' ORDER BY nomer_soal ASC");
 $soal = [];
 while ($s = mysqli_fetch_assoc($q)) {
@@ -210,7 +193,6 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
                                 <div class="card-body">
                                     <div id="autoSaveStatus"></div>
                                     <form id="formUjian" method="post" action="simpan_jawaban.php">
-                                        
                                         <input type="hidden" name="kode_soal" value="<?= htmlspecialchars($kode_soal) ?>">
                                         
                                         <?php foreach ($soal as $index => $s): 
@@ -267,52 +249,37 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
                                                     <?php endfor; ?>
                                                 </table>
                                             
-                                                <?php elseif ($tipe == 'Menjodohkan'): ?>
-                                                    <?php
-                                                    $pasangan = array_filter(explode('|', $s['jawaban_benar'])); // Filter empty values
+                                            <?php elseif ($tipe == 'Menjodohkan'): ?>
+                                                <?php 
+                                                    $pasangan = explode('|', $s['jawaban_benar']);
                                                     $opsi = [];
                                                     foreach ($pasangan as $pair) {
                                                         $pecah = explode(':', $pair, 2);
-                                                        if (count($pecah) == 2 && !empty(trim($pecah[0])) && !empty(trim($pecah[1]))) {
-                                                            $opsi[] = [
-                                                                'kiri' => trim($pecah[0]),
-                                                                'kanan' => trim($pecah[1])
-                                                            ];
+                                                        if (count($pecah) == 2) {
+                                                            $opsi[] = ['kiri' => trim($pecah[0]), 'kanan' => trim($pecah[1])];
                                                         }
                                                     }
-                                                    
-                                                    // Pastikan hanya 3 item yang valid
-                                                    $opsi = array_slice($opsi, 0, 3);
-                                                    
-                                                    $jawaban_soal = (is_array($jawaban) && count($jawaban) === count($opsi)) ? $jawaban : [];
-                                                    $daftar_kanan = array_values(array_unique(array_column($opsi, 'kanan')));
+                                                    $daftar_kanan = array_unique(array_column($opsi, 'kanan'));
                                                     shuffle($daftar_kanan);
+                                                ?>
+                                                <table class="matching-table">
+                                                    <?php foreach ($opsi as $idx => $p): 
+                                                        $selected = $jawaban[$idx] ?? '';
                                                     ?>
-                                                    <?php foreach ($opsi as $p): ?>
-                                                        <input type="hidden" name="soal_kiri[<?= $no ?>][]" value="<?= htmlspecialchars($p['kiri']) ?>">
+                                                    <tr>
+                                                        <td><?= htmlspecialchars($p['kiri']) ?></td>
+                                                        <td>
+                                                            <input type="hidden" name="soal_kiri[<?= $no ?>][<?= $idx ?>]" value="<?= htmlspecialchars($p['kiri']) ?>">
+                                                            <select name="jawaban[<?= $no ?>][]" class="form-select">
+                                                                <option value="X">-- Pilih Pasangan --</option>
+                                                                <?php foreach ($daftar_kanan as $dk): ?>
+                                                                    <option value="<?= htmlspecialchars($dk) ?>" <?= $selected == $dk ? 'selected' : '' ?>><?= htmlspecialchars($dk) ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
                                                     <?php endforeach; ?>
-                                                    <table class="matching-table">
-                                                        <?php foreach ($opsi as $idx => $p): 
-                                                            $kiri = $p['kiri'];
-                                                            $selected = $jawaban_soal[$kiri] ?? '';
-                                                        ?>
-                                                        <tr>
-                                                            <td><?= htmlspecialchars($kiri) ?></td>
-                                                            <td>
-                                                                <select name="jawaban[<?= $no ?>][<?= $kiri ?>]" class="form-select">
-                                                                    <option value="">-- Pilih --</option>
-                                                                    <?php foreach ($daftar_kanan as $dk): ?>
-                                                                        <option value="<?= htmlspecialchars($dk) ?>" 
-                                                                            <?= ($selected === $dk) ? 'selected' : '' ?>>
-                                                                            <?= htmlspecialchars($dk) ?>
-                                                                        </option>
-                                                                    <?php endforeach; ?>
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                        <?php endforeach; ?>
-                                                    </table>
-
+                                                </table>
                                             
                                             <?php elseif ($tipe == 'Uraian'): ?>
                                                 <textarea name="jawaban[<?= $no ?>]" class="essay-textarea"><?= htmlspecialchars($jawaban) ?></textarea>
@@ -420,10 +387,7 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
         if (soal) {
             soal.classList.add('active');
             soalAktif = index;
-            let base = <?= $soal[0]['nomer_soal'] ?>;
-let currentNo = base + index;
-document.getElementById('currentQuestionNumber').textContent = currentNo.toString().padStart(2, '0');
-
+            document.getElementById('currentQuestionNumber').textContent = <?= $soal[0]['nomer_soal'] ?> + index;
             updateNavigationButtons();
             
             // Scroll ke atas soal

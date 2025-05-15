@@ -371,12 +371,8 @@ exit();
 <?php include '../inc/js.php'; ?>
     <script src="../assets/summernote/summernote-bs5.js"></script>
     <script>
-        //function bersihkanHTML(html) {
-            //return html.replace(/<(?!\/?(img|br)\b)[^>]*>/gi, '');
-        //}
-
         $(document).ready(function () {
-        var configEditor = {
+    var configEditor = {
         height: 300,
         callbacks: {
             // Hanya tempel teks polos (tanpa format)
@@ -409,23 +405,16 @@ exit();
                 });
             },
 
-            // Bersihkan tag saat blur (selesai mengetik)
-            //onBlur: function () {
-            //    var contents = $(this).summernote('code');
-
-                // Simpan gambar kalau ada
-           //     var images = $('<div>').html(contents).find('img').clone();
-           //     var textOnly = $('<div>').html(contents).text().trim();
-
-                // Gabungkan kembali teks dan gambar (jika ada)
-            //    var cleanHtml = textOnly;
-           //     if (images.length > 0) {
-           //         cleanHtml += '<br>' + $('<div>').append(images).html();
-            ///    }
-
-                // Set kembali isi editor dengan konten bersih
-            //    $(this).summernote('code', cleanHtml);
-            //}
+            // Hapus <p><br></p> awal saat inisialisasi
+            onInit: function () {
+                var $editor = $(this).next('.note-editor').find('.note-editable');
+                setTimeout(function () {
+                    var content = $editor.html().trim();
+                    if (content === '<p><br></p>' || content === '<p><br></p>\n') {
+                        $editor.html('');
+                    }
+                }, 10);
+            }
         },
         toolbar: [
             ['insert', ['picture']],
@@ -433,11 +422,17 @@ exit();
         ]
     };
 
-            $('#pertanyaan').summernote(configEditor);
-            $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4').summernote({
-                ...configEditor,
-                height: 80
-            });
+    // Untuk pertanyaan
+    $('#pertanyaan').summernote(configEditor);
+
+    // Untuk pilihan, kompleks, dan bs
+    $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4')
+        .summernote({
+            ...configEditor,
+            height: 80
+        });
+});
+
 
             // Tampilkan fields sesuai tipe soal saat halaman dimuat
             showFields('<?= $butir_soal["tipe_soal"] ?>');

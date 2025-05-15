@@ -1,0 +1,54 @@
+<?php
+session_start();
+include '../koneksi/koneksi.php';
+
+$id_siswa = $_SESSION['id_siswa'] ?? '';
+$kode_soal = $_POST['kode_soal'] ?? '';
+$waktu_sisa = $_POST['waktu_sisa'] ?? 0;
+
+if (!$id_siswa || !$kode_soal) {
+    die("GAGAL: Data tidak lengkap");
+}
+
+$jawaban = $_POST['jawaban'] ?? [];
+$soal_kiri = $_POST['soal_kiri'] ?? [];
+
+$format_jawaban = [];
+
+foreach ($jawaban as $nomor => $nilai) {
+    if (is_array($nilai)) {
+        if (isset($soal_kiri[$nomor])) {
+            // Menjodohkan
+            $pasangan = [];
+            foreach ($nilai as $idx => $kanan) {
+                $kiri = $soal_kiri[$nomor][$idx] ?? '';
+                $pasangan[] = "$kiri:$kanan";
+            }
+            $format_jawaban[] = "[$nomor:" . implode('|', $pasangan) . "]";
+        } elseif (isset($nilai[1])) {
+            // Benar/Salah
+            $bs = [];
+            ksort($nilai);
+            foreach ($nilai as $v) {
+                $bs[] = $v;
+            }
+            $format_jawaban[] = "[$nomor:" . implode('|', $bs) . "]";
+        } else {
+            // Pilihan Ganda Kompleks
+            $format_jawaban[] = "[$nomor:" . implode(',', $nilai) . "]";
+        }
+    } else {
+        // Pilihan Ganda atau Uraian
+        $format_jawaban[] = "[$nomor:$nilai]";
+    }
+}
+
+$final_jawaban = implode(',', $format_jawaban);
+
+// Simpan ke database
+$query = "UPDATE jawaban_siswa SET jawaban_siswa='$final_jawaban', waktu_sisa='$waktu_sisa' WHERE id_siswa='$id_siswa' AND kode_soal='$kode_soal'";
+if (mysqli_query($koneksi, $query)) {
+    echo "OK";
+} else {
+    echo "GAGAL: " . mysqli_error($koneksi);
+}

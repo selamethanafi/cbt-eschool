@@ -1,0 +1,598 @@
+<?php
+session_start();
+include '../koneksi/koneksi.php';
+include '../inc/functions.php';
+check_login('siswa');
+include '../inc/datasiswa.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id_siswa = $_POST['id_siswa'] ?? '';
+    $kode_soal = $_POST['kode_soal'] ?? '';
+    $token_input = trim($_POST['token'] ?? '');
+    $konfirmasi_token = $_POST['konfirmasi_token'] ?? '';
+
+    if (!$id_siswa || !$kode_soal || !$token_input) {
+        $_SESSION['alert'] = true;
+        $_SESSION['warning_message'] = 'Data tidak lengkap.';
+        header('Location: ujian.php');
+        exit;
+    }
+
+    $q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
+    $data_soal = mysqli_fetch_assoc($q_soal);
+
+    if (strtolower($data_soal['status']) !== 'aktif') {
+        $_SESSION['alert'] = true;
+        $_SESSION['warning_message'] = 'Soal Tidak Aktif! Silakan hubungi pengawas.';
+        header('Location: ujian.php');
+        exit;
+    }
+
+    if (!isset($konfirmasi_token)) {
+        $_SESSION['alert'] = true;
+        $_SESSION['warning_message'] = 'Akses tidak valid. Silakan mulai dari halaman konfirmasi.';
+        header('Location: ujian.php');
+        exit;
+    }
+
+    $q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
+    $data_soal = mysqli_fetch_assoc($q_soal);
+
+    if (!$data_soal) {
+        $_SESSION['alert'] = true;
+        $_SESSION['warning_message'] = 'Soal tidak ditemukan.';
+        header('Location: ujian.php');
+        exit;
+    }
+
+    $tanggal_soal = $data_soal['tanggal'];
+    $tanggal_hari_ini = date('Y-m-d');
+
+    if (strtotime($tanggal_hari_ini) < strtotime($tanggal_soal)) {
+        $_SESSION['alert'] = true;
+        $_SESSION['warning_message'] = 'Soal belum bisa dikerjakan. Jadwal ujian belum dimulai.';
+        header('Location: ujian.php');
+        exit;
+    }
+    if ($kelas_siswa !== $data_soal['kelas']) {
+        $_SESSION['alert'] = true;
+        $_SESSION['warning_message'] = 'Soal ini bukan untuk kelas kamu.';
+        header('Location: ujian.php');
+        exit;
+    }
+
+    $token_soal = $data_soal['token'];
+    if ($token_soal !== $token_input) {
+        $_SESSION['alert'] = true;
+        $_SESSION['warning_message'] = 'Token tidak valid.';
+        header("Location: konfirmasi_ujian.php?kode_soal=$kode_soal");
+        exit;
+    }
+
+    $_SESSION['ujian_aktif'] = true;
+    $_SESSION['id_siswa'] = $id_siswa;
+    $_SESSION['kode_soal'] = $kode_soal;
+}
+
+$id_siswa = $_SESSION['id_siswa'] ?? '';
+$kode_soal = $_SESSION['kode_soal'] ?? '';
+
+if (!$id_siswa || !$kode_soal || !isset($_SESSION['ujian_aktif'])) {
+    $_SESSION['alert'] = true;
+    $_SESSION['warning_message'] = 'Akses tidak valid.';
+    header('Location: ujian.php');
+    exit;
+}
+
+// Ambil info soal (header)
+$query_info = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal='$kode_soal' LIMIT 1");
+$info_soal = mysqli_fetch_assoc($query_info);
+
+// Hitung jumlah soal per tipe soal
+$tipe_soal_count = [];
+$query_tipe_soal = mysqli_query($koneksi, "SELECT tipe_soal, COUNT(*) as jumlah FROM butir_soal WHERE kode_soal='$kode_soal' GROUP BY tipe_soal");
+while ($row = mysqli_fetch_assoc($query_tipe_soal)) {
+    $tipe_soal_count[$row['tipe_soal']] = $row['jumlah'];
+}
+
+// Hitung total jumlah soal
+$query_jumlah = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM butir_soal WHERE kode_soal='$kode_soal'");
+$jumlah_soal = mysqli_fetch_assoc($query_jumlah)['total'];
+
+$q_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal = '$kode_soal' ORDER BY nomer_soal ASC");
+$all_soal = [];
+while ($soal = mysqli_fetch_assoc($q_soal)) {
+    $all_soal[] = $soal;
+}
+$total_soal = count($all_soal);
+
+// Cek apakah ada jawaban yang sudah disimpan
+$jawaban_siswa = [];
+$query_jawaban = mysqli_query($koneksi, "SELECT * FROM jawaban_siswa WHERE id_siswa='$id_siswa' AND kode_soal='$kode_soal'");
+while ($row = mysqli_fetch_assoc($query_jawaban)) {
+    $jawaban_siswa[$row['nomer_soal']] = $row['jawaban_siswa'];
+}
+
+$q_tema = mysqli_query($koneksi, "SELECT warna_tema FROM pengaturan WHERE id = 1 LIMIT 1");
+$data_tema = mysqli_fetch_assoc($q_tema);
+$warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Siswa</title>
+    <?php include '../inc/css.php'; ?>
+    <?php include '../inc/cssujian.php'; ?>
+    <style>
+        .question-container {
+            display: none;
+        }
+        .question-container.active {
+            display: block;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+        #autoSaveStatus {
+            display: none;
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Spinner Overlay -->
+    <div id="loadingOverlay">
+        <div class="spinner-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Memuat soal...</p>
+        </div>
+    </div>
+    <div style="height: 35px;"></div>
+    <div class="wrapper">
+        <div class="main">
+            <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top" style="border-bottom:5px solid <?php echo htmlspecialchars($warna_tema); ?> !important;">
+                <a class="navbar-brand ms-3" href="#">
+                    <img src="../assets/images/cbticon.png" alt="Logo" style="height: 36px;">
+                </a>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav navbar-align ms-auto">
+                        <li class="nav-item me-3">
+                            <div class="timer" style="font-weight: bold; font-size: 1.2rem;">
+                                <i class="fas fa-clock me-1"></i>
+                                <span id="time">00:00:00</span>
+                            </div>
+                        </li>
+                        <li class="nav-item me-3">
+                            <div class="dropdown-toggle" href="#" style="font-weight: bold; font-size: 1.2rem;" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-1"></i>
+                            </div>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-wide">
+                                <li><span class="dropdown-item-text"><strong><?php echo $nama_siswa; ?></strong></span></li>
+                                <li><span class="dropdown-item-text"><?php echo $kelas_siswa . $rombel_siswa; ?></span></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="content">
+                <div class="container-fluid p-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card shadow">
+                                    <div class="card-header text-white" style="background-color:<?= htmlspecialchars($warna_tema) ?>">
+                                        <h4 class="mb-0 text-white"><b style="background-color:#1c1c1c;padding:5px;border-radius:10px 0 0 10px;">No.</b><b style="background-color:#ffffff;padding:5px;border-radius:0 10px 10px 0;color:black;" id="currentQuestionNumber">01</b></h4>
+                                    </div>
+                                    <div class="card-body tampilan" style="padding-bottom:0px !important;">
+                                        <div id="autoSaveStatus">Jawaban tersimpan otomatis</div>
+                                        <form id="examForm" method="post" action="simpan_jawaban.php">
+                                            <input type="hidden" name="kode_soal" value="<?= $kode_soal ?>">
+                                            <input type="hidden" name="id_siswa" value="<?= $id_siswa ?>">
+                                            
+                                            <!-- Container untuk semua soal -->
+                                            <div id="allQuestionsContainer">
+                                                <?php foreach ($all_soal as $index => $soal): ?>
+                                                    <?php 
+                                                    $nomer_soal = $soal['nomer_soal'];
+                                                    $saved_answer = $jawaban_siswa[$nomer_soal] ?? null;
+                                                    ?>
+                                                    <div class="question-container" id="question-<?= $nomer_soal ?>" data-question="<?= $nomer_soal ?>">
+                                                        <input type="hidden" name="nomer_soal[]" value="<?= $nomer_soal ?>">
+                                                        <input type="hidden" name="tipe_soal[]" value="<?= $soal['tipe_soal'] ?>">
+                                                        <div class="card tempatsoal">
+                                                            <div class="card-body">
+                                                                <p class='text-dark gbrsoal'><?= $soal['pertanyaan'] ?></p>
+                                                                
+                                                                <?php if ($soal['tipe_soal'] === 'Pilihan Ganda'): 
+                                                                    $options = [
+                                                                        'A' => $soal['pilihan_1'],
+                                                                        'B' => $soal['pilihan_2'],
+                                                                        'C' => $soal['pilihan_3'],
+                                                                        'D' => $soal['pilihan_4']
+                                                                    ];
+                                                                    ?>
+                                                                    <?php foreach ($options as $key => $value): ?>
+                                                                        <div class="form-check radio-wrapper">
+                                                                            <input class="form-check-input" type="radio" 
+                                                                                   name="jawaban[<?= $nomer_soal ?>]" 
+                                                                                   value="<?= $key ?>" id="option-<?= $nomer_soal ?>-<?= $key ?>"
+                                                                                   <?= ($saved_answer === $key) ? 'checked' : '' ?>>
+                                                                            <label class="form-check-label" for="option-<?= $nomer_soal ?>-<?= $key ?>">
+                                                                                <?= $key ?>. <?= $value ?>
+                                                                            </label>
+                                                                        </div>
+                                                                    <?php endforeach; ?>
+                                                                    
+                                                                <?php elseif ($soal['tipe_soal'] === 'Pilihan Ganda Kompleks'): 
+                                                                    $options = [
+                                                                        'A' => $soal['pilihan_1'],
+                                                                        'B' => $soal['pilihan_2'],
+                                                                        'C' => $soal['pilihan_3'],
+                                                                        'D' => $soal['pilihan_4']
+                                                                    ];
+                                                                    $saved_answers = $saved_answer ? json_decode($saved_answer, true) : [];
+                                                                    $cleaned = preg_replace('#<(?!img\b)[^>]+>#i', '', $value);
+                                                                    ?>
+                                                                    <?php foreach ($options as $key => $value): ?>
+                                                                        <div class="form-check radio-wrapper">
+                                                                            <input class="form-check-input" type="checkbox" 
+                                                                                   name="jawaban[<?= $nomer_soal ?>][]" 
+                                                                                   value="<?= $key ?>" id="option-<?= $nomer_soal ?>-<?= $key ?>"
+                                                                                   <?= (in_array($key, (array)$saved_answers)) ? 'checked' : '' ?>>
+                                                                            <label class="form-check-label" for="option-<?= $nomer_soal ?>-<?= $key ?>">
+                                                                                <?= $key ?>. <?= $cleaned ?>
+                                                                            </label>
+                                                                        </div>
+                                                                    <?php endforeach; ?>
+                                                                    
+                                                                <?php elseif ($soal['tipe_soal'] === 'Menjodohkan'): 
+                                                                    $pasangan = explode('|', $soal['jawaban_benar']);
+                                                                    $saved_answers = $saved_answer ? json_decode($saved_answer, true) : [];
+                                                                    ?>
+                                                                    <table class='table table-bordered'>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Pilihan</th>
+                                                                                <th>Pasangan</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <?php foreach ($pasangan as $pair_index => $pair): ?>
+                                                                            <?php if (strpos($pair, ':') !== false): ?>
+                                                                                <?php 
+                                                                                [$kiri, $kanan] = explode(':', $pair, 2);
+                                                                                $kiri = trim($kiri);
+                                                                                $kanan = trim($kanan);
+                                                                                ?>
+                                                                                <tr>
+                                                                                    <td><?= $kiri ?></td>
+                                                                                    <td>
+                                                                                        <select class='form-select' name='jawaban[<?= $nomer_soal ?>][<?= $pair_index ?>]'>
+                                                                                            <option value=''>Pilih Jawaban</option>
+                                                                                            <?php foreach ($pasangan as $opt_index => $option): ?>
+                                                                                                <?php if (strpos($option, ':') !== false): ?>
+                                                                                                    <?php 
+                                                                                                    [$opt_kiri, $opt_kanan] = explode(':', $option, 2);
+                                                                                                    $opt_kanan = trim($opt_kanan);
+                                                                                                    ?>
+                                                                                                    <option value='<?= $opt_kanan ?>' 
+                                                                                                        <?= (isset($saved_answers[$pair_index]) && $saved_answers[$pair_index] === $opt_kanan) ? 'selected' : '' ?>>
+                                                                                                        <?= $opt_kanan ?>
+                                                                                                    </option>
+                                                                                                <?php endif; ?>
+                                                                                            <?php endforeach; ?>
+                                                                                        </select>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            <?php endif; ?>
+                                                                        <?php endforeach; ?>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    
+                                                                <?php elseif ($soal['tipe_soal'] === 'Benar/Salah'): 
+                                                                    $opsi = [];
+                                                                    for ($i = 1; $i <= 4; $i++) {
+                                                                        $opsi_nama = 'pilihan_' . $i;
+                                                                        $nilai = $soal[$opsi_nama];
+                                                                        if (!empty($nilai)) {
+                                                                            $opsi[] = $nilai;
+                                                                        }
+                                                                    }
+                                                                    $saved_answers = $saved_answer ? json_decode($saved_answer, true) : [];
+                                                                    ?>
+                                                                    <table class='table table-bordered tabelgambar'>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Pernyataan</th>
+                                                                                <th style='width:100px;text-align:center'>Benar</th>
+                                                                                <th style='width:100px;text-align:center'>Salah</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <?php foreach ($opsi as $opsi_index => $nilai): ?>
+                                                                            <tr>
+                                                                                <td><?= $nilai ?></td>
+                                                                                <td class="radio-cell" style='text-align:center'>
+                                                                                &emsp;&emsp;<input class='form-check-input' type='radio' 
+                                                                                           name='jawaban[<?= $nomer_soal ?>][<?= $opsi_index ?>]' 
+                                                                                           value='Benar'
+                                                                                           <?= (isset($saved_answers[$opsi_index]) && $saved_answers[$opsi_index] === 'Benar') ? 'checked' : '' ?>>
+                                                                                </td>
+                                                                                <td class="radio-cell" style='text-align:center'>
+                                                                                &emsp;&emsp;<input class='form-check-input' type='radio' 
+                                                                                           name='jawaban[<?= $nomer_soal ?>][<?= $opsi_index ?>]' 
+                                                                                           value='Salah'
+                                                                                           <?= (isset($saved_answers[$opsi_index]) && $saved_answers[$opsi_index] === 'Salah') ? 'checked' : '' ?>>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach; ?>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    
+                                                                <?php elseif ($soal['tipe_soal'] === 'Uraian'): ?>
+                                                                    <textarea class="form-control" name="jawaban[<?= $nomer_soal ?>]" rows="4" 
+                                                                        placeholder="Tulis jawaban Anda di sini..."><?= $saved_answer ? $saved_answer : '' ?></textarea>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                            
+                                            <div class="navigation-buttons">
+                                                <button type="button" class="btn btn-secondary" id="prevBtn">
+                                                    <i class="fas fa-arrow-left"></i> Prev
+                                                </button>
+                                                
+                                                <button type="button" class="btn btn-primary" id="nextBtn">
+                                                    Next <i class="fas fa-arrow-right"></i>
+                                                </button>
+                                                
+                                                <button type="submit" class="btn btn-success" id="submitBtn" style="display:none;">
+                                                    Selesai Ujian <i class="fas fa-check"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>       
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <footer class="footer mt-auto py-3 bg-dark sticky-bottom">
+        <div class="container-fluid">
+            <div class="row text-grey">
+                <div class="col-6 text-start">
+                    <p class="mb-0">
+                    <a href="#" id="enc" style="color:grey;"></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../assets/adminkit/static/js/app.js"></script>
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/sweetalert.js"></script>
+    <script src="../assets/datatables/datatables.js"></script>
+    <script>
+        // Inisialisasi variabel
+        let currentQuestion = 1;
+        const totalQuestions = <?= $total_soal ?>;
+        
+        // Fungsi untuk menampilkan soal tertentu
+        function showQuestion(questionNumber) {
+            // Sembunyikan semua soal
+            document.querySelectorAll('.question-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // Tampilkan soal yang dipilih
+            const questionElement = document.getElementById(`question-${questionNumber}`);
+            if (questionElement) {
+                questionElement.classList.add('active');
+            }
+            
+            // Update nomor soal di header
+            document.getElementById('currentQuestionNumber').textContent = 
+                questionNumber.toString().padStart(2, '0');
+            
+            // Update tombol navigasi
+            updateNavigationButtons(questionNumber);
+            
+            // Update tombol navigasi soal
+            updateQuestionNavButtons(questionNumber);
+            
+            // Scroll ke atas soal
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Fungsi untuk update tombol navigasi (prev/next)
+        function updateNavigationButtons(questionNumber) {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Tampilkan/sembunyikan tombol prev
+            if (questionNumber <= 1) {
+                prevBtn.style.visibility = 'hidden';
+            } else {
+                prevBtn.style.visibility = 'visible';
+            }
+            
+            // Tampilkan/sembunyikan tombol next/submit
+            if (questionNumber >= totalQuestions) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+        
+        // Timer function dengan auto-save
+        function startTimer(duration, display) {
+            var timer = duration, hours, minutes, seconds;
+            var lastSaveTime = 0;
+            
+            var timerInterval = setInterval(function () {
+                hours = parseInt(timer / 3600, 10);
+                minutes = parseInt((timer % 3600) / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                
+                display.textContent = hours + ":" + minutes + ":" + seconds;
+                
+                // Auto-save setiap 1 menit (60 detik)
+                var currentTime = duration - timer;
+                if (currentTime - lastSaveTime >= 60 && currentTime > 0) {
+                    lastSaveTime = currentTime;
+                    autoSaveJawaban();
+                }
+                
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('examForm').submit();
+                }
+            }, 1000);
+        }
+        
+        // Fungsi untuk auto-save jawaban
+        function autoSaveJawaban() {
+            const formData = new FormData(document.getElementById('examForm'));
+            formData.append('auto_save', 'true');
+            
+            fetch('simpan_jawaban.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    showAutoSaveStatus();
+                    updateAnsweredQuestions();
+                } else {
+                    console.error('Gagal menyimpan jawaban otomatis');
+                }
+            })
+            .catch(error => {
+                console.error('Error saat auto-save:', error);
+            });
+        }
+        
+        // Tampilkan notifikasi auto-save
+        function showAutoSaveStatus() {
+            const statusElement = document.getElementById('autoSaveStatus');
+            statusElement.style.display = 'block';
+            setTimeout(() => {
+                statusElement.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Event listener untuk tombol navigasi
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        });
+        
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        });
+        
+        // Event listener untuk input jawaban (untuk update status jawaban)
+        document.addEventListener('change', function(e) {
+            if (e.target.matches('input[type="radio"], input[type="checkbox"], input[type="text"], textarea, select')) {
+                updateAnsweredQuestions();
+            }
+        });
+        
+        // Handle form submit untuk selesai ujian
+        document.getElementById('examForm').addEventListener('submit', function(e) {
+            const submitButton = e.submitter;
+            if (submitButton.id === 'submitBtn') {
+                e.preventDefault();
+                
+                // Tampilkan konfirmasi sebelum submit akhir
+                Swal.fire({
+                    title: 'Selesai Ujian?',
+                    text: "Anda tidak dapat mengubah jawaban setelah mengirim!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Selesai!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form secara normal
+                        this.submit();
+                    }
+                });
+            }
+        });
+        
+        // Start timer when DOM is ready
+        window.addEventListener('DOMContentLoaded', function () {
+            var duration = 3600; // 1 hour in seconds
+            var display = document.querySelector('#time');
+            if (display) startTimer(duration, display);
+            
+            // Tampilkan soal pertama
+            showQuestion(1);
+            
+            // Update status jawaban yang sudah diisi
+            updateAnsweredQuestions();
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var base64Text = "<?php echo $encryptedText; ?>"; 
+            if(base64Text) {
+                var decodedText = atob(base64Text); 
+                document.getElementById("enc").innerHTML = decodedText; 
+            }
+        });
+
+        function checkIfEncDeleted() {
+            var encElement = document.getElementById("enc");
+            if (!encElement) {
+                window.location.href = "../error_page.php";  
+            }
+        }
+        setInterval(checkIfEncDeleted, 500);
+    </script>
+</body>
+</html>

@@ -2,8 +2,8 @@
 include '../koneksi/koneksi.php';
 
 $id_soal = 1; // Uji coba tetap pada id_soal = 1
-$id_siswa = 3;
-$kode_soal = '';
+$id_siswa = 1;
+$kode_soal = 'SR9-01';
 
 // Ambil kode_soal
 $q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE id_soal = '$id_soal'");
@@ -11,7 +11,7 @@ $data_soal = mysqli_fetch_assoc($q_soal);
 $kode_soal = $data_soal['kode_soal'];
 
 // Ambil satu jawaban siswa
-$q_jawaban = mysqli_query($koneksi, "SELECT * FROM jawaban_siswa WHERE kode_soal = '$kode_soal' AND id_siswa='$id_siswa ' ");
+$q_jawaban = mysqli_query($koneksi, "SELECT * FROM jawaban_siswa WHERE kode_soal = '$kode_soal' AND id_siswa='$id_siswa'");
 $data_jawaban = mysqli_fetch_assoc($q_jawaban);
 $jawaban_siswa = $data_jawaban['jawaban_siswa'] ?? '';
 
@@ -19,6 +19,32 @@ $jawaban_siswa = $data_jawaban['jawaban_siswa'] ?? '';
 $q_kunci = mysqli_query($koneksi, "SELECT kunci FROM soal WHERE id_soal = '$id_soal'");
 $data_kunci = mysqli_fetch_assoc($q_kunci);
 $kunci = $data_kunci['kunci'] ?? '';
+
+function removeCommasOutsideBrackets($str) {
+    $result = '';
+    $in_brackets = false;
+
+    for ($i = 0; $i < strlen($str); $i++) {
+        $char = $str[$i];
+
+        if ($char === '[') {
+            $in_brackets = true;
+            $result .= $char;
+        } elseif ($char === ']') {
+            $in_brackets = false;
+            $result .= $char;
+        } elseif ($char === ',' && !$in_brackets) {
+            // koma di luar [], abaikan (hilangkan)
+            continue;
+        } else {
+            $result .= $char;
+        }
+    }
+
+    return $result;
+}
+
+$kuncifix = removeCommasOutsideBrackets($kunci);
 
 // Ekstrak semua blok [no:jawaban...]
 preg_match_all('/\[(.*?)\]/', $kunci, $kunci_matches);
@@ -34,6 +60,15 @@ $nilai_total = 0;
 $nilai_per_soal = $total_soal > 0 ? 100 / $total_soal : 0;
 $kurang_tepat = [];
 
+// Parsing jawaban siswa ke array asosiatif [nomor_soal => isi_jawaban]
+$jawaban_siswa_arr = [];
+foreach ($jawaban_array as $item) {
+    if (strpos($item, ':') !== false) {
+        list($nomer_jawab, $isi_jawab) = explode(':', $item, 2);
+        $jawaban_siswa_arr[$nomer_jawab] = $isi_jawab;
+    }
+}
+
 echo "<h3>Judul Soal: $kode_soal</h3>";
 echo "<p>Jumlah Soal: $total_soal</p>";
 echo "<table border='1' cellpadding='5' cellspacing='0'>";
@@ -42,10 +77,8 @@ echo "<tr><th>No</th><th>Kunci</th><th>Jawaban Siswa</th><th>Skor</th></tr>";
 for ($i = 0; $i < $total_soal; $i++) {
     list($nomer_kunci, $isi_kunci) = explode(':', $kunci_array[$i], 2);
 
-    $isi_jawaban = '';
-    if (isset($jawaban_array[$i])) {
-        list($nomer_jawab, $isi_jawaban) = explode(':', $jawaban_array[$i], 2);
-    }
+    // Ambil jawaban siswa berdasarkan nomor soal
+    $isi_jawaban = $jawaban_siswa_arr[$nomer_kunci] ?? '';
 
     // Ambil tipe soal dari butir_soal
     $q_tipe = mysqli_query($koneksi, "SELECT tipe_soal FROM butir_soal WHERE kode_soal = '$kode_soal' AND nomer_soal = '$nomer_kunci'");
@@ -109,7 +142,7 @@ for ($i = 0; $i < $total_soal; $i++) {
             }
         }
     } else {
-        // Tipe biasa
+        // Tipe biasa (pilihan ganda biasa, uraian, dll)
         if (strtolower(trim($isi_kunci)) === strtolower(trim($isi_jawaban))) {
             $skor = $nilai_per_soal;
         }
