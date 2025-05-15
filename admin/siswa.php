@@ -216,6 +216,15 @@ Swal.fire({
 });
 </script>
 <?php unset($_SESSION['error']); endif; ?>
-
+<?php if (isset($_SESSION['alert'])): ?>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Gagal!',
+    text: '<?= $_SESSION['error']; ?>',
+    confirmButtonColor: '#dc3545'
+});
+</script>
+<?php unset($_SESSION['error']); endif; ?>
 </body>
 </html>

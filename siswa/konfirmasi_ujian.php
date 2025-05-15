@@ -140,7 +140,7 @@ $_SESSION['konfirmasi_ujian'] = true;
             flex: 1;
             overflow-y: auto;
             padding-bottom: 20px;
-            margin-bottom: 70px;
+            margin-bottom: 120px;
         }
 </style>
 </head>
@@ -148,7 +148,7 @@ $_SESSION['konfirmasi_ujian'] = true;
     <div style="height: 80px;"></div>
     <div class="wrapper">
         <div class="main">
-            <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top shadow-sm">
+            <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top" style="border-bottom:5px solid <?php echo htmlspecialchars($warna_tema); ?> !important;">
                 <!-- Logo -->
                 <a class="navbar-brand ms-3" href="#">
                     <img src="../assets/images/cbticon.png" alt="Logo" style="height: 36px;">
@@ -162,7 +162,7 @@ $_SESSION['konfirmasi_ujian'] = true;
                                 <i class="fas fa-user-circle me-1"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><span class="dropdown-item-text"><strong><?php echo $nama_siswa; ?><?php echo $warna_tema;?></strong></span></li>
+                                <li><span class="dropdown-item-text"><strong><?php echo $nama_siswa; ?></strong></span></li>
                                 <li><span class="dropdown-item-text"><?php echo $kelas_siswa . $rombel_siswa; ?></span></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger btnLogout" href="logout.php"><i class="fas fa-sign-out-alt me-1"></i> Logout</a></li>
@@ -238,6 +238,17 @@ $_SESSION['konfirmasi_ujian'] = true;
             </main>
         </div>
     </div>
+    <footer class="footer mt-auto py-3 bg-dark sticky-bottom">
+                                                    <div class="container-fluid">
+                                                        <div class="row text-grey">
+                                                            <div class="col-6 text-start">
+                                                                <p class="mb-0">
+                                                                <a href="#" id="enc" style="color:grey;"></a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </footer>
 <?php include '../inc/js.php'; ?>
 <?php include '../inc/check_activity.php'; ?>
 <script>

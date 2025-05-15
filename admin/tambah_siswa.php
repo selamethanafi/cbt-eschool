@@ -15,11 +15,7 @@ if (isset($_POST['submit'])) {
     // Cek apakah username sudah ada
     $cek = mysqli_query($koneksi, "SELECT * FROM siswa WHERE username = '$username'");
     if (mysqli_num_rows($cek) > 0) {
-        $_SESSION['alert'] = [
-            'type' => 'error',
-            'title' => 'Gagal!',
-            'message' => 'Username sudah digunakan!'
-        ];
+        $_SESSION['error'] = 'Username sudah digunakan.';
         header('Location: siswa.php');
         exit;
     }
@@ -35,13 +31,9 @@ if (isset($_POST['submit'])) {
               VALUES ('$nama', '$username', '$final', '$kelas', '$rombel')";
     mysqli_query($koneksi, $query);
 
-    $_SESSION['alert'] = [
-        'type' => 'success',
-        'title' => 'Berhasil!',
-        'message' => 'Siswa berhasil ditambahkan!'
-    ];
-    header('Location: siswa.php');
-    exit;
+    $_SESSION['success'] = 'Berhasil menambahkan siswa.';
+        header('Location: siswa.php');
+        exit;
 }
 ?>
 <!DOCTYPE html>

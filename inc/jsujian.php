@@ -1,28 +1,4 @@
-                                                <div id="toast-container">
-                                                    <?php 
-                                                        $ujian_terdekat = mysqli_query($koneksi, "SELECT * FROM soal WHERE tanggal > NOW() ORDER BY tanggal ASC");
-
-                                                        if (mysqli_num_rows($ujian_terdekat) > 0):
-                                                            mysqli_data_seek($ujian_terdekat, 0); 
-                                                            while ($ujian = mysqli_fetch_assoc($ujian_terdekat)): 
-                                                        ?>
-                                                            <div class="toast align-items-center text-white bg-primary border-0 mb-2 opacity-0"
-                                                                role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="6000">
-                                                                <div class="d-flex">
-                                                                    <div class="toast-body">
-                                                                        <i class="far fa-calendar-check me-2"></i>
-                                                                        Ujian <?php echo $ujian['kode_soal']; ?> dimulai pada <?php echo date('d M Y', strtotime($ujian['tanggal'])); ?>
-                                                                    </div>
-                                                                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                                                                        data-bs-dismiss="toast" aria-label="Close"></button>
-                                                                </div>
-                                                            </div>
-                                                        <?php 
-                                                            endwhile;
-                                                        endif;
-                                                        ?>
-                                                </div>
-                                                <footer class="footer mt-auto py-3 bg-dark">
+<footer class="footer mt-auto py-3 bg-dark sticky-bottom">
                                                     <div class="container-fluid">
                                                         <div class="row text-grey">
                                                             <div class="col-6 text-start">
@@ -33,7 +9,7 @@
                                                         </div>
                                                     </div>
                                                 </footer>
-<script src="../assets/adminkit/static/js/app.js"></script>
+                                                <script src="../assets/adminkit/static/js/app.js"></script>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/sweetalert.js"></script>
 <script src="../assets/datatables/datatables.js"></script>
@@ -158,5 +134,123 @@ document.querySelectorAll('.btnLogout').forEach(function(el) {
             }
         });
     });
+});
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // === TIMER FUNCTION ===
+    function startTimer(duration, display) {
+        var timer = duration, hours, minutes, seconds;
+        setInterval(function () {
+            hours = parseInt(timer / 3600, 10);
+            minutes = parseInt((timer % 3600) / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = hours + ":" + minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                document.getElementById('examForm').submit();
+            }
+        }, 1000);
+    }
+
+    // Mulai timer saat DOM siap
+    var duration = 3600; // 1 jam
+    var display = document.querySelector('#time');
+    if (display) startTimer(duration, display);
+
+    // === TOGGLE NAVIGATION ===
+    function toggleQuestionNav() {
+        const nav = document.getElementById('questionNav');
+        const icon = document.getElementById('navToggleIcon');
+        
+        nav.classList.toggle('collapsed');
+        icon.innerHTML = nav.classList.contains('collapsed') ?
+            '<i class="fas fa-chevron-up"></i>' :
+            '<i class="fas fa-chevron-down"></i>';
+        
+        localStorage.setItem('navCollapsed', nav.classList.contains('collapsed'));
+    }
+    window.toggleQuestionNav = toggleQuestionNav; // Expose function if used in onclick
+
+    const nav = document.getElementById('questionNav');
+    const icon = document.getElementById('navToggleIcon');
+    const isCollapsed = localStorage.getItem('navCollapsed') === 'true';
+
+    if (nav && icon) {
+        if (isCollapsed) {
+            nav.classList.add('collapsed');
+            icon.innerHTML = '<i class="fas fa-chevron-up"></i>';
+        } else {
+            nav.classList.remove('collapsed');
+            icon.innerHTML = '<i class="fas fa-chevron-down"></i>';
+        }
+    }
+
+    // === NAVBAR SCROLL EFFECT ===
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 10) {
+                navbar.classList.add('bg-white', 'shadow');
+            } else {
+                navbar.classList.remove('bg-white', 'shadow');
+            }
+        });
+    }
+
+    // === HANDLE BUTTON CLICK + AJAX SAVE ===
+    const navButtons = document.querySelectorAll('.btn-navigate, .question-nav-btn');
+    navButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            const formData = new FormData(document.getElementById('examForm'));
+            const spinnerStartTime = Date.now();
+            const minDisplayTime = 100;
+
+            fetch('simpan_jawaban.php', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                const elapsed = Date.now() - spinnerStartTime;
+                const remainingTime = Math.max(0, minDisplayTime - elapsed);
+                setTimeout(() => {
+                    window.location.href = this.getAttribute('href');
+                }, remainingTime);
+            }).catch(error => {
+                console.error('Error:', error);
+                document.getElementById('loadingOverlay').style.display = 'none';
+                alert('Gagal menyimpan jawaban. Silakan coba lagi.');
+            });
+        });
+    });
+
+    // === PAGE VISIT TRACKING ===
+    function sendPageVisitToServer() {
+        var pageURL = window.location.href;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "update_activity.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send("page_url=" + encodeURIComponent(pageURL));
+    }
+
+    sendPageVisitToServer(); // on first load
+    window.addEventListener('popstate', sendPageVisitToServer); // on navigation (SPA)
+
+    // === ACTIVITY PING PER 60 DETIK ===
+    setInterval(function () {
+        fetch('update_activity.php');
+    }, 60000);
+});
+
+// === HIDE LOADING SPINNER SETELAH FULL LOAD ===
+window.addEventListener('load', function () {
+    document.getElementById('loadingOverlay').style.display = 'none';
 });
 </script>
