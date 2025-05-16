@@ -20,14 +20,14 @@ $waktu_sisa = 0;
 $get_waktu = mysqli_query($koneksi, "SELECT waktu_sisa, jawaban_siswa FROM jawaban_siswa WHERE kode_soal='$kode_soal' AND id_siswa='$id_siswa'");
 $jawaban_tersimpan = [];
 if ($w = mysqli_fetch_assoc($get_waktu)) {
-    $waktu_sisa = (int)$w['waktu_sisa'];
+    $waktu_sisa = (int) $w['waktu_sisa'];
     $string_jawaban = $w['jawaban_siswa'];
     preg_match_all('/\[(\d+):([^\]]+)\]/', $string_jawaban, $matches, PREG_SET_ORDER);
-    
+
     foreach ($matches as $match) {
-        $nomor = (int)$match[1];
+        $nomor = (int) $match[1];
         $jawab = $match[2];
-        
+
         // Handle matching questions
         if (strpos($jawab, '|') !== false && substr_count($jawab, ':') > 1) {
             $pasangan = explode('|', $jawab);
@@ -43,12 +43,12 @@ if ($w = mysqli_fetch_assoc($get_waktu)) {
                 }
             }
             $jawaban_tersimpan[$nomor] = $hasil;
-        } 
+        }
         // Other question types remain unchanged
         elseif (strpos($jawab, '|') !== false) {
             $jawaban_tersimpan[$nomor] = explode('|', $jawab);
-        } elseif (strpos($jawab, ',') !== false) {
-            $jawaban_tersimpan[$nomor] = explode(',', $jawab);
+        } elseif (strpos(haystack: $jawab, needle: ',') !== false) {
+            $jawaban_tersimpan[$nomor] = explode(separator: ',', string: $jawab);
         } else {
             $jawaban_tersimpan[$nomor] = $jawab;
         }
@@ -65,10 +65,28 @@ while ($s = mysqli_fetch_assoc($q)) {
 $q_tema = mysqli_query($koneksi, "SELECT warna_tema FROM pengaturan WHERE id = 1 LIMIT 1");
 $data_tema = mysqli_fetch_assoc($q_tema);
 $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
+$query = "SELECT jawaban_siswa FROM jawaban_siswa 
+          WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'";
+$result = mysqli_query($koneksi, $query);
+$row = mysqli_fetch_assoc($result);
+
+// Parse format [1:...][2:...]
+$jawaban = $row['jawaban_siswa'] ?? '';
+preg_match_all('/\[(\d+):([^\]]*)\]/', $jawaban, $matches, PREG_SET_ORDER);
+
+// Buat array status
+$status_soal = [];
+foreach ($matches as $match) {
+    $nomor = $match[1];
+    $isi = trim($match[2]);
+    $status_soal[$nomor] = !empty($isi); // true jika terisi, false jika kosong
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,23 +101,29 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+
         .question-container.active {
             display: block;
+            min-height: 300px;
         }
+
         .navigation-buttons {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
         }
+
         .question-nav {
             display: flex;
             flex-wrap: wrap;
             gap: 5px;
             margin-top: 15px;
         }
+
         .question-nav button {
             min-width: 40px;
         }
+
         #loadingOverlay {
             display: none;
             position: fixed;
@@ -107,13 +131,14 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 9999;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             color: white;
         }
+
         #autoSaveStatus {
             display: none;
             background-color: #28a745;
@@ -123,29 +148,35 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
             margin-bottom: 10px;
             text-align: center;
         }
+
         .timer {
             font-weight: bold;
             font-size: 1.2rem;
             color: #dc3545;
-            background-color: rgba(255,255,255,0.2);
+            background-color: rgba(255, 255, 255, 0.2);
             padding: 5px 10px;
             border-radius: 4px;
         }
+
         .question-text {
             font-weight: bold;
             margin-bottom: 15px;
         }
+
         .answer-option {
             margin-bottom: 8px;
         }
+
         .matching-table {
             width: 100%;
             margin-bottom: 15px;
         }
+
         .matching-table td {
             padding: 8px;
             vertical-align: middle;
         }
+
         .essay-textarea {
             width: 100%;
             min-height: 150px;
@@ -153,11 +184,101 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
             border-radius: 5px;
             border: 1px solid #ced4da;
         }
+
         .submit-btn {
             margin-top: 20px;
         }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        .spinner-container {
+            text-align: center;
+            color: white;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        * Animasi smooth */ .question-nav-container {
+            transition: all 0.3s ease;
+        }
+
+        /* Scrollbar custom */
+        .question-nav-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .question-nav-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .question-nav-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .question-nav-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #0d6efd;
+            /* Warna outline biru */
+            color: #0d6efd;
+            background: transparent;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Tombol sudah diisi */
+        .nav-btn[data-answered="true"] {
+            background-color: #198754;
+            /* Warna hijau */
+            border-color: #198754;
+            color: white;
+        }
+
+        /* Indicator dot untuk soal terjawab */
+        .nav-btn[data-answered="true"]::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 10px;
+            height: 10px;
+            background: #ffc107;
+            /* Warna kuning */
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+
+        /* Hover Effect */
+        .nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
+
 <body>
     <!-- Loading Spinner Overlay -->
     <div id="loadingOverlay">
@@ -171,7 +292,8 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
     <div style="height: 75px;"></div>
     <div class="wrapper">
         <div class="main">
-            <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top" style="border-bottom:5px solid <?php echo htmlspecialchars($warna_tema); ?> !important;">
+            <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top"
+                style="border-bottom:5px solid <?php echo htmlspecialchars($warna_tema); ?> !important;">
                 <a class="navbar-brand ms-3" href="#">
                     <img src="../assets/images/cbticon.png" alt="Logo" style="height: 36px;">
                 </a>
@@ -179,18 +301,17 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
                     <ul class="navbar-nav navbar-align ms-auto">
                         <!-- Timer Display -->
                         <li class="nav-item me-3">
-                            <div class="timer">
-                                <i class="fas fa-clock me-1"></i>
-                                <span id="timer">00:00</span>
-                            </div>
                         </li>
                         <li class="nav-item me-3">
-                            <div class="dropdown-toggle" href="#" style="font-weight: bold; font-size: 1.2rem;" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="dropdown-toggle" href="#" style="font-weight: bold; font-size: 1.2rem;"
+                                id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user-circle me-1"></i>
                             </div>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-wide">
-                                <li><span class="dropdown-item-text"><strong><?php echo $nama_siswa; ?></strong></span></li>
-                                <li><span class="dropdown-item-text"><?php echo $kelas_siswa . $rombel_siswa; ?></span></li>
+                                <li><span class="dropdown-item-text"><strong><?php echo $nama_siswa; ?></strong></span>
+                                </li>
+                                <li><span class="dropdown-item-text"><?php echo $kelas_siswa . $rombel_siswa; ?></span>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -201,72 +322,86 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
                     <div class="row">
                         <div class="col-12">
                             <div class="card shadow">
-                                <div class="card-header text-white" style="background-color:<?= htmlspecialchars($warna_tema) ?>">
+                                <div class="card-header text-white"
+                                    style="background-color:<?= htmlspecialchars($warna_tema) ?>">
                                     <h4 class="mb-0 text-white">
-                                        <b style="background-color:#1c1c1c;padding:5px;border-radius:10px 0 0 10px;">No.</b>
-                                        <b style="background-color:#ffffff;padding:5px;border-radius:0 10px 10px 0;color:black;" id="currentQuestionNumber">1</b>
+                                        <b style="background-color:#ffffff;padding:5px;border-radius:20px;color:black;"
+                                            id="currentQuestionNumber">Nomor</b>
+                                        <b style="background-color:#ffffff;padding:5px;border-radius:20px;color:red;"
+                                            id="currentQuestionNumber"><i class="fas fa-clock me-1"></i>
+                                            <span id="timer">00:00</span></b>
                                     </h4>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body wadah">
                                     <div id="autoSaveStatus"></div>
                                     <form id="formUjian" method="post" action="simpan_jawaban.php">
-                                        
-                                        <input type="hidden" name="kode_soal" value="<?= htmlspecialchars($kode_soal) ?>">
-                                        
-                                        <?php foreach ($soal as $index => $s): 
+
+                                        <input type="hidden" name="kode_soal"
+                                            value="<?= htmlspecialchars($kode_soal) ?>">
+
+                                        <?php foreach ($soal as $index => $s):
                                             $no = $s['nomer_soal'];
                                             $tipe = $s['tipe_soal'];
                                             $pertanyaan = $s['pertanyaan'];
                                             $jawaban = $jawaban_tersimpan[$no] ?? '';
-                                        ?>
-                                        <div class="question-container" id="soal-<?= $index ?>">
-                                            <div class="question-text">Soal <?= $no ?>: <?= $pertanyaan ?></div>
-                                            
-                                            <?php if ($tipe == 'Pilihan Ganda'): ?>
-                                                <?php for ($i = 1; $i <= 4; $i++): ?>
-                                                    <div class="answer-option">
-                                                        <label class="form-check-label">
-                                                            <input type="radio" class="form-check-input" name="jawaban[<?= $no ?>]" value="pilihan_<?= $i ?>" <?= $jawaban == 'pilihan_'.$i ? 'checked' : '' ?>> 
-                                                            <?= $s['pilihan_'.$i] ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endfor; ?>
-                                            
-                                            <?php elseif ($tipe == 'Pilihan Ganda Kompleks'): 
-                                                $jawaban = is_array($jawaban) ? $jawaban : [];
                                             ?>
-                                                <?php for ($i = 1; $i <= 4; $i++): ?>
-                                                    <div class="answer-option">
-                                                        <label class="form-check-label">
-                                                            <input type="checkbox" class="form-check-input" name="jawaban[<?= $no ?>][]" value="pilihan_<?= $i ?>" <?= in_array('pilihan_'.$i, $jawaban) ? 'checked' : '' ?>> 
-                                                            <?= $s['pilihan_'.$i] ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endfor; ?>
-                                            
-                                            <?php elseif ($tipe == 'Benar/Salah'): ?>
-                                                <table class="matching-table">
-                                                    <?php for ($i = 1; $i <= 4; $i++): 
-                                                        $pernyataan = $s['pilihan_'.$i];
-                                                        if (trim($pernyataan) == '') continue;
-                                                        $jawab = $jawaban[$i - 1] ?? '';
-                                                    ?>
-                                                    <tr>
-                                                        <td><?= $pernyataan ?></td>
-                                                        <td>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="jawaban[<?= $no ?>][<?= $i ?>]" value="Benar" <?= $jawab == 'Benar' ? 'checked' : '' ?>>
-                                                                <label class="form-check-label">Benar</label>
-                                                            </div>
-                                                            <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="radio" name="jawaban[<?= $no ?>][<?= $i ?>]" value="Salah" <?= $jawab == 'Salah' ? 'checked' : '' ?>>
-                                                                <label class="form-check-label">Salah</label>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                            <div class="question-container" id="soal-<?= $index ?>">
+                                                <div class="question-text">Soal <?= $no ?>: <?= $pertanyaan ?></div>
+
+                                                <?php if ($tipe == 'Pilihan Ganda'): ?>
+                                                    <?php for ($i = 1; $i <= 4; $i++): ?>
+                                                        <div class="answer-option">
+                                                            <label class="form-check-label">
+                                                                <input type="radio" class="form-check-input"
+                                                                    name="jawaban[<?= $no ?>]" value="pilihan_<?= $i ?>"
+                                                                    <?= $jawaban == 'pilihan_' . $i ? 'checked' : '' ?>>
+                                                                <?= $s['pilihan_' . $i] ?>
+                                                            </label>
+                                                        </div>
                                                     <?php endfor; ?>
-                                                </table>
-                                            
+
+                                                <?php elseif ($tipe == 'Pilihan Ganda Kompleks'):
+                                                    $jawaban = is_array($jawaban) ? $jawaban : [];
+                                                    ?>
+                                                    <?php for ($i = 1; $i <= 4; $i++): ?>
+                                                        <div class="answer-option">
+                                                            <label class="form-check-label">
+                                                                <input type="checkbox" class="form-check-input"
+                                                                    name="jawaban[<?= $no ?>][]" value="pilihan_<?= $i ?>"
+                                                                    <?= in_array('pilihan_' . $i, $jawaban) ? 'checked' : '' ?>>
+                                                                <?= $s['pilihan_' . $i] ?>
+                                                            </label>
+                                                        </div>
+                                                    <?php endfor; ?>
+
+                                                <?php elseif ($tipe == 'Benar/Salah'): ?>
+                                                    <table class="matching-table">
+                                                        <?php for ($i = 1; $i <= 4; $i++):
+                                                            $pernyataan = $s['pilihan_' . $i];
+                                                            if (trim($pernyataan) == '')
+                                                                continue;
+                                                            $jawab = $jawaban[$i - 1] ?? '';
+                                                            ?>
+                                                            <tr>
+                                                                <td><?= $pernyataan ?></td>
+                                                                <td>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio"
+                                                                            name="jawaban[<?= $no ?>][<?= $i ?>]" value="Benar"
+                                                                            <?= $jawab == 'Benar' ? 'checked' : '' ?>>
+                                                                        <label class="form-check-label">Benar</label>
+                                                                    </div>
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input class="form-check-input" type="radio"
+                                                                            name="jawaban[<?= $no ?>][<?= $i ?>]" value="Salah"
+                                                                            <?= $jawab == 'Salah' ? 'checked' : '' ?>>
+                                                                        <label class="form-check-label">Salah</label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        <?php endfor; ?>
+                                                    </table>
+
                                                 <?php elseif ($tipe == 'Menjodohkan'): ?>
                                                     <?php
                                                     $pasangan = array_filter(explode('|', $s['jawaban_benar'])); // Filter empty values
@@ -280,73 +415,118 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
                                                             ];
                                                         }
                                                     }
-                                                    
+
                                                     // Pastikan hanya 3 item yang valid
                                                     $opsi = array_slice($opsi, 0, 3);
-                                                    
+
                                                     $jawaban_soal = (is_array($jawaban) && count($jawaban) === count($opsi)) ? $jawaban : [];
                                                     $daftar_kanan = array_values(array_unique(array_column($opsi, 'kanan')));
                                                     shuffle($daftar_kanan);
                                                     ?>
                                                     <?php foreach ($opsi as $p): ?>
-                                                        <input type="hidden" name="soal_kiri[<?= $no ?>][]" value="<?= htmlspecialchars($p['kiri']) ?>">
+                                                        <input type="hidden" name="soal_kiri[<?= $no ?>][]"
+                                                            value="<?= htmlspecialchars($p['kiri']) ?>">
                                                     <?php endforeach; ?>
                                                     <table class="matching-table">
-                                                        <?php foreach ($opsi as $idx => $p): 
+                                                        <?php foreach ($opsi as $idx => $p):
                                                             $kiri = $p['kiri'];
                                                             $selected = $jawaban_soal[$kiri] ?? '';
-                                                        ?>
-                                                        <tr>
-                                                            <td><?= htmlspecialchars($kiri) ?></td>
-                                                            <td>
-                                                                <select name="jawaban[<?= $no ?>][<?= $kiri ?>]" class="form-select">
-                                                                    <option value="">-- Pilih --</option>
-                                                                    <?php foreach ($daftar_kanan as $dk): ?>
-                                                                        <option value="<?= htmlspecialchars($dk) ?>" 
-                                                                            <?= ($selected === $dk) ? 'selected' : '' ?>>
-                                                                            <?= htmlspecialchars($dk) ?>
-                                                                        </option>
-                                                                    <?php endforeach; ?>
-                                                                </select>
-                                                            </td>
-                                                        </tr>
+                                                            ?>
+                                                            <tr>
+                                                                <td><?= htmlspecialchars($kiri) ?></td>
+                                                                <td>
+                                                                    <select name="jawaban[<?= $no ?>][<?= $kiri ?>]"
+                                                                        class="form-select">
+                                                                        <option value="">-- Pilih --</option>
+                                                                        <?php foreach ($daftar_kanan as $dk): ?>
+                                                                            <option value="<?= htmlspecialchars($dk) ?>"
+                                                                                <?= ($selected === $dk) ? 'selected' : '' ?>>
+                                                                                <?= htmlspecialchars($dk) ?>
+                                                                            </option>
+                                                                        <?php endforeach; ?>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
                                                         <?php endforeach; ?>
                                                     </table>
 
-                                            
-                                            <?php elseif ($tipe == 'Uraian'): ?>
-                                                <textarea name="jawaban[<?= $no ?>]" class="essay-textarea"><?= htmlspecialchars($jawaban) ?></textarea>
-                                            <?php endif; ?>
-                                        </div>
-                                        <?php endforeach; ?>
-                                        
-                                        <!-- Di bagian HTML (ganti bagian navigation-buttons) -->
-                                            <div class="navigation-buttons">
-                                                <div style="flex: 1;">
-                                                    <!-- Tombol Sebelumnya (kiri) -->
-                                                    <button type="button" class="btn btn-primary" id="prevBtn" onclick="prevSoal()" style="display: none; float: left;">
-                                                        <i class="fas fa-arrow-left me-1"></i> Sebelumnya
-                                                    </button>
-                                                </div>
-                                                <div style="flex: 1; text-align: right;">
-                                                    <!-- Tombol Berikutnya/Selesai (kanan) -->
-                                                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextSoal()" style="float: right;">
-                                                        Berikutnya <i class="fas fa-arrow-right ms-1"></i>
-                                                    </button>
-                                                    <button type="submit" class="btn btn-success" id="submitBtn" style="display: none; float: right;">
-                                                        <i class="fas fa-check-circle me-1"></i> Selesai
-                                                    </button>
-                                                </div>
+
+                                                <?php elseif ($tipe == 'Uraian'): ?>
+                                                    <textarea name="jawaban[<?= $no ?>]"
+                                                        class="essay-textarea"><?= htmlspecialchars($jawaban) ?></textarea>
+                                                <?php endif; ?>
                                             </div>
-                                        
-                                        <div class="question-nav">
-                                            <?php foreach ($soal as $index => $s): ?>
-                                                <button type="button" class="btn btn-outline-primary" onclick="tampilSoal(<?= $index ?>)">
-                                                    <?= $s['nomer_soal'] ?>
+                                        <?php endforeach; ?>
+
+                                        <!-- Di bagian HTML (ganti bagian navigation-buttons) -->
+                                        <div class="navigation-buttons">
+                                            <div style="flex: 1;">
+                                                <!-- Tombol Sebelumnya (kiri) -->
+                                                <button type="button" class="btn btn-primary" id="prevBtn"
+                                                    onclick="prevSoal()" style="display: none; float: left;">
+                                                    <i class="fas fa-arrow-left me-1"></i> Sebelumnya
                                                 </button>
-                                            <?php endforeach; ?>
+                                            </div>
+                                            <div style="flex: 1; text-align: right;">
+                                                <!-- Tombol Berikutnya/Selesai (kanan) -->
+                                                <button type="button" class="btn btn-primary" id="nextBtn"
+                                                    onclick="nextSoal()" style="float: right;">
+                                                    Berikutnya <i class="fas fa-arrow-right ms-1"></i>
+                                                </button>
+                                                <button type="submit" class="btn btn-success" id="submitBtn"
+                                                    style="display: none; float: right;">
+                                                    <i class="fas fa-check-circle me-1"></i> Selesai
+                                                </button>
+                                            </div>
                                         </div>
                                     </form>
+                                    <button id="navToggle" class="btn btn-primary rounded-circle"
+                                        style="border:none;position: fixed; bottom: 80px; right: 20px; z-index: 1000; width: 50px; height: 50px;background-color:<?php echo htmlspecialchars($warna_tema); ?>;">
+                                        <i class="fas fa-list"></i>
+                                    </button>
+                                    <!-- Modifikasi question-nav -->
+                                    <div class="question-nav-container"
+                                        style="position: fixed; bottom: 100px; right: 20px; z-index: 1100; max-height: 60vh;max-width: 59vh; overflow-y: auto; display: none;">
+                                        <div class="card shadow">
+                                            <div class="card-header text-white"
+                                                style="background-color:<?php echo htmlspecialchars($warna_tema); ?>;">
+                                                Daftar Soal
+                                                <button type="button" class="close text-black" aria-label="Close"
+                                                    style="float: right;">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <div class="question-nav d-flex flex-wrap" style="gap: 5px;">
+                                                    <?php
+                                                    // Parse jawaban yang tersimpan
+                                                    if (isset($jawaban_siswa)) {
+                                                        preg_match_all('/\[(\d+):([^\]]*)\]/', $jawaban_siswa, $matches, PREG_SET_ORDER);
+                                                    }
+                                                    $jawaban_status = [];
+                                                    foreach ($matches as $match) {
+                                                        $nomor = $match[1];
+                                                        $jawaban_status[$nomor] = !empty(trim($match[2]));
+                                                    }
+
+                                                    foreach ($soal as $index => $s):
+                                                        $no = $s['nomer_soal'];
+                                                        $is_answered = $jawaban_status[$no] ?? false;
+                                                        ?>
+                                                        <button type="button"
+                                                            class="btn btn-sm <?= $is_answered ? 'btn-primary' : 'btn-secondary' ?>"
+                                                            onclick="tampilSoal(<?= $index ?>); hideNav()"
+                                                            data-nomor="<?= $no ?>">
+                                                            <strong style="font-size:16px;"><?= $no ?></strong>
+                                                            <?php if ($is_answered): ?>
+                                
+                                                            <?php endif; ?>
+                                                        </button>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -366,18 +546,18 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
             </div>
         </div>
     </footer>
-    
+    <?php include '../inc/check_activity.php'; ?>
     <script src="../assets/adminkit/static/js/app.js"></script>
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/sweetalert.js"></script>
     <script src="../assets/datatables/datatables.js"></script>
-    
+
     <script>
         // Timer Logic
         let waktu = <?= $waktu_sisa > 0 ? ($waktu_sisa * 60) : 3600 ?>;
         let soalAktif = 0;
         const totalSoal = <?= count($soal) ?>;
-        
+
         // Tampilkan loading overlay saat pertama kali load
         document.getElementById('loadingOverlay').style.display = 'flex';
         setTimeout(() => {
@@ -389,7 +569,7 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
             let detik = waktu % 60;
             document.getElementById('timer').innerText = `${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
             waktu--;
-            
+
             if (waktu < 0) {
                 // Waktu habis, submit form
                 document.getElementById('formUjian').submit();
@@ -397,77 +577,177 @@ $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
         }
 
         function updateNavigationButtons() {
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
 
-        // Atur tombol Sebelumnya
-        prevBtn.style.display = soalAktif > 0 ? 'block' : 'none';
+            // Atur tombol Sebelumnya
+            prevBtn.style.display = soalAktif > 0 ? 'block' : 'none';
 
-        // Atur tombol Berikutnya/Selesai
-        if (soalAktif < totalSoal - 1) {
-            nextBtn.style.display = 'block';
-            submitBtn.style.display = 'none';
-        } else {
-            nextBtn.style.display = 'none';
-            submitBtn.style.display = 'block';
+            // Atur tombol Berikutnya/Selesai
+            if (soalAktif < totalSoal - 1) {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            }
         }
-    }
 
-    function tampilSoal(index) {
-        document.querySelectorAll('.question-container').forEach(s => s.classList.remove('active'));
-        const soal = document.getElementById('soal-' + index);
-        if (soal) {
-            soal.classList.add('active');
-            soalAktif = index;
-            let base = <?= $soal[0]['nomer_soal'] ?>;
-let currentNo = base + index;
-document.getElementById('currentQuestionNumber').textContent = currentNo.toString().padStart(2, '0');
+        function tampilSoal(index) {
+            document.querySelectorAll('.question-container').forEach(s => s.classList.remove('active'));
+            const soal = document.getElementById('soal-' + index);
+            if (soal) {
+                soal.classList.add('active');
+                soalAktif = index;
+                let base = <?= $soal[0]['nomer_soal'] ?>;
+                let currentNo = base + index;
+                document.getElementById('currentQuestionNumber').textContent = currentNo.toString().padStart(2, '0');
 
-            updateNavigationButtons();
-            
-            // Scroll ke atas soal
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+                updateNavigationButtons();
+
+                // Scroll ke atas soal
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
         }
-    }
 
-    function nextSoal() {
-        if (soalAktif < totalSoal - 1) {
-            tampilSoal(soalAktif + 1);
+        function nextSoal() {
+            if (soalAktif < totalSoal - 1) {
+                tampilSoal(soalAktif + 1);
+            }
         }
-    }
 
-    function prevSoal() {
-        if (soalAktif > 0) {
-            tampilSoal(soalAktif - 1);
+        function prevSoal() {
+            if (soalAktif > 0) {
+                tampilSoal(soalAktif - 1);
+            }
         }
-    }
 
-    // Panggil pertama kali untuk inisialisasi
-    updateNavigationButtons();
+
+
+        // Panggil pertama kali untuk inisialisasi
+        updateNavigationButtons();
         // Tampilkan soal pertama saat halaman dimuat
-        window.onload = function() {
+        window.onload = function () {
             tampilSoal(0);
             setInterval(updateTimer, 1000);
             updateTimer(); // Panggil sekali untuk inisialisasi
         };
 
         /// Auto save setiap 30 detik
-setInterval(() => {
-    const form = document.getElementById('formUjian');
-    const data = new FormData(form);
-    data.append('waktu_sisa', Math.ceil(waktu / 60));
+        setInterval(() => {
+            const form = document.getElementById('formUjian');
+            const data = new FormData(form);
+            data.append('waktu_sisa', Math.ceil(waktu / 60));
 
-    fetch('autosave_jawaban.php', {
-        method: 'POST',
-        body: data
-    })
-    .then(res => res.text())
-    .then(txt => console.log('Auto-saved:', txt));
-}, 30000);
+            fetch('autosave_jawaban.php', {
+                method: 'POST',
+                body: data
+            })
+                .then(res => res.text())
+                .then(txt => console.log('Auto-saved:', txt));
+        }, 60000);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var base64Text = "<?php echo $encryptedText; ?>";
+            if (base64Text) {
+                var decodedText = atob(base64Text);
+                document.getElementById("enc").innerHTML = decodedText;
+            }
+        });
+
+        function checkIfEncDeleted() {
+            var encElement = document.getElementById("enc");
+
+            if (!encElement) {
+                window.location.href = "../error_page.php";
+            }
+        }
+        setInterval(checkIfEncDeleted, 500);
+        // Simpan fungsi asli yang sudah ada
+        const originalNextSoal = nextSoal;
+        const originalPrevSoal = prevSoal;
+
+        // Override fungsi nextSoal dengan spinner
+        nextSoal = function () {
+            // Tampilkan spinner
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            // Jalankan fungsi original setelah 1 detik
+            setTimeout(() => {
+                originalNextSoal.call(this);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 300);
+        };
+
+        // Override fungsi prevSoal dengan spinner
+        prevSoal = function () {
+            // Tampilkan spinner
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            // Jalankan fungsi original setelah 1 detik
+            setTimeout(() => {
+                originalPrevSoal.call(this);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 300);
+        };
+
+        const originalTampilSoal = tampilSoal;
+
+        // 2. Override fungsi tampilSoal dengan spinner
+        tampilSoal = function (index) {
+            // Tampilkan spinner
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            // Jalankan fungsi original setelah 1 detik
+            setTimeout(() => {
+                originalTampilSoal(index);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 300);
+        };
+
+        // 3. Update event handler untuk semua tombol navigasi
+        document.querySelectorAll('.question-nav button').forEach(button => {
+            button.addEventListener('click', function () {
+                // Tampilkan spinner segera setelah diklik
+                document.getElementById('loadingOverlay').style.display = 'flex';
+            });
+        });
+
+        // Fungsi toggle navigasi
+        function toggleNav() {
+            const navContainer = document.querySelector('.question-nav-container');
+            if (navContainer.style.display === 'none') {
+                navContainer.style.display = 'block';
+            } else {
+                navContainer.style.display = 'none';
+            }
+        }
+
+        // Fungsi sembunyikan navigasi
+        function hideNav() {
+            document.querySelector('.question-nav-container').style.display = 'none';
+        }
+
+        // Event listeners
+        document.getElementById('navToggle').addEventListener('click', toggleNav);
+        document.querySelector('.card-header button.close').addEventListener('click', hideNav);
+
+        // Atur ukuran tombol navigasi soal
+        window.addEventListener('load', function () {
+            const buttons = document.querySelectorAll('.question-nav button');
+            buttons.forEach(btn => {
+                btn.style.width = '40px';
+                btn.style.height = '40px';
+                btn.style.display = 'flex';
+                btn.style.alignItems = 'center';
+                btn.style.justifyContent = 'center';
+            });
+        });
     </script>
 </body>
+
 </html>
