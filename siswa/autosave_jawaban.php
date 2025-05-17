@@ -3,6 +3,18 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/datasiswa.php';
 
+// Fungsi bantu untuk validasi jawaban Benar/Salah
+function allBenarSalah($arr) {
+    if (!is_array($arr)) return false;
+    foreach ($arr as $v) {
+        $v = strtolower(trim($v));
+        if (!in_array($v, ['benar', 'salah'])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // [2] Dapatkan semua input
 $kode_soal = mysqli_real_escape_string($koneksi, $_POST['kode_soal'] ?? '');
 $waktu_sisa = (int)($_POST['waktu_sisa'] ?? 0);
@@ -34,11 +46,11 @@ foreach ($jawaban as $nomor => $nilai) {
             }
         }
         $format_jawaban[] = "[$nomor:" . implode('|', $pasangan) . "]";
-        continue; // selesai proses soal ini, lanjut soal berikutnya
+        continue;
     }
 
     // 4b. Jawaban Benar/Salah (array indexed dengan nilai 'Benar' atau 'Salah')
-    if (is_array($nilai) && isset($nilai[0]) && in_array(strtolower($nilai[0]), ['benar','salah'])) {
+    if (allBenarSalah($nilai)) {
         $format_jawaban[] = "[$nomor:" . implode('|', array_map('trim', $nilai)) . "]";
         continue;
     }

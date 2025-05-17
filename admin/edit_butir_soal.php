@@ -371,8 +371,12 @@ exit();
 <?php include '../inc/js.php'; ?>
     <script src="../assets/summernote/summernote-bs5.js"></script>
     <script>
+        //function bersihkanHTML(html) {
+            //return html.replace(/<(?!\/?(img|br)\b)[^>]*>/gi, '');
+        //}
+
         $(document).ready(function () {
-    var configEditor = {
+        var configEditor = {
         height: 300,
         callbacks: {
             // Hanya tempel teks polos (tanpa format)
@@ -404,8 +408,7 @@ exit();
                     }
                 });
             },
-
-            // Hapus <p><br></p> awal saat inisialisasi
+             // Hapus <p><br></p> awal saat inisialisasi
             onInit: function () {
                 var $editor = $(this).next('.note-editor').find('.note-editable');
                 setTimeout(function () {
@@ -415,6 +418,7 @@ exit();
                     }
                 }, 10);
             }
+
         },
         toolbar: [
             ['insert', ['picture']],
@@ -422,17 +426,11 @@ exit();
         ]
     };
 
-    // Untuk pertanyaan
-    $('#pertanyaan').summernote(configEditor);
-
-    // Untuk pilihan, kompleks, dan bs
-    $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4')
-        .summernote({
-            ...configEditor,
-            height: 80
-        });
-});
-
+            $('#pertanyaan').summernote(configEditor);
+            $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4').summernote({
+                ...configEditor,
+                height: 80
+            });
 
             // Tampilkan fields sesuai tipe soal saat halaman dimuat
             showFields('<?= $butir_soal["tipe_soal"] ?>');

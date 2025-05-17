@@ -42,7 +42,7 @@ if (strtolower($data_soal['status']) !== 'aktif') {
     $_SESSION['warning_message'] = 'Soal Tidak Aktif! Silakan hubungi pengawas.';
     header('Location: ujian.php');
     exit;
-}
+} 
 // Cek jika tanggal hari ini kurang dari tanggal soal (belum dimulai)
 $tanggal_soal = $data_soal['tanggal'];
 $tanggal_hari_ini = date('Y-m-d');

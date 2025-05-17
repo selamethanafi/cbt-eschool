@@ -1,53 +1,35 @@
 <?php
 include '../koneksi/koneksi.php';
 
-$id_soal = 1; // Uji coba tetap pada id_soal = 1
+$id_soal = 1;
 $id_siswa = 1;
-$kode_soal = 'SR9-01';
 
-// Ambil kode_soal
 $q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE id_soal = '$id_soal'");
 $data_soal = mysqli_fetch_assoc($q_soal);
 $kode_soal = $data_soal['kode_soal'];
 
-// Ambil satu jawaban siswa
 $q_jawaban = mysqli_query($koneksi, "SELECT * FROM jawaban_siswa WHERE kode_soal = '$kode_soal' AND id_siswa='$id_siswa'");
 $data_jawaban = mysqli_fetch_assoc($q_jawaban);
 $jawaban_siswa = $data_jawaban['jawaban_siswa'] ?? '';
 
-// Ambil kunci jawaban
-$q_kunci = mysqli_query($koneksi, "SELECT kunci FROM soal WHERE id_soal = '$id_soal'");
-$data_kunci = mysqli_fetch_assoc($q_kunci);
-$kunci = $data_kunci['kunci'] ?? '';
+$kunci = $data_soal['kunci'] ?? '';
 
 function removeCommasOutsideBrackets($str) {
     $result = '';
     $in_brackets = false;
-
     for ($i = 0; $i < strlen($str); $i++) {
         $char = $str[$i];
-
-        if ($char === '[') {
-            $in_brackets = true;
-            $result .= $char;
-        } elseif ($char === ']') {
-            $in_brackets = false;
-            $result .= $char;
-        } elseif ($char === ',' && !$in_brackets) {
-            // koma di luar [], abaikan (hilangkan)
-            continue;
-        } else {
-            $result .= $char;
-        }
+        if ($char === '[') $in_brackets = true;
+        if ($char === ']') $in_brackets = false;
+        if ($char === ',' && !$in_brackets) continue;
+        $result .= $char;
     }
-
     return $result;
 }
 
 $kuncifix = removeCommasOutsideBrackets($kunci);
 
-// Ekstrak semua blok [no:jawaban...]
-preg_match_all('/\[(.*?)\]/', $kunci, $kunci_matches);
+preg_match_all('/\[(.*?)\]/', $kuncifix, $kunci_matches);
 preg_match_all('/\[(.*?)\]/', $jawaban_siswa, $jawaban_matches);
 
 $kunci_array = $kunci_matches[1];
@@ -56,11 +38,10 @@ $jawaban_array = $jawaban_matches[1];
 $total_soal = count($kunci_array);
 $benar = 0;
 $salah = 0;
+$kurang_lengkap = 0;
 $nilai_total = 0;
 $nilai_per_soal = $total_soal > 0 ? 100 / $total_soal : 0;
-$kurang_tepat = [];
 
-// Parsing jawaban siswa ke array asosiatif [nomor_soal => isi_jawaban]
 $jawaban_siswa_arr = [];
 foreach ($jawaban_array as $item) {
     if (strpos($item, ':') !== false) {
@@ -69,26 +50,25 @@ foreach ($jawaban_array as $item) {
     }
 }
 
-echo "<h3>Judul Soal: $kode_soal</h3>";
+echo "<h3>Kode Soal: $kode_soal</h3>";
 echo "<p>Jumlah Soal: $total_soal</p>";
 echo "<table border='1' cellpadding='5' cellspacing='0'>";
-echo "<tr><th>No</th><th>Kunci</th><th>Jawaban Siswa</th><th>Skor</th></tr>";
+echo "<tr><th>No</th><th>Kunci</th><th>Jawaban Siswa</th><th>Skor</th><th>Status</th></tr>";
 
 for ($i = 0; $i < $total_soal; $i++) {
     list($nomer_kunci, $isi_kunci) = explode(':', $kunci_array[$i], 2);
-
-    // Ambil jawaban siswa berdasarkan nomor soal
     $isi_jawaban = $jawaban_siswa_arr[$nomer_kunci] ?? '';
 
-    // Ambil tipe soal dari butir_soal
     $q_tipe = mysqli_query($koneksi, "SELECT tipe_soal FROM butir_soal WHERE kode_soal = '$kode_soal' AND nomer_soal = '$nomer_kunci'");
     $data_tipe = mysqli_fetch_assoc($q_tipe);
     $tipe_soal = strtolower($data_tipe['tipe_soal'] ?? '');
 
     $skor = 0;
+    $status = '';
+    $jawaban_ditulis = '-';
+    $detail_skor = '';
 
-    // Proses berdasarkan tipe soal
-    if ($tipe_soal === 'benar/salah' || $tipe_soal === 'menjodohkan') {
+    if (in_array($tipe_soal, ['benar/salah', 'menjodohkan'])) {
         $kunci_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_kunci)));
         $jawaban_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_jawaban)));
         $jumlah_kunci = count($kunci_opsi);
@@ -102,74 +82,78 @@ for ($i = 0; $i < $total_soal; $i++) {
         }
 
         $skor = $jumlah_benar * $nilai_per_opsi;
-        if ($skor > 0 && $skor < $nilai_per_soal) {
-            $kurang_tepat[] = $nomer_kunci;
+        $jawaban_ditulis = implode(' | ', $jawaban_opsi);
+
+        if ($jumlah_benar == $jumlah_kunci) {
+            $status = "✅ Benar"; $benar++;
+        } elseif ($jumlah_benar == 0) {
+            $status = "❌ Salah"; $salah++;
+        } else {
+            $status = "⚠️ Kurang Lengkap"; $kurang_lengkap++;
         }
 
+        $detail_skor = "Skor: " . round($skor, 2) . "<br>Nilai/Opsi: " . round($nilai_per_opsi, 2) . "<br>Benar: $jumlah_benar / $jumlah_kunci";
+
     } elseif ($tipe_soal === 'pilihan ganda kompleks') {
-        // Normalisasi separator
-        $isi_kunci = str_replace('|', ',', $isi_kunci);
-        $isi_jawaban = str_replace('|', ',', $isi_jawaban);
+        $kunci_opsi = array_map('strtolower', array_map('trim', explode(',', str_replace('|', ',', $isi_kunci))));
+        $jawaban_opsi = array_map('strtolower', array_map('trim', explode(',', str_replace('|', ',', $isi_jawaban))));
+        $jawaban_ditulis = implode(', ', $jawaban_opsi);
+        $jumlah_kunci = count($kunci_opsi);
 
-        $kunci_opsi = array_map('strtolower', array_map('trim', explode(',', $isi_kunci)));
-        $jawaban_opsi = array_map('strtolower', array_map('trim', explode(',', $isi_jawaban)));
+        $jumlah_benar = 0;
+        $ada_salah = false;
 
-        // Cek validitas jawaban
-        $valid = true;
-        foreach ($jawaban_opsi as $jawaban) {
-            if (!in_array($jawaban, $kunci_opsi)) {
-                $valid = false;
+        foreach ($jawaban_opsi as $opsi) {
+            if (in_array($opsi, $kunci_opsi)) {
+                $jumlah_benar++;
+            } else {
+                $ada_salah = true;
                 break;
             }
         }
 
-        if (!$valid) {
+        if ($ada_salah) {
             $skor = 0;
+            $status = "❌ Salah"; $salah++;
         } else {
-            $jumlah_kunci = count($kunci_opsi);
-            $nilai_per_opsi = $nilai_per_soal / $jumlah_kunci;
-            $jumlah_benar = 0;
-
-            foreach ($kunci_opsi as $opsi) {
-                if (in_array($opsi, $jawaban_opsi)) {
-                    $jumlah_benar++;
-                }
-            }
-
-            $skor = $jumlah_benar * $nilai_per_opsi;
-            if ($skor > 0 && $skor < $nilai_per_soal) {
-                $kurang_tepat[] = $nomer_kunci;
+            if ($jumlah_benar == $jumlah_kunci) {
+                $skor = $nilai_per_soal;
+                $status = "✅ Benar"; $benar++;
+            } else {
+                $nilai_per_opsi = $nilai_per_soal / $jumlah_kunci;
+                $skor = $jumlah_benar * $nilai_per_opsi;
+                $status = "⚠️ Kurang Lengkap"; $kurang_lengkap++;
             }
         }
+
+        $detail_skor = "Skor: " . round($skor, 2) . "<br>Benar: $jumlah_benar / $jumlah_kunci";
+
     } else {
-        // Tipe biasa (pilihan ganda biasa, uraian, dll)
         if (strtolower(trim($isi_kunci)) === strtolower(trim($isi_jawaban))) {
             $skor = $nilai_per_soal;
+            $status = "✅ Benar"; $benar++;
+        } else {
+            $skor = 0;
+            $status = "❌ Salah"; $salah++;
         }
-    }
-
-    if ($skor > 0) {
-        $benar++;
-    } else {
-        $salah++;
+        $detail_skor = "Skor: " . round($skor, 2);
+        $jawaban_ditulis = $isi_jawaban ?: '-';
     }
 
     $nilai_total += $skor;
 
-    echo "<tr>
-        <td>$nomer_kunci</td>
-        <td>$isi_kunci</td>
-        <td>" . ($isi_jawaban ?: '-') . "</td>
-        <td>" . round($skor, 2) . "</td>
-    </tr>";
+    echo "<tr>";
+    echo "<td>$nomer_kunci</td>";
+    echo "<td>$isi_kunci</td>";
+    echo "<td>$jawaban_ditulis</td>";
+    echo "<td>$detail_skor</td>";
+    echo "<td>$status</td>";
+    echo "</tr>";
 }
 
 $nilai_akhir = round($nilai_total, 2);
-$jumlah_kurang_tepat = count($kurang_tepat);
 
 echo "</table>";
-echo "<p>Jawaban Benar: $benar</p>";
-echo "<p>Jawaban Salah: $salah</p>";
-echo "<p>Jawaban Kurang Lengkap: $jumlah_kurang_tepat</p>";
+echo "<p>Benar: $benar | Salah: $salah | Kurang Lengkap: $kurang_lengkap</p>";
 echo "<p><strong>Nilai Akhir: $nilai_akhir%</strong></p>";
 ?>

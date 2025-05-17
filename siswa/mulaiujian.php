@@ -6,11 +6,75 @@ check_login('siswa');
 include '../inc/datasiswa.php';
 
 $kode_soal = $_POST['kode_soal'] ?? $_GET['kode_soal'] ?? '';
-
+$token = $_POST['token'];
+$id_siswa = $_POST['id_siswa'];
 
 if (empty($kode_soal)) {
     $_SESSION['alert'] = true;
     $_SESSION['warning_message'] = 'Kode soal Tidak Tersedia';
+    header('Location: ujian.php');
+    exit;
+}
+// Siapkan query update dengan prepared statement
+$stmt = $koneksi->prepare("UPDATE jawaban_siswa SET status_ujian = 'Aktif' WHERE id_siswa = ? AND kode_soal = ?");
+if (!$stmt) {
+    die("Prepare gagal: " . $koneksi->error);
+}
+
+// Binding parameter dan eksekusi
+$stmt->bind_param("ss", $id_siswa, $kode_soal);
+if (!$stmt->execute()) {
+    die("Eksekusi gagal: " . $stmt->error);
+}
+// Ambil data siswa
+$q_siswa = mysqli_query($koneksi, "SELECT * FROM siswa WHERE id_siswa = '$id_siswa'");
+$data_siswa = mysqli_fetch_assoc($q_siswa);
+// Ambil data soal
+$q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
+$data_soal = mysqli_fetch_assoc($q_soal);
+
+if (!$data_soal) {
+    $_SESSION['alert'] = true;
+    $_SESSION['warning_message'] = 'Soal tidak ditemukan.';
+    header('Location: ujian.php');
+    exit;
+}
+
+if (strtolower($data_soal['status']) !== 'aktif') {
+    $_SESSION['alert'] = true;
+    $_SESSION['warning_message'] = 'Soal Tidak Aktif! Silakan hubungi pengawas.';
+    header('Location: ujian.php');
+    exit;
+} 
+// Cek jika tanggal hari ini kurang dari tanggal soal (belum dimulai)
+$tanggal_soal = $data_soal['tanggal'];
+$tanggal_hari_ini = date('Y-m-d');
+
+if (strtotime($tanggal_hari_ini) < strtotime($tanggal_soal)) {
+    $_SESSION['alert'] = true;
+    $_SESSION['warning_message'] = 'Soal belum bisa dikerjakan. Jadwal ujian belum dimulai.';
+    header('Location: ujian.php');
+    exit;
+}
+if ($kelas_siswa !== $data_soal['kelas']) {
+    $_SESSION['alert'] = true;
+    $_SESSION['warning_message'] = 'Soal ini bukan untuk kelas kamu.';
+    header('Location: ujian.php');
+    exit;
+}
+if ($token !== $data_soal['token']) {
+    $_SESSION['alert'] = true;
+    $_SESSION['warning_message'] = 'Token tidak Valid.';
+    header('Location: ujian.php');
+    exit;
+}
+
+
+// Cek jika siswa sudah pernah mengerjakan
+$q_nilai = mysqli_query($koneksi, "SELECT * FROM nilai WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'");
+if (mysqli_num_rows($q_nilai) > 0) {
+    $_SESSION['alert'] = true;
+    $_SESSION['warning_message'] = 'Kamu sudah mengerjakan soal ini.';
     header('Location: ujian.php');
     exit;
 }

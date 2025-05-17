@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 16, 2025 at 03:48 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Waktu pembuatan: 17 Bulan Mei 2025 pada 03.13
+-- Versi server: 10.4.32-MariaDB
+-- Versi PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admins`
+-- Struktur dari tabel `admins`
 --
 
 CREATE TABLE `admins` (
@@ -36,7 +36,7 @@ CREATE TABLE `admins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `admins`
+-- Dumping data untuk tabel `admins`
 --
 
 INSERT INTO `admins` (`id`, `username`, `nama_admin`, `password`, `created_at`) VALUES
@@ -45,7 +45,7 @@ INSERT INTO `admins` (`id`, `username`, `nama_admin`, `password`, `created_at`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `butir_soal`
+-- Struktur dari tabel `butir_soal`
 --
 
 CREATE TABLE `butir_soal` (
@@ -64,7 +64,7 @@ CREATE TABLE `butir_soal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `butir_soal`
+-- Dumping data untuk tabel `butir_soal`
 --
 
 INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `tipe_soal`, `pilihan_1`, `pilihan_2`, `pilihan_3`, `pilihan_4`, `jawaban_benar`, `status_soal`, `created_at`) VALUES
@@ -73,7 +73,7 @@ INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `t
 (127, 1, 'BINDO7-1', '<img style=\"\" src=\"../gambar/681f9154c46e8.png\" id=\"gbrsoal\"><br>\r\n\r\nPertanyaan<br>', 'Pilihan Ganda', 'asd', 'asdasd', 'asdasd', 'asd', 'pilihan_4', 'Aktif', '2025-05-07 22:06:43'),
 (129, 2, 'BINDO7-1', '<img style=\"\" src=\"../gambar/681f91673e178.png\" id=\"gbrsoal\"><br>', 'Pilihan Ganda Kompleks', 'sfsdf', 'sdfsdf', 'sdfsdf', 'sdfsdf', 'pilihan_1,pilihan_2,pilihan_4', 'Aktif', '2025-05-07 22:07:14'),
 (131, 3, 'BINDO7-1', '<img style=\"\" src=\"../gambar/681f917dea885.png\" id=\"gbrsoal\"><br>', 'Benar/Salah', 'sdfsdf', 'sdfsdfs', 'sdfsdf', 'gdfdgdg', 'Benar|Benar|Salah|Benar', 'Aktif', '2025-05-07 22:08:01'),
-(132, 4, 'BINDO7-1', 'Siapakah Saya ?<br><img src=\"../gambar/681fe67a0b85d.jpeg\" id=\"gbrsoal\" style=\"width: 25%;\">', 'Menjodohkan', NULL, NULL, NULL, NULL, 'pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3', 'Aktif', '2025-05-07 22:08:29'),
+(132, 4, 'BINDO7-1', '<p>Hdslkhfl lksdgsdg</p><p><img src=\"http://localhost/cbt-eschool/gambar/6827d97c1ea52.png\" id=\"gbrsoal\" style=\"\"><br></p><p></p><p></p>', 'Menjodohkan', NULL, NULL, NULL, NULL, 'Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat', 'Aktif', '2025-05-07 22:08:29'),
 (133, 5, 'BINDO7-1', 'perhatikan tabel<br><img src=\"../gambar/681fe8683b18f.png\" id=\"gbrsoal\" style=\"\">', 'Uraian', NULL, NULL, NULL, NULL, 'icon', 'Aktif', '2025-05-07 22:08:42'),
 (137, 2, 'SR9-01', 'jawab pernyataan berikut', 'Benar/Salah', 'Seni rupa terapan diciptakan hanya untuk dinikmati', 'Seni rupa terapan diciptakan hanya untuk dijual', '', '', 'Salah|Salah', 'Aktif', '2025-05-07 22:18:24'),
 (152, 3, 'SR9-01', 'jawab petanyaan', 'Benar/Salah', 'weq', 'asd', '', '', 'Benar|Salah', 'Aktif', '2025-05-07 23:06:04'),
@@ -86,7 +86,7 @@ INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `t
 (166, 12, 'SR9-01', 'aat saya mau xvxvcsdf dsfsdf<br><img src=\"../gambar/681f9a391e6ec.png\" id=\"gbrsoal\" style=\"\">', 'Uraian', NULL, NULL, NULL, NULL, 'asdsasd', 'Aktif', '2025-05-10 18:21:20'),
 (167, 13, 'SR9-01', 'sata juga mau makan<br><img src=\"../gambar/681f993b9b957.png\" id=\"gbrsoal\" style=\"\">', 'Pilihan Ganda', 'asdasd', 'asdasd', 'asdsad', 'asdasd', 'pilihan_2', 'Aktif', '2025-05-10 18:22:14'),
 (168, 6, 'BINDO7-1', 'saya juga akan membelinya<br><img src=\"../gambar/681f9d009ea6e.png\" id=\"gbrsoal\" style=\"width: 50%;\">', 'Benar/Salah', 'benar', 'afaf', '', '', 'Benar|Salah', 'Aktif', '2025-05-10 18:39:22'),
-(169, 7, 'BINDO7-1', '<br><img src=\"../gambar/681fe6fb5bf13.png\" id=\"gbrsoal\" style=\"\">', 'Pilihan Ganda Kompleks', 'azis', 'Gus Azis', 'Zais', 'Dadok', 'pilihan_1,pilihan_2,pilihan_3', 'Aktif', '2025-05-10 23:53:54'),
+(169, 7, 'BINDO7-1', '<p><img style=\"\" src=\"http://localhost/cbt-eschool/gambar/6827db2065333.png\" id=\"gbrsoal\"><br></p>', 'Pilihan Ganda Kompleks', 'azis', 'Gus Azis', 'Zais', 'Dadok', 'pilihan_1,pilihan_2,pilihan_3', 'Aktif', '2025-05-10 23:53:54'),
 (171, 1, 'IPA9-01', '<p>1. Perhatikan kejadian sehari-hari berikut ini!\r\n</p><p>(1) Bola basket menggelinding di lapangan basket.\r\n</p><p>(2) Budi menjatuhkan bola basket dari atas tangga ke lantai.\r\n</p><p>(3) Mobil mainan digerakkan dengan baterai.\r\n</p><p>(4) Tamia meluncur pada lintasannya.\r\nYang termasuk gerak lurus berubah beraturan ditunjukkan oleh nomor?</p>', 'Pilihan Ganda', '(1) dan (2)', '(2) dan (3)', '(3) dan (4)', '(1) dan (4)', 'pilihan_1', 'Aktif', '2025-05-13 12:42:24'),
 (172, 2, 'IPA9-01', '<br><img src=\"http://localhost/cbt-eschool/gambar/68233f7be9731.png\" id=\"gbrsoal\" style=\"width: 100%;\">', 'Benar/Salah', 'Setelah pembelahan meiosis, spermatogenesis menghasilkan 4 sel anak yang berukuransama, sedangkan oogenesis menghasilkan 4 sel anak yang berukuran tidak sama', 'Waktu   yang dibutuhkan   untuk   satu   proses   spermatogenesis lebih pendek jika dibandingkan dengan satu proses oogenesis', 'Spermatogenesis dan oogenesis terjadi ketika laki-laki dan perempuan memasuki masapubertas.', 'Dalam satu proses spermatogenesis dan oogenesis dihasilkan jutaan sel kelamin', 'Benar|Salah|Benar|Benar', 'Aktif', '2025-05-13 12:49:03'),
 (173, 3, 'IPA9-01', 'Perrhatikan bacaan berikut!Korpus luteum adalah badan folikel yang telah melepaskan sel telur pada saat ovulasi sehinggasering  disebut  sebagai  folikel  kosong.  Bagian  ini  berfungsi  untuk  menghasilkan  hormonprogesteron. Setelah hormon progesteron diproduksi, lapisan dinding rahim atau endometriumpada wanita mengalami pertumbuhan menebal.Perhatikan tabel ketebalan dinding rahim dan perubahan (fluktuasi) kadar hormon progesteronberikut.<br><img src=\"http://localhost/cbt-eschool/gambar/682340392f1c0.png\" id=\"gbrsoal\" style=\"\">', 'Pilihan Ganda Kompleks', 'Sekresi hormon progesteron meningkat setelah ovulasi kemudian menurun jika tidakterjadi pembuahan dan menyebabkan terjadinya menstruasi', 'Hormon progesteron segera disekresikan setelah selesai menstruasi dan menyebabkandinding rahim menebal secara perlahan', 'Tidak ada hormon progesteron pada saat menstruasi sehingga semua lapisan dindingrahim luruh', 'Sekresi hormon progesteron pada saat ovulasi paling tinggi sehingga dinding rahim palingtebal', 'pilihan_1,pilihan_2,pilihan_4', 'Aktif', '2025-05-13 12:52:22'),
@@ -97,7 +97,7 @@ INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `t
 -- --------------------------------------------------------
 
 --
--- Table structure for table `faq`
+-- Struktur dari tabel `faq`
 --
 
 CREATE TABLE `faq` (
@@ -107,7 +107,7 @@ CREATE TABLE `faq` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `faq`
+-- Dumping data untuk tabel `faq`
 --
 
 INSERT INTO `faq` (`id`, `question`, `answer`) VALUES
@@ -121,7 +121,7 @@ INSERT INTO `faq` (`id`, `question`, `answer`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jawaban_siswa`
+-- Struktur dari tabel `jawaban_siswa`
 --
 
 CREATE TABLE `jawaban_siswa` (
@@ -137,19 +137,19 @@ CREATE TABLE `jawaban_siswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `jawaban_siswa`
+-- Dumping data untuk tabel `jawaban_siswa`
 --
 
 INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_soal`, `jawaban_siswa`, `waktu_sisa`, `waktu_dijawab`, `status_ujian`) VALUES
 (2, 3, 'Agum Gumelar', 'SR9-01', '', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Benar],[4:Teknik Mozaik:Karya seni yang dibuat untuk dinikmati keindahannya, seperti lukisan|Seni Rupa Murni:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_2]', '54', '2025-05-10 16:10:29', 'Aktif'),
-(14, 1, 'Jokowi JK', 'SR9-01', '', '[1:pilihan_3][2:Salah,Salah][3:Salah,Benar][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][5:pilihan_1,pilihan_2,pilihan_3][6:Benar,Benar][7:pilihan_1,pilihan_2,pilihan_4][8:pilihan_1,pilihan_3][9:ewt][10:][11:Salah,Salah][12:ewt][13:pilihan_4]', '1', '2025-05-15 21:47:59', 'Non-Aktif'),
-(27, 20, 'Robi', 'SR9-01', '', '', '56', '2025-05-15 22:05:32', 'Non-Aktif'),
+(14, 1, 'Jokowi JK', 'SR9-01', '', '[1:pilihan_3][2:Benar|Salah][3:Benar|Benar][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][5:pilihan_1,pilihan_2][6:Salah|Benar][7:pilihan_2,pilihan_3,pilihan_4][8:pilihan_1,pilihan_2][9:ewt][10:saya jua:asdasd][11:Benar|Salah][12:asdsasd][13:pilihan_2]', '44', '2025-05-15 21:47:59', 'Aktif'),
+(27, 20, 'Robi', 'SR9-01', '', '[1:pilihan_2][2:Benar|Benar][3:Benar|Benar][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][5:pilihan_1,pilihan_2][6:Benar|Salah][9:][10:][12:][13:pilihan_2]', '43', '2025-05-15 22:05:32', 'Aktif'),
 (49, 4, 'Deddy ', 'SR9-01', '', '[1:pilihan_1][2:Benar,Salah][3:Salah,Benar][4:Teknik Mozaik:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Seni Rupa Murni:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Relief:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan][5:pilihan_1,pilihan_2,pilihan_3][6:Salah,Benar][7:pilihan_2,pilihan_3][9:][10:saya jua:asdasd][11:Salah,Benar][12:hvjhvkjg][13:pilihan_2]', '34', '2025-05-15 22:16:31', 'Non-Aktif');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nilai`
+-- Struktur dari tabel `nilai`
 --
 
 CREATE TABLE `nilai` (
@@ -170,7 +170,7 @@ CREATE TABLE `nilai` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pengaturan`
+-- Struktur dari tabel `pengaturan`
 --
 
 CREATE TABLE `pengaturan` (
@@ -184,16 +184,16 @@ CREATE TABLE `pengaturan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `pengaturan`
+-- Dumping data untuk tabel `pengaturan`
 --
 
 INSERT INTO `pengaturan` (`id`, `nama_aplikasi`, `logo_sekolah`, `warna_tema`, `waktu_sinkronisasi`, `sembunyikan_nilai`, `login_ganda`) VALUES
-(1, 'CBT-Eschool v.1.0.0', 'codelite2.png', '#606060', 60, 0, 'izinkan');
+(1, 'CBT-Eschool v.1.0.0', 'codelite2.png', '#787878', 60, 0, 'izinkan');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `profil`
+-- Struktur dari tabel `profil`
 --
 
 CREATE TABLE `profil` (
@@ -202,7 +202,7 @@ CREATE TABLE `profil` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `profil`
+-- Dumping data untuk tabel `profil`
 --
 
 INSERT INTO `profil` (`id`, `encrypt`) VALUES
@@ -211,7 +211,7 @@ INSERT INTO `profil` (`id`, `encrypt`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `siswa`
+-- Struktur dari tabel `siswa`
 --
 
 CREATE TABLE `siswa` (
@@ -229,11 +229,11 @@ CREATE TABLE `siswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `siswa`
+-- Dumping data untuk tabel `siswa`
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `session_token`, `last_activity`, `page_url`, `force_logout`) VALUES
-(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '0d8dc3dcd8a455942c1f28b5eb480bf1b236ed0076ef5dc9fad3e704a985fefd', '2025-05-16 06:43:55', 'http://localhost/cbt-eschool/siswa/mulaiujian.php', 0),
+(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '', NULL, 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '2025-05-12 23:31:49', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', '', '2025-05-12 23:31:58', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', '21de4e6987afb196892873b5e8992f3494c33f0f29872d5141328bd3de652771', '2025-05-16 08:43:46', 'http://localhost/cbt-eschool/siswa/mulaiujian.php#', 0),
@@ -244,13 +244,13 @@ INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, 
 (16, 'Denny', 'N2ugxO2xwJR74bjbZQv19nYrMFVFbi9JTEk5MFNDeVdITWxmM0E9PQ==', '641343', '8', 'F', 'Nonaktif', '', '2025-05-12 23:32:55', 'http://localhost/cbt-eschool/siswa/ujian.php', 1),
 (17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '252743', '8', 'D', 'Nonaktif', '', '2025-05-12 23:32:51', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (18, 'andy', '5IiPhwyWU7/GiyYe622atFErOVViUmNXOXRheVk0Z2U1V0tiK2c9PQ==', '876543', '8', 'D', 'Nonaktif', '', '2025-05-12 23:32:47', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(20, 'Robi', 'XpqGGiL6DfhOGnPqcV9EnUdLdTlEbzdwN1pyVE5wb2FJSStLdUE9PQ==', '252645', '9', 'G', 'Nonaktif', '', '2025-05-16 05:15:29', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
-(21, 'Intan', 'Ya+NHgRRNME9cYTmSRYUz2sxMS9tczlZMGJDaFd0NkN5TzErV0E9PQ==', '1241322', '7', 'A', 'Nonaktif', '', '2025-05-13 01:10:23', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0);
+(20, 'Robi', 'XpqGGiL6DfhOGnPqcV9EnUdLdTlEbzdwN1pyVE5wb2FJSStLdUE9PQ==', '252645', '9', 'G', 'Nonaktif', '', '2025-05-17 07:50:31', 'http://localhost/cbt-eschool/siswa/ujian.php', 0),
+(21, 'Intan', 'Ya+NHgRRNME9cYTmSRYUz2sxMS9tczlZMGJDaFd0NkN5TzErV0E9PQ==', '1241322', '7', 'B', 'Nonaktif', '', '2025-05-13 01:10:23', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `soal`
+-- Struktur dari tabel `soal`
 --
 
 CREATE TABLE `soal` (
@@ -267,12 +267,12 @@ CREATE TABLE `soal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `soal`
+-- Dumping data untuk tabel `soal`
 --
 
 INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `waktu_ujian`, `tanggal`, `status`, `kunci`, `token`) VALUES
-(1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-14', 'Aktif', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:pilihan_1,pilihan_2],[9:ewt],[10:saya jua\r\n\r\n:asdasd],[11:Benar|Salah],[12:asdsasd],[13:pilihan_2]', 'HETBQC'),
-(10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-10-08', 'Aktif', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 'XMILAS'),
+(1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-16', 'Aktif', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:pilihan_1,pilihan_2],[9:ewt],[10:saya jua\r\n\r\n:asdasd],[11:Benar|Salah],[12:asdsasd],[13:pilihan_2]', 'GLQOZT'),
+(10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-10-08', 'Nonaktif', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:pilihan 1:pasangan 1|pilihan 2:pasangan 2|pilihan 3:pasangan 3|pilihan 4:pasangan 3],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', ''),
 (17, 'IPA9-01', 'IPA 01', 'IPA', '9', 90, '2025-05-19', 'Nonaktif', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', '');
 
 --
@@ -280,26 +280,26 @@ INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `wakt
 --
 
 --
--- Indexes for table `admins`
+-- Indeks untuk tabel `admins`
 --
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Indexes for table `butir_soal`
+-- Indeks untuk tabel `butir_soal`
 --
 ALTER TABLE `butir_soal`
   ADD PRIMARY KEY (`id_soal`);
 
 --
--- Indexes for table `faq`
+-- Indeks untuk tabel `faq`
 --
 ALTER TABLE `faq`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `jawaban_siswa`
+-- Indeks untuk tabel `jawaban_siswa`
 --
 ALTER TABLE `jawaban_siswa`
   ADD PRIMARY KEY (`id_jawaban`),
@@ -308,79 +308,79 @@ ALTER TABLE `jawaban_siswa`
   ADD KEY `kode_soal` (`kode_soal`);
 
 --
--- Indexes for table `nilai`
+-- Indeks untuk tabel `nilai`
 --
 ALTER TABLE `nilai`
   ADD PRIMARY KEY (`id_nilai`);
 
 --
--- Indexes for table `pengaturan`
+-- Indeks untuk tabel `pengaturan`
 --
 ALTER TABLE `pengaturan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `profil`
+-- Indeks untuk tabel `profil`
 --
 ALTER TABLE `profil`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `siswa`
+-- Indeks untuk tabel `siswa`
 --
 ALTER TABLE `siswa`
   ADD PRIMARY KEY (`id_siswa`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Indexes for table `soal`
+-- Indeks untuk tabel `soal`
 --
 ALTER TABLE `soal`
   ADD PRIMARY KEY (`id_soal`),
   ADD UNIQUE KEY `kode_soal` (`kode_soal`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `admins`
+-- AUTO_INCREMENT untuk tabel `admins`
 --
 ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `butir_soal`
+-- AUTO_INCREMENT untuk tabel `butir_soal`
 --
 ALTER TABLE `butir_soal`
   MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
 
 --
--- AUTO_INCREMENT for table `faq`
+-- AUTO_INCREMENT untuk tabel `faq`
 --
 ALTER TABLE `faq`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `jawaban_siswa`
+-- AUTO_INCREMENT untuk tabel `jawaban_siswa`
 --
 ALTER TABLE `jawaban_siswa`
-  MODIFY `id_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=480;
+  MODIFY `id_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=537;
 
 --
--- AUTO_INCREMENT for table `nilai`
+-- AUTO_INCREMENT untuk tabel `nilai`
 --
 ALTER TABLE `nilai`
   MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `siswa`
+-- AUTO_INCREMENT untuk tabel `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `soal`
+-- AUTO_INCREMENT untuk tabel `soal`
 --
 ALTER TABLE `soal`
   MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
