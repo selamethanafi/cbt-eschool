@@ -56,18 +56,51 @@ $(document).ready(function() {
         ];
 
         if (!sembunyikan) {
-            kolom.splice(3, 0, { data: 'nilai', title: 'Nilai' });
+            // Tambahkan kolom nilai dengan formatter 2 digit
+            kolom.splice(3, 0, { 
+                data: 'nilai', 
+                title: 'Nilai',
+                render: function(data, type, row) {
+                    if (type === 'display' || type === 'filter') {
+                        // Format dengan 2 digit desimal
+                        return parseFloat(data).toFixed(2);
+                    }
+                    return data;
+                },
+                type: 'num-fmt' // Untuk sorting numerik yang benar
+            });
         }
 
         $('#tabelHasil').DataTable({
             data: response.data,
             columns: kolom,
-            destroy: true
+            destroy: true,
+            language: {
+                decimal: ",", // Untuk format desimal Indonesia
+                thousands: "." // Untuk format ribuan Indonesia
+            },
+            columnDefs: [
+                {
+                    targets: 3, // Kolom nilai (index 3 setelah disisipkan)
+                    className: 'dt-body-right' // Rata kanan untuk kolom angka
+                }
+            ]
         });
     });
 });
-</script>
 
+</script>
+<?php if (isset($_SESSION['error'])): ?>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: '<?php echo addslashes($_SESSION['error']); ?>',
+        showConfirmButton: false,
+        timer: 2000
+    });
+</script>
+<?php unset($_SESSION['error']); endif; ?>
 <?php include '../inc/check_activity.php'; ?>
 </body>
 </html>

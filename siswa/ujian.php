@@ -119,8 +119,6 @@ loadUjian();
 setInterval(loadUjian, 60000);
 
 
-</script>
-
 <?php if (isset($_SESSION['alert'])): ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

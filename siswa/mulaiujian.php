@@ -16,16 +16,7 @@ if (empty($kode_soal)) {
     exit;
 }
 // Siapkan query update dengan prepared statement
-$stmt = $koneksi->prepare("UPDATE jawaban_siswa SET status_ujian = 'Aktif' WHERE id_siswa = ? AND kode_soal = ?");
-if (!$stmt) {
-    die("Prepare gagal: " . $koneksi->error);
-}
 
-// Binding parameter dan eksekusi
-$stmt->bind_param("ss", $id_siswa, $kode_soal);
-if (!$stmt->execute()) {
-    die("Eksekusi gagal: " . $stmt->error);
-}
 // Ambil data siswa
 $q_siswa = mysqli_query($koneksi, "SELECT * FROM siswa WHERE id_siswa = '$id_siswa'");
 $data_siswa = mysqli_fetch_assoc($q_siswa);
@@ -118,7 +109,16 @@ if ($w = mysqli_fetch_assoc($get_waktu)) {
         }
     }
 }
+$stmt = $koneksi->prepare("UPDATE jawaban_siswa SET status_ujian = 'Aktif' WHERE id_siswa = ? AND kode_soal = ?");
+if (!$stmt) {
+    die("Prepare gagal: " . $koneksi->error);
+}
 
+// Binding parameter dan eksekusi
+$stmt->bind_param("ss", $id_siswa, $kode_soal);
+if (!$stmt->execute()) {
+    die("Eksekusi gagal: " . $stmt->error);
+}
 // Get all questions
 $q = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='$kode_soal' ORDER BY nomer_soal ASC");
 $soal = [];

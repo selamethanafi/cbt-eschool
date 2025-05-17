@@ -2,9 +2,18 @@
 session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
-check_login('admin');
-include '../inc/dataadmin.php';
+check_login('siswa'); // Pastikan siswa sudah login
+include '../inc/datasiswa.php';
 
+// Check if scores are hidden in settings
+$setting_query = mysqli_query($koneksi, "SELECT sembunyikan_nilai FROM pengaturan LIMIT 1");
+$setting = mysqli_fetch_assoc($setting_query);
+
+if ($setting['sembunyikan_nilai'] == 1) {
+    $_SESSION['error'] = 'Nilai telah disembunyikan oleh administrator';
+    header('Location: hasil.php');
+    exit;
+}
 if (!isset($_GET['kode_soal']) || !isset($_GET['id_siswa'])) {
     echo "Parameter kode_soal dan id_siswa harus ada.";
     exit;
@@ -344,5 +353,6 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
     </div>
 </div>
 <?php include '../inc/js.php'; ?>
+<?php include '../inc/check_activity.php'; ?>
 </body>
 </html>

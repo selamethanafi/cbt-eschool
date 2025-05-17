@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 data-kode_soal='{$row['kode_soal']}'>
                 <i class='fa fa-search'></i> Cek Nilai
                         </button>";
-                $prevBtn = "<a href='preview_siswa.php?id_siswa=" . $row['id_siswa'] . "&kode_soal=" . $row['kode_soal'] . "' target='_blank' class='btn btn-sm btn-secondary'>
+                $prevBtn = "<a href='preview_siswa.php?id_siswa=" . $row['id_siswa'] . "&kode_soal=" . $row['kode_soal'] . "' class='btn btn-sm btn-secondary'>
                     <i class='fa fa-eye'></i> Preview Hasil
                 </a>";
                 $nilai = number_format($row['nilai'], 2);

@@ -28,13 +28,14 @@ $query = mysqli_query($koneksi, "
 $data = [];
 while ($row = mysqli_fetch_assoc($query)) {
     $nilai_display = $sembunyikan_nilai ? '-' : $row['nilai'];
+    
 
     if ($sembunyikan_nilai) {
         $aksi = '<button class="btn btn-outline-secondary" disabled>
                     <i class="fa fa-lock"></i> Preview Nilai
                  </button>';
     } else {
-        $aksi = '<a class="btn btn-outline-secondary" href="preview.php?id_siswa=' . $id_siswa . '&kode_soal=' . $row['kode_soal'] . '">
+        $aksi = '<a class="btn btn-outline-secondary" href="preview_hasil.php?id_siswa=' . $id_siswa . '&kode_soal=' . $row['kode_soal'] . '">
                     <i class="fa fa-eye"></i> Preview Nilai
                  </a>';
     }
