@@ -1,8 +1,8 @@
 <?php
 include '../koneksi/koneksi.php';
 
-$id_soal = 1;
-$id_siswa = 1;
+$id_soal = 10;
+$id_siswa = 15;
 
 $q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE id_soal = '$id_soal'");
 $data_soal = mysqli_fetch_assoc($q_soal);

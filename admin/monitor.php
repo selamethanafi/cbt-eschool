@@ -45,6 +45,7 @@ check_login('admin');
                                                     <th>Waktu Sisa</th>
                                                     <th>Waktu Mulai</th>
                                                     <th>Status Ujian</th>
+                                                    <th>Progres Ujian</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -67,10 +68,11 @@ $(document).ready(function () {
         ajax: {
             url: 'monitor_data.php',
             type: 'GET'
-        },
+        }, 
         columns: [
             { data: 'nama_siswa', title: 'Nama Siswa' },
             { data: 'kode_soal', title: 'Kode Soal' },
+            { data: 'progres', title: 'Progres Ujian' },
             { data: 'waktu_sisa', title: 'Waktu Sisa' },
             { data: 'waktu_dijawab', title: 'Waktu Dijawab' },
             { data: 'status_badge', title: 'Status Ujian' }

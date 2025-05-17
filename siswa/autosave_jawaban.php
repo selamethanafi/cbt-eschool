@@ -100,7 +100,16 @@ mysqli_stmt_bind_param($stmt, "sssis", $id_siswa, $kode_soal, $final_jawaban, $w
 if (!mysqli_stmt_execute($stmt)) {
     die(json_encode(['status' => 'error', 'message' => 'Execute gagal: ' . mysqli_error($koneksi)]));
 }
+$stmt = $koneksi->prepare("UPDATE jawaban_siswa SET status_ujian = 'Aktif' WHERE id_siswa = ? AND kode_soal = ?");
+if (!$stmt) {
+    die("Prepare gagal: " . $koneksi->error);
+}
 
+// Binding parameter dan eksekusi
+$stmt->bind_param("ss", $id_siswa, $kode_soal);
+if (!$stmt->execute()) {
+    die("Eksekusi gagal: " . $stmt->error);
+}
 // [8] Berikan response dengan data debug
 echo json_encode([
     'status' => 'success',

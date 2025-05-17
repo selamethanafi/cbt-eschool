@@ -425,7 +425,9 @@ foreach ($matches as $match) {
                                                     <?php endfor; ?>
 
                                                 <?php elseif ($tipe == 'Pilihan Ganda Kompleks'):
-                                                    $jawaban = is_array($jawaban) ? $jawaban : [];
+                                                        if (!is_array($jawaban)) {
+                                                            $jawaban = [$jawaban];
+                                                        }
                                                     ?>
                                                     <?php for ($i = 1; $i <= 4; $i++): ?>
                                                         <div class="answer-option">
@@ -467,52 +469,69 @@ foreach ($matches as $match) {
                                                     </table>
 
                                                 <?php elseif ($tipe == 'Menjodohkan'): ?>
-                                                    <?php
-                                                    $pasangan = array_filter(explode('|', $s['jawaban_benar'])); // Filter empty values
-                                                    $opsi = [];
-                                                    foreach ($pasangan as $pair) {
-                                                        $pecah = explode(':', $pair, 2);
-                                                        if (count($pecah) == 2 && !empty(trim($pecah[0])) && !empty(trim($pecah[1]))) {
-                                                            $opsi[] = [
-                                                                'kiri' => trim($pecah[0]),
-                                                                'kanan' => trim($pecah[1])
-                                                            ];
-                                                        }
-                                                    }
+    <?php
+    // Ambil string jawaban_benar dari database, misal: "[10:saya jua:asdasd]"
+    $raw = trim($s['jawaban_benar'], "[]"); // hilangkan []
 
-                                                    // Pastikan hanya 3 item yang valid
-                                                    $opsi = array_slice($opsi, 0, 3);
+    // Hilangkan nomor soal di depan, misal "10:" di "[10:saya jua:asdasd]"
+    $raw = preg_replace('/^\d+\s*:/', '', $raw);
 
-                                                    $jawaban_soal = (is_array($jawaban) && count($jawaban) === count($opsi)) ? $jawaban : [];
-                                                    $daftar_kanan = array_values(array_unique(array_column($opsi, 'kanan')));
-                                                    shuffle($daftar_kanan);
-                                                    ?>
-                                                    <?php foreach ($opsi as $p): ?>
-                                                        <input type="hidden" name="soal_kiri[<?= $no ?>][]"
-                                                            value="<?= htmlspecialchars($p['kiri']) ?>">
-                                                    <?php endforeach; ?>
-                                                    <table class="matching-table">
-                                                        <?php foreach ($opsi as $idx => $p):
-                                                            $kiri = $p['kiri'];
-                                                            $selected = $jawaban_soal[$kiri] ?? '';
-                                                            ?>
-                                                            <tr>
-                                                                <td><?= htmlspecialchars($kiri) ?></td>
-                                                                <td>
-                                                                    <select name="jawaban[<?= $no ?>][<?= $kiri ?>]"
-                                                                        class="form-select">
-                                                                        <option value="">-- Pilih --</option>
-                                                                        <?php foreach ($daftar_kanan as $dk): ?>
-                                                                            <option value="<?= htmlspecialchars($dk) ?>"
-                                                                                <?= ($selected === $dk) ? 'selected' : '' ?>>
-                                                                                <?= htmlspecialchars($dk) ?>
-                                                                            </option>
-                                                                        <?php endforeach; ?>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                        <?php endforeach; ?>
-                                                    </table>
+    // Pecah berdasarkan |
+    $pasangan_list = explode('|', $raw);
+
+    $opsi = [];
+    foreach ($pasangan_list as $item) {
+        // Pastikan ':' ada dan hanya 2 bagian
+        if (strpos($item, ':') !== false) {
+            list($kiri, $kanan) = explode(':', $item, 2);
+            $kiri = trim($kiri);
+            $kanan = trim($kanan);
+            if ($kiri !== '' && $kanan !== '') {
+                $opsi[] = ['kiri' => $kiri, 'kanan' => $kanan];
+            }
+        }
+    }
+
+    // Jangan batasi jumlah opsi dengan array_slice lagi, tampilkan semua
+
+    // Jawaban yang sudah tersimpan, jika array, jika tidak set array kosong
+    $jawaban_soal = (is_array($jawaban)) ? $jawaban : [];
+
+    // Daftar pilihan kanan yang unik dan diacak
+    $daftar_kanan = array_values(array_unique(array_column($opsi, 'kanan')));
+    shuffle($daftar_kanan);
+    ?>
+
+    <?php if (count($opsi) === 0): ?>
+        <div class="alert alert-warning">Soal menjodohkan belum memiliki pasangan yang valid.</div>
+    <?php else: ?>
+        <?php foreach ($opsi as $p): ?>
+            <input type="hidden" name="soal_kiri[<?= $no ?>][]" value="<?= htmlspecialchars($p['kiri']) ?>">
+        <?php endforeach; ?>
+
+        <table class="matching-table">
+            <?php foreach ($opsi as $p):
+                $kiri = $p['kiri'];
+                $selected = $jawaban_soal[$kiri] ?? '';
+            ?>
+                <tr>
+                    <td><?= htmlspecialchars($kiri) ?></td>
+                    <td>
+                        <select name="jawaban[<?= $no ?>][<?= htmlspecialchars($kiri) ?>]" class="form-select">
+                            <option value="">-- Pilih --</option>
+                            <?php foreach ($daftar_kanan as $dk): ?>
+                                <option value="<?= htmlspecialchars($dk) ?>" <?= ($selected === $dk) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($dk) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    <?php endif; ?>
+
+
 
 
                                                 <?php elseif ($tipe == 'Uraian'): ?>
@@ -812,6 +831,52 @@ foreach ($matches as $match) {
             });
         });
     </script>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Fungsi cek apakah soal nomor no terisi jawaban
+  function isSoalTerisi(no) {
+    const inputs = document.querySelectorAll(`[name^="jawaban[${no}]"]`);
+    for (const input of inputs) {
+      if ((input.type === 'radio' || input.type === 'checkbox') && input.checked) {
+        return true;
+      }
+      if ((input.tagName.toLowerCase() === 'textarea' || input.type === 'text' || input.tagName.toLowerCase() === 'select') && input.value.trim() !== '') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Update warna tombol di sidebar sesuai status isi soal
+  function updateTombolStatus() {
+    document.querySelectorAll('.question-nav button[data-nomor]').forEach(btn => {
+      const no = btn.getAttribute('data-nomor');
+      if (isSoalTerisi(no)) {
+        btn.classList.add('btn-primary');
+        btn.classList.remove('btn-secondary');
+      } else {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+      }
+    });
+  }
+
+  // Pasang event listener untuk input jawaban, agar realtime update tombol
+  const form = document.getElementById('formUjian');
+  if (form) {
+    form.querySelectorAll('input[name^="jawaban"], textarea[name^="jawaban"], select[name^="jawaban"]').forEach(input => {
+      input.addEventListener('change', updateTombolStatus);
+      if (input.tagName.toLowerCase() === 'textarea' || input.type === 'text') {
+        input.addEventListener('input', updateTombolStatus);
+      }
+    });
+  }
+
+  // Jalankan update tombol awal saat halaman siap
+  updateTombolStatus();
+});
+</script>
+
 </body>
 
 </html>
