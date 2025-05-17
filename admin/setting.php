@@ -3,6 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
+include '../inc/dataadmin.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +27,7 @@ check_login('admin');
                 <div class="container-fluid p-0">
 
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 col-md-6">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">Form Pengaturan</h5>
@@ -45,10 +46,10 @@ check_login('admin');
 
                                             <!-- Logo Sekolah -->
                                             <div class="mb-3">
-                                                <label for="logo_sekolah" class="form-label">Logo Sekolah</label>
+                                                <label for="logo_sekolah" class="form-label">Logo</label>
                                                 <?php if (!empty($data['logo_sekolah'])): ?>
                                                     <div class="mt-2 mb-2">
-                                                        <img id="preview-logo" src="../assets/images/<?= $data['logo_sekolah'] ?>" alt="Logo" height="100">
+                                                        <img id="preview-logo" src="../assets/images/<?= $data['logo_sekolah'] ?>" alt="Logo" width="150">
                                                     </div>
                                                 <?php endif; ?>
                                                 <input type="file" class="form-control" name="logo_sekolah" id="logo_sekolah" accept="image/*">

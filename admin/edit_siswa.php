@@ -3,6 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
+include '../inc/dataadmin.php';
 
 $id = $_GET['id'];
 $data = mysqli_query($koneksi, "SELECT * FROM siswa WHERE id_siswa = '$id'");

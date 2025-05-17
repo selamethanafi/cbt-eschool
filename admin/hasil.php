@@ -3,6 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
+include '../inc/dataadmin.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $kelas_rombel = $_POST['kelas_rombel'] ?? '';
@@ -15,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $where .= " AND s.kelas = '$kelas' AND s.rombel = '$rombel'";
         }
 
-        $query = "SELECT n.id_nilai, s.nama_siswa, s.kelas, s.rombel, n.kode_soal, n.total_soal, 
+        $query = "SELECT n.id_nilai, n.id_siswa, s.nama_siswa, s.kelas, s.rombel, n.kode_soal, n.total_soal, 
                          n.jawaban_benar, n.jawaban_salah, n.jawaban_kurang, n.nilai, n.tanggal_ujian
                   FROM nilai n
                   JOIN siswa s ON n.id_siswa = s.id_siswa
@@ -36,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <th>Jawaban Benar</th>
                             <th>Jawaban Salah</th>
                             <th>Jawaban Kurang</th>
-                            <th>Nilai</th>
+                            <th class="nilai-col">Nilai</th>
                             <th>Tanggal Ujian</th>
                             <th>Aksi</th>
                         </tr>
@@ -47,7 +48,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $hapusBtn = "<button class='btn btn-sm btn-danger btnHapus' data-id='{$row['id_nilai']}'>
                                 <i class='fa fa-trash'></i> Hapus
                             </button>";
-
+                $cekBtn = "<button class='btn btn-sm btn-info btnCekNilai' 
+                data-id_siswa='{$row['id_siswa']}' 
+                data-kode_soal='{$row['kode_soal']}'>
+                <i class='fa fa-search'></i> Cek Nilai
+                        </button>";
+                $prevBtn = "<a href='preview_siswa.php?id_siswa=" . $row['id_siswa'] . "&kode_soal=" . $row['kode_soal'] . "' target='_blank' class='btn btn-sm btn-secondary'>
+                    <i class='fa fa-eye'></i> Preview Hasil
+                </a>";
+                $nilai = number_format($row['nilai'], 2);
+                $tanggal_ujian =  date('d M Y, H:i', strtotime($row['tanggal_ujian']));
                 echo "<tr>
                         <td>{$no}</td>
                         <td>{$row['nama_siswa']}</td>
@@ -57,9 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <td>{$row['jawaban_benar']}</td>
                         <td>{$row['jawaban_salah']}</td>
                         <td>{$row['jawaban_kurang']}</td>
-                        <td>{$row['nilai']}</td>
-                        <td>{$row['tanggal_ujian']}</td>
-                        <td>{$hapusBtn}</td>
+                        <td class='nilai-col'>{$nilai}</td>
+                        <td>{$tanggal_ujian}</td>
+                        <td>{$cekBtn} {$prevBtn} {$hapusBtn}</td>
                     </tr>";
                 $no++;
             }
@@ -85,6 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Hasil Ujian</title>
     <?php include '../inc/css.php'; ?>
+    <style>
+    td.nilai-col {
+        background-color: grey !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
+</style>
 </head>
 <body>
 <div class="wrapper">
@@ -132,6 +149,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </main>
     </div>
+</div>
+<!-- Modal Cek Nilai -->
+<div class="modal fade" id="modalCekNilai" tabindex="-1" aria-labelledby="modalCekNilaiLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detail Cek Nilai</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body" id="cekNilaiContent">
+        <p>Memuat...</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <?php include '../inc/js.php'; ?>
@@ -205,6 +236,28 @@ $(document).ready(function () {
         });
     });
 });
+
+$(document).on('click', '.btnCekNilai', function () {
+    let id_siswa = $(this).data('id_siswa');
+    let kode_soal = $(this).data('kode_soal');
+
+    $('#cekNilaiContent').html('<p>Memuat...</p>');
+    $('#modalCekNilai').modal('show');
+
+    $.post('cek_nilai.php', { id_siswa, kode_soal }, function (res) {
+        $('#cekNilaiContent').html(res);
+    }).fail(function () {
+        $('#cekNilaiContent').html('<div class="alert alert-danger">Gagal memuat data.</div>');
+    });
+});
+$('#tabel_nilai').DataTable({
+  responsive: true,
+  paging: true,
+  searching: true,
+  ordering: true
+  // Hapus "language" kalau tidak butuh bahasa Indonesia
+});
+
 </script>
 
 </body>

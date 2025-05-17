@@ -3,7 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
-
+include '../inc/dataadmin.php';
 if (empty($_GET['kode_soal']) || empty($_GET['nomer_baru'])) {
     header("Location: soal.php"); // Ganti dengan URL halaman yang sesuai
     exit();

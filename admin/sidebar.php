@@ -73,7 +73,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
-                    <li class="sidebar-item <?= ($currentPage == 'setting.php') ? 'active' : '' ?>">
+                    <li class="sidebar-item <?= ($currentPage == 'setting.php') ? 'active' : '' ?> <?= ($currentPage == 'pass.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="setting.php">
                             <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan</span>
                         </a>

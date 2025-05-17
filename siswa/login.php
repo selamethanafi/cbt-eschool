@@ -153,7 +153,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         Login Siswa
                     </div>
                     <div class="card shadow p-4 glass-card">
-                        <center><img src="../assets/images/codelite2.png" width="200" height="auto"></center>
+                        <div class="head" style="min-height:100px;display: flex;justify-content: center;align-items: center;">
+                        <?php
+                                        $q = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1");
+                                        $data = mysqli_fetch_assoc($q);
+                                        ?>
+                        <img src="../assets/images/<?php echo $data['logo_sekolah']; ?>" width="200" height="auto">
+                        </div>
                         <?php if (!empty($error)): ?>
                             <div id="customAlert" class="text-danger text-center my-3" role="alert" style="font-weight: bold;">
                                 <?php echo htmlspecialchars($error); ?>

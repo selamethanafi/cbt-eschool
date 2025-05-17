@@ -3,6 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
+include '../inc/dataadmin.php';
 
 // Tambah FAQ
 if (isset($_POST['tambah'])) {

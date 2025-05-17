@@ -2,7 +2,7 @@
 session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
-
+include '../inc/dataadmin.php';
 check_login('admin');
 
 if (isset($_POST['submit'])) {

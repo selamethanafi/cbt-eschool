@@ -3,7 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
-
+include '../inc/dataadmin.php';
 $query = "
     SELECT 
         s.id_soal, s.kode_soal, s.nama_soal, s.mapel, s.kelas, s.status, s.tanggal, s.waktu_ujian, s.token,

@@ -126,9 +126,10 @@ while ($s = mysqli_fetch_assoc($q)) {
     $soal[] = $s;
 }
 
-$q_tema = mysqli_query($koneksi, "SELECT warna_tema FROM pengaturan WHERE id = 1 LIMIT 1");
+$q_tema = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1 LIMIT 1");
 $data_tema = mysqli_fetch_assoc($q_tema);
 $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
+$interval_ms = ((int)$data_tema['waktu_sinkronisasi']) * 1000;
 $query = "SELECT jawaban_siswa FROM jawaban_siswa 
           WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'";
 $result = mysqli_query($koneksi, $query);
@@ -341,6 +342,9 @@ foreach ($matches as $match) {
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         }
     </style>
+    <script>
+        const syncInterval = <?= $interval_ms ?>;
+    </script>
 </head>
 
 <body>
@@ -359,7 +363,7 @@ foreach ($matches as $match) {
             <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top"
                 style="border-bottom:5px solid <?php echo htmlspecialchars($warna_tema); ?> !important;">
                 <a class="navbar-brand ms-3" href="#">
-                    <img src="../assets/images/cbticon.png" alt="Logo" style="height: 36px;">
+                    <img src="../assets/images/<?php echo $data_tema['logo_sekolah']; ?>" alt="Logo" style="height: 36px;">
                 </a>
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align ms-auto">
@@ -731,7 +735,7 @@ foreach ($matches as $match) {
             })
                 .then(res => res.text())
                 .then(txt => console.log('Auto-saved:', txt));
-        }, 60000);
+        }, syncInterval);
 
         document.addEventListener("DOMContentLoaded", function () {
             var base64Text = "<?php echo $encryptedText; ?>";

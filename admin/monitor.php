@@ -2,7 +2,7 @@
 session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
-
+include '../inc/dataadmin.php';
 // Cek jika sudah login
 check_login('admin');
 ?>

@@ -3,7 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
-
+include '../inc/dataadmin.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kode_soal = mysqli_real_escape_string($koneksi, $_POST['kode_soal']);
     $nama_soal = mysqli_real_escape_string($koneksi, $_POST['nama_soal']);

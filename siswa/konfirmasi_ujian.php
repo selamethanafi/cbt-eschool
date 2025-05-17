@@ -82,10 +82,9 @@ if (mysqli_num_rows($q_nilai) > 0) {
 $q_jumlah = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM butir_soal WHERE kode_soal = '$kode_soal'");
 $data_jumlah = mysqli_fetch_assoc($q_jumlah);
 $jumlah_soal = $data_jumlah['total'];
-$q_tema = mysqli_query($koneksi, "SELECT warna_tema FROM pengaturan WHERE id = 1 LIMIT 1");
+$q_tema = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1 LIMIT 1");
 $data_tema = mysqli_fetch_assoc($q_tema);
 $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd'; // default jika tidak ada data
-
 $_SESSION['konfirmasi_ujian'] = true;
 ?>
 
@@ -151,7 +150,7 @@ $_SESSION['konfirmasi_ujian'] = true;
             <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top" style="border-bottom:5px solid <?php echo htmlspecialchars($warna_tema); ?> !important;">
                 <!-- Logo -->
                 <a class="navbar-brand ms-3" href="#">
-                    <img src="../assets/images/cbticon.png" alt="Logo" style="height: 36px;">
+                    <img src="../assets/images/<?php echo $data_tema['logo_sekolah']; ?>" alt="Logo" style="height: 36px;">
                 </a>
 
                 <div class="navbar-collapse collapse">

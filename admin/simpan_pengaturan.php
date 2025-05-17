@@ -3,7 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
-
+include '../inc/dataadmin.php';
 // Ambil data dari form
 $nama_aplikasi = $_POST['nama_aplikasi'];
 $warna_tema = $_POST['warna_tema'];

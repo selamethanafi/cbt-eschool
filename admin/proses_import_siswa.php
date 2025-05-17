@@ -4,7 +4,7 @@ include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 include '../inc/encrypt.php';
 check_login('admin');
-
+include '../inc/dataadmin.php';
 require 'autoload.php'; // autoload PhpSpreadsheet (via Composer)
 
 // Import namespace

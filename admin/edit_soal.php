@@ -3,6 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
+include '../inc/dataadmin.php';
 
 // Pastikan ID soal ada di URL
 if (!isset($_GET['id_soal'])) {

@@ -3,7 +3,7 @@ session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 require_once '../assets/phpqrcode/qrlib.php';
-
+include '../inc/dataadmin.php';
 // Cek login
 check_login('admin');
 
