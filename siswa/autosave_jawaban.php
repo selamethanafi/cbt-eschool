@@ -110,6 +110,17 @@ $stmt->bind_param("ss", $id_siswa, $kode_soal);
 if (!$stmt->execute()) {
     die("Eksekusi gagal: " . $stmt->error);
 }
+$now = date('Y-m-d H:i:s');
+$stmt = mysqli_prepare($koneksi, "UPDATE siswa SET last_activity = ? WHERE id_siswa = ?");
+if (!$stmt) {
+    die("Prepare failed: " . mysqli_error($koneksi));
+}
+
+mysqli_stmt_bind_param($stmt, "ss", $now, $id_siswa);
+if (!mysqli_stmt_execute($stmt)) {
+    die("Execute failed: " . mysqli_stmt_error($stmt));
+}
+
 // [8] Berikan response dengan data debug
 echo json_encode([
     'status' => 'success',

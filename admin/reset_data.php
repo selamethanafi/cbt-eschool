@@ -14,8 +14,8 @@ $filterStatus = $_GET['filterStatus'] ?? '';
 $columns = ['nama_siswa', 'kelas', 'rombel', 'kode_soal', 'waktu_dijawab', 'status_ujian'];
 $orderBy = $columns[$orderColumn - 1] ?? 'nama_siswa'; // -1 karena ada kolom "No" di depan
 
-// Filter query
-$searchCondition = "WHERE 1=1";
+// Filter query, tambah filter status_ujian != 'Selesai'
+$searchCondition = "WHERE jawaban_siswa.status_ujian != 'Selesai'";
 
 if (!empty($search)) {
     $search = mysqli_real_escape_string($koneksi, $search);
@@ -33,11 +33,12 @@ if (!empty($filterStatus)) {
     $searchCondition .= " AND jawaban_siswa.status_ujian = '$filterStatus'";
 }
 
-// Total data
+// Total data (hanya hitung yang status_ujian != 'Selesai')
 $totalQuery = mysqli_query($koneksi, "
     SELECT COUNT(*) as total 
     FROM jawaban_siswa 
     JOIN siswa ON siswa.id_siswa = jawaban_siswa.id_siswa
+    WHERE jawaban_siswa.status_ujian != 'Selesai'
 ");
 $totalData = mysqli_fetch_assoc($totalQuery)['total'];
 

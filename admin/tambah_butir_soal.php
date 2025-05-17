@@ -114,31 +114,119 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   '$pilihan_1', '$pilihan_2', '$pilihan_3', '$pilihan_4', '$jawaban_benar', 'Aktif')";
 
     } elseif ($tipe_soal == 'Menjodohkan') {
-        $pasangan_valid = false;
-        $pasangan_data = [];
+    $pasangan_data = [];
+    $pasangan_valid = 0;
+    $pasangan_cek = [];
+    $jawaban_cek = [];
 
-        foreach ($_POST['pasangan_soal'] as $i => $soal) {
-            $jawaban = $_POST['pasangan_jawaban'][$i];
-            if (!empty($soal) && !empty($jawaban)) {
-                $soal = mysqli_real_escape_string($koneksi, $soal);
-                $jawaban = mysqli_real_escape_string($koneksi, $jawaban);
-                $pasangan_data[] = "$soal:$jawaban";
-                $pasangan_valid = true;
+    foreach ($_POST['pasangan_soal'] as $i => $soal) {
+        $jawaban = $_POST['pasangan_jawaban'][$i];
+
+        if (!empty($soal) && !empty($jawaban)) {
+            if (trim($soal) === trim($jawaban)) {
+                echo '
+                <!DOCTYPE html>
+                <html>
+                <head><script src="../assets/js/sweetalert.js"></script></head>
+                <body>
+                    <script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "Pasangan Tidak Valid",
+                            text: "Soal dan jawaban dalam satu baris tidak boleh sama!",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.history.back();
+                        });
+                    </script>
+                </body>
+                </html>';
+                exit;
             }
+
+            $soal_clean = mysqli_real_escape_string($koneksi, trim($soal));
+            $jawaban_clean = mysqli_real_escape_string($koneksi, trim($jawaban));
+            $pasangan_key = $soal_clean . ':' . $jawaban_clean;
+
+            // Cek apakah pasangan sudah ada sebelumnya
+            if (in_array($pasangan_key, $pasangan_cek)) {
+                echo '
+                <!DOCTYPE html>
+                <html>
+                <head><script src="../assets/js/sweetalert.js"></script></head>
+                <body>
+                    <script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "Pasangan Duplikat",
+                            text: "Terdapat pasangan soal dan jawaban yang sama lebih dari sekali!",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.history.back();
+                        });
+                    </script>
+                </body>
+                </html>';
+                exit;
+            }
+
+            // Cek apakah jawaban sudah digunakan di pasangan lain
+            if (in_array($jawaban_clean, $jawaban_cek)) {
+                echo '
+                <!DOCTYPE html>
+                <html>
+                <head><script src="../assets/js/sweetalert.js"></script></head>
+                <body>
+                    <script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "Jawaban Ganda",
+                            text: "Satu jawaban tidak boleh digunakan untuk lebih dari satu soal!",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            window.history.back();
+                        });
+                    </script>
+                </body>
+                </html>';
+                exit;
+            }
+
+            $pasangan_data[] = "$soal_clean:$jawaban_clean";
+            $pasangan_cek[] = $pasangan_key;
+            $jawaban_cek[] = $jawaban_clean;
+            $pasangan_valid++;
         }
+    }
 
-        if (!$pasangan_valid) {
-            die("Harap isi minimal satu pasangan soal dan jawaban");
-        }
+    if ($pasangan_valid < 2) {
+        echo '
+        <!DOCTYPE html>
+        <html>
+        <head><script src="../assets/js/sweetalert.js"></script></head>
+        <body>
+            <script>
+                Swal.fire({
+                    icon: "warning",
+                    title: "Minimal 2 Pasangan",
+                    text: "Harap isi minimal dua pasangan soal dan jawaban yang valid!",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    window.history.back();
+                });
+            </script>
+        </body>
+        </html>';
+        exit;
+    }
 
-        $jawaban_benar = implode("|", $pasangan_data);
+    $jawaban_benar = implode("|", $pasangan_data);
 
-        $query = "INSERT INTO butir_soal (kode_soal, nomer_soal, pertanyaan, tipe_soal,
-                  jawaban_benar, status_soal)
-                  VALUES ('$kode_soal', '$nomer_soal', '$pertanyaan', '$tipe_soal',
-                  '$jawaban_benar', 'Aktif')";
-
-    } elseif ($tipe_soal == 'Uraian') {
+    $query = "INSERT INTO butir_soal (kode_soal, nomer_soal, pertanyaan, tipe_soal,
+              jawaban_benar, status_soal)
+              VALUES ('$kode_soal', '$nomer_soal', '$pertanyaan', '$tipe_soal',
+              '$jawaban_benar', 'Aktif')";
+} elseif ($tipe_soal == 'Uraian') {
         if (empty($_POST['jawaban_benar'])) {
             die("Harap isi jawaban benar");
         }

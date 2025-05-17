@@ -399,7 +399,7 @@ foreach ($matches as $match) {
                                 <div class="card-body wadah">
                                     <div id="autoSaveStatus"></div>
                                     <form id="formUjian" method="post" action="simpan_jawaban.php">
-
+                                        <input type="hidden" name="waktu_sisa" id="waktu_sisa">
                                         <input type="hidden" name="kode_soal"
                                             value="<?= htmlspecialchars($kode_soal) ?>">
 
@@ -629,12 +629,11 @@ foreach ($matches as $match) {
             </div>
         </div>
     </footer>
-    <?php include '../inc/check_activity.php'; ?>
     <script src="../assets/adminkit/static/js/app.js"></script>
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/sweetalert.js"></script>
     <script src="../assets/datatables/datatables.js"></script>
-
+    <?php include '../inc/check_activity.php'; ?>
     <script>
         // Timer Logic
         let waktu = <?= $waktu_sisa > 0 ? ($waktu_sisa * 60) : 3600 ?>;
@@ -875,6 +874,34 @@ document.addEventListener('DOMContentLoaded', () => {
   // Jalankan update tombol awal saat halaman siap
   updateTombolStatus();
 });
+
+ // Update waktu_sisa setiap detik tanpa mengubah fungsi updateTimer
+    setInterval(() => {
+        document.getElementById('waktu_sisa').value = waktu;
+    }, 1000);
+
+    // Tangani klik tombol "Selesai"
+    document.getElementById('submitBtn').addEventListener('click', function(e) {
+        e.preventDefault(); // Jangan langsung submit
+
+        const sisaDetik = parseInt(waktu) || 0;
+        const menit = Math.floor(sisaDetik / 60);
+        const detik = sisaDetik % 60;
+        const formatWaktu = `${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
+
+        Swal.fire({
+            title: 'Selesaikan Ujian?',
+            html: `Sisa waktu Anda: <strong>${formatWaktu}</strong>`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Selesai',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formUjian').submit();
+            }
+        });
+    });
 </script>
 
 </body>
