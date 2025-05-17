@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $query = "SELECT n.id_nilai, s.nama_siswa, s.kelas, s.rombel, n.kode_soal, n.total_soal, 
-                         n.jawaban_benar, n.jawaban_salah, n.nilai, n.tanggal_ujian
+                         n.jawaban_benar, n.jawaban_salah, n.jawaban_kurang, n.nilai, n.tanggal_ujian
                   FROM nilai n
                   JOIN siswa s ON n.id_siswa = s.id_siswa
                   WHERE $where
@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <th>Kelas</th>
                             <th>Jawaban Benar</th>
                             <th>Jawaban Salah</th>
+                            <th>Jawaban Kurang</th>
                             <th>Nilai</th>
                             <th>Tanggal Ujian</th>
                             <th>Aksi</th>
@@ -55,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <td>{$row['kelas']} {$row['rombel']}</td>
                         <td>{$row['jawaban_benar']}</td>
                         <td>{$row['jawaban_salah']}</td>
+                        <td>{$row['jawaban_kurang']}</td>
                         <td>{$row['nilai']}</td>
                         <td>{$row['tanggal_ujian']}</td>
                         <td>{$hapusBtn}</td>

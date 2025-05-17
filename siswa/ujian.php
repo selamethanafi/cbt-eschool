@@ -74,7 +74,7 @@ function tampilkanUjian(data) {
 
     data.forEach(ujian => {
         const card = `
-            <div class="col-12 col-lg-3 col-xl-2 col-sm-6 col-md-4">
+            <div class="col-12 col-lg-4 col-xl-3 col-sm-6 col-md-4">
                 <div class="card ujian-card h-100">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title text-secondary"><i class="fas fa-qrcode"></i> ${ujian.kode_soal}</h5>
