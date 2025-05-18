@@ -130,42 +130,41 @@ $faq = mysqli_query($koneksi, "SELECT * FROM faq ORDER BY id DESC");
                                                 <i class="fa fa-plus"></i> Tambah
                                             </button>
                                         </form>
-                                    </div>
-                                </div>
 
-                                <!-- Daftar FAQ -->
-                                <?php while($row = mysqli_fetch_assoc($faq)): ?>
-                                    <div class="card mb-3 shadow-sm">
-                                        <div class="card-body">
-                                            <form method="post">
-                                                <input type="hidden" name="id" value="<?= $row['id']; ?>">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="mb-2">
-                                                            <label>Pertanyaan</label>
-                                                            <textarea name="question" class="form-control summernote"><?= htmlspecialchars_decode($row['question']); ?></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="mb-2">
-                                                            <label>Jawaban</label>
-                                                            <textarea name="answer" class="form-control summernote"><?= htmlspecialchars_decode($row['answer']); ?></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="text-end">
-                                                    <button type="submit" name="edit" class="btn btn-success btn-sm">
-                                                        <i class="fa fa-save"></i> Simpan
-                                                    </button>
-                                                    <a href="?hapus=<?= $row['id']; ?>" class="btn btn-danger btn-sm delete-btn" data-id="<?= $row['id']; ?>">
-                                                        <i class="fa fa-trash"></i> Hapus
-                                                    </a>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                <?php endwhile; ?>
-
+                                <table id="faqTable" class="table table-bordered table-striped align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th width="30%">Pertanyaan</th>
+                                            <th width="50%">Jawaban</th>
+                                            <th width="20%" class="text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php while($row = mysqli_fetch_assoc($faq)): ?>
+                                            <tr>
+                                                <form method="post">
+                                                    <input type="hidden" name="id" value="<?= $row['id']; ?>">
+                                                    <td>
+                                                        <div contenteditable="true" class="editable-cell" data-name="question"><?= htmlspecialchars_decode($row['question']); ?></div>
+                                                        <input type="hidden" name="question" value="<?= htmlspecialchars_decode($row['question']); ?>">
+                                                    </td>
+                                                    <td>
+                                                        <div contenteditable="true" class="editable-cell" data-name="answer"><?= htmlspecialchars_decode($row['answer']); ?></div>
+                                                        <input type="hidden" name="answer" value="<?= htmlspecialchars_decode($row['answer']); ?>">
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="submit" name="edit" class="btn btn-success btn-sm">
+                                                            <i class="fa fa-save"></i> Simpan
+                                                        </button>
+                                                        <a href="?hapus=<?= $row['id']; ?>" class="btn btn-danger btn-sm delete-btn" data-id="<?= $row['id']; ?>">
+                                                            <i class="fa fa-trash"></i> Hapus
+                                                        </a>
+                                                    </td>
+                                                </form>
+                                            </tr>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -181,20 +180,6 @@ $faq = mysqli_query($koneksi, "SELECT * FROM faq ORDER BY id DESC");
 <script>
 $(document).ready(function () {
     // Konfigurasi Summernote
-    const configEditor = {
-        height: 80,
-        toolbar: false,
-        callbacks: {
-            onPaste: function (e) {
-                e.preventDefault();
-                const clipboardData = e.originalEvent.clipboardData || window.clipboardData;
-                const text = clipboardData.getData('text/plain');
-                document.execCommand("insertText", false, text);
-            }
-        }
-    };
-
-    $('#answer_add, #question_add, .summernote').summernote(configEditor);
 
     // SweetAlert dari URL parameter
     const urlParams = new URLSearchParams(window.location.search);
@@ -259,6 +244,20 @@ $(document).ready(function () {
         });
     });
 });
+
+$(document).ready(function() {
+    $('#faqTable').DataTable({
+        responsive: true
+    });
+});
+
+document.querySelectorAll('.editable-cell').forEach(cell => {
+    cell.addEventListener('input', function () {
+        const input = this.closest('td').querySelector('input[name="' + this.dataset.name + '"]');
+        input.value = this.innerHTML;
+    });
+});
+
 </script>
 </body>
 </html>
