@@ -78,7 +78,7 @@ $result = mysqli_query($koneksi, $query);
 
     .dashboard-icon {
       font-size: 36px;
-      color:rgba(3, 3, 3, 0.82);
+      color:rgba(31, 31, 31, 0.46);
       margin-bottom: 15px;
     }
 
@@ -116,59 +116,70 @@ $result = mysqli_query($koneksi, $query);
                         <div class="col-12">
                             <div class="card shadow-sm mb-4">
                                 <div class="card-header bg-secondary text-white d-flex align-items-center">
-                                    <h5 class="mb-0 text-white"><strong>Dashbord Siswa</strong></h5>
+                                    <h5 class="mb-0 text-white"><strong>Detail Perangkat</strong></h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="dashboard-header">
-                                                <h4>Halo, <span id="namaSiswa"><?php echo htmlspecialchars($nama_siswa); ?>!</span> 👋</h4>
-                                                <p class="text-muted">Selamat datang di dashboard ujian kamu</p>
-                                            </div>
-
-                                            <div class="container pb-5">
-                                                <div class="row g-4">
-
-                                                <!-- Ujian -->
-                                                <div class="col-md-4">
-                                                    <a href="ujian.php" class="text-decoration-none text-dark">
-                                                    <div class="card card-minimal">
-                                                        <div class="card-body">
-                                                        <div class="dashboard-icon"><i class="fas fa-pen"></i></div>
-                                                        <div class="card-title">Kerjakan Ujian</div>
-                                                        <p class="text-muted small mb-0">Akses ujian aktif dan mulai sekarang</p>
-                                                        </div>
-                                                    </div>
-                                                    </a>
-                                                </div>
-
-                                                <!-- Hasil -->
-                                                <div class="col-md-4">
-                                                    <a href="hasil.php" class="text-decoration-none text-dark">
-                                                    <div class="card card-minimal">
-                                                        <div class="card-body">
-                                                        <div class="dashboard-icon"><i class="fas fa-chart-line"></i></div>
-                                                        <div class="card-title">Hasil Ujian</div>
-                                                        <p class="text-muted small mb-0">Lihat nilai dari ujian yang sudah dikerjakan</p>
-                                                        </div>
-                                                    </div>
-                                                    </a>
-                                                </div>
-
-                                                <!-- Kartu Ujian -->
-                                                <div class="col-md-4">
-                                                    <a href="perangkat.php" class="text-decoration-none text-dark">
-                                                    <div class="card card-minimal">
-                                                        <div class="card-body">
-                                                        <div class="dashboard-icon"><i class="fas fa-laptop"></i></div>
-                                                        <div class="card-title">Status Perangkat</div>
-                                                        <p class="text-muted small mb-0">Lihat Status Perangkat Anda</p>
-                                                        </div>
-                                                    </div>
-                                                    </a>
-                                                </div>
-
-                                                </div>
-                                            </div>
-=                                    </div>
+                                    <div class="table-responsive">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Status Koneksi</th>
+                                                    <td id="status">Memeriksa...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>IP Address</th>
+                                                    <td id="ip">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>OS & Browser</th>
+                                                    <td id="userAgent">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>RAM (perkiraan)</th>
+                                                    <td id="ram">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Resolusi Layar</th>
+                                                    <td id="resolusi">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Ukuran Viewport</th>
+                                                    <td id="viewport">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Bahasa Sistem</th>
+                                                    <td id="bahasa">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Waktu Lokal</th>
+                                                    <td id="waktu">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Zona Waktu</th>
+                                                    <td id="zona">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Platform</th>
+                                                    <td id="platform">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Cookie Diaktifkan</th>
+                                                    <td id="cookie">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Jenis Perangkat</th>
+                                                    <td id="deviceType">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Touch Support</th>
+                                                    <td id="touch">Memuat...</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Status Baterai</th>
+                                                    <td id="baterai">Memuat...</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                 </div>
                             </div>
                         </div>

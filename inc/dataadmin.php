@@ -1,6 +1,9 @@
 <?php
 $id_admin = $_SESSION['admin_id']; // Ambil ID admin dari session
-
+if (!$id_admin) {
+    header("Location: login.php");
+    exit;
+}
 // Query untuk mengambil data admin berdasarkan ID
 $query = "SELECT * FROM admins WHERE id = ?";
 $stmt = mysqli_prepare($koneksi, $query);

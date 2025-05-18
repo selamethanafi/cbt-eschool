@@ -29,6 +29,7 @@ include '../inc/datasiswa.php';
     padding: 4px 8px;
     border-radius: 5px;
 }
+#last-updated{color:white !important;}
 </style>
 </head>
 <body>
@@ -41,9 +42,9 @@ include '../inc/datasiswa.php';
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                    <h5 class="card-title mb-0">Ujian Aktif</h5>
-                                    <small id="last-updated" class="text-muted"></small>
+                                <div class="card-header d-flex bg-secondary text-white justify-content-between align-items-center flex-wrap gap-2">
+                                    <h5 class="card-title mb-0 text-white">Ujian Aktif</h5>
+                                    <small id="last-updated" class="text-muted text-white"></small>
                                 </div>
                                 <div class="card-body">
                                     <input type="text" id="searchInput" class="form-control mb-3" placeholder="Cari ujian...">
