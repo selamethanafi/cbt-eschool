@@ -81,7 +81,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
                     <li class="sidebar-item <?= ($currentPage == 'faq.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="faq.php">
-                            <i class="align-middle fas fa-question-circle"></i> <span class="align-middle">FAQ</span>
+                            <i class="fa-solid fa-robot"></i> <span class="align-middle">FAQ</span>
                         </a>
                     </li>
 

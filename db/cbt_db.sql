@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Bulan Mei 2025 pada 22.55
+-- Waktu pembuatan: 18 Bulan Mei 2025 pada 06.55
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -111,12 +111,14 @@ CREATE TABLE `faq` (
 --
 
 INSERT INTO `faq` (`id`, `question`, `answer`) VALUES
-(1, 'Bagaimana cara mengikuti ujian CBT?', 'Siswa dapat mengikuti ujian dengan login ke dashboard, memilih menu \'Ujian\', dan mengikuti instruksi yang tersedia.'),
-(2, 'Apa yang harus dilakukan jika lupa password?', 'Hubungi admin atau Guru untuk reset password'),
-(3, 'Apakah ujian dapat diulang jika koneksi terputus?', 'Jika koneksi terputus jawaban masih tersimpan dan kamu bisa melanjutkan ujian lagi. Silakan hubungi guru atau admin untuk informasi lebih lanjut.'),
-(4, 'Bagaimana cara melihat hasil ujian?', 'Setelah ujian selesai, hasil dapat dilihat pada menu \'Nilai\' di dashboard siswa.'),
-(5, 'Perangkat apa saja yang dapat digunakan untuk ujian CBT?', 'Ujian dapat diakses melalui komputer, laptop, atau perangkat mobile dengan koneksi internet yang stabil.'),
-(6, 'Saya tiba-tiba keluar dari aplikasi ujian. Bagaimana cara masuk kembali?', 'Silakan buka kembali aplikasi ujian seperti biasa,  Jika tidak bisa masuk atau muncul pesan error, segera hubungi pengawas atau admin ujian untuk reset login.');
+(1, 'cara Ujian', 'Siswa dapat mengikuti ujian dengan login ke dashboard, memilih menu \'Ujian\', dan mengikuti instruksi yang tersedia.'),
+(2, 'Lupa password', 'Hubungi admin atau Guru untuk reset password'),
+(3, 'jawaban hilang', 'Jika koneksi terputus jawaban masih tersimpan dan kamu bisa melanjutkan ujian lagi. Silakan hubungi guru atau admin untuk informasi lebih lanjut.'),
+(4, 'hasil ujian', 'Setelah ujian selesai, hasil dapat dilihat pada menu \'Nilai\' di dashboard siswa.'),
+(5, 'Perangkat', 'Ujian dapat diakses melalui komputer, laptop, atau perangkat mobile dengan koneksi internet yang stabil.'),
+(6, 'Terputus', 'Silakan buka kembali aplikasi ujian seperti biasa,  Jika tidak bisa masuk atau muncul pesan error, segera hubungi pengawas atau admin ujian untuk reset login.'),
+(13, 'Reset Login', 'hubungi pengawas atau admin ujian untuk reset login.'),
+(20, 'Nilai tersembunyi', 'ya, admin bisa menyembunyikan maupun menampilkan nilai, agar siswa tidak bisa melihat jawaban benar');
 
 -- --------------------------------------------------------
 
@@ -249,7 +251,7 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `session_token`, `last_activity`, `page_url`, `force_logout`) VALUES
-(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', 'a834c1c1e511540114b31e73b61e5fdb914450bc1209106597df4d8380271908', '2025-05-18 03:54:46', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
+(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '81728c0d2240ee8b30552514a0b7b42258d23ad0195fb9d124cbcd1cdc166b9c', '2025-05-18 11:54:49', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
 (2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '2025-05-12 23:31:49', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', '', '2025-05-17 19:53:53', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
 (4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', 'a1018c3138744d34ad1c0805c97e21159d2dd44ff5e8e1a3680d0b880621e19b', '2025-05-17 17:50:47', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
@@ -289,7 +291,7 @@ CREATE TABLE `soal` (
 INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `waktu_ujian`, `tanggal`, `status`, `kunci`, `token`) VALUES
 (1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-16', 'Aktif', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:pilihan_1,pilihan_2],[9:ewt],[10:sdfsdf:sdf|sdf:sdfdfgdfff],[11:Benar|Salah],[12:asdsasd],[13:pilihan_2]', 'DHUCJZ'),
 (10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-05-15', 'Aktif', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 'DCHTWY'),
-(17, 'IPA9-01', 'IPA 01', 'IPA', '9', 90, '2025-05-19', 'Aktif', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', 'UGAIHE');
+(17, 'IPA9-01', 'IPA 01', 'IPA', '9', 90, '2025-05-19', 'Nonaktif', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', '');
 
 --
 -- Indexes for dumped tables
@@ -376,7 +378,7 @@ ALTER TABLE `butir_soal`
 -- AUTO_INCREMENT untuk tabel `faq`
 --
 ALTER TABLE `faq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `jawaban_siswa`

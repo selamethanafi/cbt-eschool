@@ -22,15 +22,9 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
-                    <li class="sidebar-item <?= ($currentPage == 'hasil.php') ? 'active' : '' ?>">
+                    <li class="sidebar-item <?= ($currentPage == 'hasil.php') ? 'active' : '' ?> <?= ($currentPage == 'preview_hasil.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="hasil.php">
                             <i class="align-middle fas fa-chart-line"></i> <span class="align-middle">Hasil Ujian</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item <?= ($currentPage == 'pengaturan.php') ? 'active' : '' ?>">
-                        <a class="sidebar-link" href="setting.php">
-                            <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan</span>
                         </a>
                     </li>
 

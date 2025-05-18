@@ -134,9 +134,7 @@ if ($cekPengaturan && mysqli_num_rows($cekPengaturan) > 0) {
     function renderCards(data) {
         if (data.length === 0) {
             $('#card-container').html(`
-                <div class="col-12 text-center py-5">
-                    <i class="fas fa-user-slash fa-3x text-muted mb-3"></i>
-                </div>
+                <div class="col-12 text-center py-5"><i class="fa fa-user-slash fa-3x text-muted mb-3"></i><br>Tidak ada siswa online.</div>
             `);
             $('#pagination').hide();
             return;

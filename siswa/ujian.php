@@ -68,7 +68,7 @@ function tampilkanUjian(data) {
     container.innerHTML = '';
 
     if (data.length === 0) {
-        container.innerHTML = '<div class="col-12"><div class="alert alert-secondary">Tidak ada ujian ditemukan.</div></div>';
+        container.innerHTML = '<div class="col-12 text-center py-5"><i class="fa fa-user-slash fa-3x text-muted mb-3"></i><br>Tidak ada ujian ditemukan.</div>';
         return;
     }
 
@@ -118,7 +118,7 @@ document.getElementById('searchInput').addEventListener('input', function () {
 loadUjian();
 setInterval(loadUjian, 60000);
 
-
+</script>
 <?php if (isset($_SESSION['alert'])): ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -7,8 +7,27 @@ include '../inc/dataadmin.php';
 
 // Tambah FAQ
 if (isset($_POST['tambah'])) {
-    $q = mysqli_real_escape_string($koneksi, $_POST['question']);
-    $a = mysqli_real_escape_string($koneksi, $_POST['answer']);
+    function clean_html($text) {
+    // Hapus tag <p><br></p>
+    $text = str_ireplace('<p><br></p>', '', $text);
+    // Hapus tag <br>, <br/>, <br />
+    $text = preg_replace('#<br\s*/?>#i', '', $text);
+    // Hapus tag pembuka dan penutup <p>...</p>
+    $text = preg_replace('#<p>(.*?)</p>#i', '$1', $text);
+    return trim($text);
+}
+
+// Ambil data dari POST dan bersihkan
+$q_raw = $_POST['question'] ?? '';
+$a_raw = $_POST['answer'] ?? '';
+
+$q_clean = clean_html($q_raw);
+$a_clean = clean_html($a_raw);
+
+// Escape sebelum query SQL
+$q = mysqli_real_escape_string($koneksi, $q_clean);
+$a = mysqli_real_escape_string($koneksi, $a_clean);
+
     if(mysqli_query($koneksi, "INSERT INTO faq (question, answer) VALUES ('$q', '$a')")) {
         header("Location: ".$_SERVER['PHP_SELF']."?alert=success&msg=FAQ%20berhasil%20ditambahkan");
     } else {
@@ -20,8 +39,27 @@ if (isset($_POST['tambah'])) {
 // Edit FAQ
 if (isset($_POST['edit'])) {
     $id = (int) $_POST['id'];
-    $q = mysqli_real_escape_string($koneksi, $_POST['question']);
-    $a = mysqli_real_escape_string($koneksi, $_POST['answer']);
+    function clean_html($text) {
+    // Hapus tag <p><br></p>
+    $text = str_ireplace('<p><br></p>', '', $text);
+    // Hapus tag <br>, <br/>, <br />
+    $text = preg_replace('#<br\s*/?>#i', '', $text);
+    // Hapus tag pembuka dan penutup <p>...</p>
+    $text = preg_replace('#<p>(.*?)</p>#i', '$1', $text);
+    return trim($text);
+}
+
+// Ambil data dari POST dan bersihkan
+$q_raw = $_POST['question'] ?? '';
+$a_raw = $_POST['answer'] ?? '';
+
+$q_clean = clean_html($q_raw);
+$a_clean = clean_html($a_raw);
+
+// Escape sebelum query SQL
+$q = mysqli_real_escape_string($koneksi, $q_clean);
+$a = mysqli_real_escape_string($koneksi, $a_clean);
+
     if(mysqli_query($koneksi, "UPDATE faq SET question='$q', answer='$a' WHERE id=$id")) {
         header("Location: ".$_SERVER['PHP_SELF']."?alert=success&msg=FAQ%20berhasil%20diperbarui");
     } else {
@@ -49,7 +87,7 @@ $faq = mysqli_query($koneksi, "SELECT * FROM faq ORDER BY id DESC");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ</title>
+    <title>FAQ | Asisten BOT</title>
     <?php include '../inc/css.php'; ?>
     <link href="../assets/summernote/summernote-bs5.css" rel="stylesheet">
 </head>
@@ -64,7 +102,7 @@ $faq = mysqli_query($koneksi, "SELECT * FROM faq ORDER BY id DESC");
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">FAQ</h5>
+                                <h5 class="card-title mb-0">FAQ | Asisten BOT</h5>
                             </div>
                             <div class="card-body">
                                 <!-- Form Tambah -->
@@ -139,8 +177,10 @@ $faq = mysqli_query($koneksi, "SELECT * FROM faq ORDER BY id DESC");
 
 <?php include '../inc/js.php'; ?>
 <script src="../assets/summernote/summernote-bs5.js"></script>
+<!-- Tambahkan ini di akhir sebelum </body> -->
 <script>
 $(document).ready(function () {
+    // Konfigurasi Summernote
     const configEditor = {
         height: 80,
         toolbar: false,
@@ -156,7 +196,7 @@ $(document).ready(function () {
 
     $('#answer_add, #question_add, .summernote').summernote(configEditor);
 
-    // SweetAlert from URL
+    // SweetAlert dari URL parameter
     const urlParams = new URLSearchParams(window.location.search);
     const alertType = urlParams.get('alert');
     const alertMsg = urlParams.get('msg');
@@ -170,14 +210,14 @@ $(document).ready(function () {
             showConfirmButton: false
         });
 
-        // Hapus parameter dari URL
+        // Bersihkan parameter dari URL
         if (window.history.replaceState) {
             const cleanUrl = window.location.origin + window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
         }
     }
 
-    // SweetAlert delete confirm
+    // SweetAlert konfirmasi hapus
     $('.delete-btn').on('click', function(e) {
         e.preventDefault();
         const href = $(this).attr('href');
@@ -193,6 +233,28 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = href;
+            }
+        });
+    });
+
+    // Hapus <p>, </p>, dan <br> saat submit form
+    $('form').on('submit', function (e) {
+        $('.summernote').each(function () {
+            const editor = $(this);
+            let content = editor.summernote('code');
+
+            content = content
+                .replace(/<p><br><\/p>/gi, '')       // hilangkan <p><br></p>
+                .replace(/<p>(.*?)<\/p>/gi, '$1')    // hilangkan <p>...</p>
+                .replace(/<br\s*\/?>/gi, '');        // hilangkan <br>
+
+            // Set ulang isi editor
+            editor.summernote('code', content);
+
+            // Jika ada textarea hidden
+            const textarea = editor.next('textarea');
+            if (textarea.length) {
+                textarea.val(content);
             }
         });
     });
