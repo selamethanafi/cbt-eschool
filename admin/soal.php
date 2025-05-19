@@ -6,7 +6,7 @@ check_login('admin');
 include '../inc/dataadmin.php';
 $query = "
     SELECT 
-        s.id_soal, s.kode_soal, s.nama_soal, s.mapel, s.kelas, s.status, s.tanggal, s.waktu_ujian, s.token,
+        s.id_soal, s.kode_soal, s.nama_soal, s.mapel, s.kelas, s.tampilan_soal, s.status, s.tanggal, s.waktu_ujian, s.token,
         COUNT(b.id_soal) AS jumlah_butir
     FROM soal s
     LEFT JOIN butir_soal b ON s.kode_soal = b.kode_soal
@@ -67,6 +67,7 @@ if (!$result) {
 												<th>Jml Soal</th>
                                                 <th>Durasi (menit)</th>
 												<th>Tgl Ujian</th>
+                                                <th>Tampilan</th>
 												<th>Status</th>
                                                 <th>Token</th>
                                                 <th>Generate</th>
@@ -83,6 +84,7 @@ if (!$result) {
 													<td><?php echo $row['jumlah_butir']; ?></td>
 													<td><i class="fa fa-clock" aria-hidden="true"></i> <?php echo $row['waktu_ujian']; ?></td>
 													<td><i class="fa fa-calendar" aria-hidden="true"></i> <?php echo date('d M Y', strtotime($row['tanggal'])); ?></td>
+                                                    <td><?php echo $row['tampilan_soal']; ?></td>
                                                     <td>
                                                         <?php if ($row['status'] == 'Aktif') { ?>
 															<span class="badge bg-success">Aktif</span>

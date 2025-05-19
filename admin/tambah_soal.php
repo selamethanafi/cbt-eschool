@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama_soal = mysqli_real_escape_string($koneksi, $_POST['nama_soal']);
     $mapel = mysqli_real_escape_string($koneksi, $_POST['mapel']);
     $kelas = mysqli_real_escape_string($koneksi, $_POST['kelas']);
+    $tampilan_soal = mysqli_real_escape_string($koneksi, $_POST['tampilan_soal']);
     $waktu_ujian = mysqli_real_escape_string($koneksi, $_POST['waktu_ujian']);
     $tanggal = mysqli_real_escape_string($koneksi, $_POST['tanggal']);
 
@@ -20,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    $query = "INSERT INTO soal (kode_soal, nama_soal, mapel, kelas, waktu_ujian, tanggal)
-              VALUES ('$kode_soal', '$nama_soal', '$mapel', '$kelas', '$waktu_ujian', '$tanggal')";
+    $query = "INSERT INTO soal (kode_soal, nama_soal, mapel, kelas, waktu_ujian, tampilan_soal, tanggal)
+              VALUES ('$kode_soal', '$nama_soal', '$mapel', '$kelas', '$waktu_ujian', '$tampilan_soal', '$tanggal')";
 
     if (mysqli_query($koneksi, $query)) {
         $_SESSION['success'] = 'Soal berhasil ditambahkan.';
@@ -50,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <main class="content">
                 <div class="container-fluid p-0">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 col-lg-6">
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="card-title mb-0">Tambah Soal</h5>
@@ -88,6 +89,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <div class="mb-3">
                                             <label for="waktu_ujian" class="form-label">Waktu Ujian (Menit)</label>
                                             <input type="number" class="form-control" id="waktu_ujian" name="waktu_ujian" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tampilan_soal" class="form-label">Tampilan Soal</label>
+                                            <select class="form-control" id="tampilan_soal" name="tampilan_soal" required>
+                                                <option value="">-- Pilih --</option>
+                                                    <option value="Acak">Acak</option>
+                                                    <option value="Urut">Urut</option>
+                                            </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="tanggal" class="form-label">Tanggal Ujian</label>

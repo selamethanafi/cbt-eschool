@@ -119,25 +119,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Login Admin
     </div>
         <div class="card shadow p-4 glass-card">
-          <div class="head" style="min-height:100px;display: flex;justify-content: center;align-items: center;">
+          <div class="head" style="min-height:150px;display: flex;justify-content: center;align-items: center;">
                         <?php
                                         $q = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1");
                                         $data = mysqli_fetch_assoc($q);
                                         ?>
-                        <img src="../assets/images/<?php echo $data['logo_sekolah']; ?>" width="200" height="auto">
+                        <img src="../assets/images/<?php echo $data['logo_sekolah']; ?>" width="300" height="auto">
                         </div>
           <?php if (!empty($error)): ?>
             <div id="customAlert" class="text-danger text-center my-3" role="alert" style="font-weight: bold;">
               <?php echo htmlspecialchars($error); ?>
             </div>
           <?php endif; ?>
-          <form action="" method="POST" class="mt-3" id="loginForm">
+          <form action="" method="POST" class="mt-3" id="loginForm" autocomplete="off">
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <div class="mb-3">
-              <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autocomplete="off">
             </div>
             <div class="mb-3 position-relative">
-              <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password" required autocomplete="off">
               <span class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor:pointer;" onclick="togglePassword()">
                 <i style="color:grey;" class="fa fa-eye" id="togglePasswordIcon"></i>
               </span>
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <label for="captcha" class="form-label">
                 Berapa hasil dari: <b><?php echo $_SESSION['captcha_question']; ?></b> ?
               </label>
-              <input type="number" class="form-control" id="captcha" name="captcha" placeholder="Jawaban" required>
+              <input type="number" class="form-control" id="captcha" name="captcha" placeholder="Jawaban" required autocomplete="off">
             </div>
             <button type="submit" class="btn btn-primary w-100" id="loginButton">Login <i class="fa fa-sign-in"></i></button>
           </form><br>

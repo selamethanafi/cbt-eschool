@@ -40,12 +40,14 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <?php include '../inc/css.php'; ?>
 </head>
+
 <body>
     <div class="wrapper">
         <?php include 'sidebar.php'; ?>
@@ -58,7 +60,8 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="card-title mb-0">Selamat datang di Dashboard Admin, <?php echo $nama_admin; ?>!</h5>
+                                    <h5 class="card-title mb-0">Selamat datang di Dashboard Admin,
+                                        <?php echo $nama_admin; ?>!</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -100,33 +103,35 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
                                                 </div>
                                             </div>
                                         </div>
-                                            <div class="col-lg-8 md-6">
-                                                <div class="card mb-3">
-                                                    <div class="card-header">
-                                                        <h5 class="card-title mb-0">Rekap Peserta Ujian</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <canvas id="chartRekapUjian" style="height: 400px; width: 100%;"></canvas>
-                                                    </div>
+                                        <div class="col-lg-8 md-6">
+                                            <div class="card mb-3">
+                                                <div class="card-header">
+                                                    <h5 class="card-title mb-0">Rekap Peserta Ujian</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas id="chartRekapUjian"
+                                                        style="height: 400px; width: 100%;"></canvas>
                                                 </div>
                                             </div>
-                                            <!-- Statistik Nilai per Kode Soal -->
+                                        </div>
+                                        <!-- Statistik Nilai per Kode Soal -->
                                         <div class="col-lg-4 md-6">
                                             <div class="card mb-3">
                                                 <div class="card-header">
                                                     <h5 class="card-title mb-0">Statistik Nilai</h5>
                                                 </div>
                                                 <div class="card-body">
-                                                    <canvas id="chartKodeSoal" style="height: 400px; width: 100%;"></canvas>
+                                                    <canvas id="chartKodeSoal"
+                                                        style="height: 400px; width: 100%;"></canvas>
                                                 </div>
                                             </div>
                                         </div>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </main>
         </div>
     </div>
@@ -164,56 +169,56 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
         }
     });
     // Grafik Statistik Nilai per Kode Soal
-const ctxKode = document.getElementById('chartKodeSoal').getContext('2d');
-const chartKodeSoal = new Chart(ctxKode, {
-    type: 'bar',
-    data: {
-        labels: <?php echo json_encode($kode_soal_data['labels']); ?>,
-        datasets: [{
-            label: 'Rata-rata Nilai',
-            data: <?php echo json_encode($kode_soal_data['rata']); ?>,
-            backgroundColor: 'rgba(153, 102, 255, 0.2)', // warna soft
-            borderWidth: 1,
-            borderRadius: 20, // lebih bulat ujung bar
-            barThickness: 10 // bar tipis
-        }]
-    },
-    options: {
-        indexAxis: 'y', // horizontal
-        responsive: true,
-        animation: {
-            duration: 1200,
-            easing: 'easeOutCubic' // animasi smooth modern
+    const ctxKode = document.getElementById('chartKodeSoal').getContext('2d');
+    const chartKodeSoal = new Chart(ctxKode, {
+        type: 'bar',
+        data: {
+            labels: <?php echo json_encode($kode_soal_data['labels']); ?>,
+            datasets: [{
+                label: 'Rata-rata Nilai',
+                data: <?php echo json_encode($kode_soal_data['rata']); ?>,
+                backgroundColor: 'rgba(153, 102, 255, 0.2)', // warna soft
+                borderWidth: 1,
+                borderRadius: 20, // lebih bulat ujung bar
+                barThickness: 10 // bar tipis
+            }]
         },
-        scales: {
-            x: {
-                beginAtZero: true,
-                max: 100,
-                ticks: {
-                    stepSize: 10
+        options: {
+            indexAxis: 'y', // horizontal
+            responsive: true,
+            animation: {
+                duration: 1200,
+                easing: 'easeOutCubic' // animasi smooth modern
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        stepSize: 10
+                    },
+                    grid: {
+                        drawBorder: false,
+                        color: 'rgba(0,0,0,0.05)' // grid halus
+                    }
                 },
-                grid: {
-                    drawBorder: false,
-                    color: 'rgba(0,0,0,0.05)' // grid halus
+                y: {
+                    ticks: {
+                        autoSkip: false
+                    },
+                    grid: {
+                        display: false // hilangkan garis grid Y
+                    }
                 }
             },
-            y: {
-                ticks: {
-                    autoSkip: false
-                },
-                grid: {
-                    display: false // hilangkan garis grid Y
+            plugins: {
+                legend: {
+                    display: false // buang legend supaya clean
                 }
             }
-        },
-        plugins: {
-            legend: {
-                display: false // buang legend supaya clean
-            }
         }
-    }
-});
-
-</script>
+    });
+    </script>
 </body>
+
 </html>
