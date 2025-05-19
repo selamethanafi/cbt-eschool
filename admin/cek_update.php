@@ -28,9 +28,11 @@ if (!$response) {
 }
 
 $data = json_decode($response, true);
-$versi_baru = $data['tag_name'] ?? '';
+
+$versi_tag = $data['tag_name'] ?? '';
+$versi_baru = ltrim($versi_tag, 'v');
 $changelog = $data['body'] ?? '';
-$download_url = $data['zipball_url'] ?? '';
+$download_url = "https://github.com/gludugbanyu/cbt-eschool/archive/refs/tags/{$versi_tag}.zip";
 
 if (version_compare($versi_baru, $versi_saat_ini, '>')) {
     echo json_encode([
