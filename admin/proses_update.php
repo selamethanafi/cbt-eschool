@@ -40,7 +40,29 @@ if ($zip->open($tmp_zip) === TRUE) {
     }
 
     unlink($tmp_zip);
-    shell_exec("rm -rf " . escapeshellarg($folder_extract));
+
+    // Hapus folder update_temp
+    @shell_exec("rm -rf " . escapeshellarg($folder_extract));
+
+    // Fallback jika folder masih ada
+    if (is_dir($folder_extract)) {
+        function hapusFolder($folderPath) {
+            if (!is_dir($folderPath)) return;
+            $items = scandir($folderPath);
+            foreach ($items as $item) {
+                if ($item === '.' || $item === '..') continue;
+                $path = $folderPath . DIRECTORY_SEPARATOR . $item;
+                if (is_dir($path)) {
+                    hapusFolder($path);
+                } else {
+                    @unlink($path);
+                }
+            }
+            @rmdir($folderPath);
+        }
+
+        hapusFolder($folder_extract);
+    }
 
     // Simpan versi ke database
     include '../koneksi/koneksi.php';
