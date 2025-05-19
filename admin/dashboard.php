@@ -36,6 +36,24 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
     $kode_soal_data['labels'][] = $row['kode_soal'];
     $kode_soal_data['rata'][] = $row['rata_rata'];
 }
+// Ambil 10 siswa dengan rata-rata nilai tertinggi dan jumlah ujiannya
+$top_siswa_query = mysqli_query($koneksi, "
+    SELECT siswa.nama_siswa AS nama, 
+           COUNT(*) AS jumlah_ujian,
+           ROUND(AVG(nilai.nilai), 2) AS rata 
+    FROM nilai 
+    JOIN siswa ON nilai.id_siswa = siswa.id_siswa 
+    GROUP BY nilai.id_siswa 
+    ORDER BY rata DESC 
+    LIMIT 10
+") or die("Query error: " . mysqli_error($koneksi));
+
+$top_siswa_data = ['labels' => [], 'rata' => [], 'ujian' => []];
+while ($row = mysqli_fetch_assoc($top_siswa_query)) {
+    $top_siswa_data['labels'][] = $row['nama'];
+    $top_siswa_data['rata'][] = $row['rata'];
+    $top_siswa_data['ujian'][] = $row['jumlah_ujian'];
+}
 
 ?>
 <!DOCTYPE html>
@@ -103,7 +121,18 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-8 md-6">
+                                        <div class="col-lg-4 md-6">
+                                            <div class="card mb-3">
+                                                <div class="card-header">
+                                                    <h5 class="card-title mb-0">10 Siswa Nilai Tertinggi</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas id="chartTopSiswa"
+                                                        style="height: 400px; width: 100%;"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 md-6">
                                             <div class="card mb-3">
                                                 <div class="card-header">
                                                     <h5 class="card-title mb-0">Rekap Peserta Ujian</h5>
@@ -114,7 +143,7 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Statistik Nilai per Kode Soal -->
+
                                         <div class="col-lg-4 md-6">
                                             <div class="card mb-3">
                                                 <div class="card-header">
@@ -136,7 +165,7 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
         </div>
     </div>
     <?php include '../inc/js.php'; ?>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../assets/js/chart.js"></script>
     <script>
     const ctx = document.getElementById('chartRekapUjian').getContext('2d');
     const chartRekapUjian = new Chart(ctx, {
@@ -170,6 +199,11 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
     });
     // Grafik Statistik Nilai per Kode Soal
     const ctxKode = document.getElementById('chartKodeSoal').getContext('2d');
+
+    // Buat gradient linear (dari kiri ke kanan)
+    const gradientBlue = ctxKode.createLinearGradient(0, 0, 400, 0);
+    gradientBlue.addColorStop(0, 'rgba(255, 0, 200, 0.6)');
+    gradientBlue.addColorStop(1, 'rgba(0, 200, 255, 0.9)');
     const chartKodeSoal = new Chart(ctxKode, {
         type: 'bar',
         data: {
@@ -177,10 +211,10 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
             datasets: [{
                 label: 'Rata-rata Nilai',
                 data: <?php echo json_encode($kode_soal_data['rata']); ?>,
-                backgroundColor: 'rgba(153, 102, 255, 0.2)', // warna soft
-                borderWidth: 1,
-                borderRadius: 20, // lebih bulat ujung bar
-                barThickness: 10 // bar tipis
+                backgroundColor: gradientBlue,
+                borderWidth: 0,
+                borderRadius: 0, // lebih bulat ujung bar
+                barThickness: 5 // bar tipis
             }]
         },
         options: {
@@ -215,6 +249,53 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
                 legend: {
                     display: false // buang legend supaya clean
                 }
+            }
+        }
+    });
+
+    // Grafik 10 Siswa dengan Rata-rata Nilai Tertinggi
+    // Grafik 10 Siswa dengan Rata-rata Nilai Tertinggi (Doughnut Chart)
+    const ctxTop = document.getElementById('chartTopSiswa').getContext('2d');
+    const chartTopSiswa = new Chart(ctxTop, {
+        type: 'doughnut',
+        data: {
+            labels: <?php echo json_encode($top_siswa_data['labels']); ?>,
+            datasets: [{
+                label: 'Rata-rata Nilai',
+                data: <?php echo json_encode($top_siswa_data['rata']); ?>,
+                backgroundColor: [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                    '#9966FF', '#FF9F40', '#00C49F', '#FF6666',
+                    '#6699FF', '#FFCC99'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const index = context.dataIndex;
+                            const nama = context.label;
+                            const nilai = context.dataset.data[index];
+                            const jumlahUjian = <?php echo json_encode($top_siswa_data['ujian']); ?>[index];
+                            return `${nama}: ${nilai} (Ujian: ${jumlahUjian}x)`;
+                        }
+                    }
+                },
+                legend: {
+                    position: 'bottom'
+                },
+                title: {
+                    display: true,
+                    text: 'Top 10 Siswa (Rata-rata Nilai)'
+                }
+            },
+            animation: {
+                animateRotate: true,
+                duration: 1500
             }
         }
     });

@@ -51,8 +51,8 @@
     z-index: 2100;
 }
 
-.question-text img {
-    height: 300px;
+.question-container img {
+    height: 250px;
     width: 100%;
     object-fit: contain;
     max-width: 700px !important;

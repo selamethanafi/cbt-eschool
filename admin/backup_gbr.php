@@ -73,12 +73,18 @@ if (isset($_POST['restore'])) {
         <main class="content">
             <div class="container-fluid p-0">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 col-lg-8">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Backup & Restore Folder Gambar</h5>
                             </div>
                             <div class="card-body">
+                                <div class="alert alert-secondary">
+                                    <strong>Catatan:</strong>  
+                                    Jika file di folder <code>/gambar/</code> sudah terlalu banyak dan besar,  
+                                    disarankan melakukan backup dan restore folder <code>/gambar/</code> secara manual melalui FTP atau file manager hosting Anda.  
+                                    Backup dan restore otomatis cocok untuk folder yang ukurannya tidak terlalu besar agar tidak memberatkan server.
+                                </div>
                                 <?php if ($success): ?>
                                     <script>
                                     Swal.fire({

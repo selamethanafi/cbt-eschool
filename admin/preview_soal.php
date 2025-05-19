@@ -15,6 +15,7 @@ $kode_soal = $_GET['kode_soal'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,63 +24,77 @@ $kode_soal = $_GET['kode_soal'];
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <link href="../assets/summernote/summernote-bs5.css" rel="stylesheet">
     <style>
-        .card img {
-            max-width: 400px !important;
-            max-height: 300px !important;
-            height: 100%;
-            width: 100%;
-            object-fit: contain;
-            display: block;
-            margin: 10px 0;
-        }
+    .card img {
+        height: 200px;
+        width: 100%;
+        object-fit: contain;
+        max-width: 700px !important;
+        max-height: 300px !important;
+        display: block;
+    }
 
-        label.note-form-label { display: none !important; }
-        table th, table td {
-            text-align: left !important;
-        }
-        .form-check-label strong {
-            width: 24px;
-            display: inline-block;
-        }
-        .card-utama {
-            background-color: #fff !important;
-            color: #000;
-            padding: 30px;
-        }
-        .mb-4.p-3.border.rounded.bg-white {
-            border: 1px solid grey !important;
-            border-bottom: 1px solid grey !important;
-            border-radius: 10px !important;
-        }
-        .custom-card {
-            border: 1px solid #343a40;
-            border-radius: 10px;
-        }
-        .custom-card-header {
-            border-bottom: 1px solid #343a40;
-            background-color: #f8f9fa;
-            padding: 10px;
-            font-weight: bold;
-        }
-        .custom-radio-spacing {
-            margin-right: 100px;
-        }
-        input[type="radio"]:not(:checked) {
-            border-color: black;
-        }
-        input[type="radio"]:checked {
-            background-color: green;
-            border-color: green;
-        }
-        input[type="checkbox"]:not(:checked) {
-            border-color: black;
-        }
-        input[type="checkbox"]:checked {
-            background-color: green;
-            border-color: green;
-        }
+    label.note-form-label {
+        display: none !important;
+    }
+
+    table th,
+    table td {
+        text-align: left !important;
+    }
+
+    .form-check-label strong {
+        width: 24px;
+        display: inline-block;
+    }
+
+    .card-utama {
+        background-color: #fff !important;
+        color: #000;
+        padding: 30px;
+    }
+
+    .mb-4.p-3.border.rounded.bg-white {
+        border: 1px solid grey !important;
+        border-bottom: 1px solid grey !important;
+        border-radius: 10px !important;
+    }
+
+    .custom-card {
+        border: 1px solid #343a40;
+        border-radius: 10px;
+    }
+
+    .custom-card-header {
+        border-bottom: 1px solid #343a40;
+        background-color: #f8f9fa;
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    .custom-radio-spacing {
+        margin-right: 100px;
+    }
+
+    input[type="radio"]:not(:checked) {
+        border-color: black;
+    }
+
+    input[type="radio"]:checked {
+        background-color: green;
+        border-color: green;
+    }
+
+    input[type="checkbox"]:not(:checked) {
+        border-color: black;
+    }
+
+    input[type="checkbox"]:checked {
+        background-color: green;
+        border-color: green;
+    }
     </style>
 </head>
+
 <body>
     <div class="wrapper">
         <?php include 'sidebar.php'; ?>
@@ -91,9 +106,13 @@ $kode_soal = $_GET['kode_soal'];
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <button type="button" class="btn btn-outline-danger" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="printModalContent()"><i class="fa fa-print"></i> Print</button>
-                                    <a href="daftar_butir_soal.php?kode_soal=<?php echo $kode_soal;?>"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button></a>
+                                    <button type="button" class="btn btn-outline-danger" onclick="exportPDF()"><i
+                                            class="fa-solid fa-file-pdf"></i> Download PDF</button>
+                                    <button type="button" class="btn btn-outline-secondary"
+                                        onclick="printModalContent()"><i class="fa fa-print"></i> Print</button>
+                                    <a href="daftar_butir_soal.php?kode_soal=<?php echo $kode_soal;?>"><button
+                                            type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Kembali</button></a>
                                 </div>
                                 <div class="card-body card-utama" id="canvas_div_pdf">
                                     <?php
@@ -113,14 +132,15 @@ $kode_soal = $_GET['kode_soal'];
                                     <div class="card custom-card mb-3" style="max-width: 28rem">
                                         <div class="card-header custom-card-header">&nbsp;&nbsp;Detail Soal</div>
                                         <div class="card-body text-dark">
-                                            <h3 class="card-title text-dark"><strong>Kode Soal:</strong> <?= htmlspecialchars($info_soal['kode_soal']) ?></h3>
+                                            <h3 class="card-title text-dark"><strong>Kode Soal:</strong>
+                                                <?= htmlspecialchars($info_soal['kode_soal']) ?></h3>
                                             <h5>Mapel:</strong> <?= htmlspecialchars($info_soal['mapel']) ?></h5>
                                             <h5>Jumlah Soal:
                                                 <?php
                                                 $total_soal = array_sum($tipe_soal_count);
                                                 echo $total_soal;
                                                 ?>
-                                                | 
+                                                |
                                                 <?php
                                                 $tipe_soal_list = [];
                                                 foreach ($tipe_soal_count as $tipe => $count) {
@@ -265,31 +285,41 @@ $kode_soal = $_GET['kode_soal'];
     <?php include '../inc/js.php'; ?>
     <script src="../assets/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
     <script>
-        function exportPDF() {
-            var element = document.getElementById('canvas_div_pdf');
-            html2pdf().set({
-                margin: 0.2,
-                filename: 'Soal_<?php echo $kode_soal;?>.pdf',
-                image: { type: 'jpeg', quality: 1 },
-                html2canvas: { scale: 2, logging: true },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            }).from(element).save();
-        }
+    function exportPDF() {
+        var element = document.getElementById('canvas_div_pdf');
+        html2pdf().set({
+            margin: 0.2,
+            filename: 'Soal_<?php echo $kode_soal;?>.pdf',
+            image: {
+                type: 'jpeg',
+                quality: 1
+            },
+            html2canvas: {
+                scale: 2,
+                logging: true
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'a4',
+                orientation: 'portrait'
+            }
+        }).from(element).save();
+    }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const images = document.querySelectorAll('.card-utama img');
+    document.addEventListener("DOMContentLoaded", function() {
+        const images = document.querySelectorAll('.card-utama img');
 
-            images.forEach(function(img) {
-                img.style.maxWidth = '200px';
-                img.style.maxHeight = '200px';
-            });
+        images.forEach(function(img) {
+            img.style.maxWidth = '200px';
+            img.style.maxHeight = '200px';
         });
+    });
 
-        function printModalContent() {
-            const modalBody = document.querySelector('.card-utama').innerHTML;
-            const printWindow = window.open('', '', 'width=1000,height=700');
+    function printModalContent() {
+        const modalBody = document.querySelector('.card-utama').innerHTML;
+        const printWindow = window.open('', '', 'width=1000,height=700');
 
-            printWindow.document.write(`
+        printWindow.document.write(`
                 <html>
                     <head>
                         <title>Print Preview</title>
@@ -301,8 +331,9 @@ $kode_soal = $_GET['kode_soal'];
                 </html>
             `);
 
-            printWindow.document.close();
-        }
+        printWindow.document.close();
+    }
     </script>
 </body>
+
 </html>
