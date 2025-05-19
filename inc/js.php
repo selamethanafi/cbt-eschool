@@ -36,6 +36,10 @@
                                                         </div>
                                                     </div>
                                                 </footer>
+                                                <?php
+                                                $q = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1");
+                                                $data = mysqli_fetch_assoc($q);
+                                                ?>
                                                 <script src="../assets/adminkit/static/js/app.js"></script>
                                                 <script src="../assets/js/jquery-3.6.0.min.js"></script>
                                                 <script src="../assets/js/sweetalert.js"></script>

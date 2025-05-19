@@ -217,7 +217,6 @@ function closeModal(event) {
     }
 }
 
-const container = document.querySelector('.question-container');
 const defaultFontSize = 16;
 let currentFontSize = defaultFontSize;
 
@@ -225,11 +224,40 @@ function changeFontSize(delta) {
     currentFontSize += delta;
     if (currentFontSize < 10) currentFontSize = 10;
     if (currentFontSize > 30) currentFontSize = 30;
-    container.style.fontSize = currentFontSize + 'px';
+
+    document.querySelectorAll('.question-container').forEach(container => {
+        container.style.fontSize = currentFontSize + 'px';
+    });
 }
 
 function resetFontSize() {
     currentFontSize = defaultFontSize;
-    container.style.fontSize = defaultFontSize + 'px';
+    document.querySelectorAll('.question-container').forEach(container => {
+        container.style.fontSize = defaultFontSize + 'px';
+    });
 }
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var base64Text = "<?php echo $encryptedText; ?>";
+    var versiSaya = "<?= $data['versi_aplikasi'] ?? '1.0.0' ?>"; // ambil dari database
+
+    if (base64Text) {
+        var decodedText = atob(base64Text);
+        document.getElementById("enc").innerHTML = decodedText + " v." + versiSaya;
+    } else {
+        document.getElementById("enc").innerHTML = "v." + versiSaya;
+    }
+});
+
+
+function checkIfEncDeleted() {
+    var encElement = document.getElementById("enc");
+
+    if (!encElement) {
+        window.location.href = "../error_page.php";
+    }
+}
+setInterval(checkIfEncDeleted, 500);
     </script>

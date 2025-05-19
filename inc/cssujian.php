@@ -70,7 +70,7 @@
 
 .question-container.active {
     display: block;
-    min-height: 300px;
+    min-height: 500px;
 }
 
 .navigation-buttons {

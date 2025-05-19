@@ -265,7 +265,8 @@ foreach ($matches as $match) {
                                             $jawaban = $jawaban_tersimpan[$no_asli] ?? '';
                                             ?>
                                         <div class="question-container" id="soal-<?= $index ?>">
-                                            <div class="question-text">Soal <?= $no_urut ?>: <?= $pertanyaan ?></div>
+                                            <span class="badge" style="font-size: 12px !important;border:solid 1px grey;color:grey;"><?= $tipe ?></span><br><br>
+                                            <div class="question-text"><?= $pertanyaan ?></div>
 
                                             <?php if ($tipe == 'Pilihan Ganda'): ?>
                                             <?php
@@ -457,6 +458,10 @@ foreach ($matches as $match) {
         <span class="close-btn">&times;</span>
         <img id="modalImage" class="modal-content-img" alt="Preview">
     </div>
+    <?php
+                                                $q = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1");
+                                                $data = mysqli_fetch_assoc($q);
+                                                ?>
     <footer class="footer mt-auto py-3 bg-dark sticky-bottom">
         <div class="container-fluid">
             <div class="row text-grey">

@@ -248,7 +248,7 @@ $_SESSION['konfirmasi_ujian'] = true;
                                                         </div>
                                                     </div>
                                                 </footer>
-<?php include '../inc/jsujian.php'; ?>
+<?php include '../inc/js.php'; ?>
 <?php include '../inc/check_activity.php'; ?>
 <script>
 </script>

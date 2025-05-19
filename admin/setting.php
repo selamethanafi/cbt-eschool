@@ -13,6 +13,20 @@ include '../inc/dataadmin.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengaturan</title>
     <?php include '../inc/css.php'; ?>
+    <style>
+    .progress {
+        background-color: #e9ecef;
+        border-radius: 0.25rem;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background-color: #0d6efd;
+        height: 100%;
+        transition: width 0.4s ease;
+    }
+    </style>
+
 </head>
 
 <body>
@@ -138,9 +152,6 @@ include '../inc/dataadmin.php';
                                         </div>
                                         <div id="hasilUpdate" class="form-text text-muted mt-2"></div>
                                     </form>
-
-
-
                                 </div>
                             </div>
                         </div>
@@ -236,27 +247,69 @@ include '../inc/dataadmin.php';
                         showCancelButton: true,
                         confirmButtonText: 'Download & Update',
                         cancelButtonText: 'Tutup',
-                        preConfirm: () => {
-                            return fetch('proses_update.php', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        versi_baru: data.versi_baru,
-                                        url: data.download_url
-                                    })
-                                })
-                                .then(res => res.json())
-                                .then(resp => {
-                                    if (!resp.success) throw new Error(resp.message);
-                                    return resp;
-                                })
-                                .catch(err => {
-                                    Swal.showValidationMessage(
-                                        `Gagal update: ${err.message}`);
-                                });
+                        preConfirm: async () => {
+                            Swal.fire({
+                                title: 'Mengunduh & Menerapkan Update...',
+                                html: `
+            <div class="progress" style="height: 20px;">
+                <div class="progress-bar" style="width:0%;" role="progressbar"></div>
+            </div>
+            <p class="mt-2">Sedang memproses, mohon tunggu...</p>
+        `,
+                                didOpen: async () => {
+                                    const progressBar = Swal.getHtmlContainer()
+                                        .querySelector('.progress-bar');
+                                    let progress = 0;
+                                    const interval = setInterval(() => {
+                                        progress += Math.floor(Math
+                                        .random() * 10) + 5;
+                                        if (progress >= 95) progress = 95;
+                                        progressBar.style.width = progress +
+                                            '%';
+                                    }, 300);
+
+                                    fetch('proses_update.php', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify({
+                                                versi_baru: data
+                                                    .versi_baru,
+                                                url: data.download_url
+                                            })
+                                        })
+                                        .then(res => res.json())
+                                        .then(resp => {
+                                            clearInterval(interval);
+                                            progressBar.style.width = '100%';
+                                            if (!resp.success) throw new Error(
+                                                resp.message);
+                                            Swal.update({
+                                                title: 'Update Berhasil!',
+                                                html: 'Aplikasi berhasil diperbarui.',
+                                                icon: 'success',
+                                                showConfirmButton: true
+                                            });
+                                        })
+                                        .catch(err => {
+                                            clearInterval(interval);
+                                            Swal.update({
+                                                icon: 'error',
+                                                title: 'Gagal Update!',
+                                                text: err.message ||
+                                                    'Terjadi kesalahan.',
+                                                showConfirmButton: true
+                                            });
+                                        });
+                                },
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                showConfirmButton: false
+                            });
+                            return false;
                         }
+
                     }).then(result => {
                         if (result.isConfirmed && result.value.success) {
                             Swal.fire({
