@@ -103,6 +103,26 @@ $result = mysqli_query($koneksi, $query);
         font-size: 28px;
       }
     }
+    .game-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 16px;
+    }
+
+    .game-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(to bottom right, #e9f5ff, #fdfdfd);
+    }
+
+    .icon-wrapper {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: #e0f0ff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     </style>
 </head>
 <body>
@@ -127,42 +147,63 @@ $result = mysqli_query($koneksi, $query);
                                             <div class="container pb-5">
                                                 <div class="row g-4">
 
-                                                <!-- Ujian -->
-                                                <div class="col-md-4">
+                                                <div class="col-md-6 col-sm-6 col-lg-4">
                                                     <a href="ujian.php" class="text-decoration-none text-dark">
-                                                    <div class="card card-minimal">
-                                                        <div class="card-body">
-                                                        <div class="dashboard-icon"><i class="fas fa-pen"></i></div>
-                                                        <div class="card-title">Kerjakan Ujian</div>
-                                                        <p class="text-muted small mb-0">Akses ujian aktif dan mulai sekarang</p>
+                                                        <div class="card card-minimal h-100 border-0 shadow-sm bg-light game-card">
+                                                            <div class="card-body text-center d-flex flex-column justify-content-center align-items-center py-5">
+                                                                <div class="icon-wrapper mb-3">
+                                                                    <i class="fas fa-pen fa-3x text-primary"></i>
+                                                                </div>
+                                                                <h5 class="card-title fw-bold">Kerjakan Ujianmu</h5>
+                                                                <p class="text-muted mb-2">Akses ujian aktif dan mulai sekarang</p>
+                                                                <span class="badge bg-success mt-2">cek Sekarang</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     </a>
                                                 </div>
 
-                                                <!-- Hasil -->
-                                                <div class="col-md-4">
+                                                <div class="col-md-6 col-sm-6 col-lg-4">
                                                     <a href="hasil.php" class="text-decoration-none text-dark">
-                                                    <div class="card card-minimal">
-                                                        <div class="card-body">
-                                                        <div class="dashboard-icon"><i class="fas fa-chart-line"></i></div>
-                                                        <div class="card-title">Hasil Ujian</div>
-                                                        <p class="text-muted small mb-0">Lihat nilai dari ujian yang sudah dikerjakan</p>
+                                                        <div class="card card-minimal h-100 border-0 shadow-sm bg-light game-card">
+                                                            <div class="card-body text-center d-flex flex-column justify-content-center align-items-center py-5">
+                                                                <div class="icon-wrapper mb-3">
+                                                                    <i class="fas fa-chart-line fa-3x text-primary"></i>
+                                                                </div>
+                                                                <h5 class="card-title fw-bold">Hasil Ujianmu</h5>
+                                                                <p class="text-muted mb-2">Lihat nilai dari ujian yang sudah dikerjakan</p>
+                                                                <span class="badge bg-success mt-2">cek Sekarang</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     </a>
                                                 </div>
 
-                                                <!-- Kartu Ujian -->
-                                                <div class="col-md-4">
+                                                <div class="col-md-6 col-sm-6 col-lg-4">
                                                     <a href="perangkat.php" class="text-decoration-none text-dark">
-                                                    <div class="card card-minimal">
-                                                        <div class="card-body">
-                                                        <div class="dashboard-icon"><i class="fas fa-laptop"></i></div>
-                                                        <div class="card-title">Status Perangkat</div>
-                                                        <p class="text-muted small mb-0">Lihat Status Perangkat Anda</p>
+                                                        <div class="card card-minimal h-100 border-0 shadow-sm bg-light game-card">
+                                                            <div class="card-body text-center d-flex flex-column justify-content-center align-items-center py-5">
+                                                                <div class="icon-wrapper mb-3">
+                                                                    <i class="fas fa-laptop fa-3x text-primary"></i>
+                                                                </div>
+                                                                <h5 class="card-title fw-bold">Status Perangkat</h5>
+                                                                <p class="text-muted mb-2">Lihat Status Perangkat Anda</p>
+                                                                <span class="badge bg-success mt-2">cek Sekarang</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-md-6 col-sm-6 col-lg-4">
+                                                    <a href="game.php" class="text-decoration-none text-dark">
+                                                        <div class="card card-minimal h-100 border-0 shadow-sm bg-light game-card">
+                                                            <div class="card-body text-center d-flex flex-column justify-content-center align-items-center py-5">
+                                                                <div class="icon-wrapper mb-3">
+                                                                    <i class="fa fa-gamepad fa-3x text-primary"></i>
+                                                                </div>
+                                                                <h5 class="card-title fw-bold">Mini Games</h5>
+                                                                <p class="text-muted mb-2">Belajar sambil bermain!</p>
+                                                                <span class="badge bg-success mt-2">Mainkan Sekarang</span>
+                                                            </div>
+                                                        </div>
                                                     </a>
                                                 </div>
 

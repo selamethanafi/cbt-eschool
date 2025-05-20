@@ -14,21 +14,29 @@ include '../inc/datasiswa.php';
     <title>Ujian Siswa</title>
     <?php include '../inc/css.php'; ?>
     <style>
-.ujian-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border:1px solid grey;
+.ujian-card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 16px;
+    background: linear-gradient(to bottom right, #f9f9f9, #ffffff);
+    border: 1px solid #999999 !important; /* border tipis abu-abu terang */
 }
-.ujian-card:hover {
+
+.ujian-card-hover:hover {
     transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(to bottom right, #e9f5ff, #fdfdfd);
 }
-.badge-mapel {
-    font-size: 0.75rem;
-    background: #007bff;
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 5px;
+
+.icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #e0f0ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 #last-updated{color:white !important;}
 </style>
 </head>
@@ -74,22 +82,28 @@ function tampilkanUjian(data) {
     }
 
     data.forEach(ujian => {
-        const card = `
-            <div class="col-12 col-lg-4 col-xl-3 col-sm-6 col-md-4">
-                <div class="card ujian-card h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-secondary"><i class="fas fa-qrcode"></i> ${ujian.kode_soal}</h5>
-                        <hr>
-                        <p class="mb-1"><i class="far fa-file-alt text-secondary me-1"></i> ${ujian.mapel}</p>
-                        <p class="mb-1"><i class="fas fa-stopwatch text-secondary me-1"></i> ${ujian.waktu_ujian} menit</p>
-                        <p class="mb-3"><i class="far fa-calendar text-secondary me-1"></i> ${ujian.tanggal}</p>
-                        <a href="konfirmasi_ujian.php?kode_soal=${ujian.kode_soal}" class="btn btn-outline-secondary mt-auto"><i class="fa fa-sign-in" aria-hidden="true"></i> Masuk Ujian</a>
+    const card = `
+        <div class="col-12 col-lg-4 col-xl-3 col-sm-6 col-md-4">
+            <div class="card ujian-card h-100 shadow-sm border-0 bg-light ujian-card-hover">
+                <div class="card-body d-flex flex-column text-center py-4">
+                    <div class="icon-wrapper mb-3 mx-auto">
+                        <i class="fas fa-qrcode fa-lg text-primary"></i>
                     </div>
+                    <h5 class="card-title text-dark fw-bold mb-2">${ujian.kode_soal}</h5>
+                    <hr class="my-2">
+                    <p class="mb-1"><i class="far fa-file-alt text-secondary me-1"></i> ${ujian.mapel}</p>
+                    <p class="mb-1"><i class="fas fa-stopwatch text-secondary me-1"></i> ${ujian.waktu_ujian} menit</p>
+                    <p class="mb-3"><i class="far fa-calendar text-secondary me-1"></i> ${ujian.tanggal}</p>
+                    <a href="konfirmasi_ujian.php?kode_soal=${ujian.kode_soal}" class="btn btn-outline-secondary mt-auto">
+                        <i class="fa fa-sign-in-alt me-1"></i> Masuk Ujian
+                    </a>
                 </div>
             </div>
-        `;
-        container.innerHTML += card;
-    });
+        </div>
+    `;
+    container.innerHTML += card;
+});
+
 }
 
 function loadUjian() {

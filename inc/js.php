@@ -30,7 +30,7 @@
                                                         <div class="row text-grey">
                                                             <div class="col-6 text-start">
                                                                 <p class="mb-0">
-                                                                    <a href="#" id="enc" style="color:grey;"></a>
+                                                                    <a href="#" id="enc" style="color:grey;text-decoration:none;"></a>
                                                                 </p>
                                                             </div>
                                                         </div>
