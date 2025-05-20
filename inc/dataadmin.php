@@ -12,6 +12,7 @@ if (mysqli_stmt_execute($stmt)) {
     $result = mysqli_stmt_get_result($stmt);
     if ($admin = mysqli_fetch_assoc($result)) {
         $nama_admin = $admin['nama_admin']; // Ambil nama admin
+        $id_saya = $admin['id']; // Ambil id admin
     } else {
         echo "Admin tidak ditemukan.";
         exit;

@@ -25,12 +25,18 @@ $kode_soal = $_GET['kode_soal'];
     <link href="../assets/summernote/summernote-bs5.css" rel="stylesheet">
     <style>
     .card img {
-        height: 200px;
-        width: 100%;
+        height: auto;
+        width: auto;
         object-fit: contain;
-        max-width: 700px !important;
+        max-width: 450px !important;
         max-height: 300px !important;
         display: block;
+    }
+    @media (max-width: 768px) {
+    .card img {
+        width: 100% !important;
+        
+        }
     }
 
     label.note-form-label {
@@ -103,7 +109,7 @@ $kode_soal = $_GET['kode_soal'];
             <main class="content">
                 <div class="container-fluid p-0">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-lg-9">
                             <div class="card">
                                 <div class="card-header">
                                     <button type="button" class="btn btn-outline-danger" onclick="exportPDF()"><i

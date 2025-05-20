@@ -159,7 +159,6 @@ $game = $_GET['game'] ?? 'math_puzzle';
                                         <div class="col-lg-8 md-4">
                                             <div class="card card-minimal h-100">
                                                 <div class="card-body">
-                                                    <div class="dashboard-icon mb-2"><i class="fas fa-trophy text-warning"></i></div>
                                                     <div class="card-title">Leaderboard - <?= ucfirst(str_replace('_', ' ', htmlspecialchars($game))) ?></div>
                                                     <p class="text-muted small mb-3">10 Skor Tertinggi</p>
                                                     <div class="table-responsive">

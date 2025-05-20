@@ -67,6 +67,7 @@ include '../inc/datasiswa.php';
             </main>
         </div>
     </div>
+    <?php include 'chatbot.php'; ?>
 <?php include '../inc/js.php'; ?>
 <?php include '../inc/check_activity.php'; ?>
 <script>

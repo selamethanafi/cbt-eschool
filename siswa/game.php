@@ -162,6 +162,7 @@ $res = $stmt->get_result();
         </main>
     </div>
 </div>
+<?php include 'chatbot.php'; ?>
 <?php include '../inc/js.php'; ?>
 <?php include '../inc/check_activity.php'; ?>
 </body>

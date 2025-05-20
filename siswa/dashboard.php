@@ -207,6 +207,21 @@ $result = mysqli_query($koneksi, $query);
                                                     </a>
                                                 </div>
 
+                                                <div class="col-md-6 col-sm-6 col-lg-8">
+                                                    <a href="chat.php" class="text-decoration-none text-dark">
+                                                        <div class="card card-minimal h-100 border-0 shadow-sm bg-light game-card">
+                                                            <div class="card-body text-center d-flex flex-column justify-content-center align-items-center py-5">
+                                                                <div class="icon-wrapper mb-3">
+                                                                    <i class="fas fa-comments  fa-3x text-primary"></i>
+                                                                </div>
+                                                                <h5 class="card-title fw-bold">ChatBox</h5>
+                                                                <p class="text-muted mb-2">Diskusi dengan teman kalian!</p>
+                                                                <span class="badge bg-success mt-2">Chat Sekarang</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+
                                                 </div>
                                             </div>
 =                                    </div>
@@ -222,5 +237,15 @@ $result = mysqli_query($koneksi, $query);
     <?php include 'chatbot.php'; ?>
     <?php include '../inc/js.php'; ?>
     <?php include '../inc/check_activity.php'; ?>
+    <?php if (isset($_SESSION['error'])): ?>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Gagal!',
+    text: '<?= $_SESSION['error']; ?>',
+    confirmButtonColor: '#dc3545'
+});
+</script>
+<?php unset($_SESSION['error']); endif; ?>
 </body>
 </html>

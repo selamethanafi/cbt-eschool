@@ -180,12 +180,18 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
     }
 
     .card img {
-        height: 200px;
-        width: 100%;
+        height: auto;
+        width: auto;
         object-fit: contain;
-        max-width: 700px !important;
+        max-width: 450px !important;
         max-height: 300px !important;
         display: block;
+    }
+    @media (max-width: 768px) {
+    .card img {
+        width: 100% !important;
+        
+        }
     }
 
     table {
@@ -244,7 +250,7 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                                     data-bs-dismiss="modal">Kembali</button></a>
                         </div>
                     </div>
-                    <div class="col-12 card-utama" id="canvas_div_pdf">
+                    <div class="col-lg-9 card-utama" id="canvas_div_pdf">
                         <!-- HEADER 2 KOLOM -->
                         <div class="row mb-4"
                             style="max-height:300px;background-color: #444; color: white; border-radius: 10px; padding: 20px;">

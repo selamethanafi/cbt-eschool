@@ -188,7 +188,7 @@ $result = mysqli_query($koneksi, $query);
             </main>
         </div>
     </div>
-
+    
     <?php include 'chatbot.php'; ?>
     <?php include '../inc/js.php'; ?>
 
