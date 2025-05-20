@@ -6,6 +6,7 @@ include '../inc/datasiswa.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'game_over') {
     $score = isset($_POST['score']) ? intval($_POST['score']) : 0;
     $nama_game = 'math_puzzle';
+    $id_siswa = $_SESSION['siswa_id'];
 
     // Cek skor sebelumnya
     $cek = $koneksi->prepare("SELECT skor FROM skor_game WHERE id_siswa = ? AND nama_game = ?");
@@ -27,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'game_over') {
     }
 
     // Bersihkan session game
-    unset($_SESSION['score'], $_SESSION['lives'], $_SESSION['start_time']);
+    unset($_SESSION['score'], $_SESSION['lives'], $_SESSION['start_time'], $_SESSION['current_question'], $_SESSION['question_data']);
 
-    // Tidak perlu output apapun
     http_response_code(200);
     exit;
 }
+?>
