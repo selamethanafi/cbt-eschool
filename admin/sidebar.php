@@ -85,6 +85,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
+                    <li class="sidebar-item <?= ($currentPage == 'chatbox_siswa.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="chatbox_siswa.php">
+                            <i class="align-middle fas fa-comment"></i> <span class="align-middle">ChatBox</span>
+                        </a>
+                    </li>
+
                     <li class="sidebar-item <?= ($currentPage == 'backup.php') ? 'active' : '' ?> <?= ($currentPage == 'backup_gbr.php') ? 'active' : '' ?>">
                     <a data-bs-toggle="collapse" href="#backup" class="sidebar-link collapsed">
                         <i class="align-middle fa fa-hdd"></i> <span class="align-middle">Backup </span><i class="fa fa-chevron-down ms-auto float-end"></i>
