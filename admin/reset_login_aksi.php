@@ -1,8 +1,9 @@
 <?php
 session_start();
 include '../koneksi/koneksi.php';
-include '../inc/functions.php'; // Tambahkan baris ini
+include '../inc/functions.php';
 check_login('admin');
+include '../inc/dataadmin.php';
 
 if (isset($_POST['id_siswa'])) {
     $id_siswa = $_POST['id_siswa'];

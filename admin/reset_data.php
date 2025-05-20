@@ -1,5 +1,9 @@
 <?php
+session_start();
 include '../koneksi/koneksi.php';
+include '../inc/functions.php';
+check_login('admin');
+include '../inc/dataadmin.php';
 
 // Ambil parameter
 $start  = $_GET['start'] ?? 0;
