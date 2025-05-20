@@ -28,6 +28,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
+                    <li class="sidebar-item <?= ($currentPage == 'game.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="game.php">
+                        <i class="fa fa-gamepad" aria-hidden="true"></i> <span class="align-middle">Mini Games</span>
+                        </a>
+                    </li>
+
                     <li class="sidebar-item">
                         <a class="sidebar-link btnLogout" href="logout.php">
                             <i class="align-middle fas fa-sign-out-alt"></i> <span class="align-middle">Logout</span>
