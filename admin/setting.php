@@ -116,16 +116,7 @@ include '../inc/dataadmin.php';
                                                     value="<?= $data['waktu_sinkronisasi'] ?? 60 ?>" min="10" required>
                                             </div>
 
-                                            <!-- Sembunyikan Nilai -->
-                                            <div class="col-12 col-md-6 d-flex align-items-center">
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input"
-                                                        name="sembunyikan_nilai" id="sembunyikan_nilai" value="1"
-                                                        <?= !empty($data['sembunyikan_nilai']) ? 'checked' : '' ?>>
-                                                    <label class="form-check-label" for="sembunyikan_nilai">Sembunyikan
-                                                        Nilai Siswa (Dashboard Siswa)</label>
-                                                </div>
-                                            </div>
+                                            
 
                                             <!-- Status Login Ganda -->
                                             <div class="col-12 col-md-6">
@@ -140,27 +131,50 @@ include '../inc/dataadmin.php';
                                                         Blokir</option>
                                                 </select>
                                             </div>
-                                        </div>
+                     
 
-                                        <div class="d-flex justify-content-start gap-2 mt-4">
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="fas fa-save"></i> Simpan Pengaturan
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary" id="btnCekUpdate">
-                                                <i class="fas fa-sync-alt"></i> Cek Update
-                                            </button>
+                                        <div class="col-12 col-md-6">
+                                            <label for="chat" class="form-label">Fitur ChatBox Siswa</label>
+                                            <select class="form-select" name="chat" id="chat" required>
+                                                <option value="izinkan"
+                                                    <?= $data['chat'] === 'izinkan' ? 'selected' : '' ?>>
+                                                    Izinkan</option>
+                                                <option value="blokir"
+                                                    <?= $data['chat'] === 'blokir' ? 'selected' : '' ?>>
+                                                    Blokir</option>
+                                            </select>
                                         </div>
-                                        <div id="hasilUpdate" class="form-text text-muted mt-2"></div>
-                                    </form>
+                                        <!-- Sembunyikan Nilai -->
+                                            <div class="col-12 col-md-6 d-flex align-items-center">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                        name="sembunyikan_nilai" id="sembunyikan_nilai" value="1"
+                                                        <?= !empty($data['sembunyikan_nilai']) ? 'checked' : '' ?>>
+                                                    <label class="form-check-label" for="sembunyikan_nilai">Sembunyikan
+                                                        Nilai Siswa (Dashboard Siswa)</label>
+                                                </div>
+                                            </div>
                                 </div>
+
+                                <div class="d-flex justify-content-start gap-2 mt-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Simpan Pengaturan
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" id="btnCekUpdate">
+                                        <i class="fas fa-sync-alt"></i> Cek Update
+                                    </button>
+                                </div>
+                                <div id="hasilUpdate" class="form-text text-muted mt-2"></div>
+                                </form>
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </main>
 
         </div>
+        </main>
+
+    </div>
     </div>
     <?php include '../inc/js.php'; ?>
     <script>
@@ -262,7 +276,7 @@ include '../inc/dataadmin.php';
                                     let progress = 0;
                                     const interval = setInterval(() => {
                                         progress += Math.floor(Math
-                                        .random() * 10) + 5;
+                                            .random() * 10) + 5;
                                         if (progress >= 95) progress = 95;
                                         progressBar.style.width = progress +
                                             '%';
