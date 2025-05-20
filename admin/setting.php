@@ -249,7 +249,7 @@ include '../inc/dataadmin.php';
                         cancelButtonText: 'Tutup',
                         preConfirm: async () => {
                             Swal.fire({
-                                title: 'Mengunduh & Menerapkan Update...',
+                                title: '',
                                 html: `
             <div class="progress" style="height: 20px;">
                 <div class="progress-bar" style="width:0%;" role="progressbar"></div>
