@@ -52,7 +52,7 @@ function scrambleWord($word) {
     return $scrambled;
 }
 
-// Inisialisasi session scramble
+
 if (!isset($_SESSION['scramble'])) {
     $_SESSION['scramble'] = [
         'nyawa' => 3,
@@ -69,7 +69,7 @@ if (!isset($_SESSION['scramble'])) {
 
 $scramble = &$_SESSION['scramble'];
 
-// Handle timer update
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_timer') {
     $scramble['time_left'] = intval($_POST['time_left']);
     exit;
@@ -82,7 +82,7 @@ function nextWord() {
     }
 
     $target_length = $scramble['level'] + 3;
-    
+
     $filtered = array_filter($scramble['kata_sisa'], function ($word) use ($target_length) {
         return mb_strlen($word) === $target_length;
     });
@@ -91,10 +91,7 @@ function nextWord() {
         $filtered = array_filter($scramble['kata_sisa'], function ($word) use ($target_length) {
             return mb_strlen($word) > $target_length;
         });
-
-        if (empty($filtered)) {
-            return null;
-        }
+        if (empty($filtered)) return null;
     }
 
     $index = array_rand($filtered);
@@ -109,7 +106,7 @@ function nextWord() {
     $scramble['time_left'] = 60;
     $scramble['revealed_letters'] = [];
 
-    // Buka 1 huruf secara acak
+
     $letters = mb_str_split($kata);
     $random_index = array_rand($letters);
     $scramble['revealed_letters'][$random_index] = $letters[$random_index];
@@ -124,16 +121,9 @@ if ($scramble['kata_sekarang'] === '') {
     $game_over = false;
 }
 
-// AJAX handler
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
-
-    if (isset($_POST['action'])) {
-        if ($_POST['action'] === 'update_timer') {
-            exit; // Already handled above
-        }
-    }
-
+    
     if ($scramble['nyawa'] <= 0) {
         echo json_encode(['status'=>'game_over', 'msg'=>'Nyawa habis. Game Over!', 'skor'=>$scramble['skor']]);
         exit;
@@ -163,37 +153,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    if (isset($_POST['action']) && $_POST['action'] === 'bantuan') {
-        if ($scramble['bantuan'] <= 0) {
-            echo json_encode(['status'=>'fail', 'msg'=>'Bantuan habis.']);
-            exit;
-        }
-        
-        $kata_asli = $scramble['kata_sekarang'];
-        $letters = mb_str_split($kata_asli);
-        
-        $closed_positions = [];
-        foreach ($letters as $index => $letter) {
-            if (!isset($scramble['revealed_letters'][$index])) {
-                $closed_positions[] = $index;
+    if (isset($_POST['action'])) {
+        if ($_POST['action'] === 'bantuan') {
+            if ($scramble['bantuan'] <= 0) {
+                echo json_encode(['status'=>'fail', 'msg'=>'Bantuan habis.']);
+                exit;
             }
-        }
-        
-        if (empty($closed_positions)) {
-            echo json_encode(['status'=>'fail', 'msg'=>'Semua huruf sudah terbuka.']);
+            
+            $kata_asli = $scramble['kata_sekarang'];
+            $letters = mb_str_split($kata_asli);
+            $closed_positions = array_filter(range(0, count($letters)-1), 
+                function($i) use ($scramble) { return !isset($scramble['revealed_letters'][$i]); });
+            
+            if (empty($closed_positions)) {
+                echo json_encode(['status'=>'fail', 'msg'=>'Semua huruf sudah terbuka.']);
+                exit;
+            }
+            
+            $random_index = $closed_positions[array_rand($closed_positions)];
+            $scramble['revealed_letters'][$random_index] = $letters[$random_index];
+            $scramble['bantuan']--;
+            
+            echo json_encode([
+                'status'=>'success', 
+                'revealed_letters'=>$scramble['revealed_letters'],
+                'bantuan'=>$scramble['bantuan']
+            ]);
             exit;
         }
-        
-        $random_index = $closed_positions[array_rand($closed_positions)];
-        $scramble['revealed_letters'][$random_index] = $letters[$random_index];
-        $scramble['bantuan']--;
-        
-        echo json_encode([
-            'status'=>'success', 
-            'revealed_letters'=>$scramble['revealed_letters'],
-            'bantuan'=>$scramble['bantuan']
-        ]);
-        exit;
     }
 
     if (isset($_POST['jawaban'])) {
@@ -202,10 +189,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($jawaban === $kata_asli) {
             $scramble['skor'] += 10;
+            if ($scramble['skor'] % 50 === 0) $scramble['level']++;
             
-            if ($scramble['skor'] % 50 === 0) {
-                $scramble['level']++;
-            }
             $kata_baru = nextWord();
             if ($kata_baru === null) {
                 echo json_encode(['status'=>'game_finished', 'msg'=>'Semua kata selesai!', 'skor'=>$scramble['skor']]);
@@ -223,17 +208,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } else {
             $scramble['nyawa']--;
+            $kata_baru = nextWord();
+            
             if ($scramble['nyawa'] <= 0) {
                 echo json_encode(['status'=>'game_over', 'msg'=>'Nyawa habis. Game Over!', 'skor'=>$scramble['skor']]);
                 exit;
             }
-            echo json_encode(['status'=>'wrong', 'nyawa'=>$scramble['nyawa'], 'msg'=>'Jawaban salah, coba lagi.']);
+            
+            if ($kata_baru === null) {
+                echo json_encode(['status'=>'game_finished', 'msg'=>'Semua kata selesai!', 'skor'=>$scramble['skor']]);
+                exit;
+            }
+            
+            echo json_encode([
+                'status' => 'wrong',
+                'nyawa' => $scramble['nyawa'],
+                'msg' => 'Jawaban salah, coba lagi.',
+                'skor' => $scramble['skor'],
+                'level' => $scramble['level'],
+                'kata_scramble' => scrambleWord($kata_baru),
+                'revealed_letters' => $scramble['revealed_letters'],
+                'bantuan' => $scramble['bantuan']
+            ]);
             exit;
         }
     }
 
     echo json_encode(['status'=>'fail', 'msg'=>'Request invalid']);
-    header('Location: game_over_scramble.php');
+
     exit;
 }
 ?>
@@ -256,11 +258,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h2>🎮 Game Scramble Text 🎮</h2>
 
         <div id="info">
-            <div class="info-item nyawa"><i class="fas fa-heart" style="color:red;"></i> Nyawa: <span id="nyawa-count"></span></div>
-            <div class="info-item bantuan"><i class="fas fa-lightbulb" style="color:purple;"></i> Bantuan: <span id="bantuan-count"></span></div>
-            <div class="info-item level"><i class="fas fa-level-up-alt" style="color:green;"></i> Level: <span id="level"></span></div>
-            <div class="info-item skor"><i class="fas fa-star" style="color:orange;"></i> Skor: <span id="skor"></span></div>
-            <div class="info-item"><i class="fas fa-clock" style="color:#157ae6;"></i> Waktu: <span id="timer">60</span>s</div>
+            <div class="info-item nyawa"><i class="fas fa-heart" style="color:red;"></i> Nyawa: <span
+                    id="nyawa-count"></span></div>
+            <div class="info-item bantuan" style="display:none;"><i class="fas fa-lightbulb" style="color:purple;"></i> Bantuan: <span
+                    id="bantuan-count"></span></div>
+            <div class="info-item level"><i class="fas fa-level-up-alt" style="color:green;"></i> Level: <span
+                    id="level"></span></div>
+            <div class="info-item skor"><i class="fas fa-star" style="color:orange;"></i> Skor: <span id="skor"></span>
+            </div>
+            <div class="info-item"><i class="fas fa-clock" style="color:#157ae6;"></i> Waktu: <span
+                    id="timer">60</span>s</div>
         </div>
 
         <div id="kata-scramble"></div>
@@ -269,7 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="button-group">
             <button id="submit-btn"><i class="fas fa-paper-plane"></i> Jawab</button>
-            <button id="bantuan-btn"><i class="fas fa-question"></i> Bantuan</button>
+            <button id="bantuan-btn" style="display:none;"><i class="fas fa-question"></i> Bantuan</button>
             <button id="keluar-btn"><i class="fas fa-sign-out"></i> Keluar</button>
         </div>
     </div>
@@ -311,27 +318,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             inputContainer.innerHTML = '';
             const wordLength = data.kata_scramble ? data.kata_scramble.length : 0;
             const revealedLetters = data.revealed_letters || {};
-            
+
             for (let i = 0; i < wordLength; i++) {
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.maxLength = 1;
                 input.className = 'input-letter';
                 input.dataset.index = i;
-                
+
                 if (revealedLetters[i]) {
                     input.value = revealedLetters[i];
                     input.readOnly = true;
                     input.className += ' revealed';
                 }
-                
+
                 input.addEventListener('input', function(e) {
                     if (this.value) {
                         const next = this.nextElementSibling;
                         if (next && !next.readOnly) next.focus();
                     }
                 });
-                
+
                 input.addEventListener('keydown', function(e) {
                     if (e.key === 'Backspace' && !this.value) {
                         const prev = this.previousElementSibling;
@@ -340,16 +347,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         submitAnswer(getCurrentAnswer());
                     }
                 });
-                
+
                 inputContainer.appendChild(input);
             }
-            
+
             // Focus ke input pertama yang kosong
             const firstEmptyInput = inputContainer.querySelector('.input-letter:not(.revealed)');
             if (firstEmptyInput) firstEmptyInput.focus();
         }
     }
-    
+
     function getCurrentAnswer() {
         const inputs = document.querySelectorAll('.input-letter');
         let answer = '';
@@ -358,16 +365,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
         return answer;
     }
-    
+
     function startTimer() {
         waktu = <?php echo $scramble['time_left']; ?>;
         timerSpan.textContent = waktu;
         clearInterval(timerInterval);
-        
+
         timerInterval = setInterval(() => {
             waktu--;
             timerSpan.textContent = waktu;
-            
+
             // Update timer di server
             fetch('', {
                 method: 'POST',
@@ -376,18 +383,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 },
                 body: 'action=update_timer&time_left=' + waktu
             }).catch(() => {});
-            
+
             if (waktu <= 0) {
                 clearInterval(timerInterval);
                 submitAnswer(''); // trigger waktu habis
             }
         }, 1000);
     }
-    
+
     function stopTimer() {
         clearInterval(timerInterval);
     }
-    
+
     function submitAnswer(jawaban) {
         const formData = new FormData();
         if (jawaban !== null && jawaban !== '') formData.append('jawaban', jawaban);
@@ -403,7 +410,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     swalToast('success', 'Jawaban benar! +10 poin');
                 } else if (data.status === 'wrong') {
                     updateUI(data);
-                    swalToast('error', 'Jawaban salah, coba lagi.');
+                    startTimer(); // Tambahkan ini untuk reset timer
+                    swalToast('error', data.msg);
                 } else if (data.status === 'game_over') {
                     stopTimer();
                     showAlert('error', 'Game Over!', data.msg + '\nSkor Anda: ' + data.skor, () => {
@@ -426,7 +434,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 swalToast('error', 'Gagal terhubung ke server.');
             });
     }
-    
+
     function requestBantuan() {
         if (bantuanCountSpan.textContent == 0) {
             swalToast('error', 'Bantuan habis.');
@@ -453,7 +461,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 swalToast('error', 'Gagal terhubung ke server.');
             });
     }
-    
+
     function swalToast(icon, message) {
         Swal.fire({
             icon: icon,
@@ -491,7 +499,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     submitBtn.addEventListener('click', () => {
         const jawaban = getCurrentAnswer();
-        if (jawaban.length < <?php echo isset($scramble['kata_sekarang']) ? mb_strlen($scramble['kata_sekarang']) : 1; ?>) {
+        if (jawaban.length <
+            <?php echo isset($scramble['kata_sekarang']) ? mb_strlen($scramble['kata_sekarang']) : 1; ?>) {
             swalToast('warning', 'Lengkapi semua huruf!');
             return;
         }
@@ -502,28 +511,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         requestBantuan();
     });
 
-    document.getElementById('bantuan-btn').addEventListener('click', function () {
-    setTimeout(function () {
-      location.reload();
-    }, 1000); // Delay 1000ms = 1 detik
-  });
-
-      document.getElementById('keluar-btn').addEventListener('click', function () {
-    Swal.fire({
-      title: 'Keluar dari game?',
-      text: "Progress kamu akan hilang!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'keluar',
-      cancelButtonText: 'Batal'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = 'game_over_scramble.php';
-      }
+    document.getElementById('bantuan-btn').addEventListener('click', function() {
+        setTimeout(function() {
+            location.reload();
+        }, 1000); // Delay 1000ms = 1 detik
     });
-  });
+
+    document.getElementById('keluar-btn').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Keluar dari game?',
+            text: "Progress kamu akan hilang!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'keluar',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'game_over_scramble.php';
+            }
+        });
+    });
     </script>
 </body>
+
 </html>
