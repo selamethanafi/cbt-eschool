@@ -252,7 +252,7 @@ form#form-chat {
                                     </form>
 
                                 </div>
-                                <audio id="notifSound" src="notif.mp3" preload="auto"></audio>
+                                <!--<audio id="notifSound" src="notif.mp3" preload="auto"></audio>-->
                             </div>
                         </div>
                     </div>
@@ -272,7 +272,7 @@ form#form-chat {
 
             const currentCount = $('.chat-line').length;
             if (currentCount > lastChatCount) {
-                document.getElementById('notifSound').play();
+                //document.getElementById('notifSound').play();
             }
             lastChatCount = currentCount;
         });

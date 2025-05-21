@@ -347,7 +347,7 @@ $_SESSION['error'] = 'Fitur chat saat ini diblokir oleh admin.';
 
             const currentCount = $('.chat-line').length;
             if (currentCount > lastChatCount) {
-                document.getElementById('notifSound').play();
+               // document.getElementById('notifSound').play();
             }
             lastChatCount = currentCount;
         });
@@ -445,7 +445,7 @@ $_SESSION['error'] = 'Fitur chat saat ini diblokir oleh admin.';
             inputChat.focus();
 
             emojiDropdown.classList.remove('show');
-        }
+        }//someAudioElement.play();
     });
 
     // Klik di luar dropdown tutup dropdown
