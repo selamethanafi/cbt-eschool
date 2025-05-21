@@ -55,6 +55,7 @@ while ($row = mysqli_fetch_assoc($top_siswa_query)) {
     $top_siswa_data['ujian'][] = $row['jumlah_ujian'];
 }
 $game = $_GET['game'] ?? 'math_puzzle';
+$game2 = $_GET['game'] ?? 'scramble';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -156,7 +157,7 @@ $game = $_GET['game'] ?? 'math_puzzle';
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-8 md-4">
+                                        <div class="col-lg-6 md-4">
                                             <div class="card card-minimal h-100">
                                                 <div class="card-body">
                                                     <div class="card-title">Leaderboard - <?= ucfirst(str_replace('_', ' ', htmlspecialchars($game))) ?></div>
@@ -197,6 +198,56 @@ $game = $_GET['game'] ?? 'math_puzzle';
                                                                 </tr>
                                                             <?php 
                                                                 $rank++;
+                                                            endwhile; 
+                                                            ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 md-4">
+                                            <div class="card card-minimal h-100">
+                                                <div class="card-body">
+                                                    <div class="card-title">Leaderboard - Scramble Text</div>
+                                                    <p class="text-muted small mb-3">10 Skor Tertinggi</p>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-striped table-sm mb-0">
+                                                            <thead class="table-secondary">
+                                                                <tr>
+                                                                    <th class="text-center">#</th>
+                                                                    <th>Nama</th>
+                                                                    <th>Skor</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <?php 
+                                                            $stmt2 = $koneksi->prepare("
+                                                                SELECT siswa.nama_siswa, skor_game.skor
+                                                                FROM skor_game
+                                                                JOIN siswa ON skor_game.id_siswa = siswa.id_siswa
+                                                                WHERE skor_game.nama_game = ?
+                                                                ORDER BY skor_game.skor DESC
+                                                                LIMIT 10
+                                                            ");
+                                                            $stmt2->bind_param("s", $game2);
+                                                            $stmt2->execute();
+                                                            $res2 = $stmt2->get_result();
+                                                            $rank2 = 1;
+                                                            while ($row2 = $res2->fetch_assoc()):
+                                                                $icon2 = '';
+                                                                if ($rank2 == 1) $icon2 = '<i class="fas fa-medal text-warning"></i>'; // Gold
+                                                                elseif ($rank2 == 2) $icon2 = '<i class="fas fa-medal text-secondary"></i>'; // Silver
+                                                                elseif ($rank2 == 3) $icon2 = '<i class="fas fa-medal" style="color: #cd7f32;"></i>'; // Bronze
+                                                            ?>
+                                                                <tr>
+                                                                    <td class="text-center"><?= $icon2 ?: $rank2 ?></td>
+                                                                    <td><?= htmlspecialchars($row2['nama_siswa']) ?></td>
+                                                                    <td><?= (int)$row2['skor'] ?></td>
+                                                                </tr>
+                                                            <?php 
+                                                                $rank2++;
                                                             endwhile; 
                                                             ?>
                                                             </tbody>
