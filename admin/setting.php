@@ -109,7 +109,7 @@ include '../inc/dataadmin.php';
 
                                             <!-- Waktu Sinkronisasi -->
                                             <div class="col-12 col-md-6">
-                                                <label for="waktu_sinkronisasi" class="form-label">Waktu Sinkronisasi
+                                                <label for="waktu_sinkronisasi" class="form-label">Waktu Sinkronisasi Ujian
                                                     (detik)</label>
                                                 <input type="number" class="form-control" name="waktu_sinkronisasi"
                                                     id="waktu_sinkronisasi"

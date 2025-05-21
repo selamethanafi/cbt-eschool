@@ -38,7 +38,8 @@ unset($_SESSION['score'], $_SESSION['lives'], $_SESSION['current_question'], $_S
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Game Selesai</title>
 <script src="../assets/js/sweetalert.js"></script>
 <link rel="icon" type="image/png" href="../assets/images/icon.png" />
