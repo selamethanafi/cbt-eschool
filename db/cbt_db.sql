@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 20 Bulan Mei 2025 pada 21.09
+-- Waktu pembuatan: 22 Bulan Mei 2025 pada 19.44
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -92,7 +92,13 @@ INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `t
 (174, 4, 'IPA9-01', 'Jodohkanlah pernyataan berikut dengan jawaban yang benar!', 'Menjodohkan', '', '', '', '', 'Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma', 'Aktif', '2025-05-13 12:56:35'),
 (175, 5, 'IPA9-01', 'Kelebihan lampu smart LED adalah hemat daya dan tahan lama. Lampu LED dapatbertahan  hingga  15.000  jam  penggunaan.  Sebagai  perbandingan,  lampu  bohlamkonvensional umurnya hanya...', 'Uraian', '', '', '', '', 'hanya sampai 1.000 hingga 2.000 jam penggunaan saja', 'Aktif', '2025-05-13 12:57:53'),
 (176, 8, 'SR9-01', '<p><img style=\"\" src=\"http://localhost/cbt-eschool/gambar/6825eec81c17d.png\" id=\"gbrsoal\"><br></p>', 'Pilihan Ganda Kompleks', 'asaf', 'gfrsg', 'hfjhgf', 'ngfjhfd', 'pilihan_1,pilihan_2', 'Aktif', '2025-05-15 13:40:39'),
-(178, 10, 'SR9-01', 'sfsdfsfdsf', 'Menjodohkan', '', '', '', '', 'sdfsdf:sdf|sdf:sdfdfgdfff', 'Aktif', '2025-05-17 03:05:17');
+(178, 10, 'SR9-01', 'sfsdfsfdsf', 'Menjodohkan', '', '', '', '', 'sdfsdf:sdf|sdf:sdfdfgdfff', 'Aktif', '2025-05-17 03:05:17'),
+(183, 1, 'MAT9-01', '<p><img style=\"\" src=\"http://localhost/cbt-eschool/gambar/682d8ead64c7b.jpg\" id=\"gbrsoal\"></p><p>Sampah anorganik lebih lama terurai dibandingkan dengan sampah organik. Waktu dekomposisi popok sekali pakai lebih lama dari plastik, namun kurang dari kulit sintetis. Berapa waktu dekomposisi yang mungkin dari popok sekali pakai?</p>', 'Pilihan Ganda', '100 tahun', '250 tahun', '375 tahun', '475 tahun', 'pilihan_4', 'Aktif', '2025-05-21 08:29:07'),
+(184, 2, 'MAT9-01', '<p><img style=\"\" src=\"http://localhost/cbt-eschool/gambar/682d8f5650e12.jpg\" id=\"gbrsoal\"></p><p>Pilih Benar atau Salah pada setiap pernyataan berikut!</p><p><br></p>', 'Benar/Salah', 'Panjang AB = Panjang CD', 'Panjang PQ = Panjang SR', 'Jarak Q ke S = Jarak B ke C', '', 'Benar|Benar|Salah', 'Aktif', '2025-05-21 08:31:24'),
+(185, 3, 'MAT9-01', 'Suatu kali, PT Suka-Suka Kalian mendapatkan pesanan 30 unit tenda dengan bentuk dan ukuran seperti di atas. Waktu penyelesaian yang diperlukan untuk memenuhi seluruh pesanan adalah 20 hari kerja.<br><br>Berdasarkan keterangan di atas, berilah tanda Benar atau Salah untuk setiap pernyataan berikut!', 'Benar/Salah', 'Waktu rata-rata pembuatan 3 buah tenda adalah 2 hari.', 'Waktu penyelesaian semua pesanan bisa tepat waktu jika dalam sehari dihasilkan sebuah tenda.', 'Jika pesanan bertambah 5 tenda, lama penyelesaian bertambah 2 hari.', 'Jika dalam sehari dapat dihasilkan 2 tenda, waktu penyelesaian seluruh pesanan menjadi 5 hari lebih cepat.', 'Salah|Salah|Salah|Benar', 'Aktif', '2025-05-21 08:37:06'),
+(186, 4, 'MAT9-01', 'Biskuit merupakan camilan yang banyak digemari sebagai pelengkap minum teh setiap waktu. Berikut komposisi 2 jenis biskuit yang sering dijual di pasaran:<br><br>(I) Komposisi Biskuit Sehat (berat 149 g):<br><br>&nbsp;&nbsp;&nbsp; Lemak total: 9%<br>&nbsp;&nbsp;&nbsp; Lemak jenuh: 20%<br>&nbsp;&nbsp;&nbsp; Protein: 3%<br>&nbsp;&nbsp;&nbsp; Karbohidrat total: 6%<br>&nbsp;&nbsp;&nbsp; Natrium: 10%<br><br>(II) Komposisi Biskuit Lezat (250 g):<br><br>&nbsp;&nbsp;&nbsp; Lemak total: 8%<br>&nbsp;&nbsp;&nbsp; Lemak jenuh: 16%<br>&nbsp;&nbsp;&nbsp; Protein: 2%<br>&nbsp;&nbsp;&nbsp; Karbohidrat total: 4%<br>&nbsp;&nbsp;&nbsp; Natrium: 5%<br><br>Berdasarkan informasi di atas, pilihlah pernyataan-pernyataan berikut yang benar:', 'Pilihan Ganda Kompleks', 'Komposisi protein Biskuit Lezat adalah 0,02 bagian', 'Komposisi natrium Biskuit Sehat adalah 0,01 bagian', 'Komposisi lemak jenuh Biskuit Lezat adalah 0,16 bagian', 'Komposisi lemak jenuh Biskuit Sehat adalah 0,02 bagian', 'pilihan_1,pilihan_3', 'Aktif', '2025-05-21 08:38:42'),
+(187, 5, 'MAT9-01', 'Pasangkan pernyataan di kolom kiri dengan jawaban yang tepat di kolom kanan dengan menulis huruf di depan nomor yang sesuai!', 'Menjodohkan', NULL, NULL, NULL, NULL, 'Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²|Nilai x dari 2x+5=19:7', 'Aktif', '2025-05-21 08:51:02'),
+(188, 6, 'MAT9-01', 'Faktor persekutuan terbesar (FPB) dari 12 dan 18', 'Uraian', NULL, NULL, NULL, NULL, '6', 'Aktif', '2025-05-21 08:51:30');
 
 -- --------------------------------------------------------
 
@@ -149,7 +155,28 @@ INSERT INTO `chat` (`id`, `id_user`, `pesan`, `waktu`, `deleted`, `role`) VALUES
 (34, 1, 'hmm', '2025-05-21 00:39:14', 0, 'admin'),
 (35, 17, '🥳', '2025-05-21 01:00:54', 0, 'siswa'),
 (36, 17, '😡', '2025-05-21 01:44:48', 0, 'siswa'),
-(37, 1, 'opo ae tar lintar', '2025-05-21 02:05:39', 0, 'admin');
+(37, 1, 'opo ae tar lintar', '2025-05-21 02:05:39', 0, 'admin'),
+(38, 17, 'tes', '2025-05-21 15:19:07', 0, 'siswa'),
+(39, 1, 'apa?', '2025-05-21 15:19:13', 0, 'admin'),
+(40, 1, 'hehe', '2025-05-21 15:19:57', 0, 'siswa'),
+(41, 17, 'hmm', '2025-05-21 15:20:10', 0, 'siswa'),
+(42, 16, '@bandy @joni', '2025-05-21 21:26:31', 0, 'siswa'),
+(43, 16, '🥳🥳', '2025-05-21 21:26:43', 0, 'siswa'),
+(44, 2, 'hore', '2025-05-21 22:07:11', 0, 'siswa'),
+(45, 1, 'v', '2025-05-22 00:41:02', 0, 'admin'),
+(46, 1, 'apalah', '2025-05-22 00:42:11', 0, 'admin'),
+(47, 2, 'xcv', '2025-05-22 00:43:08', 0, 'siswa'),
+(48, 1, 'df', '2025-05-22 00:45:37', 1, 'admin'),
+(49, 2, 'sdfsf🥳', '2025-05-22 00:45:46', 1, 'siswa'),
+(50, 2, 'xc', '2025-05-22 00:49:15', 0, 'siswa'),
+(51, 2, '🙏', '2025-05-22 00:51:51', 1, 'siswa'),
+(52, 2, '🙏🥳😎', '2025-05-22 00:52:06', 0, 'siswa'),
+(53, 1, '😡🎉', '2025-05-22 00:54:06', 1, 'admin'),
+(54, 1, 'cvvcbc cvb', '2025-05-22 01:02:34', 0, 'admin'),
+(55, 1, '😡🤔🚀', '2025-05-22 03:11:22', 1, 'siswa'),
+(56, 1, '🙏', '2025-05-22 10:30:41', 1, 'admin'),
+(57, 5, '😎halo guys apa kabar semuanya', '2025-05-23 00:41:28', 0, 'siswa'),
+(58, 5, 'xc', '2025-05-23 00:41:48', 1, 'siswa');
 
 -- --------------------------------------------------------
 
@@ -212,7 +239,9 @@ INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`
 (679, 1, 'Jokowi JK', 'IPA9-01', '', '[1:pilihan_3][2:Benar|Salah|Benar|Benar][3:pilihan_1,pilihan_2,pilihan_4][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma][5:fgfj]', '7', '2025-05-19 11:23:01', 'Selesai'),
 (763, 5, 'Corbuzier', 'IPA9-01', '', '[1:pilihan_1][2:Benar|Salah|Benar|Benar][3:pilihan_1,pilihan_2,pilihan_4][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma][5:]', '60', '2025-05-19 13:49:41', 'Selesai'),
 (764, 2, 'Prabowo', 'SR9-01', '', '[3:Benar|Salah][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][8:pilihan_1,pilihan_2][12:vhn][2:Benar|Salah][9:sdfgsds][7:pilihan_1,pilihan_2,pilihan_4][6:Benar|Salah][11:Benar|Salah][1:pilihan_3][13:pilihan_1][10:sdfsdf:sdfdfgdfff|sdf:sdf][5:pilihan_1,pilihan_2,pilihan_3]', '53', '2025-05-19 17:14:32', 'Selesai'),
-(772, 17, 'Lintar', 'SR9-01', '', '[10:sdfsdf:sdf|sdf:sdfdfgdfff][2:Benar|Salah][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][12:xcbx][8:pilihan_1,pilihan_2,pilihan_4][1:pilihan_3][3:Benar|Salah][9:asf][11:Benar|Salah][6:Salah|Benar][7:pilihan_1,pilihan_3][13:pilihan_2][5:pilihan_1,pilihan_3]', '57', '2025-05-20 14:34:41', 'Selesai');
+(772, 17, 'Lintar', 'SR9-01', '', '[10:sdfsdf:sdf|sdf:sdfdfgdfff][2:Benar|Salah][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][12:xcbx][8:pilihan_1,pilihan_2,pilihan_4][1:pilihan_3][3:Benar|Salah][9:asf][11:Benar|Salah][6:Salah|Benar][7:pilihan_1,pilihan_3][13:pilihan_2][5:pilihan_1,pilihan_3]', '57', '2025-05-20 14:34:41', 'Selesai'),
+(776, 2, 'Prabowo', 'MAT9-01', '', '[1:pilihan_4][4:pilihan_1,pilihan_2,pilihan_3][6:5][2:Benar|Salah|Benar][3:Salah|Salah|Salah|Benar][5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²|Nilai x dari 2x+5=19:7]', '58', '2025-05-21 15:04:07', 'Selesai'),
+(779, 1, 'Jokowi JK', 'MAT9-01', '', '[1:pilihan_1][6:5][4:pilihan_1,pilihan_2,pilihan_3][5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:36 cm²|Luas persegi dengan sisi 6 cm:64 cm³|Nilai x dari 2x+5=19:7][2:Benar|Benar|Salah][3:Salah|Salah|Salah|Benar]', '57', '2025-05-21 18:08:17', 'Selesai');
 
 -- --------------------------------------------------------
 
@@ -251,7 +280,9 @@ INSERT INTO `nilai` (`id_nilai`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_s
 (32, 1, 'Jokowi JK', 'IPA9-01', 5, '3', '2', '0', '[1:pilihan_3][2:Benar|Salah|Benar|Benar][3:pilihan_1,pilihan_2,pilihan_4][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma][5:fgfj]', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', '60', '2025-05-19 20:43:05'),
 (33, 5, 'Corbuzier', 'IPA9-01', 5, '4', '0', '1', '[1:pilihan_1][2:Benar|Salah|Benar|Benar][3:pilihan_1,pilihan_2,pilihan_4][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma][5:]', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', '80', '2025-05-19 20:49:41'),
 (34, 2, 'Prabowo', 'SR9-01', 13, '5', '7', '1', '[3:Benar|Salah][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][8:pilihan_1,pilihan_2][12:vhn][2:Benar|Salah][9:sdfgsds][7:pilihan_1,pilihan_2,pilihan_4][6:Benar|Salah][11:Benar|Salah][1:pilihan_3][13:pilihan_1][10:sdfsdf:sdfdfgdfff|sdf:sdf][5:pilihan_1,pilihan_2,pilihan_3]', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:pilihan_1,pilihan_2],[9:ewt],[10:sdfsdf:sdf|sdf:sdfdfgdfff],[11:Benar|Salah],[12:asdsasd],[13:pilihan_2]', '42.307692307692', '2025-05-20 00:24:33'),
-(35, 17, 'Lintar', 'SR9-01', 13, '7', '4', '2', '[10:sdfsdf:sdf|sdf:sdfdfgdfff][2:Benar|Salah][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][12:xcbx][8:pilihan_1,pilihan_2,pilihan_4][1:pilihan_3][3:Benar|Salah][9:asf][11:Benar|Salah][6:Salah|Benar][7:pilihan_1,pilihan_3][13:pilihan_2][5:pilihan_1,pilihan_3]', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:pilihan_1,pilihan_2],[9:ewt],[10:sdfsdf:sdf|sdf:sdfdfgdfff],[11:Benar|Salah],[12:asdsasd],[13:pilihan_2]', '62.820512820513', '2025-05-20 21:37:15');
+(35, 17, 'Lintar', 'SR9-01', 13, '7', '4', '2', '[10:sdfsdf:sdf|sdf:sdfdfgdfff][2:Benar|Salah][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][12:xcbx][8:pilihan_1,pilihan_2,pilihan_4][1:pilihan_3][3:Benar|Salah][9:asf][11:Benar|Salah][6:Salah|Benar][7:pilihan_1,pilihan_3][13:pilihan_2][5:pilihan_1,pilihan_3]', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:pilihan_1,pilihan_2],[9:ewt],[10:sdfsdf:sdf|sdf:sdfdfgdfff],[11:Benar|Salah],[12:asdsasd],[13:pilihan_2]', '62.820512820513', '2025-05-20 21:37:15'),
+(36, 2, 'Prabowo', 'MAT9-01', 6, '3', '2', '1', '[1:pilihan_4][4:pilihan_1,pilihan_2,pilihan_3][6:5][2:Benar|Salah|Benar][3:Salah|Salah|Salah|Benar][5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²|Nilai x dari 2x+5=19:7]', '[1:pilihan_4],[2:Benar|Benar|Salah],[3:Salah|Salah|Salah|Benar],[4:pilihan_1,pilihan_3],[5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²|Nilai x dari 2x+5=19:7],[6:6]', '55.555555555556', '2025-05-21 22:05:48'),
+(37, 1, 'Jokowi JK', 'MAT9-01', 6, '2', '3', '1', '[1:pilihan_1][6:5][4:pilihan_1,pilihan_2,pilihan_3][5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:36 cm²|Luas persegi dengan sisi 6 cm:64 cm³|Nilai x dari 2x+5=19:7][2:Benar|Benar|Salah][3:Salah|Salah|Salah|Benar]', '[1:pilihan_4],[2:Benar|Benar|Salah],[3:Salah|Salah|Salah|Benar],[4:pilihan_1,pilihan_3],[5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²|Nilai x dari 2x+5=19:7],[6:6]', '41.666666666667', '2025-05-22 01:09:54');
 
 -- --------------------------------------------------------
 
@@ -276,7 +307,7 @@ CREATE TABLE `pengaturan` (
 --
 
 INSERT INTO `pengaturan` (`id`, `nama_aplikasi`, `logo_sekolah`, `warna_tema`, `waktu_sinkronisasi`, `sembunyikan_nilai`, `login_ganda`, `chat`, `versi_aplikasi`) VALUES
-(1, 'CBT-Eschool', 'logo_1747650742.png', '#2f90c1', 60, 0, 'izinkan', 'izinkan', '1.0.4');
+(1, 'CBT-Eschool', 'logo_1747650742.png', '#2f90c1', 60, 0, 'izinkan', 'izinkan', '1.0.5');
 
 -- --------------------------------------------------------
 
@@ -321,16 +352,16 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `session_token`, `last_activity`, `page_url`, `force_logout`) VALUES
-(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '', '2025-05-20 21:07:24', 'http://localhost/cbt-eschool/siswa/game.php', 0),
-(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '2025-05-20 15:01:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '', '2025-05-22 10:23:45', 'http://localhost/cbt-eschool/siswa/chat.php', 0),
+(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '2025-05-23 00:40:26', 'http://localhost/cbt-eschool/siswa/game.php', 0),
 (3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', '', '2025-05-17 19:53:53', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
 (4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', 'a1018c3138744d34ad1c0805c97e21159d2dd44ff5e8e1a3680d0b880621e19b', '2025-05-17 17:50:47', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
-(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', '', '2025-05-21 00:08:10', 'http://localhost/cbt-eschool/siswa/chat.php', 0),
+(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', '175ab9ac3977b5f605e0372b9622357699af287d6b42885eaff6b02a67b87700', '2025-05-23 00:43:37', 'http://localhost/cbt-eschool/siswa/game.php?log=1&skor=50', 0),
 (13, 'Erina', 'FQOm8MYUIes79E36AQv1AU5VMVdUanhIaTBVTURVS0hXckFRUXc9PQ==', '721731', '9', 'A', 'Nonaktif', '', '2025-05-12 23:32:14', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(14, 'Phoebe', 'Dwl3VYW4ysVVEjO67sy6QmdYb2h0NjNFWjhlV3ViamtWY01hc0E9PQ==', '122345', '7', 'C', 'Nonaktif', '', '2025-05-18 20:05:07', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
-(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174', '7', 'D', 'Nonaktif', '', '2025-05-20 00:12:05', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
-(16, 'Denny', 'N2ugxO2xwJR74bjbZQv19nYrMFVFbi9JTEk5MFNDeVdITWxmM0E9PQ==', '641343', '7', 'F', 'Nonaktif', '', '2025-05-20 21:31:07', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
-(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '252743', '9', 'D', 'Nonaktif', 'addd89c500241811d562a577b997dbe5443c7e109d64d9522cf6d3e2f7e9a48a', '2025-05-21 02:07:22', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(14, 'Phoebe', 'Dwl3VYW4ysVVEjO67sy6QmdYb2h0NjNFWjhlV3ViamtWY01hc0E9PQ==', '122345', '7', 'C', 'Nonaktif', '', '2025-05-21 22:01:56', 'http://localhost/cbt-eschool/siswa/preview_hasil.php?id_siswa=14&kode_soal=BINDO7-1', 0),
+(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174', '7', 'D', 'Nonaktif', '', '2025-05-21 22:01:23', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
+(16, 'Denny', 'N2ugxO2xwJR74bjbZQv19nYrMFVFbi9JTEk5MFNDeVdITWxmM0E9PQ==', '641343', '7', 'F', 'Nonaktif', '', '2025-05-21 22:00:37', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
+(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '252743', '9', 'D', 'Nonaktif', '', '2025-05-21 18:13:08', 'http://localhost/cbt-eschool/siswa/game.php?log=1&skor=120', 0),
 (18, 'andy', '5IiPhwyWU7/GiyYe622atFErOVViUmNXOXRheVk0Z2U1V0tiK2c9PQ==', '876543', '8', 'D', 'Nonaktif', '', '2025-05-12 23:32:47', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (20, 'Robi', 'XpqGGiL6DfhOGnPqcV9EnUdLdTlEbzdwN1pyVE5wb2FJSStLdUE9PQ==', '252645', '9', 'G', 'Nonaktif', '', '2025-05-17 19:49:21', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
 (21, 'Intan', 'Ya+NHgRRNME9cYTmSRYUz2sxMS9tczlZMGJDaFd0NkN5TzErV0E9PQ==', '1241322', '7', 'B', 'Nonaktif', '', '2025-05-13 01:10:23', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0);
@@ -354,11 +385,16 @@ CREATE TABLE `skor_game` (
 --
 
 INSERT INTO `skor_game` (`id`, `id_siswa`, `nama_game`, `skor`, `waktu`) VALUES
-(3, 1, 'math_puzzle', 90, '2025-05-20 13:56:59'),
+(3, 1, 'math_puzzle', 440, '2025-05-20 13:56:59'),
 (4, 2, 'math_puzzle', 170, '2025-05-20 14:47:08'),
 (5, 16, 'math_puzzle', 170, '2025-05-20 15:04:28'),
 (6, 5, 'math_puzzle', 280, '2025-05-20 21:09:23'),
-(7, 17, 'math_puzzle', 340, '2025-05-20 21:42:08');
+(7, 17, 'math_puzzle', 340, '2025-05-20 21:42:08'),
+(8, 17, 'scramble', 120, '2025-05-21 18:05:24'),
+(9, 16, 'scramble', 150, '2025-05-21 21:28:24'),
+(10, 1, 'scramble', 120, '2025-05-22 03:16:05'),
+(11, 2, 'scramble', 150, '2025-05-22 10:36:27'),
+(12, 5, 'scramble', 50, '2025-05-23 00:43:36');
 
 -- --------------------------------------------------------
 
@@ -387,7 +423,8 @@ CREATE TABLE `soal` (
 INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `waktu_ujian`, `tanggal`, `status`, `tampilan_soal`, `kunci`, `token`) VALUES
 (1, 'SR9-01', 'Seni Rupa 1', 'Seni Rupa', '9', 90, '2025-05-16', 'Aktif', 'Acak', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:pilihan_1,pilihan_2],[9:ewt],[10:sdfsdf:sdf|sdf:sdfdfgdfff],[11:Benar|Salah],[12:asdsasd],[13:pilihan_2]', 'DHUCJZ'),
 (10, 'BINDO7-1', 'B. Indonesia', 'Bahasa Indo', '7', 90, '2025-05-15', 'Aktif', 'Acak', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 'KJHCAT'),
-(17, 'IPA9-01', 'IPA 01', 'IPA', '9', 90, '2025-05-19', 'Aktif', 'Urut', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', 'XMTOEW');
+(17, 'IPA9-01', 'IPA 01', 'IPA', '9', 90, '2025-05-19', 'Aktif', 'Urut', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', 'XMTOEW'),
+(19, 'MAT9-01', 'Matematika 9', 'Matematika', '9', 60, '2025-05-21', 'Aktif', 'Acak', '[1:pilihan_4],[2:Benar|Benar|Salah],[3:Salah|Salah|Salah|Benar],[4:pilihan_1,pilihan_3],[5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²|Nilai x dari 2x+5=19:7],[6:6]', 'OYJFMQ');
 
 --
 -- Indexes for dumped tables
@@ -481,13 +518,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT untuk tabel `butir_soal`
 --
 ALTER TABLE `butir_soal`
-  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
+  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=189;
 
 --
 -- AUTO_INCREMENT untuk tabel `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT untuk tabel `faq`
@@ -499,13 +536,13 @@ ALTER TABLE `faq`
 -- AUTO_INCREMENT untuk tabel `jawaban_siswa`
 --
 ALTER TABLE `jawaban_siswa`
-  MODIFY `id_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=776;
+  MODIFY `id_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=782;
 
 --
 -- AUTO_INCREMENT untuk tabel `nilai`
 --
 ALTER TABLE `nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT untuk tabel `siswa`
@@ -517,13 +554,13 @@ ALTER TABLE `siswa`
 -- AUTO_INCREMENT untuk tabel `skor_game`
 --
 ALTER TABLE `skor_game`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `soal`
 --
 ALTER TABLE `soal`
-  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
