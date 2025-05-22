@@ -16,9 +16,9 @@ include '../inc/dataadmin.php';
     <style>
 .chat-line {
     max-width: 100%;
-    margin-bottom: 18px; /* beri jarak antar pesan */
+    margin-bottom: 16px;
     clear: both;
-    padding:15px;
+    padding: 10px;
 }
 
 .chat-line.right {
@@ -31,98 +31,98 @@ include '../inc/dataadmin.php';
     text-align: left;
 }
 
-/* Nama pengirim di atas pesan */
 .chat-sender {
     display: block;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 13px;
     margin-bottom: 4px;
-    color: #d6d6d6;
+    color: #888;
 }
 
-/* Box pesan */
 .chat-message {
-    display: inline-block;       /* supaya lebarnya hanya sebesar konten */
-    max-width: 60%;              /* batasi maksimal lebar */
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 8px 12px;
+    display: inline-block;
+    max-width: 65%;
+    background-color: #f4f4f4;
+    border-radius: 12px;
+    padding: 10px 14px;
     position: relative;
-    font-size: 16px;
-    line-height: 1.4;
+    font-size: 15px;
+    line-height: 1.5;
     word-wrap: break-word;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    padding-right: 50px; /* space untuk timestamp */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    padding-right: 50px;
 }
 
 .chat-line.right .chat-message {
-    background-color: #dcf8c6;
+    background-color: #d1f7c4;
 }
 
-/* Timestamp di pojok kanan bawah */
 .chat-timestamp {
     position: absolute;
-    right: 10px;
-    bottom: 4px;
+    right: 12px;
+    bottom: 6px;
     font-size: 11px;
-    color: rgba(0, 0, 0, 0.4);
+    color: rgba(0, 0, 0, 0.35);
     user-select: none;
 }
 
-/* Style tombol hapus */
 .delete-chat {
-    font-size: 14px;
-    color: #d9534f;
+    font-size: 13px;
+    color: #e63946;
     cursor: pointer;
     margin-top: 4px;
-    display: inline-block;
 }
 
 form#form-chat {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding: 12px;
 }
 
 #pesan {
     flex-grow: 1;
     min-width: 0;
-    padding: 6px 12px;
-    font-size: 16px;
+    padding: 8px 12px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
 }
 
 .emoji-picker {
     position: relative;
     flex-shrink: 0;
-    display: inline-block;
 }
 
 .emoji-button {
-    background: #f8f9fa;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     padding: 6px 10px;
     cursor: pointer;
     font-size: 18px;
+    transition: background 0.2s ease;
+}
+
+.emoji-button:hover {
+    background: #f1f1f1;
 }
 
 .emoji-dropdown {
-    display: none; /* default tertutup */
+    display: none;
     position: absolute;
     bottom: 40px;
     left: 0;
     width: 220px;
     max-height: 150px;
     overflow-y: auto;
-    background: white;
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
     padding: 8px;
     z-index: 1000;
-    user-select: none;
-
-    /* Grid layout untuk emoji */
     grid-template-columns: repeat(5, 1fr);
     gap: 8px;
     display: grid;
@@ -137,70 +137,66 @@ form#form-chat {
 }
 
 .emoji-item {
-    font-size: 24px;
+    font-size: 22px;
     cursor: pointer;
     text-align: center;
-    line-height: 1;
-    user-select: none;
-    padding: 4px 0;
-    transition: background-color 0.2s ease;
     border-radius: 6px;
+    transition: background-color 0.2s ease;
 }
 
 .emoji-item:hover {
-    background: #e2e6ea;
+    background: #eee;
 }
+
 #chat-box {
-    min-height: 700px;
-    max-height: 700px;     /* batas tinggi tetap */
-    overflow-y: auto;  
-    background-image: url('../assets/images/bgchat.webp');
-    background-size: cover;         /* supaya gambar memenuhi area */
-    background-repeat: no-repeat;   /* supaya gambar tidak berulang */
-    background-position: center;    /* supaya gambar berada di tengah */
+    min-height: 600px;
+    max-height: 600px;
+    overflow-y: auto;
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
 }
 
-/* Pesan dari admin - misal background hijau muda */
+/* Admin message */
 .chat-line.admin .chat-message {
-    background-color: #d1e7dd; /* hijau muda */
-    color: #0f5132;
-    border: 1px solid #badbcc;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
 }
 
-/* Tambahkan icon user untuk admin di nama pengirim */
+/* Admin icon */
 .chat-line.admin .chat-sender::after {
-    content: "\f007"; /* FontAwesome user icon unicode */
+    content: "\f007";
     font-family: "Font Awesome 5 Free"; 
     font-weight: 900;
     margin-left: 6px;
-    color:rgb(255, 0, 0);
+    color: #2e7d32;
     font-size: 14px;
 }
 
-/* Pesan dari siswa - background biru muda */
+/* Siswa message */
 .chat-line.siswa .chat-message {
-    background-color: #cfe2ff; /* biru muda */
-    color:rgb(22, 22, 22);
-    border: 1px solid #b6d4fe;
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    border: 1px solid #bbdefb;
 }
 
-/* Icon untuk siswa di nama pengirim */
+/* Siswa icon */
 .chat-line.siswa .chat-sender::before {
-    content: "\f2bd"; /* FontAwesome user-graduate icon unicode */
+    content: "\f2bd";
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     margin-right: 6px;
-    color:rgb(126, 126, 126);
+    color: #6c757d;
     font-size: 14px;
 }
 
-/* Pesan saya (admin sendiri) di kanan */
-.chat-line.right {
-    text-align: right;
-}
 .card-body {
-    background: linear-gradient(to bottom, #c3cfe2,rgb(4, 5, 7));
+    background: linear-gradient(to bottom right, #e8eaf6, #fdfbfb);
+    border-radius: 12px;
+    padding: 16px;
 }
+
     </style>
 </head>
 
@@ -221,10 +217,6 @@ form#form-chat {
                                 <div class="card-body">
                                     <div id="chat-box"></div>
                                     <form id="form-chat" style="display: flex; align-items: center; gap: 8px;">
-                                        <input type="text" name="pesan" id="pesan" class="form-control"
-                                            placeholder="Tulis pesan..." required autocomplete="off"
-                                            style="flex-grow: 1; min-width: 0;">
-
                                         <!-- Emoji picker harus berada di dalam form agar satu baris -->
                                         <div class="emoji-picker" style="position: relative; flex-shrink: 0;">
                                             <button type="button" class="emoji-button"
@@ -248,6 +240,11 @@ form#form-chat {
                                             </div>
                                         </div>
 
+                                        <input type="text" name="pesan" id="pesan" class="form-control"
+                                            placeholder="Tulis pesan..." required autocomplete="off"
+                                            style="flex-grow: 1; min-width: 0;">
+
+                                        
                                         <button type="submit" class="btn btn-primary">Kirim</button>
                                     </form>
 

@@ -25,214 +25,190 @@ $_SESSION['error'] = 'Fitur chat saat ini diblokir oleh admin.';
 
     <style>
     .chat-line {
-        max-width: 100%;
-        margin-bottom: 18px;
-        /* beri jarak antar pesan */
-        clear: both;
-        padding: 15px;
-    }
+    max-width: 100%;
+    margin-bottom: 16px;
+    clear: both;
+    padding: 10px;
+}
 
-    .chat-line.right {
-        margin-left: auto;
-        text-align: right;
-    }
+.chat-line.right {
+    margin-left: auto;
+    text-align: right;
+}
 
-    .chat-line.left {
-        margin-right: auto;
-        text-align: left;
-    }
+.chat-line.left {
+    margin-right: auto;
+    text-align: left;
+}
 
-    /* Nama pengirim di atas pesan */
-    .chat-sender {
-        display: block;
-        font-weight: 600;
-        font-size: 13px;
-        margin-bottom: 4px;
-        color: #d6d6d6;
-    }
+.chat-sender {
+    display: block;
+    font-weight: 500;
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #888;
+    position: relative;
+    padding-left: 20px;
+}
 
-    /* Box pesan */
-    .chat-message {
-        display: inline-block;
-        /* supaya lebarnya hanya sebesar konten */
-        max-width: 60%;
-        /* batasi maksimal lebar */
-        background-color: #fff;
-        border-radius: 10px;
-        padding: 8px 12px;
-        position: relative;
-        font-size: 16px;
-        line-height: 1.4;
-        word-wrap: break-word;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-        padding-right: 50px;
-        /* space untuk timestamp */
-    }
+.chat-message {
+    display: inline-block;
+    max-width: 65%;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    padding: 10px 14px 10px 14px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding-right: 50px;
+}
 
-    .chat-line.right .chat-message {
-        background-color: #dcf8c6;
-    }
+.chat-line.right .chat-message {
+    background-color: #d8f3dc;
+}
 
-    /* Timestamp di pojok kanan bawah */
-    .chat-timestamp {
-        position: absolute;
-        right: 10px;
-        bottom: 4px;
-        font-size: 11px;
-        color: rgba(0, 0, 0, 0.4);
-        user-select: none;
-    }
+.chat-timestamp {
+    position: absolute;
+    right: 12px;
+    bottom: 6px;
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.3);
+    user-select: none;
+}
 
-    /* Style tombol hapus */
-    .delete-chat {
-        font-size: 14px;
-        color: #d9534f;
-        cursor: pointer;
-        margin-top: 4px;
-        display: inline-block;
-    }
+.delete-chat {
+    font-size: 13px;
+    color: #e63946;
+    cursor: pointer;
+    margin-top: 4px;
+    display: inline-block;
+}
 
-    form#form-chat {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
+form#form-chat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+}
 
-    #pesan {
-        flex-grow: 1;
-        min-width: 0;
-        padding: 6px 12px;
-        font-size: 16px;
-    }
+#pesan {
+    flex-grow: 1;
+    min-width: 0;
+    padding: 8px 12px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    background-color: #fff;
+}
 
-    .emoji-picker {
-        position: relative;
-        flex-shrink: 0;
-        display: inline-block;
-    }
+.emoji-picker {
+    position: relative;
+    flex-shrink: 0;
+}
 
-    .emoji-button {
-        background: #f8f9fa;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        padding: 6px 10px;
-        cursor: pointer;
-        font-size: 18px;
-    }
+.emoji-button {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s ease;
+}
 
-    .emoji-dropdown {
-        display: none;
-        /* default tertutup */
-        position: absolute;
-        bottom: 40px;
-        left: 0;
-        width: 220px;
-        max-height: 150px;
-        overflow-y: auto;
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 8px;
-        z-index: 1000;
-        user-select: none;
+.emoji-button:hover {
+    background: #f1f1f1;
+}
 
-        /* Grid layout untuk emoji */
-        grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
-        display: grid;
-    }
+.emoji-dropdown {
+    display: none;
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 220px;
+    max-height: 150px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    padding: 8px;
+    z-index: 1000;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    display: grid;
+}
 
-    .emoji-dropdown:not(.show) {
-        display: none;
-    }
+.emoji-dropdown:not(.show) {
+    display: none;
+}
 
-    .emoji-dropdown.show {
-        display: grid;
-    }
+.emoji-dropdown.show {
+    display: grid;
+}
 
-    .emoji-item {
-        font-size: 24px;
-        cursor: pointer;
-        text-align: center;
-        line-height: 1;
-        user-select: none;
-        padding: 4px 0;
-        transition: background-color 0.2s ease;
-        border-radius: 6px;
-    }
+.emoji-item {
+    font-size: 22px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
 
-    .emoji-item:hover {
-        background: #e2e6ea;
-    }
+.emoji-item:hover {
+    background: #eee;
+}
 
-    #chat-box {
-        min-height: 700px;
-        max-height: 700px;
-        /* batas tinggi tetap */
-        overflow-y: auto;
-        background-image: url('../assets/images/bgchat.webp');
-        background-size: cover;
-        /* supaya gambar memenuhi area */
-        background-repeat: no-repeat;
-        /* supaya gambar tidak berulang */
-        background-position: center;
-        /* supaya gambar berada di tengah */
-    }
+#chat-box {
+    min-height: 600px;
+    max-height: 600px;
+    overflow-y: auto;
+    background: #f4f6f8;
+    padding: 12px;
+    border-radius: 10px;
+}
 
-    .chat-line.admin .chat-message {
-        background-color: #d0e7ff;
-        color: #0b3d91;
-        box-shadow: none;
-    }
+.chat-line.admin .chat-message {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    box-shadow: none;
+    border: 1px solid #bbdefb;
+}
 
-    /* Jika admin juga pengirim, dan chat diarahkan ke kanan */
-    .chat-line.admin.right {
-        background-color: #cde9ff;
-        border-left-color: #1976d2;
-    }
+.chat-line.admin.right .chat-message {
+    background-color: #bbdefb;
+    color: #083b74;
+}
 
-    .chat-line.admin.right .chat-message {
-        background-color: #a9d0ff;
-        color: #064d9c;
-    }
+.chat-line.admin .chat-sender::before {
+    content: "\f21b";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #e63946;
+    font-size: 14px;
+}
 
-    .chat-line.admin .chat-sender {
-        position: relative;
-        padding-left: 20px;
-        /* beri ruang untuk icon di kiri */
-    }
+.chat-line.siswa .chat-sender::after {
+    content: "\f2bd";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-left: 6px;
+    color: #6c757d;
+}
 
-    .chat-line.admin .chat-sender::before {
-        content: "\f21b";
-        /* unicode icon user-secret */
-        font-family: "Font Awesome 5 Free";
-        /* pastikan sesuai dengan versi FA */
-        font-weight: 900;
-        /* solid */
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        color: rgb(255, 0, 0);
-        /* warna icon bisa disesuaikan */
-        font-size: 14px;
-    }
+.boxchatnya {
+    background: linear-gradient(to bottom, #e3e8f0, #fdfbfb);
+    padding: 12px;
+    border-radius: 10px;
+}
 
-    .chat-line.siswa .chat-sender::after {
-        content: "\f2bd";
-        /* FontAwesome user-graduate icon unicode */
-        font-family: "Font Awesome 5 Free";
-        font-weight: 900;
-        margin-left: 6px;
-        color: rgb(133, 133, 133);
-        /* hijau untuk siswa */
-    }
-
-    .boxchatnya {
-        background: linear-gradient(to bottom, #c3cfe2, rgb(4, 5, 7));
-        padding: 10px;
-    }
     </style>
 </head>
 
@@ -256,11 +232,6 @@ $_SESSION['error'] = 'Fitur chat saat ini diblokir oleh admin.';
                                                 <div id="chat-box"></div>
                                                 <form id="form-chat"
                                                     style="display: flex; align-items: center; gap: 8px;">
-                                                    <input type="text" name="pesan" id="pesan" class="form-control"
-                                                        placeholder="Tulis pesan..." required autocomplete="off"
-                                                        style="flex-grow: 1; min-width: 0;">
-
-                                                    <!-- Emoji picker harus berada di dalam form agar satu baris -->
                                                     <div class="emoji-picker"
                                                         style="position: relative; flex-shrink: 0;">
                                                         <button type="button" class="emoji-button"
@@ -283,6 +254,12 @@ $_SESSION['error'] = 'Fitur chat saat ini diblokir oleh admin.';
                                                             <div class="emoji-item">🌟</div>
                                                         </div>
                                                     </div>
+                                                    <input type="text" name="pesan" id="pesan" class="form-control"
+                                                        placeholder="Tulis pesan..." required autocomplete="off"
+                                                        style="flex-grow: 1; min-width: 0;">
+
+                                                    <!-- Emoji picker harus berada di dalam form agar satu baris -->
+                                                    
 
                                                     <button type="submit" class="btn btn-primary">Kirim</button>
                                                 </form>
