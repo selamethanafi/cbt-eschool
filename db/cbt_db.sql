@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 22 Bulan Mei 2025 pada 19.44
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.0.30
+-- Generation Time: May 23, 2025 at 12:09 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admins`
+-- Table structure for table `admins`
 --
 
 CREATE TABLE `admins` (
@@ -36,7 +36,7 @@ CREATE TABLE `admins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `admins`
+-- Dumping data for table `admins`
 --
 
 INSERT INTO `admins` (`id`, `username`, `nama_admin`, `password`, `created_at`) VALUES
@@ -45,7 +45,7 @@ INSERT INTO `admins` (`id`, `username`, `nama_admin`, `password`, `created_at`) 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `butir_soal`
+-- Table structure for table `butir_soal`
 --
 
 CREATE TABLE `butir_soal` (
@@ -64,7 +64,7 @@ CREATE TABLE `butir_soal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `butir_soal`
+-- Dumping data for table `butir_soal`
 --
 
 INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `tipe_soal`, `pilihan_1`, `pilihan_2`, `pilihan_3`, `pilihan_4`, `jawaban_benar`, `status_soal`, `created_at`) VALUES
@@ -103,7 +103,7 @@ INSERT INTO `butir_soal` (`id_soal`, `nomer_soal`, `kode_soal`, `pertanyaan`, `t
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `chat`
+-- Table structure for table `chat`
 --
 
 CREATE TABLE `chat` (
@@ -116,72 +116,80 @@ CREATE TABLE `chat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `chat`
+-- Dumping data for table `chat`
 --
 
 INSERT INTO `chat` (`id`, `id_user`, `pesan`, `waktu`, `deleted`, `role`) VALUES
-(1, 17, '😊', '2025-05-20 22:41:45', 0, 'siswa'),
+(1, 17, '😊', '2025-05-20 22:41:45', 1, 'siswa'),
 (2, 17, 'Halo', '2025-05-20 22:42:18', 1, 'siswa'),
 (3, 17, 'gfh', '2025-05-20 22:46:03', 1, 'siswa'),
 (4, 17, 'fgh', '2025-05-20 22:46:17', 1, 'siswa'),
 (5, 17, '👍👍', '2025-05-20 22:47:10', 1, 'siswa'),
 (6, 17, '🔥🔥🔥🔥🔥', '2025-05-20 22:47:43', 0, 'siswa'),
-(7, 17, 'fg', '2025-05-20 22:47:58', 0, 'siswa'),
-(8, 5, 'apalah???😊', '2025-05-20 22:48:59', 0, 'siswa'),
-(9, 17, 'gfsdg', '2025-05-20 22:49:45', 0, 'siswa'),
-(10, 17, 'sdfs', '2025-05-20 22:55:02', 0, 'siswa'),
+(7, 17, 'fg', '2025-05-20 22:47:58', 1, 'siswa'),
+(8, 5, 'apalah???😊', '2025-05-20 22:48:59', 1, 'siswa'),
+(9, 17, 'gfsdg', '2025-05-20 22:49:45', 1, 'siswa'),
+(10, 17, 'sdfs', '2025-05-20 22:55:02', 1, 'siswa'),
 (11, 5, '👍', '2025-05-20 22:58:36', 1, 'siswa'),
 (12, 5, '👍', '2025-05-20 22:58:41', 1, 'siswa'),
 (13, 5, '👍', '2025-05-20 22:58:45', 1, 'siswa'),
 (14, 5, '👍', '2025-05-20 22:58:48', 1, 'siswa'),
 (15, 5, '😊', '2025-05-20 22:58:52', 1, 'siswa'),
-(16, 5, 'spam', '2025-05-20 23:00:23', 0, 'siswa'),
+(16, 5, 'spam', '2025-05-20 23:00:23', 1, 'siswa'),
 (17, 5, 's', '2025-05-20 23:00:37', 1, 'siswa'),
-(18, 5, 'sdf', '2025-05-20 23:04:03', 0, 'siswa'),
+(18, 5, 'sdf', '2025-05-20 23:04:03', 1, 'siswa'),
 (19, 17, 'xcv', '2025-05-20 23:04:33', 1, 'siswa'),
-(20, 17, 'bv', '2025-05-20 23:08:15', 0, 'siswa'),
+(20, 17, 'bv', '2025-05-20 23:08:15', 1, 'siswa'),
 (21, 17, 'ssd', '2025-05-20 23:09:37', 1, 'siswa'),
 (22, 17, '😊', '2025-05-20 23:15:30', 0, 'siswa'),
 (23, 17, 'v', '2025-05-20 23:28:08', 1, 'siswa'),
 (24, 5, '🚀🙏🥳', '2025-05-20 23:29:53', 1, 'siswa'),
 (25, 17, 'xcvbxc', '2025-05-20 23:43:35', 1, 'siswa'),
-(26, 17, 'sdfsdfsd sfsdfsdf sdfsd sdsf sdf', '2025-05-20 23:49:42', 0, 'siswa'),
+(26, 17, 'sdfsdfsd sfsdfsdf sdfsd sdsf sdf', '2025-05-20 23:49:42', 1, 'siswa'),
 (27, 17, 'xcvfdsddddddddddddddsfsfsdf', '2025-05-20 23:55:36', 1, 'siswa'),
 (28, 17, 'fgdfsg dfgdfg dfgd dfg dfg  dfgd gfdg df gdfg dffg dfgdfg dfg dfg dfg dfg dfg', '2025-05-20 23:56:57', 1, 'siswa'),
 (29, 17, 'sdfsd sef', '2025-05-20 23:57:35', 1, 'siswa'),
 (30, 17, 'xvxc', '2025-05-20 23:57:47', 1, 'siswa'),
-(31, 17, '😡', '2025-05-21 00:30:14', 0, 'siswa'),
-(33, 17, 'hehe', '2025-05-21 00:39:03', 0, 'siswa'),
-(34, 1, 'hmm', '2025-05-21 00:39:14', 0, 'admin'),
+(31, 17, '😡', '2025-05-21 00:30:14', 1, 'siswa'),
+(33, 17, 'hehe', '2025-05-21 00:39:03', 1, 'siswa'),
+(34, 1, 'hmm', '2025-05-21 00:39:14', 1, 'admin'),
 (35, 17, '🥳', '2025-05-21 01:00:54', 0, 'siswa'),
-(36, 17, '😡', '2025-05-21 01:44:48', 0, 'siswa'),
-(37, 1, 'opo ae tar lintar', '2025-05-21 02:05:39', 0, 'admin'),
-(38, 17, 'tes', '2025-05-21 15:19:07', 0, 'siswa'),
-(39, 1, 'apa?', '2025-05-21 15:19:13', 0, 'admin'),
-(40, 1, 'hehe', '2025-05-21 15:19:57', 0, 'siswa'),
-(41, 17, 'hmm', '2025-05-21 15:20:10', 0, 'siswa'),
-(42, 16, '@bandy @joni', '2025-05-21 21:26:31', 0, 'siswa'),
+(36, 17, '😡', '2025-05-21 01:44:48', 1, 'siswa'),
+(37, 1, 'opo ae tar lintar', '2025-05-21 02:05:39', 1, 'admin'),
+(38, 17, 'tes', '2025-05-21 15:19:07', 1, 'siswa'),
+(39, 1, 'apa?', '2025-05-21 15:19:13', 1, 'admin'),
+(40, 1, 'hehe', '2025-05-21 15:19:57', 1, 'siswa'),
+(41, 17, 'hmm', '2025-05-21 15:20:10', 1, 'siswa'),
+(42, 16, '@bandy @joni', '2025-05-21 21:26:31', 1, 'siswa'),
 (43, 16, '🥳🥳', '2025-05-21 21:26:43', 0, 'siswa'),
-(44, 2, 'hore', '2025-05-21 22:07:11', 0, 'siswa'),
-(45, 1, 'v', '2025-05-22 00:41:02', 0, 'admin'),
-(46, 1, 'apalah', '2025-05-22 00:42:11', 0, 'admin'),
-(47, 2, 'xcv', '2025-05-22 00:43:08', 0, 'siswa'),
+(44, 2, 'hore', '2025-05-21 22:07:11', 1, 'siswa'),
+(45, 1, 'v', '2025-05-22 00:41:02', 1, 'admin'),
+(46, 1, 'apalah', '2025-05-22 00:42:11', 1, 'admin'),
+(47, 2, 'xcv', '2025-05-22 00:43:08', 1, 'siswa'),
 (48, 1, 'df', '2025-05-22 00:45:37', 1, 'admin'),
 (49, 2, 'sdfsf🥳', '2025-05-22 00:45:46', 1, 'siswa'),
-(50, 2, 'xc', '2025-05-22 00:49:15', 0, 'siswa'),
+(50, 2, 'xc', '2025-05-22 00:49:15', 1, 'siswa'),
 (51, 2, '🙏', '2025-05-22 00:51:51', 1, 'siswa'),
 (52, 2, '🙏🥳😎', '2025-05-22 00:52:06', 0, 'siswa'),
 (53, 1, '😡🎉', '2025-05-22 00:54:06', 1, 'admin'),
-(54, 1, 'cvvcbc cvb', '2025-05-22 01:02:34', 0, 'admin'),
+(54, 1, 'cvvcbc cvb', '2025-05-22 01:02:34', 1, 'admin'),
 (55, 1, '😡🤔🚀', '2025-05-22 03:11:22', 1, 'siswa'),
 (56, 1, '🙏', '2025-05-22 10:30:41', 1, 'admin'),
 (57, 5, '😎halo guys apa kabar semuanya', '2025-05-23 00:41:28', 0, 'siswa'),
-(58, 5, 'xc', '2025-05-23 00:41:48', 1, 'siswa');
+(58, 5, 'xc', '2025-05-23 00:41:48', 1, 'siswa'),
+(59, 1, 'sdf', '2025-05-23 15:50:43', 1, 'admin'),
+(60, 1, 'sd', '2025-05-23 15:55:09', 1, 'admin'),
+(61, 2, 'Selamat siang semuanya', '2025-05-23 16:04:30', 0, 'siswa'),
+(62, 1, 'Selamat siang juga pak bowo', '2025-05-23 16:05:49', 1, 'admin'),
+(63, 1, 'Selamat siang juga pak bowo', '2025-05-23 16:06:06', 1, 'admin'),
+(64, 1, 'Siang Juga', '2025-05-23 16:07:10', 0, 'admin'),
+(65, 2, 'Semangat semuanya', '2025-05-23 16:30:26', 0, 'siswa'),
+(66, 1, '🔥🔥🔥🔥', '2025-05-23 16:30:40', 0, 'admin');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `faq`
+-- Table structure for table `faq`
 --
 
 CREATE TABLE `faq` (
@@ -191,7 +199,7 @@ CREATE TABLE `faq` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `faq`
+-- Dumping data for table `faq`
 --
 
 INSERT INTO `faq` (`id`, `question`, `answer`) VALUES
@@ -208,7 +216,7 @@ INSERT INTO `faq` (`id`, `question`, `answer`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `jawaban_siswa`
+-- Table structure for table `jawaban_siswa`
 --
 
 CREATE TABLE `jawaban_siswa` (
@@ -224,7 +232,7 @@ CREATE TABLE `jawaban_siswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `jawaban_siswa`
+-- Dumping data for table `jawaban_siswa`
 --
 
 INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_soal`, `jawaban_siswa`, `waktu_sisa`, `waktu_dijawab`, `status_ujian`) VALUES
@@ -246,7 +254,7 @@ INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `nilai`
+-- Table structure for table `nilai`
 --
 
 CREATE TABLE `nilai` (
@@ -265,7 +273,7 @@ CREATE TABLE `nilai` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `nilai`
+-- Dumping data for table `nilai`
 --
 
 INSERT INTO `nilai` (`id_nilai`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_soal`, `jawaban_benar`, `jawaban_salah`, `jawaban_kurang`, `jawaban_siswa`, `kunci`, `nilai`, `tanggal_ujian`) VALUES
@@ -287,7 +295,7 @@ INSERT INTO `nilai` (`id_nilai`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_s
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pengaturan`
+-- Table structure for table `pengaturan`
 --
 
 CREATE TABLE `pengaturan` (
@@ -303,7 +311,7 @@ CREATE TABLE `pengaturan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `pengaturan`
+-- Dumping data for table `pengaturan`
 --
 
 INSERT INTO `pengaturan` (`id`, `nama_aplikasi`, `logo_sekolah`, `warna_tema`, `waktu_sinkronisasi`, `sembunyikan_nilai`, `login_ganda`, `chat`, `versi_aplikasi`) VALUES
@@ -312,7 +320,7 @@ INSERT INTO `pengaturan` (`id`, `nama_aplikasi`, `logo_sekolah`, `warna_tema`, `
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `profil`
+-- Table structure for table `profil`
 --
 
 CREATE TABLE `profil` (
@@ -321,7 +329,7 @@ CREATE TABLE `profil` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `profil`
+-- Dumping data for table `profil`
 --
 
 INSERT INTO `profil` (`id`, `encrypt`) VALUES
@@ -330,7 +338,7 @@ INSERT INTO `profil` (`id`, `encrypt`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `siswa`
+-- Table structure for table `siswa`
 --
 
 CREATE TABLE `siswa` (
@@ -348,12 +356,12 @@ CREATE TABLE `siswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `siswa`
+-- Dumping data for table `siswa`
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `session_token`, `last_activity`, `page_url`, `force_logout`) VALUES
 (1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '', '2025-05-22 10:23:45', 'http://localhost/cbt-eschool/siswa/chat.php', 0),
-(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '2025-05-23 00:40:26', 'http://localhost/cbt-eschool/siswa/game.php', 0),
+(2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', '', '2025-05-23 17:08:29', 'http://localhost/cbt-eschool/siswa/dashboard.php#', 0),
 (3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', '', '2025-05-17 19:53:53', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
 (4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', 'a1018c3138744d34ad1c0805c97e21159d2dd44ff5e8e1a3680d0b880621e19b', '2025-05-17 17:50:47', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
 (5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', '175ab9ac3977b5f605e0372b9622357699af287d6b42885eaff6b02a67b87700', '2025-05-23 00:43:37', 'http://localhost/cbt-eschool/siswa/game.php?log=1&skor=50', 0),
@@ -369,7 +377,7 @@ INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `skor_game`
+-- Table structure for table `skor_game`
 --
 
 CREATE TABLE `skor_game` (
@@ -381,7 +389,7 @@ CREATE TABLE `skor_game` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `skor_game`
+-- Dumping data for table `skor_game`
 --
 
 INSERT INTO `skor_game` (`id`, `id_siswa`, `nama_game`, `skor`, `waktu`) VALUES
@@ -393,13 +401,13 @@ INSERT INTO `skor_game` (`id`, `id_siswa`, `nama_game`, `skor`, `waktu`) VALUES
 (8, 17, 'scramble', 120, '2025-05-21 18:05:24'),
 (9, 16, 'scramble', 150, '2025-05-21 21:28:24'),
 (10, 1, 'scramble', 120, '2025-05-22 03:16:05'),
-(11, 2, 'scramble', 150, '2025-05-22 10:36:27'),
+(11, 2, 'scramble', 160, '2025-05-23 17:07:09'),
 (12, 5, 'scramble', 50, '2025-05-23 00:43:36');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `soal`
+-- Table structure for table `soal`
 --
 
 CREATE TABLE `soal` (
@@ -417,7 +425,7 @@ CREATE TABLE `soal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `soal`
+-- Dumping data for table `soal`
 --
 
 INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `waktu_ujian`, `tanggal`, `status`, `tampilan_soal`, `kunci`, `token`) VALUES
@@ -431,32 +439,32 @@ INSERT INTO `soal` (`id_soal`, `kode_soal`, `nama_soal`, `mapel`, `kelas`, `wakt
 --
 
 --
--- Indeks untuk tabel `admins`
+-- Indexes for table `admins`
 --
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `butir_soal`
+-- Indexes for table `butir_soal`
 --
 ALTER TABLE `butir_soal`
   ADD PRIMARY KEY (`id_soal`);
 
 --
--- Indeks untuk tabel `chat`
+-- Indexes for table `chat`
 --
 ALTER TABLE `chat`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `faq`
+-- Indexes for table `faq`
 --
 ALTER TABLE `faq`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `jawaban_siswa`
+-- Indexes for table `jawaban_siswa`
 --
 ALTER TABLE `jawaban_siswa`
   ADD PRIMARY KEY (`id_jawaban`),
@@ -465,109 +473,109 @@ ALTER TABLE `jawaban_siswa`
   ADD KEY `kode_soal` (`kode_soal`);
 
 --
--- Indeks untuk tabel `nilai`
+-- Indexes for table `nilai`
 --
 ALTER TABLE `nilai`
   ADD PRIMARY KEY (`id_nilai`),
   ADD UNIQUE KEY `unique_siswa_soal` (`id_siswa`,`kode_soal`);
 
 --
--- Indeks untuk tabel `pengaturan`
+-- Indexes for table `pengaturan`
 --
 ALTER TABLE `pengaturan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `profil`
+-- Indexes for table `profil`
 --
 ALTER TABLE `profil`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `siswa`
+-- Indexes for table `siswa`
 --
 ALTER TABLE `siswa`
   ADD PRIMARY KEY (`id_siswa`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `skor_game`
+-- Indexes for table `skor_game`
 --
 ALTER TABLE `skor_game`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_siswa` (`id_siswa`);
 
 --
--- Indeks untuk tabel `soal`
+-- Indexes for table `soal`
 --
 ALTER TABLE `soal`
   ADD PRIMARY KEY (`id_soal`),
   ADD UNIQUE KEY `kode_soal` (`kode_soal`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `admins`
+-- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `butir_soal`
+-- AUTO_INCREMENT for table `butir_soal`
 --
 ALTER TABLE `butir_soal`
   MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=189;
 
 --
--- AUTO_INCREMENT untuk tabel `chat`
+-- AUTO_INCREMENT for table `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
--- AUTO_INCREMENT untuk tabel `faq`
+-- AUTO_INCREMENT for table `faq`
 --
 ALTER TABLE `faq`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT untuk tabel `jawaban_siswa`
+-- AUTO_INCREMENT for table `jawaban_siswa`
 --
 ALTER TABLE `jawaban_siswa`
   MODIFY `id_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=782;
 
 --
--- AUTO_INCREMENT untuk tabel `nilai`
+-- AUTO_INCREMENT for table `nilai`
 --
 ALTER TABLE `nilai`
   MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
--- AUTO_INCREMENT untuk tabel `siswa`
+-- AUTO_INCREMENT for table `siswa`
 --
 ALTER TABLE `siswa`
   MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT untuk tabel `skor_game`
+-- AUTO_INCREMENT for table `skor_game`
 --
 ALTER TABLE `skor_game`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `soal`
+-- AUTO_INCREMENT for table `soal`
 --
 ALTER TABLE `soal`
   MODIFY `id_soal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `skor_game`
+-- Constraints for table `skor_game`
 --
 ALTER TABLE `skor_game`
   ADD CONSTRAINT `skor_game_ibfk_1` FOREIGN KEY (`id_siswa`) REFERENCES `siswa` (`id_siswa`);
