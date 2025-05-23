@@ -51,12 +51,13 @@ include '../inc/dataadmin.php';
                                                     <th>Kelas</th>
                                                     <th>Last Activity</th>
                                                     <th>Page URL</th>
+                                                    <th>Session Token</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 $no = 1;
-                                                $query = mysqli_query($koneksi, "SELECT nama_siswa, kelas, rombel, last_activity, page_url FROM siswa ORDER BY last_activity DESC");
+                                                $query = mysqli_query($koneksi, "SELECT * FROM siswa ORDER BY last_activity DESC");
                                                 while ($row = mysqli_fetch_assoc($query)) {
                                                     echo '<tr>';
                                                     echo '<td>' . $no++ . '</td>';
@@ -64,6 +65,7 @@ include '../inc/dataadmin.php';
                                                     echo '<td>' . htmlspecialchars($row['kelas']).''. htmlspecialchars($row['rombel']) . '</td>';
                                                     echo '<td>' . htmlspecialchars($row['last_activity']) . '</td>';
                                                     echo '<td>' . htmlspecialchars($row['page_url']) . '</td>';
+                                                    echo '<td>' . htmlspecialchars($row['session_token']) . '</td>';
                                                     echo '</tr>';
                                                 }
                                                 ?>
