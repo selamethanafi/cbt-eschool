@@ -31,6 +31,10 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+li.sidebar-item.submenu > a.sidebar-link {
+  background: linear-gradient(to left, #222e3c, #3a4d63) !important;
+  border-bottom:2px solid #222e3c;
+}
 </style>
 <!--<style>
 #soal.sidebar-dropdown a {

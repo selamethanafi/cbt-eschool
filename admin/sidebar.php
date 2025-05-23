@@ -25,17 +25,17 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <i class="align-middle fa fa-file"></i> <span class="align-middle">Manajemen Ujian </span><i class="fa fa-chevron-down ms-auto float-end"></i>
                     </a>
                     <ul id="soal" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
+                        <li class="sidebar-item submenu">
                             <a class="sidebar-link" href="soal.php">
                                 <i class="align-middle fas fa-book"></i> <span class="align-middle">Bank Soal</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item submenu">
                             <a class="sidebar-link" href="upload-gambar.php">
                                 <i class="align-middle fas fa-upload"></i> <span class="align-middle">Upload Gambar</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item submenu">
                             <a class="sidebar-link" href="kartu_siswa.php">
                                 <i class="align-middle fa fa-id-card"></i> <span class="align-middle">Cetak Kartu Ujian</span>
                             </a>
@@ -96,12 +96,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <i class="align-middle fa fa-hdd"></i> <span class="align-middle">Backup </span><i class="fa fa-chevron-down ms-auto float-end"></i>
                     </a>
                     <ul id="backup" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                        <li class="sidebar-item">
+                        <li class="sidebar-item submenu">
                             <a class="sidebar-link" href="backup.php">
                                 <i class="align-middle fa fa-database"></i> <span class="align-middle">Backup Database</span>
                             </a>
                         </li>
-                        <li class="sidebar-item">
+                        <li class="sidebar-item submenu">
                             <a class="sidebar-link" href="backup_gbr.php">
                                 <i class="align-middle fa fa-download"></i> <span class="align-middle">Backup Gambar Soal</span>
                             </a>
