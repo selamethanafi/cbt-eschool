@@ -172,43 +172,32 @@ form#form-chat {
 }
 
 .chat-line.admin .chat-message {
-    background-color: #e3f2fd;
-    color: #0d47a1;
+    background-color:rgb(255, 247, 247);
+    color:rgb(0, 0, 0);
     box-shadow: none;
-    border: 1px solid #bbdefb;
+    border: 1px solid rgb(255, 0, 0);
 }
 
 .chat-line.admin.right .chat-message {
     background-color: #bbdefb;
     color: #083b74;
 }
-
-.chat-line.admin .chat-sender::before {
-    content: "\f21b";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #e63946;
-    font-size: 14px;
-}
-
-.chat-line.siswa .chat-sender::after {
-    content: "\f2bd";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    margin-left: 6px;
-    color: #6c757d;
-}
-
 .boxchatnya {
     background: linear-gradient(to bottom, #e3e8f0, #fdfbfb);
     padding: 12px;
     border-radius: 10px;
 }
+.chat-line.left .chat-sender {
+    padding-left: 0 !important;  /* Hilangkan padding kiri nama pengirim */
+}
 
+.chat-line.left .chat-sender i.fas.fa-user-circle {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    /* Kalau perlu, juga atur ukuran icon */
+    font-size: 1em;
+    vertical-align: middle;
+}
     </style>
 </head>
 
@@ -289,7 +278,7 @@ form#form-chat {
                                                                     <li>Jangan spam atau kirim emoji berlebihan.</li>
                                                                     <li>Fokus pada topik edukasi dan pelajaran.</li>
                                                                     <li>Jaga privasi, jangan sebarkan data teman.</li>
-                                                                    <li>Pesan hanya bisa dihapus oleh pengirimnya.</li>
+                                                                    <li>Pesan lebih dari 1 menit tidak bisa dihapus.</li>
                                                                     <li>Pesan dimoderasi, pelanggaran bisa dikenai
                                                                         sanksi.</li>
                                                                     <li>Chat bisa diblokir jika disalahgunakan.</li>
@@ -318,20 +307,38 @@ form#form-chat {
     let lastChatCount = 0;
 
     function loadChat() {
-        $.get('load_chat.php', function(data) {
-            $('#chat-box').html(data);
-            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+    const chatBox = $('#chat-box');
 
-            const currentCount = $('.chat-line').length;
-            if (currentCount > lastChatCount) {
-               // document.getElementById('notifSound').play();
-            }
-            lastChatCount = currentCount;
-        });
-    }
+    // Simpan posisi scroll sebelum reload
+    const isAtBottom = chatBox.scrollTop() + chatBox.innerHeight() >= chatBox[0].scrollHeight - 10;
+    const oldScrollTop = chatBox.scrollTop();
+    const oldScrollHeight = chatBox[0].scrollHeight;
 
-    setInterval(loadChat, 10000);
-    loadChat();
+    $.get('../siswa/load_chat.php', function(data) {
+        chatBox.html(data);
+
+        const newScrollHeight = chatBox[0].scrollHeight;
+
+        if (isAtBottom) {
+            // Jika sebelumnya di bawah, scroll ke paling bawah
+            chatBox.scrollTop(chatBox[0].scrollHeight);
+        } else {
+            // Jika sebelumnya tidak di bawah, pertahankan posisi relatif
+            chatBox.scrollTop(oldScrollTop + (newScrollHeight - oldScrollHeight));
+        }
+
+        // Notifikasi jika ada chat baru
+        const currentCount = $('.chat-line').length;
+        if (currentCount > lastChatCount) {
+            // document.getElementById('notifSound').play();
+        }
+        lastChatCount = currentCount;
+    });
+}
+
+setInterval(loadChat, 5000);
+loadChat();
+
 
     $('#form-chat').on('submit', function(e) {
         e.preventDefault();

@@ -40,20 +40,52 @@ while ($chat = mysqli_fetch_assoc($q_chat)) {
     }
 
     echo '<div class="chat-line ' . ($isMe ? 'right' : 'left') . $additionalClass . '">';
-    
-    echo '<small class="chat-sender">' . htmlspecialchars($chat['nama_pengirim']) . '</small>';
-    
-    echo '<div class="chat-message">';
-    echo nl2br(htmlspecialchars($chat['pesan']));
-    echo '<span class="chat-timestamp">' . date('H:i', strtotime($chat['waktu'])) . '</span>';
-    echo '</div>';
 
-    if ($isMe && (time() - strtotime($chat['waktu']) <= 60)) {
-        echo '<br><a href="#" class="delete-chat" data-id="' . $chat['id'] . '" title="Hapus pesan">';
-        echo '<i class="fas fa-trash-alt"></i></a>';
-    }
+// Nama pengirim + centang jika admin
+echo '<small class="chat-sender">';
 
-    echo '</div>';
+// Tampilkan icon user-circle di kiri jika bukan kamu atau admin
+if ($chat['role'] === 'siswa' && !$isMe) {
+    echo '<i class="fas fa-user-circle" style="color: grey; margin-right: 4px;"></i>';
+}
+
+// Admin juga icon user-circle di kiri
+if ($chat['role'] === 'admin') {
+    echo '<i class="fas fa-user-circle" style="color: grey; margin-right: 4px;"></i>';
+}
+
+// Nama pengirim
+echo htmlspecialchars($chat['nama_pengirim']);
+
+// Jika admin, tampilkan centang di kanan
+if ($chat['role'] === 'admin') {
+    echo ' <i class="fas fa-check-circle text-primary" title="Admin"></i>';
+}
+
+// Jika siswa dan ini adalah pesan dari diri sendiri, tampilkan icon user di kanan
+if ($chat['role'] === 'siswa' && $isMe) {
+    echo ' <i class="fas fa-user-circle" style="color: grey; margin-left: 4px;"></i>';
+}
+
+echo '</small>';
+
+
+
+// Isi pesan
+echo '<div class="chat-message">';
+echo nl2br(htmlspecialchars($chat['pesan']));
+echo '<span class="chat-timestamp">' . date('H:i', strtotime($chat['waktu'])) . '</span>';
+echo '</div>';
+
+// Hapus pesan (admin selalu bisa, user hanya dalam 60 detik)
+$isAdmin = isset($_SESSION['admin_id']);
+if ($isAdmin || ($isMe && (time() - strtotime($chat['waktu']) <= 60))) {
+    echo '<br><a href="#" class="delete-chat" data-id="' . $chat['id'] . '" title="Hapus pesan">';
+    echo '<small style="font-size:10px;"><i class="fas fa-close"></i> Hapus</small></a>';
+}
+
+echo '</div>';
+
 }
 
 ?>

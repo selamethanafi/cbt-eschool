@@ -159,15 +159,13 @@ form#form-chat {
 
 /* Admin message */
 .chat-line.admin .chat-message {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    border: 1px solid #c8e6c9;
+    background-color:rgb(255, 247, 247);
+    color:rgb(0, 0, 0);
+    box-shadow: none;
+    border: 1px solid rgb(255, 0, 0);
 }
-
 /* Admin icon */
 .chat-line.admin .chat-sender::after {
-    content: "\f007";
-    font-family: "Font Awesome 5 Free"; 
     font-weight: 900;
     margin-left: 6px;
     color: #2e7d32;
@@ -183,8 +181,6 @@ form#form-chat {
 
 /* Siswa icon */
 .chat-line.siswa .chat-sender::before {
-    content: "\f2bd";
-    font-family: "Font Awesome 5 Free";
     font-weight: 900;
     margin-right: 6px;
     color: #6c757d;
@@ -263,20 +259,38 @@ form#form-chat {
     let lastChatCount = 0;
 
     function loadChat() {
-        $.get('../siswa/load_chat.php', function(data) {
-            $('#chat-box').html(data);
-            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+    const chatBox = $('#chat-box');
 
-            const currentCount = $('.chat-line').length;
-            if (currentCount > lastChatCount) {
-                //document.getElementById('notifSound').play();
-            }
-            lastChatCount = currentCount;
-        });
-    }
+    // Simpan posisi scroll sebelum reload
+    const isAtBottom = chatBox.scrollTop() + chatBox.innerHeight() >= chatBox[0].scrollHeight - 10;
+    const oldScrollTop = chatBox.scrollTop();
+    const oldScrollHeight = chatBox[0].scrollHeight;
 
-    setInterval(loadChat, 5000);
-    loadChat();
+    $.get('../siswa/load_chat.php', function(data) {
+        chatBox.html(data);
+
+        const newScrollHeight = chatBox[0].scrollHeight;
+
+        if (isAtBottom) {
+            // Jika sebelumnya di bawah, scroll ke paling bawah
+            chatBox.scrollTop(chatBox[0].scrollHeight);
+        } else {
+            // Jika sebelumnya tidak di bawah, pertahankan posisi relatif
+            chatBox.scrollTop(oldScrollTop + (newScrollHeight - oldScrollHeight));
+        }
+
+        // Notifikasi jika ada chat baru
+        const currentCount = $('.chat-line').length;
+        if (currentCount > lastChatCount) {
+            // document.getElementById('notifSound').play();
+        }
+        lastChatCount = currentCount;
+    });
+}
+
+setInterval(loadChat, 5000);
+loadChat();
+
 
     $('#form-chat').on('submit', function(e) {
         e.preventDefault();
@@ -309,7 +323,7 @@ form#form-chat {
 
                 setTimeout(() => {
                     btn.prop('disabled', false);
-                }, delay * 1000);
+                }, delay * 3000);
             });
     });
 
