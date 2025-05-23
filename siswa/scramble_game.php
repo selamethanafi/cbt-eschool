@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['status'=>'game_finished', 'msg'=>'Semua kata selesai!', 'skor'=>$scramble['skor']]);
             exit;
         }
-        echo json_encode([
+        echo json_encode(value: [
             'status'=>'time_up',
             'nyawa'=>$scramble['nyawa'],
             'kata_scramble'=>scrambleWord($kata_baru),
@@ -238,6 +238,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     exit;
 }
+
+$q = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1");
+$data = mysqli_fetch_assoc($q);
 ?>
 
 <!DOCTYPE html>
@@ -248,6 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Game Scramble Text</title>
     <link href="../assets/fontawesome/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../assets/images/icon.png" />
     <script src="../assets/js/sweetalert.js"></script>
     <?php include 'scramble_css.php'; ?>
 
@@ -279,6 +283,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button id="bantuan-btn" style="display:none;"><i class="fas fa-question"></i> Bantuan</button>
             <button id="keluar-btn"><i class="fas fa-sign-out"></i> Keluar</button>
         </div>
+        <br>
+        <div class="col-12 text-center">
+               <p class="mb-0 text-center">
+                    <center><a href="#" id="enc" style="color:grey;text-decoration:none;"></a></center>
+               </p>
+          </div>
     </div>
 
     <script>
@@ -315,46 +325,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Update input container
         if (data.revealed_letters !== undefined || data.kata_scramble !== undefined) {
-            inputContainer.innerHTML = '';
-            const wordLength = data.kata_scramble ? data.kata_scramble.length : 0;
-            const revealedLetters = data.revealed_letters || {};
+    inputContainer.innerHTML = '';
+    const wordLength = data.kata_scramble ? data.kata_scramble.length : 0;
+    const revealedLetters = data.revealed_letters || {};
 
-            for (let i = 0; i < wordLength; i++) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.maxLength = 1;
-                input.className = 'input-letter';
-                input.dataset.index = i;
+    for (let i = 0; i < wordLength; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.maxLength = 1;
+        input.className = 'input-letter';
+        input.dataset.index = i;
 
-                if (revealedLetters[i]) {
-                    input.value = revealedLetters[i];
-                    input.readOnly = true;
-                    input.className += ' revealed';
-                }
-
-                input.addEventListener('input', function(e) {
-                    if (this.value) {
-                        const next = this.nextElementSibling;
-                        if (next && !next.readOnly) next.focus();
-                    }
-                });
-
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Backspace' && !this.value) {
-                        const prev = this.previousElementSibling;
-                        if (prev) prev.focus();
-                    } else if (e.key === 'Enter') {
-                        submitAnswer(getCurrentAnswer());
-                    }
-                });
-
-                inputContainer.appendChild(input);
-            }
-
-            // Focus ke input pertama yang kosong
-            const firstEmptyInput = inputContainer.querySelector('.input-letter:not(.revealed)');
-            if (firstEmptyInput) firstEmptyInput.focus();
+        if (revealedLetters[i]) {
+            input.value = revealedLetters[i];
+            input.readOnly = true;
+            input.classList.add('revealed');
         }
+
+        input.addEventListener('input', function(e) {
+            if (this.value) {
+                let next = this.nextElementSibling;
+                while (next && next.readOnly) {
+                    next = next.nextElementSibling;
+                }
+                if (next) next.focus();
+            }
+        });
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && !this.value) {
+                let prev = this.previousElementSibling;
+                while (prev && prev.readOnly) {
+                    prev = prev.previousElementSibling;
+                }
+                if (prev) prev.focus();
+            } else if (e.key === 'Enter') {
+                submitAnswer(getCurrentAnswer());
+            }
+        });
+
+        inputContainer.appendChild(input);
+    }
+
+    // Fokus ke input pertama yang kosong
+    const firstEmptyInput = inputContainer.querySelector('.input-letter:not(.revealed)');
+    if (firstEmptyInput) firstEmptyInput.focus();
+}
+
     }
 
     function getCurrentAnswer() {
@@ -396,44 +413,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     function submitAnswer(jawaban) {
-        const formData = new FormData();
-        if (jawaban !== null && jawaban !== '') formData.append('jawaban', jawaban);
+    const formData = new FormData();
+    // Selalu append jawaban walau kosong (untuk submit kosong di kasus time_up)
+    formData.append('jawaban', jawaban ?? '');
 
-        fetch('', {
-                method: 'POST',
-                body: formData,
-            }).then(res => res.json())
-            .then(data => {
-                if (data.status === 'correct') {
-                    updateUI(data);
-                    startTimer();
-                    swalToast('success', 'Jawaban benar! +10 poin');
-                } else if (data.status === 'wrong') {
-                    updateUI(data);
-                    startTimer(); // Tambahkan ini untuk reset timer
-                    swalToast('error', data.msg);
-                } else if (data.status === 'game_over') {
-                    stopTimer();
-                    showAlert('error', 'Game Over!', data.msg + '\nSkor Anda: ' + data.skor, () => {
-                        window.location.href = 'game_over_scramble.php';
-                    });
-                } else if (data.status === 'game_finished') {
-                    stopTimer();
-                    showAlert('success', 'Selamat!', data.msg + '\nSkor Anda: ' + data.skor, () => {
-                        window.location.href = 'game_over_scramble.php';
-                    });
-                } else if (data.status === 'time_up') {
-                    updateUI(data);
-                    startTimer();
-                    swalToast('warning', 'Waktu habis, nyawa dikurangi.');
-                } else {
-                    swalToast('info', data.msg || 'Terjadi kesalahan.');
-                }
-            })
-            .catch(() => {
-                swalToast('error', 'Gagal terhubung ke server.');
+    fetch('', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'correct') {
+            updateUI(data);
+            startTimer();
+            swalToast('success', 'Jawaban benar! +10 poin');
+        } else if (data.status === 'wrong') {
+            updateUI(data);
+            startTimer(); // reset timer
+            swalToast('error', data.msg);
+        } else if (data.status === 'game_over') {
+            stopTimer();
+            showAlert('error', 'Game Over!', data.msg + '\nSkor Anda: ' + data.skor, () => {
+                window.location.href = 'game_over_scramble.php';
             });
-    }
+        } else if (data.status === 'game_finished') {
+            stopTimer();
+            showAlert('success', 'Selamat!', data.msg + '\nSkor Anda: ' + data.skor, () => {
+                window.location.href = 'game_over_scramble.php';
+            });
+        } else if (data.status === 'time_up') {
+            updateUI(data);
+            startTimer();
+            swalToast('warning', 'Waktu habis, nyawa dikurangi.');
+
+            // Kirim jawaban kosong otomatis
+            if (jawaban !== '') {
+                // Cuma submit kosong sekali saat time_up
+                submitAnswer('');
+            }
+        } else {
+            swalToast('info', data.msg || 'Terjadi kesalahan.');
+        }
+    })
+    .catch(() => {
+        swalToast('error', 'Gagal terhubung ke server.');
+    });
+}
+
 
     function requestBantuan() {
         if (bantuanCountSpan.textContent == 0) {
@@ -534,6 +560,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
     });
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    var base64Text = "<?php echo $encryptedText; ?>";
+    var versiSaya = "<?= $data['versi_aplikasi'] ?? '1.0.0' ?>"; // ambil dari database
+
+    if (base64Text) {
+        var decodedText = atob(base64Text);
+        document.getElementById("enc").innerHTML = decodedText + " v." + versiSaya;
+    } else {
+        document.getElementById("enc").innerHTML = "v." + versiSaya;
+    }
+});
+</script>
+<script>
+  const inputs = document.querySelectorAll('.input-letter');
+
+  inputs.forEach((input, index) => {
+    input.addEventListener('input', () => {
+      let nextIndex = index + 1;
+      while (nextIndex < inputs.length && inputs[nextIndex].readOnly) {
+        nextIndex++;
+      }
+      if (nextIndex < inputs.length) {
+        inputs[nextIndex].focus();
+      }
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        let prevIndex = index - 1;
+        while (prevIndex >= 0 && inputs[prevIndex].readOnly) {
+          prevIndex--;
+        }
+        if (prevIndex >= 0) {
+          inputs[prevIndex].focus();
+        }
+      } else if (e.key === 'ArrowRight') {
+        let nextIndex = index + 1;
+        while (nextIndex < inputs.length && inputs[nextIndex].readOnly) {
+          nextIndex++;
+        }
+        if (nextIndex < inputs.length) {
+          inputs[nextIndex].focus();
+        }
+      }
+    });
+  });
+</script>
+    <?php include '../inc/check_activity.php'; ?>
 </body>
 
 </html>
