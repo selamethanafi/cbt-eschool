@@ -109,6 +109,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     </ul>
                     </li>
 
+                    <li class="sidebar-item <?= ($currentPage == 'log.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="log.php">
+                            <i class="align-middle fas fa-history"></i> <span class="align-middle">Log Activity</span>
+                        </a>
+                    </li>
+
                     <li class="sidebar-item">
                         <a class="sidebar-link btnLogout" href="logout.php">
                             <i class="align-middle fas fa-sign-out-alt"></i> <span class="align-middle">Logout</span>
