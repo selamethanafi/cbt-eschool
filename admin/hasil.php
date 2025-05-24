@@ -46,7 +46,7 @@ ORDER BY n.tanggal_ujian DESC
             $no = 1;
             while ($row = mysqli_fetch_assoc($result)) {
     $hapusBtn = "<button class='btn btn-sm btn-danger btnHapus' data-id='{$row['id_nilai']}'>
-                    <i class='fa fa-trash'></i> Hapus
+                    <i class='fa fa-close'></i> Hapus
                 </button>";
     $cekBtn = "<button class='btn btn-sm btn-info btnCekNilai' 
                 data-id_siswa='{$row['id_siswa']}' 
@@ -58,14 +58,26 @@ ORDER BY n.tanggal_ujian DESC
             </a>";
 
     $status_penilaian = $row['status_penilaian'];
-    $koreksiBtn = '';
-    if ($status_penilaian === 'perlu_dinilai') {
-        $koreksiBtn = "<button class='btn btn-sm btn-info btnKoreksi' 
+$nilai_uraian = $row['nilai_uraian'];
+$koreksiBtn = '';
+
+// Tampilkan tombol hanya jika status_penilaian = 'perlu_dinilai'
+if ($status_penilaian === 'perlu_dinilai') {
+    if ($nilai_uraian <= 0) {
+        $koreksiBtn = "<button class='btn btn-sm btn-outline-danger btnKoreksi' 
                 data-id_siswa='{$row['id_siswa']}' 
                 data-kode_soal='{$row['kode_soal']}'>
-                <i class='fa fa-edit'></i> Koreksi Uraian
+                <i class='fa fa-edit'></i> Belum Dikoreksi
+              </button>";
+    } else {
+        $koreksiBtn = "<button class='btn btn-sm btn-outline-info btnKoreksi' 
+                data-id_siswa='{$row['id_siswa']}' 
+                data-kode_soal='{$row['kode_soal']}'>
+                <i class='fa fa-edit'></i> Sudah Dikoreksi
               </button>";
     }
+}
+
 
     $nilai = number_format($row['nilai'], 2);
     $nilai_uraian = $row['nilai_uraian'];
@@ -116,14 +128,8 @@ ORDER BY n.tanggal_ujian DESC
         color: white !important;
         font-weight: bold !important;
     }
-    .table img {
-        height: auto;
-        width: auto;
-        object-fit: contain;
-        max-width: 300px !important;
-        max-height: 300px !important;
-        display: block;
-    }
+</style>
+
 </style>
 </head>
 <body>
