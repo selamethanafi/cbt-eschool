@@ -119,7 +119,7 @@ echo "<thead>
         </tr>
       </thead>";
 echo "<tbody>";
-
+ 
 for ($i = 0; $i < $total_soal; $i++) {
     list($nomer_kunci, $isi_kunci) = explode(':', $kunci_array[$i], 2);
     $isi_jawaban = $jawaban_siswa_arr[$nomer_kunci] ?? '';
