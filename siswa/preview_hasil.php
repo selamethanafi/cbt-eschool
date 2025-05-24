@@ -352,19 +352,25 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                                 break;
 
                             case 'Menjodohkan':
+                                // Tampilkan jawaban siswa dalam tabel
                                 $pairs = explode('|', $jawab);
-                                echo "<table><thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
+                                echo "<table border='1' cellpadding='5' cellspacing='0'><thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
                                 foreach ($pairs as $i => $pair) {
-                                    list($a, $b) = explode(':', $pair) + [null,null];
-                                    echo "<tr><td>" . ($i+1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
+                                    list($a, $b) = explode(':', $pair) + [null, null];
+                                    echo "<tr><td>" . ($i + 1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
                                 }
                                 echo "</tbody></table>";
 
+                                // Tampilkan pembahasan (kunci jawaban) juga dalam tabel
                                 $kunci_pairs = explode('|', $soal['jawaban_benar']);
-                                echo '<div class="pembahasan"><strong>Pembahasan:</strong><br>';
+                                echo '<div class="pembahasan"><strong>Pembahasan:</strong>';
+                                echo "<table border='1' cellpadding='5' cellspacing='0' style='margin-top:10px;'>";
+                                echo "<thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
                                 foreach ($kunci_pairs as $i => $pair) {
-                                    echo htmlspecialchars($pair) . "<br>";
+                                    list($a, $b) = explode(':', $pair) + [null, null];
+                                    echo "<tr><td>" . ($i + 1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
                                 }
+                                echo "</tbody></table>";
                                 echo '</div>';
                                 break;
 

@@ -143,124 +143,142 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preview Jawaban Siswa</title>
     <?php include '../inc/css.php'; ?>
     <style>
-        /* style tambahan untuk header 2 kolom */
-        .header-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-        }
-        .header-left, .header-right {
-            width: 48%;
-            font-weight: bold;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        .header-right {
-            border: 1px solid #aaa;
-            padding: 10px;
-            height: 72px; /* kira-kira 3 baris dengan line-height 1.5 * 16px font-size */
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            background-color: #f7f7f7;
-        }
+    /* style tambahan untuk header 2 kolom */
+    .header-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+    }
 
-        .card img {
-            max-width: 400px !important;
-            max-height: 300px !important;
-            object-fit: contain;
-            display: block;
-            margin: 10px 0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table th, table td {
-            border: 1px solid #aaa;
-            padding: 6px;
-        }
-        .pembahasan {
-            background-color: rgb(213, 213, 213);
-            background-image: radial-gradient(rgb(255, 255, 255) 1px, transparent 1px);
-            background-size: 20px 20px;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            color: rgb(0, 0, 0);
-            font-style: italic;
-            white-space: pre-wrap;
-        }
-        .skor-soal {
-            background-color: #e8f4f8;
-            padding: 8px;
-            margin-top: 5px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        ul {
-            list-style-type:none; padding-left:0;
-        }
+    .header-left,
+    .header-right {
+        width: 48%;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .header-right {
+        border: 1px solid #aaa;
+        padding: 10px;
+        height: 72px;
+        /* kira-kira 3 baris dengan line-height 1.5 * 16px font-size */
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        background-color: #f7f7f7;
+    }
+
+    .card img {
+        max-width: 400px !important;
+        max-height: 300px !important;
+        object-fit: contain;
+        display: block;
+        margin: 10px 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table th,
+    table td {
+        border: 1px solid #aaa;
+        padding: 6px;
+    }
+
+    .pembahasan {
+        background-color: rgb(213, 213, 213);
+        background-image: radial-gradient(rgb(255, 255, 255) 1px, transparent 1px);
+        background-size: 20px 20px;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        color: rgb(0, 0, 0);
+        font-style: italic;
+        white-space: pre-wrap;
+    }
+
+    .skor-soal {
+        background-color: #e8f4f8;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
     </style>
 </head>
+
 <body>
-<div class="wrapper">
-    <?php include 'sidebar.php'; ?>
-    <div class="main">
-        <?php include 'navbar.php'; ?>
-        <main class="content">
-            <div class="container-fluid p-0">
-                <h1>Preview Jawaban Siswa</h1>
-                <div class="row mb-4">
-                <div class="card-header">
-                                    <button type="button" class="btn btn-outline-danger" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="printModalContent()"><i class="fa fa-print"></i> Print</button>
-                                    <a href="hasil.php"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button></a>
-                                </div>
-                </div>
-            <div class="col-12 card-utama" id="canvas_div_pdf">
-                <!-- HEADER 2 KOLOM -->
-                <div class="row mb-4" style="max-height:300px;background-color: #444; color: white; border-radius: 10px; padding: 20px;">
-                    <div class="col-md-9 col-6">
-                        <p><strong>Nama Siswa:</strong> <?= htmlspecialchars($nama_siswa) ?></p>
-                        <p><strong>Kode Soal:</strong> <?= htmlspecialchars($kode_soal) ?></p>
-                        <p><strong>Tanggal Ujian:</strong> <?= htmlspecialchars($tanggal_ujian) ?></p>
-                    </div>
-                    <div class="col-md-3 col-6 text-center d-flex align-items-center justify-content-center">
-                        <div style="background-color: white; color: black; padding: 20px; border-radius: 15px; width: 100%; height: 100%;">
-                            <h4 class="mb-0">Nilai</h4>
-                            <h1 style="font-size: 3rem;"><?= number_format($nilai_siswa, 2) ?></h1>
+    <div class="wrapper">
+        <?php include 'sidebar.php'; ?>
+        <div class="main">
+            <?php include 'navbar.php'; ?>
+            <main class="content">
+                <div class="container-fluid p-0">
+                    <h1>Preview Jawaban Siswa</h1>
+                    <div class="row mb-4">
+                        <div class="card-header">
+                            <button type="button" class="btn btn-outline-danger" onclick="exportPDF()"><i
+                                    class="fa-solid fa-file-pdf"></i> Download PDF</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="printModalContent()"><i
+                                    class="fa fa-print"></i> Print</button>
+                            <a href="hasil.php"><button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Kembali</button></a>
                         </div>
                     </div>
-                </div>
+                    <div class="col-12 card-utama" id="canvas_div_pdf">
+                        <!-- HEADER 2 KOLOM -->
+                        <div class="row mb-4"
+                            style="max-height:300px;background-color: #444; color: white; border-radius: 10px; padding: 20px;">
+                            <div class="col-md-9 col-6">
+                                <p><strong>Nama Siswa:</strong> <?= htmlspecialchars($nama_siswa) ?></p>
+                                <p><strong>Kode Soal:</strong> <?= htmlspecialchars($kode_soal) ?></p>
+                                <p><strong>Tanggal Ujian:</strong> <?= htmlspecialchars($tanggal_ujian) ?></p>
+                            </div>
+                            <div class="col-md-3 col-6 text-center d-flex align-items-center justify-content-center">
+                                <div
+                                    style="background-color: white; color: black; padding: 20px; border-radius: 15px; width: 100%; height: 100%;">
+                                    <h4 class="mb-0">Nilai</h4>
+                                    <h1 style="font-size: 3rem;"><?= number_format($nilai_siswa, 2) ?></h1>
+                                </div>
+                            </div>
+                        </div>
 
-                <?php while ($soal = mysqli_fetch_assoc($query_soal)): 
+                        <?php while ($soal = mysqli_fetch_assoc($query_soal)): 
                     $no = (int)$soal['nomer_soal'];
                     $jawab = isset($jawaban_siswa[$no]) ? $jawaban_siswa[$no] : '';
                     $tipe = $soal['tipe_soal'];
                     $opsi_huruf = ['A', 'B', 'C', 'D'];
                 ?>
-                <div class="row">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5>No. <?= $no ?> (<?= $tipe ?>)</h5>
-                        <p><?= $soal['pertanyaan'] ?></p>
-                        <?php if (!empty($soal['gambar'])): ?>
-                            <img src="../assets/img/butir_soal/<?= $soal['gambar'] ?>" alt="Gambar Soal" />
-                        <?php endif; ?>
-                        
-                        <h6>Jawaban Siswa:</h6>
-                        <?php
+                        <div class="row">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5>No. <?= $no ?> (<?= $tipe ?>)</h5>
+                                    <p><?= $soal['pertanyaan'] ?></p>
+                                    <?php if (!empty($soal['gambar'])): ?>
+                                    <img src="../assets/img/butir_soal/<?= $soal['gambar'] ?>" alt="Gambar Soal" />
+                                    <?php endif; ?>
+
+                                    <h6>Jawaban Siswa:</h6>
+                                    <?php
                         switch ($tipe) {
                             case 'Pilihan Ganda':
                                 echo "<ul>";
@@ -318,21 +336,28 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                                 break;
 
                             case 'Menjodohkan':
-                                $pairs = explode('|', $jawab);
-                                echo "<table><thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
-                                foreach ($pairs as $i => $pair) {
-                                    list($a, $b) = explode(':', $pair) + [null,null];
-                                    echo "<tr><td>" . ($i+1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
-                                }
-                                echo "</tbody></table>";
+    // Tampilkan jawaban siswa dalam tabel
+    $pairs = explode('|', $jawab);
+    echo "<table border='1' cellpadding='5' cellspacing='0'><thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
+    foreach ($pairs as $i => $pair) {
+        list($a, $b) = explode(':', $pair) + [null, null];
+        echo "<tr><td>" . ($i + 1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
+    }
+    echo "</tbody></table>";
 
-                                $kunci_pairs = explode('|', $soal['jawaban_benar']);
-                                echo '<div class="pembahasan"><strong>Pembahasan:</strong><br>';
-                                foreach ($kunci_pairs as $i => $pair) {
-                                    echo htmlspecialchars($pair) . "<br>";
-                                }
-                                echo '</div>';
-                                break;
+    // Tampilkan pembahasan (kunci jawaban) juga dalam tabel
+    $kunci_pairs = explode('|', $soal['jawaban_benar']);
+    echo '<div class="pembahasan"><strong>Pembahasan:</strong>';
+    echo "<table border='1' cellpadding='5' cellspacing='0' style='margin-top:10px;'>";
+    echo "<thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
+    foreach ($kunci_pairs as $i => $pair) {
+        list($a, $b) = explode(':', $pair) + [null, null];
+        echo "<tr><td>" . ($i + 1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
+    }
+    echo "</tbody></table>";
+    echo '</div>';
+    break;
+
 
                             case 'Uraian':
                                 echo "<div class='border p-2 mb-2'>" . nl2br(htmlspecialchars($jawab)) . "</div>";
@@ -344,47 +369,57 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                                 break;
                         }
                         ?>
-                        <!-- Tambahkan skor per soal di sini -->
-                        <div class="skor-soal">
-                            <strong>Skor:</strong> <?= number_format($skor_per_soal[$no] ?? 0, 2) ?>
+                                    <!-- Tambahkan skor per soal di sini -->
+                                    <div class="skor-soal">
+                                        <strong>Skor:</strong> <?= number_format($skor_per_soal[$no] ?? 0, 2) ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        <?php endwhile; ?>
                     </div>
                 </div>
-                </div>
-                <?php endwhile; ?>
-            </div>
-                    </div>
-        </main>
+            </main>
+        </div>
     </div>
-</div>
-<?php include '../inc/js.php'; ?>
-<script src="../assets/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
+    <?php include '../inc/js.php'; ?>
+    <script src="../assets/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
     <script>
-        function exportPDF() {
-            var element = document.getElementById('canvas_div_pdf');
-            html2pdf().set({
-                margin: 0.2,
-                filename: '<?php echo $kode_soal;?>_<?php echo $nama_siswa;?>.pdf',
-                image: { type: 'jpeg', quality: 1 },
-                html2canvas: { scale: 2, logging: true },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            }).from(element).save();
-        }
+    function exportPDF() {
+        var element = document.getElementById('canvas_div_pdf');
+        html2pdf().set({
+            margin: 0.2,
+            filename: '<?php echo $kode_soal;?>_<?php echo $nama_siswa;?>.pdf',
+            image: {
+                type: 'jpeg',
+                quality: 1
+            },
+            html2canvas: {
+                scale: 2,
+                logging: true
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'a4',
+                orientation: 'portrait'
+            }
+        }).from(element).save();
+    }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const images = document.querySelectorAll('.card-utama img');
+    document.addEventListener("DOMContentLoaded", function() {
+        const images = document.querySelectorAll('.card-utama img');
 
-            images.forEach(function(img) {
-                img.style.maxWidth = '200px';
-                img.style.maxHeight = '200px';
-            });
+        images.forEach(function(img) {
+            img.style.maxWidth = '200px';
+            img.style.maxHeight = '200px';
         });
+    });
 
-        function printModalContent() {
-            const modalBody = document.querySelector('.card-utama').innerHTML;
-            const printWindow = window.open('', '', 'width=1000,height=700');
+    function printModalContent() {
+        const modalBody = document.querySelector('.card-utama').innerHTML;
+        const printWindow = window.open('', '', 'width=1000,height=700');
 
-            printWindow.document.write(`
+        printWindow.document.write(`
                 <html>
                     <head>
                         <title>Print Preview</title>
@@ -396,8 +431,9 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                 </html>
             `);
 
-            printWindow.document.close();
-        }
+        printWindow.document.close();
+    }
     </script>
 </body>
+
 </html>
