@@ -26,7 +26,7 @@ while ($row = mysqli_fetch_assoc($rekap_query)) {
 }
 // Ambil data rata-rata nilai per kode_soal
 $kode_soal_query = mysqli_query($koneksi, "
-    SELECT kode_soal, ROUND(AVG(nilai), 2) AS rata_rata 
+    SELECT kode_soal, ROUND(AVG(nilai + IFNULL(nilai_uraian, 0)), 2) AS rata_rata 
     FROM nilai 
     GROUP BY kode_soal
 ");
@@ -36,11 +36,12 @@ while ($row = mysqli_fetch_assoc($kode_soal_query)) {
     $kode_soal_data['labels'][] = $row['kode_soal'];
     $kode_soal_data['rata'][] = $row['rata_rata'];
 }
-// Ambil 10 siswa dengan rata-rata nilai tertinggi dan jumlah ujiannya
+
+// Ambil 10 siswa dengan rata-rata nilai akhir tertinggi
 $top_siswa_query = mysqli_query($koneksi, "
     SELECT siswa.nama_siswa AS nama, 
            COUNT(*) AS jumlah_ujian,
-           ROUND(AVG(nilai.nilai), 2) AS rata 
+           ROUND(AVG(nilai + IFNULL(nilai_uraian, 0)), 2) AS rata 
     FROM nilai 
     JOIN siswa ON nilai.id_siswa = siswa.id_siswa 
     GROUP BY nilai.id_siswa 
