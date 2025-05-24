@@ -111,7 +111,7 @@ echo "<div class='table-wrapper'>";
 echo "<table id='tabel_nilai' class='table table-bordered table-striped'>";
 echo "<thead>
         <tr>
-            <th width='5%'>No</th>
+            <th width='5%'>No Soal</th>
             <th width='30%'>Kunci</th>
             <th width='30%'>Jawaban Siswa</th>
             <th width='25%'>Skor</th>

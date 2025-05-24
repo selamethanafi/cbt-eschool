@@ -15,7 +15,7 @@ $query = mysqli_query($koneksi, "
     SELECT 
         n.kode_soal,
         s.mapel,
-        n.nilai,
+        n.nilai, n.nilai_uraian,
         n.tanggal_ujian,
         m.nama_siswa
     FROM nilai n
@@ -27,7 +27,10 @@ $query = mysqli_query($koneksi, "
 
 $data = [];
 while ($row = mysqli_fetch_assoc($query)) {
-    $nilai_display = $sembunyikan_nilai ? '-' : $row['nilai'];
+    $nilai_otomatis=$row['nilai'];
+    $nilai_uraian=$row['nilai_uraian'];
+    $nilai_akhir=$nilai_otomatis+$nilai_uraian;
+    $nilai_display = $sembunyikan_nilai ? '-' : $nilai_akhir;
     
 
     if ($sembunyikan_nilai) {

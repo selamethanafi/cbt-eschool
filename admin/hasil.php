@@ -16,12 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $where .= " AND s.kelas = '$kelas' AND s.rombel = '$rombel'";
         }
 
-        $query = "SELECT n.id_nilai, n.id_siswa, s.nama_siswa, s.kelas, s.rombel, n.kode_soal, n.total_soal, 
-                         n.jawaban_benar, n.jawaban_salah, n.jawaban_kurang, n.nilai, n.tanggal_ujian
-                  FROM nilai n
-                  JOIN siswa s ON n.id_siswa = s.id_siswa
-                  WHERE $where
-                  ORDER BY n.tanggal_ujian DESC";
+        $query = "SELECT n.id_nilai, n.id_siswa, s.nama_siswa, s.kelas, s.rombel, n.kode_soal, n.total_soal, n.status_penilaian, 
+       n.jawaban_benar, n.jawaban_salah, n.jawaban_kurang, n.nilai, n.nilai_uraian, n.tanggal_ujian
+FROM nilai n
+JOIN siswa s ON n.id_siswa = s.id_siswa
+WHERE $where
+ORDER BY n.tanggal_ujian DESC
+";
 
         $result = mysqli_query($koneksi, $query);
 
@@ -34,10 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <th>Kode Soal</th>
                             <th>Total Soal</th>
                             <th>Kelas</th>
-                            <th>Jawaban Benar</th>
-                            <th>Jawaban Salah</th>
-                            <th>Jawaban Kurang</th>
-                            <th class="nilai-col">Nilai</th>
+                            <th>Nilai PG|PGX|MJD|BS</th>
+                            <th>Nilai Uraian</th>
+                            <th>Nilai Akhir</th>
                             <th>Tanggal Ujian</th>
                             <th>Aksi</th>
                         </tr>
@@ -45,34 +45,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <tbody>';
             $no = 1;
             while ($row = mysqli_fetch_assoc($result)) {
-                $hapusBtn = "<button class='btn btn-sm btn-danger btnHapus' data-id='{$row['id_nilai']}'>
-                                <i class='fa fa-trash'></i> Hapus
-                            </button>";
-                $cekBtn = "<button class='btn btn-sm btn-info btnCekNilai' 
+    $hapusBtn = "<button class='btn btn-sm btn-danger btnHapus' data-id='{$row['id_nilai']}'>
+                    <i class='fa fa-trash'></i> Hapus
+                </button>";
+    $cekBtn = "<button class='btn btn-sm btn-info btnCekNilai' 
                 data-id_siswa='{$row['id_siswa']}' 
                 data-kode_soal='{$row['kode_soal']}'>
                 <i class='fa fa-search'></i> Cek Nilai
-                        </button>";
-                $prevBtn = "<a href='preview_siswa.php?id_siswa=" . $row['id_siswa'] . "&kode_soal=" . $row['kode_soal'] . "' class='btn btn-sm btn-secondary'>
-                    <i class='fa fa-eye'></i> Preview Hasil
-                </a>";
-                $nilai = number_format($row['nilai'], 2);
-                $tanggal_ujian =  date('d M Y, H:i', strtotime($row['tanggal_ujian']));
-                echo "<tr>
-                        <td>{$no}</td>
-                        <td>{$row['nama_siswa']}</td>
-                        <td>{$row['kode_soal']}</td>
-                        <td>{$row['total_soal']}</td>
-                        <td>{$row['kelas']} {$row['rombel']}</td>
-                        <td>{$row['jawaban_benar']}</td>
-                        <td>{$row['jawaban_salah']}</td>
-                        <td>{$row['jawaban_kurang']}</td>
-                        <td class='nilai-col'>{$nilai}</td>
-                        <td>{$tanggal_ujian}</td>
-                        <td>{$cekBtn} {$prevBtn} {$hapusBtn}</td>
-                    </tr>";
-                $no++;
-            }
+            </button>";
+    $prevBtn = "<a href='preview_siswa.php?id_siswa=" . $row['id_siswa'] . "&kode_soal=" . $row['kode_soal'] . "' class='btn btn-sm btn-secondary'>
+                <i class='fa fa-eye'></i> Preview Hasil
+            </a>";
+
+    $status_penilaian = $row['status_penilaian'];
+    $koreksiBtn = '';
+    if ($status_penilaian === 'perlu_dinilai') {
+        $koreksiBtn = "<button class='btn btn-sm btn-info btnKoreksi' 
+                data-id_siswa='{$row['id_siswa']}' 
+                data-kode_soal='{$row['kode_soal']}'>
+                <i class='fa fa-edit'></i> Koreksi Uraian
+              </button>";
+    }
+
+    $nilai = number_format($row['nilai'], 2);
+    $nilai_uraian = $row['nilai_uraian'];
+    $tanggal_ujian =  date('d M Y, H:i', strtotime($row['tanggal_ujian']));
+    $nilai_akhir = $nilai + $nilai_uraian;
+
+    echo "<tr>
+            <td>{$no}</td>
+            <td>{$row['nama_siswa']}</td>
+            <td>{$row['kode_soal']}</td>
+            <td>{$row['total_soal']}</td>
+            <td>{$row['kelas']} {$row['rombel']}</td>
+            <td>{$nilai}</td>
+            <td>{$nilai_uraian}</td>
+            <td class='nilai-col'>{$nilai_akhir}</td>
+            <td>{$tanggal_ujian}</td>
+            <td>{$koreksiBtn} {$prevBtn} {$hapusBtn}</td>
+          </tr>";
+    $no++;
+}
+
             echo '</tbody></table>';
         } else {
             echo '<div class="alert alert-primary alert-dismissible fade show col-md-6" role="alert">
@@ -101,6 +115,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         background-color: grey !important;
         color: white !important;
         font-weight: bold !important;
+    }
+    .table img {
+        height: auto;
+        width: auto;
+        object-fit: contain;
+        max-width: 300px !important;
+        max-height: 300px !important;
+        display: block;
     }
 </style>
 </head>
@@ -165,7 +187,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div>
 </div>
-
+<!-- Modal Koreksi Uraian -->
+<div class="modal fade" id="modalKoreksiUraian" tabindex="-1" aria-labelledby="modalKoreksiUraianLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Koreksi Jawaban Uraian</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <form id="formKoreksiUraian">
+        <div class="modal-body">
+          <div id="koreksiContent"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Simpan Nilai</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 <?php include '../inc/js.php'; ?>
 <script src="../assets/datatables/jszip.min.js"></script>
 <script src="../assets/datatables/buttons.html5.min.js"></script>
@@ -173,6 +214,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $(document).ready(function () {
     $('#filterForm').on('submit', function (e) {
         e.preventDefault();
+        const selectedKodeSoal = $('#kode_soal').val();
+    const selectedKelasRombel = $('#kelas_rombel').val();
+
+    let title = 'Hasil Ujian';
+    if (selectedKodeSoal) {
+        title += ' - ' + selectedKodeSoal;
+    }
+    if (selectedKelasRombel) {
+        title += ' (' + selectedKelasRombel + ')';
+    }
+
+    // Ubah <title> browser
+    document.title = title;
+
+    // Ubah judul halaman (misalnya di card-title)
+    $('#judulUjian').text(title);
         $.ajax({
             url: '',
             type: 'POST',
@@ -258,7 +315,43 @@ $('#tabel_nilai').DataTable({
   ordering: true
   // Hapus "language" kalau tidak butuh bahasa Indonesia
 });
+// Di bagian script
+$(document).on('click', '.btnKoreksi', function() {
+    const id_siswa = $(this).data('id_siswa');
+    const kode_soal = $(this).data('kode_soal');
+    
+    $('#koreksiContent').html('<p>Memuat data...</p>');
+    $('#modalKoreksiUraian').modal('show');
+    
+    $.post('koreksi_uraian.php', {id_siswa, kode_soal}, function(res) {
+        $('#koreksiContent').html(res);
+    }).fail(() => {
+        $('#koreksiContent').html('<div class="alert alert-danger">Gagal memuat data</div>');
+    });
+});
 
+$('#formKoreksiUraian').on('submit', function(e) {
+    e.preventDefault();
+    const formData = $(this).serializeArray();
+    const total = formData.reduce((sum, field) => sum + (+field.value || 0), 0);
+    
+    Swal.fire({
+        title: 'Simpan nilai?',
+        text: ``,
+        icon: 'question',
+        showCancelButton: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.post('simpan_nilai_uraian.php', formData, function(res) {
+                Swal.fire('Berhasil!', res.message, 'success');
+                $('#modalKoreksiUraian').modal('hide');
+                $('#filterForm').trigger('submit');
+            }).fail(() => {
+                Swal.fire('Gagal!', 'Terjadi kesalahan saat menyimpan', 'error');
+            });
+        }
+    });
+});
 </script>
 
 </body>

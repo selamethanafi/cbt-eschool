@@ -14,16 +14,22 @@ $kode_soal = $_GET['kode_soal'];
 $id_siswa = $_GET['id_siswa'];
 
 // Ambil data nilai, nama siswa dan tanggal ujian dari tabel nilai
-$query_nilai = mysqli_query($koneksi, "SELECT jawaban_siswa, nilai, nama_siswa, tanggal_ujian FROM nilai WHERE kode_soal='$kode_soal' AND id_siswa='$id_siswa' LIMIT 1");
+$query_nilai = mysqli_query($koneksi, "SELECT * FROM nilai WHERE kode_soal='$kode_soal' AND id_siswa='$id_siswa' LIMIT 1");
 if (!$query_nilai || mysqli_num_rows($query_nilai) == 0) {
     echo "Data nilai siswa tidak ditemukan.";
     exit;
 }
 $row_nilai = mysqli_fetch_assoc($query_nilai);
 $jawaban_siswa_raw = $row_nilai['jawaban_siswa'];
-$nilai_siswa = $row_nilai['nilai'] ?? '-';
+$nilai_otomatis = $row_nilai['nilai'] ?? '-';
+$nilai_uraian = $row_nilai['nilai_uraian'] ?? '-';
+$nilai_siswa = $nilai_otomatis+$nilai_uraian;
 $nama_siswa = $row_nilai['nama_siswa'] ?? '-';
 $tanggal_ujian = $row_nilai['tanggal_ujian'] ?? '-';
+// PARSE DETAIL URAIAN
+$detail_uraian = $row_nilai['detail_uraian'] ?? '';
+preg_match_all('/\[(\d+):([\d.]+)\]/', $detail_uraian, $matches);
+$skor_uraian = array_combine($matches[1], $matches[2]);
 
 function parseJawabanSiswa($str) {
     $pattern = '/\[(\d+):([^\]]*)\]/';
@@ -75,6 +81,10 @@ if (!empty($kunci_jawaban)) {
         $data_tipe = mysqli_fetch_assoc($q_tipe);
         $tipe_soal = strtolower($data_tipe['tipe_soal'] ?? '');
         
+        if($tipe_soal === 'uraian') {
+            $skor_per_soal[$nomer_kunci] = (float)($skor_uraian[$nomer_kunci] ?? 0);
+            continue;
+        }
         $skor = 0;
         
         if (in_array($tipe_soal, ['benar/salah', 'menjodohkan'])) {

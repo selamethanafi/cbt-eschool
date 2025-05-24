@@ -89,56 +89,62 @@ $basePath = rtrim(dirname($scriptPath, 1), '/');
     let semuaUjian = [];
 
     function tampilkanUjian(data) {
-        const container = document.getElementById('ujian-container');
-        container.innerHTML = '';
+    const container = document.getElementById('ujian-container');
+    container.innerHTML = '';
 
-        if (data.length === 0) {
-            container.innerHTML =
-                '<div class="col-12 text-center py-5"><i class="fa fa-user-slash fa-3x text-muted mb-3"></i><br>Tidak ada ujian ditemukan.</div>';
-            return;
-        }
+    if (data.length === 0) {
+        container.innerHTML =
+            '<div class="col-12 text-center py-5"><i class="fa fa-user-slash fa-3x text-muted mb-3"></i><br>Tidak ada ujian ditemukan.</div>';
+        return;
+    }
 
-        // Tentukan folder aplikasi secara dinamis
-        const pathNameParts = window.location.pathname.split('/').filter(Boolean);
-        const appFolder = pathNameParts.length > 0 ? '/' + pathNameParts[0] : '';
+    const pathNameParts = window.location.pathname.split('/').filter(Boolean);
+    const appFolder = pathNameParts.length > 0 ? '/' + pathNameParts[0] : '';
 
-        data.forEach(ujian => {
-            const cardId = 'qr-' + ujian.kode_soal; // id unik untuk QR code container
+    let allCardsHTML = '';
+    const qrList = []; // Simpan data QR yang perlu digenerate
 
-            // URL ujian dinamis sesuai folder app
-            const qrLink = `${window.location.origin}${appFolder}/siswa/konfirmasi_ujian.php?kode_soal=${encodeURIComponent(ujian.kode_soal)}`;
+    data.forEach(ujian => {
+        const cardId = 'qr-' + ujian.kode_soal;
+        const qrLink = `${window.location.origin}${appFolder}/siswa/konfirmasi_ujian.php?kode_soal=${encodeURIComponent(ujian.kode_soal)}`;
 
-            const card = `
-            <div class="col-12 col-lg-4 col-xl-3 col-sm-6 col-md-4">
-                <div class="card ujian-card h-100 shadow-sm border-0 bg-light ujian-card-hover">
-                    <div class="card-body d-flex flex-column text-center py-4">
-                        <div id="${cardId}" class="icon-wrapper mb-3 mx-auto"></div>
-                        <h5 class="card-title text-dark fw-bold mb-2">${ujian.kode_soal}</h5>
-                        <hr class="my-2">
-                        <p class="mb-1"><i class="far fa-file-alt text-secondary me-1"></i> ${ujian.mapel}</p>
-                        <p class="mb-1"><i class="fas fa-stopwatch text-secondary me-1"></i> ${ujian.waktu_ujian} menit</p>
-                        <p class="mb-3"><i class="far fa-calendar text-secondary me-1"></i> ${ujian.tanggal}</p>
-                        <a href="konfirmasi_ujian.php?kode_soal=${ujian.kode_soal}" class="btn btn-outline-secondary mt-auto">
-                            <i class="fa fa-sign-in-alt me-1"></i> Masuk Ujian
-                        </a>
-                    </div>
+        qrList.push({ id: cardId, link: qrLink }); // Simpan data QR-nya
+
+        allCardsHTML += `
+        <div class="col-12 col-lg-4 col-xl-3 col-sm-6 col-md-4">
+            <div class="card ujian-card h-100 shadow-sm border-0 bg-light ujian-card-hover">
+                <div class="card-body d-flex flex-column text-center py-4">
+                    <div id="${cardId}" class="icon-wrapper mb-3 mx-auto"></div>
+                    <h5 class="card-title text-dark fw-bold mb-2">${ujian.kode_soal}</h5>
+                    <hr class="my-2">
+                    <p class="mb-1"><i class="far fa-file-alt text-secondary me-1"></i> ${ujian.mapel}</p>
+                    <p class="mb-1"><i class="fas fa-stopwatch text-secondary me-1"></i> ${ujian.waktu_ujian} menit</p>
+                    <p class="mb-3"><i class="far fa-calendar text-secondary me-1"></i> ${ujian.tanggal}</p>
+                    <a href="konfirmasi_ujian.php?kode_soal=${ujian.kode_soal}" class="btn btn-outline-secondary mt-auto">
+                        <i class="fa fa-sign-in-alt me-1"></i> Masuk Ujian
+                    </a>
                 </div>
             </div>
-            `;
+        </div>`;
+    });
 
-            container.innerHTML += card;
+    container.innerHTML = allCardsHTML;
 
-            // Generate QR code di elemen yang baru dibuat
-            new QRCode(document.getElementById(cardId), {
-                text: qrLink,
+    // Setelah semua elemen ada di DOM, generate semua QR code
+    qrList.forEach(({ id, link }) => {
+        const el = document.getElementById(id);
+        if (el) {
+            new QRCode(el, {
+                text: link,
                 width: 80,
                 height: 80,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.L
             });
-        });
-    }
+        }
+    });
+}
 
     function loadUjian() {
         fetch('get_ujian.php')
