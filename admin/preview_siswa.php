@@ -181,11 +181,19 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
     }
 
     .card img {
-        max-width: 400px !important;
-        max-height: 300px !important;
+        height: auto;
+        width: auto;
         object-fit: contain;
+        max-width: 450px !important;
+        max-height: 300px !important;
         display: block;
-        margin: 10px 0;
+    }
+
+    @media (max-width: 768px) {
+        .card img {
+            width: 100% !important;
+
+        }
     }
 
     table {
@@ -244,41 +252,43 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                                     data-bs-dismiss="modal">Kembali</button></a>
                         </div>
                     </div>
-                    <div class="col-12 card-utama" id="canvas_div_pdf">
-                        <!-- HEADER 2 KOLOM -->
-                        <div class="row mb-4"
-                            style="max-height:300px;background-color: #444; color: white; border-radius: 10px; padding: 20px;">
-                            <div class="col-md-9 col-6">
-                                <p><strong>Nama Siswa:</strong> <?= htmlspecialchars($nama_siswa) ?></p>
-                                <p><strong>Kode Soal:</strong> <?= htmlspecialchars($kode_soal) ?></p>
-                                <p><strong>Tanggal Ujian:</strong> <?= htmlspecialchars($tanggal_ujian) ?></p>
-                            </div>
-                            <div class="col-md-3 col-6 text-center d-flex align-items-center justify-content-center">
+                    <div class="col-lg-9">
+                        <div class="col-12 card-utama" id="canvas_div_pdf">
+                            <!-- HEADER 2 KOLOM -->
+                            <div class="row mb-4"
+                                style="max-height:300px;background-color: #444; color: white; border-radius: 10px; padding: 20px;">
+                                <div class="col-md-9 col-6">
+                                    <p><strong>Nama Siswa:</strong> <?= htmlspecialchars($nama_siswa) ?></p>
+                                    <p><strong>Kode Soal:</strong> <?= htmlspecialchars($kode_soal) ?></p>
+                                    <p><strong>Tanggal Ujian:</strong> <?= htmlspecialchars($tanggal_ujian) ?></p>
+                                </div>
                                 <div
-                                    style="background-color: white; color: black; padding: 20px; border-radius: 15px; width: 100%; height: 100%;">
-                                    <h4 class="mb-0">Nilai</h4>
-                                    <h1 style="font-size: 3rem;"><?= number_format($nilai_siswa, 2) ?></h1>
+                                    class="col-md-3 col-6 text-center d-flex align-items-center justify-content-center">
+                                    <div
+                                        style="background-color: white; color: black; padding: 20px; border-radius: 15px; width: 100%; height: 100%;">
+                                        <h4 class="mb-0">Nilai</h4>
+                                        <h1 style="font-size: 30px;"><?= $nilai_siswa ?></h1>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <?php while ($soal = mysqli_fetch_assoc($query_soal)): 
+                            <?php while ($soal = mysqli_fetch_assoc($query_soal)): 
                     $no = (int)$soal['nomer_soal'];
                     $jawab = isset($jawaban_siswa[$no]) ? $jawaban_siswa[$no] : '';
                     $tipe = $soal['tipe_soal'];
                     $opsi_huruf = ['A', 'B', 'C', 'D'];
                 ?>
-                        <div class="row">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h5>No. <?= $no ?> (<?= $tipe ?>)</h5>
-                                    <p><?= $soal['pertanyaan'] ?></p>
-                                    <?php if (!empty($soal['gambar'])): ?>
-                                    <img src="../assets/img/butir_soal/<?= $soal['gambar'] ?>" alt="Gambar Soal" />
-                                    <?php endif; ?>
+                            <div class="row">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h5>No. <?= $no ?> (<?= $tipe ?>)</h5>
+                                        <p><?= $soal['pertanyaan'] ?></p>
+                                        <?php if (!empty($soal['gambar'])): ?>
+                                        <img src="../assets/img/butir_soal/<?= $soal['gambar'] ?>" alt="Gambar Soal" />
+                                        <?php endif; ?>
 
-                                    <h6>Jawaban Siswa:</h6>
-                                    <?php
+                                        <h6>Jawaban Siswa:</h6>
+                                        <?php
                         switch ($tipe) {
                             case 'Pilihan Ganda':
                                 echo "<ul>";
@@ -336,27 +346,27 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                                 break;
 
                             case 'Menjodohkan':
-    // Tampilkan jawaban siswa dalam tabel
-    $pairs = explode('|', $jawab);
-    echo "<table border='1' cellpadding='5' cellspacing='0'><thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
-    foreach ($pairs as $i => $pair) {
-        list($a, $b) = explode(':', $pair) + [null, null];
-        echo "<tr><td>" . ($i + 1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
-    }
-    echo "</tbody></table>";
+                                // Tampilkan jawaban siswa dalam tabel
+                                $pairs = explode('|', $jawab);
+                                echo "<table border='1' cellpadding='5' cellspacing='0'><thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
+                                foreach ($pairs as $i => $pair) {
+                                    list($a, $b) = explode(':', $pair) + [null, null];
+                                    echo "<tr><td>" . ($i + 1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
+                                }
+                                echo "</tbody></table>";
 
-    // Tampilkan pembahasan (kunci jawaban) juga dalam tabel
-    $kunci_pairs = explode('|', $soal['jawaban_benar']);
-    echo '<div class="pembahasan"><strong>Pembahasan:</strong>';
-    echo "<table border='1' cellpadding='5' cellspacing='0' style='margin-top:10px;'>";
-    echo "<thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
-    foreach ($kunci_pairs as $i => $pair) {
-        list($a, $b) = explode(':', $pair) + [null, null];
-        echo "<tr><td>" . ($i + 1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
-    }
-    echo "</tbody></table>";
-    echo '</div>';
-    break;
+                                // Tampilkan pembahasan (kunci jawaban) juga dalam tabel
+                                $kunci_pairs = explode('|', $soal['jawaban_benar']);
+                                echo '<div class="pembahasan"><strong>Pembahasan:</strong>';
+                                echo "<table border='1' cellpadding='5' cellspacing='0' style='margin-top:10px;'>";
+                                echo "<thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
+                                foreach ($kunci_pairs as $i => $pair) {
+                                    list($a, $b) = explode(':', $pair) + [null, null];
+                                    echo "<tr><td>" . ($i + 1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";
+                                }
+                                echo "</tbody></table>";
+                                echo '</div>';
+                                break;
 
 
                             case 'Uraian':
@@ -369,14 +379,16 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                                 break;
                         }
                         ?>
-                                    <!-- Tambahkan skor per soal di sini -->
-                                    <div class="skor-soal">
-                                        <strong>Skor:</strong> <?= number_format($skor_per_soal[$no] ?? 0, 2) ?>
+                                        <!-- Tambahkan skor per soal di sini -->
+                                        <div class="skor-soal">
+                                            <strong>Skor:</strong> <?= number_format($skor_per_soal[$no] ?? 0, 2) ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <?php endwhile; ?>
+                            <p class="text-center" id="encr" style="font-size:11px;color:grey;"></p>
                         </div>
-                        <?php endwhile; ?>
                     </div>
                 </div>
             </main>

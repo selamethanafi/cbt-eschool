@@ -87,6 +87,17 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    var base64Text = "<?php echo $encryptedText; ?>";
+    var versiSaya = "<?= $data['versi_aplikasi'] ?? '1.0.0' ?>"; // ambil dari database
+
+    if (base64Text) {
+        var decodedText = atob(base64Text);
+        document.getElementById("encr").innerHTML = decodedText + " v." + versiSaya;
+    } else {
+        document.getElementById("encr").innerHTML = "v." + versiSaya;
+    }
+});
 
 function checkIfEncDeleted() {
     var encElement = document.getElementById("enc");

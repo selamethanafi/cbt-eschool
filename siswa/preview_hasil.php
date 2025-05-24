@@ -197,10 +197,11 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
         max-height: 300px !important;
         display: block;
     }
+
     @media (max-width: 768px) {
-    .card img {
-        width: 100% !important;
-        
+        .card img {
+            width: 100% !important;
+
         }
     }
 
@@ -260,41 +261,43 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                                     data-bs-dismiss="modal">Kembali</button></a>
                         </div>
                     </div>
-                    <div class="col-lg-9 card-utama" id="canvas_div_pdf">
-                        <!-- HEADER 2 KOLOM -->
-                        <div class="row mb-4"
-                            style="max-height:300px;background-color: #444; color: white; border-radius: 10px; padding: 20px;">
-                            <div class="col-md-9 col-6">
-                                <p><strong>Nama Siswa:</strong> <?= htmlspecialchars($nama_siswa) ?></p>
-                                <p><strong>Kode Soal:</strong> <?= htmlspecialchars($kode_soal) ?></p>
-                                <p><strong>Tanggal Ujian:</strong> <?= htmlspecialchars($tanggal_ujian) ?></p>
-                            </div>
-                            <div class="col-md-3 col-6 text-center d-flex align-items-center justify-content-center">
+                    <div class="col-lg-9">
+                        <div class="col-lg-12 card-utama" id="canvas_div_pdf">
+                            <!-- HEADER 2 KOLOM -->
+                            <div class="row mb-4"
+                                style="max-height:300px;background-color: #444; color: white; border-radius: 10px; padding: 20px;">
+                                <div class="col-md-9 col-6">
+                                    <p><strong>Nama Siswa:</strong> <?= htmlspecialchars($nama_siswa) ?></p>
+                                    <p><strong>Kode Soal:</strong> <?= htmlspecialchars($kode_soal) ?></p>
+                                    <p><strong>Tanggal Ujian:</strong> <?= htmlspecialchars($tanggal_ujian) ?></p>
+                                </div>
                                 <div
-                                    style="background-color: white; color: black; padding: 20px; border-radius: 15px; width: 100%; height: 100%;">
-                                    <h4 class="mb-0">Nilai</h4>
-                                    <h1 style="font-size: 3rem;"><?= number_format($nilai_siswa, 2) ?></h1>
+                                    class="col-md-3 col-6 text-center d-flex align-items-center justify-content-center">
+                                    <div
+                                        style="background-color: white; color: black; padding: 20px; border-radius: 15px; width: 100%; height: 100%;">
+                                        <h4 class="mb-0">Nilai</h4>
+                                        <h1 style="font-size: 30px;"><?= $nilai_siswa ?></h1>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <?php while ($soal = mysqli_fetch_assoc($query_soal)): 
+                            <?php while ($soal = mysqli_fetch_assoc($query_soal)): 
                     $no = (int)$soal['nomer_soal'];
                     $jawab = isset($jawaban_siswa[$no]) ? $jawaban_siswa[$no] : '';
                     $tipe = $soal['tipe_soal'];
                     $opsi_huruf = ['A', 'B', 'C', 'D'];
                 ?>
-                        <div class="row">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h5>No. <?= $no ?> (<?= $tipe ?>)</h5>
-                                    <p><?= $soal['pertanyaan'] ?></p>
-                                    <?php if (!empty($soal['gambar'])): ?>
-                                    <img src="../assets/img/butir_soal/<?= $soal['gambar'] ?>" alt="Gambar Soal" />
-                                    <?php endif; ?>
+                            <div class="row">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h5>No. <?= $no ?> (<?= $tipe ?>)</h5>
+                                        <p><?= $soal['pertanyaan'] ?></p>
+                                        <?php if (!empty($soal['gambar'])): ?>
+                                        <img src="../assets/img/butir_soal/<?= $soal['gambar'] ?>" alt="Gambar Soal" />
+                                        <?php endif; ?>
 
-                                    <h6>Jawaban Siswa:</h6>
-                                    <?php
+                                        <h6>Jawaban Siswa:</h6>
+                                        <?php
                         switch ($tipe) {
                             case 'Pilihan Ganda':
                                 echo "<ul>";
@@ -384,14 +387,16 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                                 break;
                         }
                         ?>
-                                    <!-- Tambahkan skor per soal di sini -->
-                                    <div class="skor-soal">
-                                        <strong>Skor:</strong> <?= number_format($skor_per_soal[$no] ?? 0, 2) ?>
+                                        <!-- Tambahkan skor per soal di sini -->
+                                        <div class="skor-soal">
+                                            <strong>Skor:</strong> <?= number_format($skor_per_soal[$no] ?? 0, 2) ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <?php endwhile; ?>
+                            <p class="text-center" id="encr" style="font-size:11px;color:grey;"></p>
                         </div>
-                        <?php endwhile; ?>
                     </div>
                 </div>
             </main>
