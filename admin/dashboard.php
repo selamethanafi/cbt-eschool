@@ -24,14 +24,16 @@ while ($row = mysqli_fetch_assoc($rekap_query)) {
     $rekap_data['labels'][] = date('M Y', strtotime($row['bulan'] . '-01'));
     $rekap_data['jumlah'][] = $row['jumlah'];
 }
-// Ambil data rata-rata nilai per kode_soal
+// Ambil 10 kode soal dengan rata-rata tertinggi
 $kode_soal_query = mysqli_query($koneksi, "
     SELECT kode_soal, ROUND(AVG(nilai + IFNULL(nilai_uraian, 0)), 2) AS rata_rata 
     FROM nilai 
-    GROUP BY kode_soal
+    GROUP BY kode_soal 
+    ORDER BY rata_rata DESC 
+    LIMIT 10
 ");
 
-$kode_soal_data = [];
+$kode_soal_data = ['labels' => [], 'rata' => []];
 while ($row = mysqli_fetch_assoc($kode_soal_query)) {
     $kode_soal_data['labels'][] = $row['kode_soal'];
     $kode_soal_data['rata'][] = $row['rata_rata'];
