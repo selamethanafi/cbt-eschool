@@ -281,6 +281,7 @@ $kode_soal = $_GET['kode_soal'];
                                     }
                                     ?>
                                 </div>
+                                 <p class="text-center" id="encr" style="font-size:11px;color:grey;"></p>
                             </div>
                         </div>
                     </div>
