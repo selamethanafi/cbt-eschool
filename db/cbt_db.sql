@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Bulan Mei 2025 pada 17.38
+-- Waktu pembuatan: 25 Bulan Mei 2025 pada 19.47
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -128,7 +128,10 @@ INSERT INTO `chat` (`id`, `id_user`, `pesan`, `waktu`, `deleted`, `role`) VALUES
 (68, 1, '👍🔥semangat murid murid', '2025-05-24 11:16:29', 0, 'admin'),
 (69, 1, 'halo gays', '2025-05-24 15:01:42', 0, 'siswa'),
 (70, 1, '😍', '2025-05-24 15:02:05', 1, 'siswa'),
-(71, 1, '🚀rocket', '2025-05-24 15:02:50', 0, 'siswa');
+(71, 1, '🚀rocket', '2025-05-24 15:02:50', 0, 'siswa'),
+(72, 1, '😢', '2025-05-25 00:31:57', 1, 'admin'),
+(73, 17, '😢', '2025-05-25 00:32:11', 0, 'siswa'),
+(74, 14, '🔥🔥🔥', '2025-05-25 18:44:17', 0, 'siswa');
 
 -- --------------------------------------------------------
 
@@ -152,7 +155,7 @@ INSERT INTO `faq` (`id`, `question`, `answer`) VALUES
 (3, 'jawaban hilang', 'Jika koneksi terputus jawaban masih tersimpan dan kamu bisa melanjutkan ujian lagi. Silakan hubungi guru atau admin untuk informasi lebih lanjut.'),
 (4, 'hasil ujian', 'Setelah ujian selesai, hasil dapat dilihat pada menu \'Nilai\' di dashboard siswa.'),
 (5, 'Perangkat', 'Ujian dapat diakses melalui komputer, laptop, atau perangkat mobile dengan koneksi internet yang stabil.'),
-(6, 'Terputus', 'Silakan buka kembali aplikasi ujian seperti biasa,  Jika tidak bisa masuk atau muncul pesan error, segera hubungi pengawas atau admin ujian untuk reset login.'),
+(6, 'Jaringan Terputus', 'Silakan buka kembali aplikasi ujian seperti biasa,  Jika tidak bisa masuk atau muncul pesan error, segera hubungi pengawas atau admin ujian untuk reset login.'),
 (13, 'Reset Login.', 'hubungi pengawas atau admin ujian untuk reset login.'),
 (20, 'Nilai tersembunyi', 'ya, admin bisa menyembunyikan maupun menampilkan nilai, agar siswa tidak bisa melihat jawaban benar.'),
 (21, 'Apa itu CBT?', 'CBT adalah Computer-Based Test atau ujian berbasis komputer.');
@@ -186,7 +189,11 @@ INSERT INTO `jawaban_siswa` (`id_jawaban`, `id_siswa`, `nama_siswa`, `kode_soal`
 (537, 15, 'Zevan', 'BINDO7-1', '', '[6:Benar|Salah][3:Benar|Benar|Salah|Benar][5:icon][7:pilihan_1,pilihan_2,pilihan_3][4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat][2:pilihan_1,pilihan_2,pilihan_4][1:pilihan_4]', '23', '2025-05-17 01:57:58', 'Selesai'),
 (678, 16, 'Denny', 'BINDO7-1', '', '[1:pilihan_3][3:Benar|Benar|Salah|Benar][4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat][5:icon][2:pilihan_1,pilihan_2,pilihan_4][7:pilihan_1,pilihan_2,pilihan_3][6:Benar|Salah]', '59', '2025-05-18 13:10:42', 'Selesai'),
 (786, 1, 'Jokowi JK', 'MAT9-02', '', '[1:pilihan_4][4:pilihan_1,pilihan_3][2:Benar|Benar|Salah][5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²][3:Salah|Salah|Salah|Benar]', '59', '2025-05-24 15:10:47', 'Selesai'),
-(795, 1, 'Jokowi JK', 'IPA9-01', '', '[1:pilihan_2][2:Benar|Salah|Benar|Salah][3:pilihan_1,pilihan_3,pilihan_4][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:diafragma|Besaran turunan yang diturunkan dari besaran pokok panjang:Pengamatan|Alat ukur ketebalan kertas:Jangka sorong][5:]', '59', '2025-05-24 15:37:10', 'Selesai');
+(795, 1, 'Jokowi JK', 'IPA9-01', '', '[1:pilihan_2][2:Benar|Salah|Benar|Salah][3:pilihan_1,pilihan_3,pilihan_4][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:diafragma|Besaran turunan yang diturunkan dari besaran pokok panjang:Pengamatan|Alat ukur ketebalan kertas:Jangka sorong][5:]', '59', '2025-05-24 15:37:10', 'Selesai'),
+(796, 17, 'Lintar', 'MAT9-02', '', '[2:Salah|Salah|Benar][1:pilihan_4][5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²|Nilai x dari 2x+5=19:7][4:pilihan_1,pilihan_2,pilihan_3][3:Salah|Salah|Salah|Benar]', '57', '2025-05-24 17:15:15', 'Selesai'),
+(799, 5, 'Corbuzier', 'IPA9-01', '', '[1:pilihan_2][2:Benar|Salah|Benar|Salah][3:pilihan_1,pilihan_3][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:diafragma|Besaran turunan yang diturunkan dari besaran pokok panjang:Pengamatan|Alat ukur ketebalan kertas:Jangka sorong][5:rt]', '56', '2025-05-24 17:17:27', 'Selesai'),
+(808, 14, 'Phoebe', 'BINDO7-1', '', '[3:Benar|Benar|Salah|Benar][6:Benar|Salah][7:pilihan_1,pilihan_2,pilihan_3][1:pilihan_4][5:bn kjbh][4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat][2:pilihan_1,pilihan_2,pilihan_4]', '56', '2025-05-25 11:09:21', 'Selesai'),
+(814, 17, 'Lintar', 'IPA9-01', '', '[1:pilihan_3][2:Benar|Salah|Benar|Benar][3:pilihan_2,pilihan_3][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma][5:cv]', '55', '2025-05-25 16:48:21', 'Selesai');
 
 -- --------------------------------------------------------
 
@@ -222,8 +229,12 @@ INSERT INTO `nilai` (`id_nilai`, `id_siswa`, `nama_siswa`, `kode_soal`, `total_s
 (42, 3, 'Agum Gumelar', 'SR9-01', 13, '6', '4', '3', '[3:Benar|Benar][6:Salah|Benar][10:sdfsdf:sdfdfgdfff|sdf:sdf][7:pilihan_1,pilihan_2][12:wet][13:pilihan_2][11:Salah|Benar][2:Salah|Salah][1:pilihan_3][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][9:wet][8:pilihan_1,pilihan_2,pilihan_4][5:pilihan_1,pilihan_2,pilihan_4]', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:pilihan_1,pilihan_2],[9:ewt],[10:sdfsdf:sdf|sdf:sdfdfgdfff],[11:Benar|Salah],[12:asdsasd],[13:pilihan_2]', 50.00, 15.38, '[9:7.69][12:7.69]', '2025-03-18 22:21:10', 'perlu_dinilai'),
 (43, 20, 'Robi', 'SR9-01', 13, '11', '0', '2', '[10:sdfsdf:sdf|sdf:sdfdfgdfff][7:pilihan_1,pilihan_3,pilihan_4][1:pilihan_3][9:tydul][11:Benar|Salah][2:Salah|Salah][4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu][6:Salah|Benar][13:pilihan_2][12:nb][3:Benar|Salah][5:pilihan_1,pilihan_2,pilihan_4][8:pilihan_1,pilihan_2]', '[1:pilihan_3],[2:Salah|Salah],[3:Benar|Salah],[4:Teknik Mozaik:Menggunakan potongan bahan seperti kertas atau keramik untuk membentuk gambar|Seni Rupa Murni:Karya seni yang dibuat untuk dinikmati keindahannya seperti lukisan|Relief:Gambar atau ukiran timbul di permukaan dinding atau batu],[5:pilihan_1,pilihan_2,pilihan_4],[6:Salah|Benar],[7:pilihan_1,pilihan_3,pilihan_4],[8:pilihan_1,pilihan_2],[9:ewt],[10:sdfsdf:sdf|sdf:sdfdfgdfff],[11:Benar|Salah],[12:asdsasd],[13:pilihan_2]', 84.62, 15.38, '[9:7.69][12:7.69]', '2025-05-24 22:26:16', 'perlu_dinilai'),
 (44, 15, 'Zevan', 'BINDO7-1', 7, '6', '0', '1', '[6:Benar|Salah][3:Benar|Benar|Salah|Benar][5:icon][7:pilihan_1,pilihan_2,pilihan_3][4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat][2:pilihan_1,pilihan_2,pilihan_4][1:pilihan_4]', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 85.71, 14.29, '[5:14.29]', '2025-05-22 22:29:29', 'perlu_dinilai'),
-(45, 16, 'Denny', 'BINDO7-1', 7, '5', '1', '1', '[1:pilihan_3][3:Benar|Benar|Salah|Benar][4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat][5:icon][2:pilihan_1,pilihan_2,pilihan_4][7:pilihan_1,pilihan_2,pilihan_3][6:Benar|Salah]', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 71.43, 14.29, '[5:14.29]', '2025-05-24 22:33:02', 'perlu_dinilai'),
-(46, 1, 'Jokowi JK', 'IPA9-01', 5, '0', '2', '3', '[1:pilihan_2][2:Benar|Salah|Benar|Salah][3:pilihan_1,pilihan_3,pilihan_4][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:diafragma|Besaran turunan yang diturunkan dari besaran pokok panjang:Pengamatan|Alat ukur ketebalan kertas:Jangka sorong][5:]', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', 20.00, 20.00, '[5:20.00]', '2025-05-24 22:37:10', 'perlu_dinilai');
+(45, 16, 'Denny', 'BINDO7-1', 7, '5', '1', '1', '[1:pilihan_3][3:Benar|Benar|Salah|Benar][4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat][5:icon][2:pilihan_1,pilihan_2,pilihan_4][7:pilihan_1,pilihan_2,pilihan_3][6:Benar|Salah]', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 71.43, 8.90, '[5:8.90]', '2025-05-24 22:33:02', 'perlu_dinilai'),
+(46, 1, 'Jokowi JK', 'IPA9-01', 5, '0', '2', '3', '[1:pilihan_2][2:Benar|Salah|Benar|Salah][3:pilihan_1,pilihan_3,pilihan_4][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:diafragma|Besaran turunan yang diturunkan dari besaran pokok panjang:Pengamatan|Alat ukur ketebalan kertas:Jangka sorong][5:]', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', 20.00, 20.00, '[5:20.00]', '2025-05-24 22:37:10', 'perlu_dinilai'),
+(47, 5, 'Corbuzier', 'IPA9-01', 5, '0', '2', '3', '[1:pilihan_2][2:Benar|Salah|Benar|Salah][3:pilihan_1,pilihan_3][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:diafragma|Besaran turunan yang diturunkan dari besaran pokok panjang:Pengamatan|Alat ukur ketebalan kertas:Jangka sorong][5:rt]', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', 20.00, 0.00, '[5:0.00]', '2025-05-25 00:20:30', 'perlu_dinilai'),
+(48, 17, 'Lintar', 'MAT9-02', 5, '3', '2', '0', '[2:Salah|Salah|Benar][1:pilihan_4][5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²|Nilai x dari 2x+5=19:7][4:pilihan_1,pilihan_2,pilihan_3][3:Salah|Salah|Salah|Benar]', '[1:pilihan_4],[2:Benar|Benar|Salah],[3:Salah|Salah|Salah|Benar],[4:pilihan_1,pilihan_3],[5:Bilangan prima antara 10 dan 15:11 dan 13|Volume kubus dengan rusuk 4 cm:64 cm³|Luas persegi dengan sisi 6 cm:36 cm²|Nilai x dari 2x+5=19:7]', 60.00, 0.00, '', '2025-05-25 00:20:45', 'selesai'),
+(49, 14, 'Phoebe', 'BINDO7-1', 7, '6', '0', '1', '[3:Benar|Benar|Salah|Benar][6:Benar|Salah][7:pilihan_1,pilihan_2,pilihan_3][1:pilihan_4][5:bn kjbh][4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat][2:pilihan_1,pilihan_2,pilihan_4]', '[1:pilihan_4],[2:pilihan_1,pilihan_2,pilihan_4],[3:Benar|Benar|Salah|Benar],[4:Pilihan satu:pasangan satu|pilihan dua:pasangan dua|pilihan tiga:pasangan tiga|pilihan empat:pasangan empat],[5:icon],[6:Benar|Salah],[7:pilihan_1,pilihan_2,pilihan_3]', 85.71, 14.29, '[5:14.29]', '2025-05-25 18:13:30', 'perlu_dinilai'),
+(50, 17, 'Lintar', 'IPA9-01', 5, '2', '2', '1', '[1:pilihan_3][2:Benar|Salah|Benar|Benar][3:pilihan_2,pilihan_3][4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma][5:cv]', '[1:pilihan_1],[2:Benar|Salah|Benar|Benar],[3:pilihan_1,pilihan_2,pilihan_4],[4:Keterampilan proses dalam IPA pada saat menimbang buah apel menggunakan neraca:mikrometer|Kegiatan membandingkan suatu besaran dengan besaran lain yang sejenis sebagai satuan:Pengamatan|Besaran turunan yang diturunkan dari besaran pokok panjang:Jangka sorong|Alat ukur ketebalan kertas:diafragma],[5:hanya sampai 1.000 hingga 2.000 jam penggunaan saja]', 40.00, 20.00, '[5:20.00]', '2025-05-25 23:57:14', 'perlu_dinilai');
 
 -- --------------------------------------------------------
 
@@ -248,7 +259,7 @@ CREATE TABLE `pengaturan` (
 --
 
 INSERT INTO `pengaturan` (`id`, `nama_aplikasi`, `logo_sekolah`, `warna_tema`, `waktu_sinkronisasi`, `sembunyikan_nilai`, `login_ganda`, `chat`, `versi_aplikasi`) VALUES
-(1, 'CBT-Eschool', 'logo_1747650742.png', '#2f90c1', 60, 0, 'izinkan', 'izinkan', '1.0.6');
+(1, 'CBT-Eschool', 'logo_1747650742.png', '#2f90c1', 60, 0, 'izinkan', 'izinkan', '1.0.7');
 
 -- --------------------------------------------------------
 
@@ -293,16 +304,16 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_siswa`, `password`, `username`, `kelas`, `rombel`, `status`, `session_token`, `last_activity`, `page_url`, `force_logout`) VALUES
-(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '6b27e3fab5516da13e61883236eca706ccf92a12d7f0e4d046cbd848250ca93d', '2025-05-24 22:37:18', 'http://localhost/cbt-eschool/siswa/preview_hasil.php?id_siswa=1&kode_soal=IPA9-01', 0),
+(1, 'Jokowi JK', 'h7fV3os6WcZ+hNwtoIN5Si9hbEVndnEzRmNodzJlSktYZ2hVMUE9PQ==', '123456', '9', 'A', 'Nonaktif', '', '2025-05-25 00:12:45', 'http://localhost/cbt-eschool/siswa/ujian.php', 0),
 (2, 'Prabowo', 'm9MaPSetPwkYW68qNsWwUlUrOW9HNWFlRzJRVENVVi9xNW9vN0E9PQ==', '123457', '9', 'B', 'Nonaktif', 'b21f01ccbda5fcc557d693a0c9466a40afe9e3c1265cf59b2da08061f8edec18', '2025-05-24 00:41:14', 'http://localhost/cbt-eschool/siswa/chat.php', 0),
 (3, 'Agum Gumelar', '5mv6Upz6eP/GpQrkjcebOHcyOFNxV2RRT2xQdkVxRUh0ZVZ0d3c9PQ==', '123458', '9', 'C', 'nonaktif', '', '2025-05-24 22:22:37', 'http://localhost/cbt-eschool/siswa/ujian.php', 0),
 (4, 'Deddy ', '5uKDYI7JoYmjpgBTg8LxUi9YZ2dIVGFucU5FM2wySDYvcmFVQXc9PQ==', '123459', '9', 'D', 'nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/game.php?log=1&skor=50', 1),
+(5, 'Corbuzier', '/SbMMmTczf7Ry0qUn/f6XmhpM1BYS0l6S1F0cmlHSlB3ZjE1cEE9PQ==', '123461', '9', 'E', 'Nonaktif', '', '2025-05-25 02:49:38', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
 (13, 'Erina', 'FQOm8MYUIes79E36AQv1AU5VMVdUanhIaTBVTURVS0hXckFRUXc9PQ==', '721731', '9', 'A', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
-(14, 'Phoebe', 'Dwl3VYW4ysVVEjO67sy6QmdYb2h0NjNFWjhlV3ViamtWY01hc0E9PQ==', '122345', '7', 'C', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/preview_hasil.php?id_siswa=14&kode_soal=BINDO7-1', 1),
-(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174', '7', 'D', 'Nonaktif', '', '2025-05-24 22:29:30', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
-(16, 'Denny', 'N2ugxO2xwJR74bjbZQv19nYrMFVFbi9JTEk5MFNDeVdITWxmM0E9PQ==', '641343', '7', 'F', 'Nonaktif', '', '2025-05-24 22:35:29', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
-(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '252743', '9', 'D', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/game.php?log=1&skor=120', 1),
+(14, 'Phoebe', 'Dwl3VYW4ysVVEjO67sy6QmdYb2h0NjNFWjhlV3ViamtWY01hc0E9PQ==', '122345', '7', 'C', 'Nonaktif', '9a394ef4a7893401d0185c9a489d7f17483e8e47a105da3ee7174307346d701c', '2025-05-25 21:08:44', 'http://localhost/cbt-eschool/siswa/preview_hasil.php?id_siswa=14&kode_soal=BINDO7-1', 0),
+(15, 'Zevan', 'mG5EAQl0ttZQFaqBXlYCgGdMVkdTMjNQQXZ3VmRKdmFNbTJBeEE9PQ==', '257174', '7', 'D', 'Nonaktif', '', '2025-05-25 00:13:02', 'http://localhost/cbt-eschool/siswa/ujian.php', 0),
+(16, 'Denny', 'N2ugxO2xwJR74bjbZQv19nYrMFVFbi9JTEk5MFNDeVdITWxmM0E9PQ==', '641343', '7', 'F', 'Nonaktif', '', '2025-05-25 14:58:48', 'http://localhost/cbt-eschool/siswa/hasil.php', 0),
+(17, 'Lintar', 'CJ7fgqg1+lzEgNuqTQwdCUtBeHlsdXdGU3FabGdhQ3lQbXQ2NlE9PQ==', '252743', '9', 'D', 'Nonaktif', '85aba4494fc9726532ae27c909bde1205ef2f627adb3a256e810cfe3f0d3727b', '2025-05-25 23:57:23', 'http://localhost/cbt-eschool/siswa/preview_hasil.php?id_siswa=17&kode_soal=IPA9-01', 0),
 (18, 'andy', '5IiPhwyWU7/GiyYe622atFErOVViUmNXOXRheVk0Z2U1V0tiK2c9PQ==', '876543', '8', 'D', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1),
 (20, 'Robi', 'XpqGGiL6DfhOGnPqcV9EnUdLdTlEbzdwN1pyVE5wb2FJSStLdUE9PQ==', '252645', '9', 'G', 'Nonaktif', '', '2025-05-24 22:26:17', 'http://localhost/cbt-eschool/siswa/dashboard.php', 0),
 (21, 'Intan', 'Ya+NHgRRNME9cYTmSRYUz2sxMS9tczlZMGJDaFd0NkN5TzErV0E9PQ==', '1241322', '7', 'B', 'Nonaktif', '', '0000-00-00 00:00:00', 'http://localhost/cbt-eschool/siswa/dashboard.php', 1);
@@ -466,7 +477,7 @@ ALTER TABLE `butir_soal`
 -- AUTO_INCREMENT untuk tabel `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT untuk tabel `faq`
@@ -478,13 +489,13 @@ ALTER TABLE `faq`
 -- AUTO_INCREMENT untuk tabel `jawaban_siswa`
 --
 ALTER TABLE `jawaban_siswa`
-  MODIFY `id_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=796;
+  MODIFY `id_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=821;
 
 --
 -- AUTO_INCREMENT untuk tabel `nilai`
 --
 ALTER TABLE `nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT untuk tabel `siswa`
