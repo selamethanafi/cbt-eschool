@@ -479,6 +479,89 @@ foreach ($matches as $match) {
     <script src="../assets/datatables/datatables.js"></script>
     <?php include '../inc/check_activity.php'; ?>
     <?php include '../inc/script_ujian.php'; ?>
+    <script>
+        document.addEventListener('contextmenu', e => e.preventDefault()); // klik kanan
+document.addEventListener('keydown', function(e) {
+    if (
+      e.key === 'F12' || // DevTools
+      (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'j')) || // Ctrl+Shift+I/J
+      (e.ctrlKey && e.key.toLowerCase() === 'u') // Ctrl+U (view source)
+    ) {
+        e.preventDefault();
+    }
+});
+document.addEventListener('keydown', function(e) {
+  // Cegah Ctrl+C (Copy)
+  if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+    e.preventDefault();
+  }
+  // Cegah Ctrl+V (Paste)
+  if (e.ctrlKey && e.key.toLowerCase() === 'v') {
+    e.preventDefault();
+  }
+});
+
+// Tambahan untuk event copy dan paste untuk jaga-jaga
+document.addEventListener('copy', function(e) {
+  e.preventDefault();
+});
+document.addEventListener('paste', function(e) {
+  e.preventDefault();
+});
+// Fungsi tampilkan peringatan di halaman
+function tampilkanPeringatan(msg) {
+  let peringatan = document.getElementById('peringatan-keamanan');
+  if (!peringatan) {
+    peringatan = document.createElement('div');
+    peringatan.id = 'peringatan-keamanan';
+    peringatan.style.position = 'fixed';
+    peringatan.style.top = '10px';
+    peringatan.style.right = '10px';
+    peringatan.style.backgroundColor = 'rgba(63, 63, 63, 0.8)';
+    peringatan.style.color = 'white';
+    peringatan.style.padding = '10px 20px';
+    peringatan.style.borderRadius = '5px';
+    peringatan.style.zIndex = '9999';
+    peringatan.style.fontWeight = 'bold';
+    peringatan.style.fontSize = '12px';
+    document.body.appendChild(peringatan);
+  }
+  peringatan.innerHTML = `<i class="fa fa-exclamation-circle"></i> ${msg}`;
+  // Hilangkan peringatan setelah 5 detik
+  setTimeout(() => {
+    if (peringatan) peringatan.remove();
+  }, 3000);
+}
+
+// Cegah klik kanan
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  tampilkanPeringatan('Klik kanan dilarang saat ujian!');
+});
+
+// Cegah Ctrl+C, Ctrl+V, Ctrl+U, F12, Ctrl+Shift+I/J
+document.addEventListener('keydown', function(e) {
+  if (
+    e.key === 'F12' ||
+    (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'j')) ||
+    (e.ctrlKey && e.key.toLowerCase() === 'u') ||
+    (e.ctrlKey && e.key.toLowerCase() === 'c') ||
+    (e.ctrlKey && e.key.toLowerCase() === 'v')
+  ) {
+    e.preventDefault();
+    tampilkanPeringatan('Shortcut keyboard dilarang saat ujian!');
+  }
+});
+
+// Deteksi pindah tab/window
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    tampilkanPeringatan('Jangan pindah tab saat ujian berlangsung!');
+    // Bisa juga kirim sinyal ke server untuk catat pelanggaran
+  }
+});
+
+    </script>
 </body>
 
 </html>

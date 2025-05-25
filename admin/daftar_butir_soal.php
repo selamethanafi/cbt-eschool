@@ -22,6 +22,7 @@ if ($data_soal['status'] == 'Aktif') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,37 +30,44 @@ if ($data_soal['status'] == 'Aktif') {
     <?php include '../inc/css.php'; ?>
     <link href="../assets/summernote/summernote-bs5.css" rel="stylesheet">
     <style>
-        .table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        .dataTables_paginate {
-            display: block;
-            text-align: center;
-            margin-top: 10px;
-        }
-        .dataTables_paginate .paginate_button {
-            padding: 5px 10px;
-            margin: 0 5px;
-            background-color: #f4f4f4;
-            border: 1px solid #ddd;
-            cursor: pointer;
-        }
-        .dataTables_paginate .paginate_button:hover {
-            background-color: #007bff;
-            color: white;
-        }
-        table img {
-            max-width: 150px;
-            max-height: 150px;
-            height: auto;
-            object-fit: contain;
-        }
-        table th, table td {
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .dataTables_paginate {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .dataTables_paginate .paginate_button {
+        padding: 5px 10px;
+        margin: 0 5px;
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        cursor: pointer;
+    }
+
+    .dataTables_paginate .paginate_button:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    table img {
+        max-width: 150px;
+        max-height: 150px;
+        height: auto;
+        object-fit: contain;
+    }
+
+    table th,
+    table td {
         text-align: left !important;
-        }
+    }
     </style>
 </head>
+
 <body>
     <div class="wrapper">
         <?php include 'sidebar.php'; ?>
@@ -76,8 +84,9 @@ if ($data_soal['status'] == 'Aktif') {
                                 <div class="card-header">
                                     <h5 class="card-title mb-0">Daftar Butir Soal</h5>
                                     <br>
-                                    <h2 class=""><strong>Kode Soal: <?= htmlspecialchars($data_soal['kode_soal']) ?></strong></h2>
-                                <?php
+                                    <h2 class=""><strong>Kode Soal:
+                                            <?= htmlspecialchars($data_soal['kode_soal']) ?></strong></h2>
+                                    <?php
                                 $query_butir = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='$kode_soal' ORDER BY id_soal ASC");
                                 $jumlah_pg = 0;
                                 $jumlah_pg_kompleks = 0;
@@ -105,8 +114,8 @@ if ($data_soal['status'] == 'Aktif') {
                                 }
                                 echo "<p>PG: " . $jumlah_pg . " | PGX: " . $jumlah_pg_kompleks . " | BS: " . $jumlah_benar_salah . " | MJD: " . $jumlah_menjodohkan . " | U: " . $jumlah_uraian . " <p>";
                                 ?>
-                                <div class="table-wrapper">
-                                <?php
+                                    <div class="table-wrapper">
+                                        <?php
                                 $kode_soal = mysqli_real_escape_string($koneksi, $_GET['kode_soal']);
 
                                 // Cari nomor yang hilang dulu
@@ -130,27 +139,34 @@ if ($data_soal['status'] == 'Aktif') {
                                 }
                                 
                                 ?>
-                                    <a href="soal.php" class="btn btn btn-outline-danger">
-                                        <i class="fas fa-arrow-left"></i> Bank Soal
-                                    </a>
-                                    <a href="preview_soal.php?kode_soal=<?php echo $kode_soal;?>" class="btn btn btn-outline-info">
-                                        <i class="fas fa-eye"></i> Preview
-                                    </a>
-                                    <a href="tambah_butir_soal.php?kode_soal=<?= htmlspecialchars($data_soal['kode_soal']) ?>&nomer_baru=<?= $nomor_baru ?>" class="btn btn-primary">
-                                        <i class="fas fa-plus"></i> Tambah Soal
-                                    </a>
-                                    <table id="butirsoal" class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>No Soal</th>
-                                                <th>Pertanyaan</th>
-                                                <th>Tipe Soal</th>
-                                                <th>Status</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
+                                        <a href="soal.php" class="btn btn btn-outline-danger">
+                                            <i class="fas fa-arrow-left"></i> Bank Soal
+                                        </a>
+                                        <a href="tambah_butir_soal.php?kode_soal=<?= htmlspecialchars($data_soal['kode_soal']) ?>&nomer_baru=<?= $nomor_baru ?>"
+                                            class="btn btn-primary">
+                                            <i class="fas fa-plus"></i> Tambah Soal
+                                        </a>
+                                        <a href="preview_soal.php?kode_soal=<?php echo $kode_soal;?>"
+                                            class="btn btn btn-outline-info">
+                                            <i class="fas fa-eye"></i> Preview
+                                        </a>
+                                        <a href="export_excel.php?kode_soal=<?= urlencode($kode_soal) ?>" onmouseover="this.style.color='white';" onmouseout="this.style.color='#198754';"
+                                            class="btn btn-outline-success">
+                                            <i class="fas fa-file-excel"></i> Export
+                                        </a>
+
+                                        <table id="butirsoal" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>No Soal</th>
+                                                    <th>Pertanyaan</th>
+                                                    <th>Tipe Soal</th>
+                                                    <th>Status</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
                                             $query_butir = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='$kode_soal' ORDER BY id_soal ASC");
                                             while ($butir = mysqli_fetch_assoc($query_butir)) {
                                                 $json_butir = htmlspecialchars(json_encode($butir), ENT_QUOTES, 'UTF-8');
@@ -170,45 +186,47 @@ if ($data_soal['status'] == 'Aktif') {
                                                 echo "</tr>";
                                             }
                                             ?>
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </main>
         </div>
     </div>
-<?php include '../inc/js.php'; ?>
+    <?php include '../inc/js.php'; ?>
     <script>
-        $(document).ready(function() {
-            $('#butirsoal').DataTable({
-                "paging": true,
-                "searching": true,
-                order: [[0, 'asc']],
-                "info": true,
-                "lengthChange": true,
-                "autoWidth": false,
-            });
+    $(document).ready(function() {
+        $('#butirsoal').DataTable({
+            "paging": true,
+            "searching": true,
+            order: [
+                [0, 'asc']
+            ],
+            "info": true,
+            "lengthChange": true,
+            "autoWidth": false,
         });
+    });
 
-        
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('success') && urlParams.get('success') === '1') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Data berhasil diperbarui!',
-                    showConfirmButton: true,
-                });
 
-                urlParams.delete('success');
-                window.history.replaceState(null, null, window.location.pathname + '?' + urlParams.toString());
-            }
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success') && urlParams.get('success') === '1') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Data berhasil diperbarui!',
+                showConfirmButton: true,
+            });
+
+            urlParams.delete('success');
+            window.history.replaceState(null, null, window.location.pathname + '?' + urlParams.toString());
         }
+    }
 
-        document.querySelectorAll('.btn-hapus').forEach(function(button) {
+    document.querySelectorAll('.btn-hapus').forEach(function(button) {
         button.addEventListener('click', function() {
             const kodeSoal = this.getAttribute('data-kode');
 
@@ -222,11 +240,13 @@ if ($data_soal['status'] == 'Aktif') {
                 confirmButtonText: 'Ya, hapus!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = 'hapus_butir_soal.php?id_soal=' + encodeURIComponent(kodeSoal);
+                    window.location.href = 'hapus_butir_soal.php?id_soal=' + encodeURIComponent(
+                        kodeSoal);
                 }
             });
         });
     });
     </script>
 </body>
+
 </html>
