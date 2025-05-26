@@ -21,6 +21,7 @@ Ikuti langkah-langkah berikut untuk melakukan instalasi di komputer lokal Anda m
 - Ekstrak folder aplikasi CBT eSchool (misalnya: cbt-eschool)
 - Salin folder tersebut ke direktori:
   C:\xampp\htdocs\cbt-eschool
+- Hapus File C:\xampp\htdocs\cbt-eschool\koneksi\koneksi.php
 
 3. Akses Halaman Instalasi
 --------------------------
@@ -40,7 +41,7 @@ Ikuti langkah-langkah berikut untuk melakukan instalasi di komputer lokal Anda m
 5. Buat Akun Admin Aplikasi
 ---------------------------
 - Isi form admin dengan:
-  - Username: (misalnya admin)
+  - Username: (misalnya administrator)
   - Password: (bebas)
   - Nama Lengkap: (misalnya Administrator)
 - Klik tombol "Simpan" atau "Selesai"

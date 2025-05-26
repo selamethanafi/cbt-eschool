@@ -18,12 +18,13 @@ Aplikasi CBT eSchool adalah sistem Computer-Based Test berbasis **PHP 8** dan **
 - Ekstrak folder aplikasi (contoh: `cbt-eschool`)
 - Pindahkan folder ke:  
   `C:\xampp\htdocs\cbt-eschool`
+- Hapus `File C:\xampp\htdocs\cbt-eschool\koneksi\koneksi.php`
 
 ---
 
 ### 3. Akses Halaman Instalasi
 - Buka browser dan akses:
-http://localhost/cbt-eschool/install
+`http://localhost/cbt-eschool/install`
 
 
 ---
@@ -63,7 +64,7 @@ http://localhost/cbt-eschool/install
 
 ### 8. Akses Aplikasi
 - Gunakan browser dan buka:
-http://localhost/cbt-eschool
+`http://localhost/cbt-eschool`
 
 
 ---
