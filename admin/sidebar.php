@@ -91,7 +91,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
-                    <li class="sidebar-item <?= ($currentPage == 'backup.php') ? 'active' : '' ?> <?= ($currentPage == 'backup_gbr.php') ? 'active' : '' ?>">
+                    <li class="sidebar-item <?= ($currentPage == 'backup.php') ? 'active' : '' ?> <?= ($currentPage == 'reset_database.php') ? 'active' : '' ?> <?= ($currentPage == 'backup_gbr.php') ? 'active' : '' ?>">
                     <a data-bs-toggle="collapse" href="#backup" class="sidebar-link collapsed">
                         <i class="align-middle fa fa-hdd"></i> <span class="align-middle">Backup </span><i class="fa fa-chevron-down ms-auto float-end"></i>
                     </a>
@@ -104,6 +104,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <li class="sidebar-item submenu">
                             <a class="sidebar-link" href="backup_gbr.php">
                                 <i class="align-middle fa fa-download"></i> <span class="align-middle">Backup Gambar Soal</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item submenu">
+                            <a class="sidebar-link" href="reset_database.php">
+                                <i class="align-middle fa-regular fa-floppy-disk"></i> <span class="align-middle">Reset Database</span>
                             </a>
                         </li>
                     </ul>
