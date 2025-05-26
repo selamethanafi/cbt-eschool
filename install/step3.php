@@ -1,119 +1,133 @@
 <?php
-// install/step3.php
-
-$host = $_POST['host'] ?? '';
-$dbname = $_POST['dbname'] ?? '';
-$user = $_POST['user'] ?? '';
-$pass = $_POST['pass'] ?? '';
-$admin_user = $_POST['admin_user'] ?? '';
-$nama_admin = $_POST['nama_admin'] ?? '';
-$admin_pass = $_POST['admin_pass'] ?? '';
-
-if (!$host || !$dbname || !$user || !$admin_user || !$admin_pass || !$nama_admin) {
-    die("Data tidak lengkap. Silakan isi semua form.");
+// --- Cleanup folder install ---
+$dir = __DIR__;
+$files = scandir($dir);
+foreach ($files as $file) {
+    $path = $dir . DIRECTORY_SEPARATOR . $file;
+    if ($file !== '.' && $file !== '..' && $file !== basename(__FILE__)) {
+        if (is_dir($path)) {
+            deleteFolder($path);
+        } else {
+            unlink($path);
+        }
+    }
 }
-
-try {
-    $pdo = new PDO("mysql:host=$host;charset=utf8mb4", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Buat database jika belum ada
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbname` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-    $pdo->exec("USE `$dbname`");
-
-    // Import file SQL
-    $sql = file_get_contents(__DIR__ . '/../db/cbt_db.sql');
-    if (!$sql) {
-        throw new Exception("File cbt_db.sql tidak ditemukan di folder db");
+register_shutdown_function(function() use ($dir) {
+    @rmdir($dir); // akan terhapus otomatis jika kosong
+});
+function deleteFolder($folder) {
+    $files = array_diff(scandir($folder), ['.', '..']);
+    foreach ($files as $file) {
+        $path = "$folder/$file";
+        if (is_dir($path)) {
+            deleteFolder($path);
+        } else {
+            unlink($path);
+        }
     }
-    $pdo->exec($sql);
-
-    // Insert admin
-    $hashed_pass = password_hash($admin_pass, PASSWORD_DEFAULT);
-    $stmt = $pdo->prepare("INSERT INTO admins (username, nama_admin, password) VALUES (:username, :nama_admin, :password)");
-    $stmt->execute([
-        ':username' => $admin_user,
-        ':nama_admin' => $nama_admin,
-        ':password' => $hashed_pass,
-    ]);
-
-    // Buat file koneksi.php dari template
-    $template = file_get_contents(__DIR__ . '/config-sample.php');
-    if (!$template) {
-        throw new Exception("File config-sample.php tidak ditemukan");
-    }
-    $config = str_replace(
-        ['{DB_HOST}', '{DB_NAME}', '{DB_USER}', '{DB_PASS}'],
-        [$host, $dbname, $user, $pass],
-        $template
-    );
-
-    if (!is_dir(__DIR__ . '/../koneksi')) {
-        mkdir(__DIR__ . '/../koneksi', 0755, true);
-    }
-    file_put_contents(__DIR__ . '/../koneksi/koneksi.php', $config);
-
-    header("Location: selesai.php");
-    exit;
-} catch (Exception $e) {
-    ?>
-    <!DOCTYPE html>
-    <html lang="id">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Instalasi Gagal</title>
-        <link href="../assets/bootstrap-5.3.6/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="icon" type="image/png" href="../assets/images/icon.png" />
-        <style>
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: #f8d7da;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-                padding: 20px;
-            }
-            .card {
-                max-width: 480px;
-                padding: 2rem;
-                background: #fff;
-                border-radius: 12px;
-                box-shadow: 0 0 25px rgba(220,53,69,0.3);
-                text-align: center;
-            }
-            h3 {
-                color: #dc3545;
-                margin-bottom: 1rem;
-            }
-            p {
-                color: #555;
-                margin-bottom: 1.5rem;
-            }
-            a.btn {
-                text-decoration: none;
-                padding: 0.5rem 1.5rem;
-                background: #dc3545;
-                color: white;
-                border-radius: 8px;
-                font-weight: 600;
-            }
-            a.btn:hover {
-                background: #b02a37;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="card shadow-sm">
-            <h3>❌ Instalasi Gagal</h3>
-            <p><?= htmlspecialchars($e->getMessage()) ?></p>
-            <a href="step2.php" class="btn">Kembali ke Form</a>
-        </div>
-    </body>
-    </html>
-    <?php
-    exit;
+    return rmdir($folder);
 }
 ?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Instalasi CBT - Selesai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../assets/bootstrap-5.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <img src="../assets/images/codelite.png" alt="Logo CBT eSchool" class="installer-logo" />
+  <style>
+    body {
+      background-color: #f2f4f7;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .install-container {
+      max-width: 520px;
+      margin: 60px auto;
+    }
+    .card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+    .card-header {
+      background-color: white;
+      border-bottom: none;
+      text-align: center;
+      padding: 30px 20px 10px;
+    }
+    .card-header img {
+      width: 70px;
+      margin-bottom: 10px;
+    }
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+    .progress-steps .step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      color: #6c757d;
+      font-weight: 500;
+    }
+    .progress-steps .step.active {
+      color: #0d6efd;
+    }
+    .progress-steps .step::before {
+      content: attr(data-step);
+      display: inline-block;
+      background-color: #dee2e6;
+      color: #6c757d;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .progress-steps .step.active::before {
+      background-color: #0d6efd;
+      color: #fff;
+    }
+    .checkmark {
+      font-size: 72px;
+      color: #28a745;
+      animation: pop 0.6s ease;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="install-container">
+    <div class="card">
+      <div class="card-header">
+        <img src="../assets/images/codelite.png" alt="Logo CBT">
+        <h4>Instalasi Aplikasi CBT</h4>
+        <small class="text-muted">Langkah 3: Selesai</small>
+        <div class="progress-steps mt-4">
+          <div class="step" data-step="1">Persiapan</div>
+          <div class="step" data-step="2">Konfigurasi</div>
+          <div class="step active" data-step="3">Selesai</div>
+        </div>
+      </div>
+      <div class="card-body text-center">
+        <div class="checkmark">✔</div>
+        <h5 class="mt-3">Instalasi Berhasil!</h5>
+        <p class="text-muted">Aplikasi CBT Anda sudah siap digunakan.</p>
+        <div class="alert alert-success mt-3" role="alert">
+          Folder <code>install/</code> telah dihapus otomatis untuk alasan keamanan.
+        </div>
+        <div class="d-grid mt-4">
+          <a href="../admin/login.php" class="btn btn-success">Masuk ke Panel Admin</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
