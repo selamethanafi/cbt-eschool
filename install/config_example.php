@@ -7,3 +7,4 @@ $key = 'cbteschool@#12345';
 if (!$koneksi) {
     die("Koneksi database gagal: " . mysqli_connect_error());
 }
+?>

@@ -1,133 +1,127 @@
 <?php
-// --- Cleanup folder install ---
-$dir = __DIR__;
-$files = scandir($dir);
-foreach ($files as $file) {
-    $path = $dir . DIRECTORY_SEPARATOR . $file;
-    if ($file !== '.' && $file !== '..' && $file !== basename(__FILE__)) {
-        if (is_dir($path)) {
-            deleteFolder($path);
-        } else {
-            unlink($path);
-        }
-    }
+session_start();
+// Cek jika sudah terinstal
+if (file_exists(__DIR__ . '/../koneksi/koneksi.php')) {
+    header('Location: error.php');
+    exit;
 }
-register_shutdown_function(function() use ($dir) {
-    @rmdir($dir); // akan terhapus otomatis jika kosong
-});
-function deleteFolder($folder) {
-    $files = array_diff(scandir($folder), ['.', '..']);
-    foreach ($files as $file) {
-        $path = "$folder/$file";
-        if (is_dir($path)) {
-            deleteFolder($path);
-        } else {
-            unlink($path);
-        }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
+    $nama = trim($_POST['nama_admin']);
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+    $host = $_SESSION['db_host'];
+    $user = $_SESSION['db_user'];
+    $pass = $_SESSION['db_pass'];
+    $db   = $_SESSION['db_name'];
+
+    try {
+        $conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Simpan akun admin
+        $stmt = $conn->prepare("INSERT INTO admins (username, nama_admin, password, created_at) VALUES (?, ?, ?, NOW())");
+        $stmt->execute([$username, $nama, $password]);
+
+        // Generate file koneksi.php dari config_example.php
+        $template = file_get_contents('config_example.php');
+        $finalConfig = str_replace(
+            ['{DB_HOST}', '{DB_USER}', '{DB_PASS}', '{DB_NAME}'],
+            [$host, $user, $pass, $db],
+            $template
+        );
+        file_put_contents(__DIR__ . '/../koneksi/koneksi.php', $finalConfig);
+
+        header('Location: selesai.php');
+        exit;
+    } catch (PDOException $e) {
+        $error = "Gagal menyimpan data admin: " . $e->getMessage();
     }
-    return rmdir($folder);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Instalasi CBT - Selesai</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Langkah 3 - Buat Akun Admin</title>
   <link href="../assets/bootstrap-5.3.6/css/bootstrap.min.css" rel="stylesheet">
-  <img src="../assets/images/codelite.png" alt="Logo CBT eSchool" class="installer-logo" />
+  <link rel="icon" type="image/png" href="../assets/images/icon.png" />
   <style>
     body {
       background-color: #f2f4f7;
       font-family: 'Segoe UI', sans-serif;
     }
-    .install-container {
-      max-width: 520px;
-      margin: 60px auto;
+    .container {
+      max-width: 500px;
+      margin-top: 60px;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
     }
-    .card {
-      border: none;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    }
-    .card-header {
-      background-color: white;
-      border-bottom: none;
-      text-align: center;
-      padding: 30px 20px 10px;
-    }
-    .card-header img {
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
       width: 70px;
-      margin-bottom: 10px;
     }
-    .progress-steps {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 25px;
-    }
-    .progress-steps .step {
-      flex: 1;
-      text-align: center;
-      position: relative;
-      color: #6c757d;
-      font-weight: 500;
-    }
-    .progress-steps .step.active {
-      color: #0d6efd;
-    }
-    .progress-steps .step::before {
-      content: attr(data-step);
-      display: inline-block;
-      background-color: #dee2e6;
-      color: #6c757d;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      line-height: 28px;
-      text-align: center;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-    .progress-steps .step.active::before {
-      background-color: #0d6efd;
-      color: #fff;
-    }
-    .checkmark {
-      font-size: 72px;
-      color: #28a745;
-      animation: pop 0.6s ease;
-    }
-    @keyframes pop {
-      0% { transform: scale(0.6); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+    .progress-bar {
+      height: 10px;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-  <div class="install-container">
-    <div class="card">
-      <div class="card-header">
-        <img src="../assets/images/codelite.png" alt="Logo CBT">
-        <h4>Instalasi Aplikasi CBT</h4>
-        <small class="text-muted">Langkah 3: Selesai</small>
-        <div class="progress-steps mt-4">
-          <div class="step" data-step="1">Persiapan</div>
-          <div class="step" data-step="2">Konfigurasi</div>
-          <div class="step active" data-step="3">Selesai</div>
-        </div>
-      </div>
-      <div class="card-body text-center">
-        <div class="checkmark">✔</div>
-        <h5 class="mt-3">Instalasi Berhasil!</h5>
-        <p class="text-muted">Aplikasi CBT Anda sudah siap digunakan.</p>
-        <div class="alert alert-success mt-3" role="alert">
-          Folder <code>install/</code> telah dihapus otomatis untuk alasan keamanan.
-        </div>
-        <div class="d-grid mt-4">
-          <a href="../admin/login.php" class="btn btn-success">Masuk ke Panel Admin</a>
-        </div>
-      </div>
+  <div class="container">
+    <img src="../assets/images/codelite.png" class="logo" alt="Logo CBT eSchool">
+    <h4 class="text-center mb-3">Langkah 3: Buat Admin</h4>
+
+    <!-- Progress -->
+    <div class="progress mb-4">
+      <div class="progress-bar bg-success" style="width: 100%;"></div>
     </div>
+
+    <?php if (!empty($error)) : ?>
+      <div class="alert alert-danger"><?= $error ?></div>
+    <?php endif; ?>
+
+    <form method="post">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username Admin</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+        <small id="usernameWarning" class="text-danger d-none">
+          Hindari menggunakan username <strong>admin</strong> demi keamanan.
+        </small>
+      </div>
+      <div class="mb-3">
+        <label for="nama_admin" class="form-label">Nama Lengkap</label>
+        <input type="text" class="form-control" name="nama_admin" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password Admin</label>
+        <input type="password" class="form-control" name="password" required>
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-success" id="submitBtn">Simpan & Selesai</button>
+      </div>
+    </form>
   </div>
+
+  <script>
+    const usernameInput = document.getElementById('username');
+    const warning = document.getElementById('usernameWarning');
+    const submitBtn = document.getElementById('submitBtn');
+
+    usernameInput.addEventListener('input', function() {
+      if (this.value.trim().toLowerCase() === 'admin') {
+        warning.classList.remove('d-none');
+        submitBtn.disabled = true;
+      } else {
+        warning.classList.add('d-none');
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
