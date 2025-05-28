@@ -20,6 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_excel'])) {
     $file_name = $_FILES['file_excel']['name'];
     $tmp_file  = $_FILES['file_excel']['tmp_name'];
 
+    // Ambil kode_soal dari input form
+    $form_kode_soal = isset($_POST['kode_soal']) ? trim($_POST['kode_soal']) : '';
+
     if (in_array($file_type, $allowed_types)) {
         $ext = pathinfo($file_name, PATHINFO_EXTENSION);
         $reader = IOFactory::createReader(match(strtolower($ext)) {
@@ -32,11 +35,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_excel'])) {
             $spreadsheet = $reader->load($tmp_file);
             $data = $spreadsheet->getActiveSheet()->toArray();
 
+            if (count($data) < 2) {
+                $_SESSION['import_error'] = "Data Excel kosong atau tidak lengkap.";
+                header("Location: daftar_butir_soal.php?kode_soal=" . urlencode($form_kode_soal));
+                exit;
+            }
+
+            // Validasi: semua baris harus punya kode_soal yang sama dengan form
+            for ($i = 1; $i < count($data); $i++) {
+                $excel_kode_soal = trim($data[$i][1]);
+                if ($excel_kode_soal !== $form_kode_soal) {
+                    $_SESSION['import_error'] = "Kode soal di Excel baris ke-" . ($i + 1) . " tidak sesuai dengan kode soal yang dipilih.";
+                    header("Location: daftar_butir_soal.php?kode_soal=" . urlencode($form_kode_soal));
+                    exit;
+                }
+            }
+
             $successCount = 0;
             $duplicateEntries = [];
-
-            // Ambil kode_soal dari baris pertama data (index 1) supaya bisa redirect ke kode_soal yang diimport
-            $redirect_kode_soal = isset($data[1][1]) ? trim($data[1][1]) : '';
 
             for ($i = 1; $i < count($data); $i++) {
                 $nomer_soal     = intval($data[$i][0]);
@@ -79,19 +95,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_excel'])) {
                 'duplicates' => $duplicateEntries
             ];
 
-            // Redirect ke halaman daftar_butir_soal dengan kode_soal
-            header("Location: daftar_butir_soal.php?kode_soal=" . urlencode($redirect_kode_soal));
+            header("Location: daftar_butir_soal.php?kode_soal=" . urlencode($form_kode_soal));
             exit;
 
         } catch (Exception $e) {
             $_SESSION['import_error'] = "Terjadi kesalahan saat membaca file Excel: " . $e->getMessage();
-            header("Location: daftar_butir_soal.php?kode_soal=" . urlencode($redirect_kode_soal));
+            header("Location: daftar_butir_soal.php?kode_soal=" . urlencode($form_kode_soal));
             exit;
         }
 
     } else {
         $_SESSION['import_error'] = "Format file tidak valid!";
-        header("Location: daftar_butir_soal.php?kode_soal=" . urlencode($redirect_kode_soal));
+        header("Location: daftar_butir_soal.php?kode_soal=" . urlencode($form_kode_soal));
         exit;
     }
 }
