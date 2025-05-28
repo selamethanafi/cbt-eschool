@@ -66,10 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin: 0 auto 20px;
       width: 70px;
     }
-    .progress-bar {
-      height: 10px;
-      border-radius: 5px;
-    }
+
   </style>
 </head>
 <body>
@@ -77,10 +74,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <img src="../assets/images/codelite.png" class="logo" alt="Logo CBT eSchool">
     <h4 class="text-center mb-3">Langkah 3: Buat Admin</h4>
 
-    <!-- Progress -->
-    <div class="progress mb-4">
-      <div class="progress-bar bg-success" style="width: 100%;"></div>
-    </div>
+<!-- Progress bar -->
+<div class="progress mb-4" style="height: 22px; border-radius: 12px; overflow: hidden;">
+  <div class="progress-bar text-white" id="animatedBar"
+       style="
+         width: 0%;
+         background: linear-gradient(90deg, #6a11cb, #2575fc); 
+         font-weight: 600;
+         font-size: 14px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         transition: width 1.5s ease;
+       ">
+    85%
+  </div>
+</div>
 
     <?php if (!empty($error)) : ?>
       <div class="alert alert-danger"><?= $error ?></div>
@@ -103,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" class="form-control" name="password" required>
       </div>
       <div class="d-grid">
-        <button type="submit" class="btn btn-success" id="submitBtn">Simpan & Selesai</button>
+        <button type="submit" class="btn btn-outline-secondary" id="submitBtn">Simpan</button>
       </div>
     </form>
   </div>
@@ -123,5 +132,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     });
   </script>
+  <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const bar = document.getElementById('animatedBar');
+    setTimeout(() => {
+      bar.style.width = '85%';
+    }, 300); // delay untuk animasi
+  });
+</script>
 </body>
 </html>

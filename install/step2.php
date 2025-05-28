@@ -66,22 +66,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin: 0 auto 20px;
       width: 70px;
     }
-    .progress-bar {
-      height: 10px;
-      border-radius: 5px;
-    }
-  </style>
+
+</style>
 </head>
 <body>
   <div class="container">
     <img src="../assets/images/codelite.png" class="logo" alt="Logo CBT eSchool">
-    <h4 class="text-center mb-3">Langkah 2: Konfigurasi Database</h4>
+    <h5 class="text-center mb-3">Langkah 2: Konfigurasi Database</h5>
 
-    <!-- Progress -->
-    <div class="progress mb-4">
-      <div class="progress-bar bg-info" style="width: 66%;"></div>
-    </div>
-
+<!-- Progress bar -->
+<div class="progress mb-4" style="height: 22px; border-radius: 12px; overflow: hidden;">
+  <div class="progress-bar text-white" id="animatedBar"
+       style="
+         width: 0%;
+         background: linear-gradient(90deg, #6a11cb, #2575fc); 
+         font-weight: 600;
+         font-size: 14px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         transition: width 1.5s ease;
+       ">
+    50%
+  </div>
+</div>
     <?php if (!empty($error)) : ?>
       <div class="alert alert-danger"><?= $error ?></div>
     <?php endif; ?>
@@ -104,9 +112,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" class="form-control" name="db_name" value="cbt_db" required>
       </div>
       <div class="d-grid">
-        <button type="submit" class="btn btn-primary">Lanjut ke Langkah 3</button>
+        <button type="submit" class="btn btn-outline-secondary">Next</button>
       </div>
     </form>
   </div>
+  
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const bar = document.getElementById('animatedBar');
+    setTimeout(() => {
+      bar.style.width = '50%';
+    }, 300); // delay untuk animasi
+  });
+</script>
 </body>
 </html>
