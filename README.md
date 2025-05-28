@@ -69,12 +69,6 @@ Aplikasi CBT eSchool adalah sistem Computer-Based Test berbasis **PHP 8** dan **
 
 ---
 
-## ✅ Selamat Menggunakan Aplikasi CBT eSchool!
-
----
-
-© 2025 — Dikembangkan oleh **Gludug Codelite**  
-Semua hak cipta dilindungi undang-undang.
 
 # Screenshots Aplikasi CBT eSchool
 
@@ -102,3 +96,9 @@ Semua hak cipta dilindungi undang-undang.
 ## Tampilan Ujian 2  
 ![Tampilan Ujian 2](https://i.imgur.com/0eI7HNK.png)
 
+## ✅ Selamat Menggunakan Aplikasi CBT eSchool!
+
+---
+
+© 2025 — Dikembangkan oleh **Gludug Codelite**  
+Semua hak cipta dilindungi undang-undang.
