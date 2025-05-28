@@ -139,21 +139,40 @@ if ($data_soal['status'] == 'Aktif') {
                                 }
                                 
                                 ?>
-                                        <a href="soal.php" class="btn btn btn-outline-danger">
+                                        <a href="soal.php" class="btn btn btn-outline-secondary">
                                             <i class="fas fa-arrow-left"></i> Bank Soal
                                         </a>
                                         <a href="tambah_butir_soal.php?kode_soal=<?= htmlspecialchars($data_soal['kode_soal']) ?>&nomer_baru=<?= $nomor_baru ?>"
                                             class="btn btn-primary">
                                             <i class="fas fa-plus"></i> Tambah Soal
                                         </a>
-                                        <a href="preview_soal.php?kode_soal=<?php echo $kode_soal;?>"
-                                            class="btn btn btn-outline-info">
-                                            <i class="fas fa-eye"></i> Preview
-                                        </a>
-                                        <a href="export_excel.php?kode_soal=<?= urlencode($kode_soal) ?>" onmouseover="this.style.color='white';" onmouseout="this.style.color='#198754';"
-                                            class="btn btn-outline-success">
-                                            <i class="fas fa-file-excel"></i> Export
-                                        </a>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-cogs"></i> Aksi
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="preview_soal.php?kode_soal=<?= $kode_soal; ?>">
+                                                        <i class="fas fa-eye"></i> Preview
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="export_excel.php?kode_soal=<?= urlencode($kode_soal) ?>">
+                                                        <i class="fas fa-file-excel"></i> Export Soal Excel
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#modalImportExcel">
+                                                        <i class="fas fa-upload"></i> Import Soal Excel
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
 
                                         <table id="butirsoal" class="table table-striped">
                                             <thead>
@@ -193,6 +212,40 @@ if ($data_soal['status'] == 'Aktif') {
                             </div>
                         </div>
                     </div>
+                    <!-- Modal Import Excel -->
+                    <div class="modal fade" id="modalImportExcel" tabindex="-1" aria-labelledby="modalImportExcelLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form action="import_soal.php" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="kode_soal" value="<?= $kode_soal; ?>">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalImportExcelLabel">Import Soal dari Excel</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Tutup"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="file_excel" class="form-label">Pilih File Excel</label>
+                                            <input type="file" class="form-control" name="file_excel" id="file_excel"
+                                                accept=".xlsx" required>
+                                        </div>
+                                        <div class="alert alert-info">
+                                            <strong>Perhatian!</strong> Gunakan format template yang benar. <br>
+                                            <a href="../assets/template_import_soal.xlsx"
+                                                class="btn btn-sm btn-link">Download Template</a>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Import</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
             </main>
         </div>
     </div>
@@ -247,6 +300,50 @@ if ($data_soal['status'] == 'Aktif') {
         });
     });
     </script>
+    <?php
+if (isset($_SESSION['import_result'])) {
+    $res = $_SESSION['import_result'];
+    unset($_SESSION['import_result']);
+
+    $successCount = $res['successCount'];
+    $failCount = $res['failCount'];
+    $duplicates = $res['duplicates'];
+
+    $pesan = "Import selesai!<br>Berhasil: $successCount<br>Duplikat: $failCount";
+    if ($failCount > 0) {
+        $pesan .= "<br>Soal duplikat:<br>" . implode(", ", $duplicates);
+    }
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'info',
+            title: 'Hasil Import',
+            html: `<?= $pesan ?>`,
+            confirmButtonText: 'OK'
+        });
+    });
+    </script>
+    <?php
+}
+
+if (isset($_SESSION['import_error'])) {
+    $error = $_SESSION['import_error'];
+    unset($_SESSION['import_error']);
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Import',
+            text: '<?= addslashes($error) ?>',
+            confirmButtonText: 'OK'
+        });
+    });
+    </script>
+    <?php
+}
+?>
 </body>
 
 </html>
