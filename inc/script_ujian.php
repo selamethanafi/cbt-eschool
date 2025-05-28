@@ -135,17 +135,28 @@ document.getElementById('submitBtn').addEventListener('click', function(e) {
 
     Swal.fire({
         title: 'Selesaikan Ujian?',
-        html: `Sisa waktu Anda: <strong>${formatWaktu}</strong>`,
+        html: `
+            Sisa waktu Anda: <strong>${formatWaktu}</strong><br><br>
+            <input type="checkbox" id="konfirmasiCek"> Saya yakin ingin menyelesaikan ujian ini.
+        `,
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Ya, Selesai',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        preConfirm: () => {
+            const checkbox = document.getElementById('konfirmasiCek');
+            if (!checkbox.checked) {
+                Swal.showValidationMessage('Anda harus menyetujui konfirmasi terlebih dahulu.');
+            }
+            return checkbox.checked;
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             document.getElementById('formUjian').submit();
         }
     });
 });
+
 
 // Panggil pertama kali untuk inisialisasi
 updateNavigationButtons();

@@ -258,24 +258,62 @@ if (!$stmt) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simpan Jawaban</title>
     <?php include '../inc/css.php'; ?>
+    <style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
 </head>
 
 <body>
+    <div id="loadingOverlay" style="
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    color: #333;
+">
+    <div class="loader" style="
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+    "></div>
+    <p style="font-size: 18px;">Menghubungi server pusat...</p>
+    <p style="font-size: 16px;">Menyimpan data ke server pusat</p>
+</div>
     <script src="../assets/adminkit/static/js/app.js"></script>
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/sweetalert.js"></script>
     <script src="../assets/datatables/datatables.js"></script>
     <?php include '../inc/check_activity.php'; ?>
     <script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Jawaban sudah tersimpan',
-        showConfirmButton: false,
-        timer: 2000
-    }).then(() => {
-        window.location.href = 'dashboard.php';
+    // Tampilkan animasi loading selama 2 detik, lalu munculkan SweetAlert
+    $(document).ready(function() {
+        setTimeout(function() {
+            // Sembunyikan loading overlay
+            $('#loadingOverlay').fadeOut(500, function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Jawaban sudah tersimpan',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then(() => {
+                    window.location.href = 'dashboard.php';
+                });
+            });
+        }, 2000); // Waktu delay animasi 2 detik
     });
-    </script>
+</script>
 
 </body>
 
