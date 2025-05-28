@@ -73,12 +73,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
-                    <li class="sidebar-item <?= ($currentPage == 'setting.php') ? 'active' : '' ?> <?= ($currentPage == 'pass.php') ? 'active' : '' ?>">
-                        <a class="sidebar-link" href="setting.php">
-                            <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan</span>
-                        </a>
-                    </li>
-
                     <li class="sidebar-item <?= ($currentPage == 'faq.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="faq.php">
                             <i class="align-middle fa-solid fa-robot"></i> <span class="align-middle">FAQ</span>
@@ -117,6 +111,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                     <li class="sidebar-item <?= ($currentPage == 'log.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="log.php">
                             <i class="align-middle fas fa-history"></i> <span class="align-middle">Log Activity</span>
+                        </a>
+                    </li>
+                    
+                    <li class="sidebar-item <?= ($currentPage == 'setting.php') ? 'active' : '' ?> <?= ($currentPage == 'pass.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="setting.php">
+                            <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan</span>
                         </a>
                     </li>
 
