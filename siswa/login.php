@@ -74,62 +74,97 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Siswa Login</title>
   <?php include '../inc/css.php'; ?>
-  <style>
+<style>
     body {
-        background: url('../assets/images/bg.jpg') no-repeat center center fixed;
+        background: url('../assets/images/bglogin.webp') no-repeat center center fixed;
         background-size: cover;
-        color: white;
-        height: 100vh;
         margin: 0;
+        height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
     .overlay {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        background: rgba(255, 255, 255, 0.86);
-        z-index: 1;
+        background-color: rgba(245, 245, 245, 0.47); /* lebih terang, jelas */
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+
     .glass-card {
-        background: rgba(0, 0, 0, 0.7);
+        background-color: #ffffff;
         border-radius: 15px;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgb(255, 255, 255);
-        color: white;
-        padding: 2rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
         max-width: 100%;
         margin: auto;
+        color: #333;
+        transition: 0.3s ease;
     }
-    input, input::placeholder {
-        color: white !important;
+
+    .glass-card:hover {
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
     }
-    input {
-        background: transparent !important;
-        border: none;
-        border-bottom: 1px solid white;
-        border-radius: 0;
-    }
-    input:focus {
-        outline: none !important;
-        box-shadow: none !important;
-        border-color: grey !important;
-    }
+
     label {
-        color: white;
+        color: #444;
+        font-weight: 600;
+        font-size: 14px;
     }
+
+    .glass-card input {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 20px;
+        padding: 10px;
+        width: 100%;
+        transition: border-color 0.3s ease;
+        color: #333;
+    }
+
+    .glass-card input:focus {
+        border-color: #0d6efd;
+        outline: none;
+        background-color: #fff;
+    }
+
+    .glass-card input::placeholder {
+        color: #888;
+    }
+
+    button.btn {
+        background-color: #0d6efd;
+        border: none;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+    button.btn:hover {
+        background-color: #0b5ed7;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
     @media (max-width: 576px) {
         .glass-card {
             padding: 1.5rem;
         }
+
         .glass-card input {
             font-size: 14px;
         }
     }
-  </style>
+</style>
+
 </head>
 <body class="d-flex align-items-center justify-content-center" style="height: 100vh;">
     <div class="overlay d-flex align-items-center justify-content-center" style="height: 100vh;">
