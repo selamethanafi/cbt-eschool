@@ -300,6 +300,24 @@ if ($data_soal['status'] == 'Aktif') {
         });
     });
     </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const formImport = document.querySelector('#modalImportExcel form');
+
+    if (formImport) {
+        formImport.addEventListener('submit', function(e) {
+            Swal.fire({
+                title: 'Mengimpor...',
+                html: 'Harap tunggu, sistem sedang memproses file.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        });
+    }
+});
+</script>
     <?php
 if (isset($_SESSION['import_result'])) {
     $res = $_SESSION['import_result'];
