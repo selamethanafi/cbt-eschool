@@ -81,16 +81,67 @@ $game2 = $_GET['game'] ?? 'scramble';
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0">Selamat datang di Dashboard Admin,
-                                        <?php echo $nama_admin; ?>!</h5>
-                                </div>
                                 <div class="card-body">
                                     <div class="row">
+                                        
+
+                                        <div class="col-md-4">
+                                            <div class="card shadow border-secondary border  mb-3" style="min-height:180px;">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <h5 class="card-title text-dark fw-bold mb-2">GitHub Projek
+                                                            </h5>
+                                                            <p class="card-text mb-1">CBT eSchool - Sistem Ujian Online
+                                                            </p>
+                                                            <div class="mb-2">
+                                                                <img src="https://img.shields.io/github/stars/gludugbanyu/cbt-eschool?style=social"
+                                                                    alt="GitHub Stars">
+                                                                <img src="https://img.shields.io/github/forks/gludugbanyu/cbt-eschool?style=social"
+                                                                    alt="GitHub Forks">
+                                                            </div>
+                                                            <a href="https://github.com/gludugbanyu/cbt-eschool"
+                                                                target="_blank" class="btn btn-sm btn-outline-dark">
+                                                                <i class="fab fa-github me-1"></i> Lihat di GitHub
+                                                            </a>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <i class="fab fa-github fa-3x text-dark"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <div class="card shadow border border-danger mb3" style="min-height:180px;">
+                                                <div class="card-body">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="me-3">
+                                                            <i class="fas fa-exclamation-triangle fa-2x text-warning"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h4 class="card-title text-danger fw-bold mb-2">Aturan Penggunaan</h4>
+                                                            <ul class="mb-2" style="font-size:12px;">
+                                                                <li>Aplikasi ini <strong>gratis 100%</strong> untuk digunakan.</li>
+                                                                <li><strong>Dilarang memperjualbelikan</strong> aplikasi ini dalam bentuk apa pun.</li>
+                                                                <li><strong>Dilarang menghapus atau mengubah footer</strong> hak cipta pengembang.</li>
+                                                                <li><strong>Dilarang menghapus</strong> Alert ini.</li>
+                                                            </ul>
+                                                            <p class="small text-muted mb-0">
+                                                                Melanggar aturan ini termasuk pelanggaran lisensi sumber terbuka dan dapat dikenakan tindakan hukum.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                         <!-- Statistik Siswa -->
                                         <div class="col-md-4">
                                             <div class="card text-dark bg-white border border-primary mb-3">
-                                                <div class="card-body bg-light">
+                                                <div class="card-body">
                                                     <h5 class="card-title text-dark">Jumlah Siswa</h5>
                                                     <p class="card-text"><?php echo $total_siswa; ?> siswa terdaftar</p>
                                                     <a href="tambah_siswa.php" class="btn btn-outline-primary">
@@ -100,9 +151,10 @@ $game2 = $_GET['game'] ?? 'scramble';
                                             </div>
                                         </div>
 
+
                                         <!-- Statistik Soal -->
                                         <div class="col-md-4">
-                                            <div class="card text-dark bg-white border border-danger mb-3">
+                                            <div class="card text-dark bg-white border border-info mb-3">
                                                 <div class="card-body">
                                                     <h5 class="card-title text-dark">Jumlah Soal</h5>
                                                     <p class="card-text"><?php echo $total_soal; ?> soal tersedia</p>
@@ -160,105 +212,6 @@ $game2 = $_GET['game'] ?? 'scramble';
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-6 md-4">
-                                            <div class="card card-minimal h-100">
-                                                <div class="card-body">
-                                                    <div class="card-title">Leaderboard - <?= ucfirst(str_replace('_', ' ', htmlspecialchars($game))) ?></div>
-                                                    <p class="text-muted small mb-3">10 Skor Tertinggi</p>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered table-striped table-sm mb-0">
-                                                            <thead class="table-secondary">
-                                                                <tr>
-                                                                    <th class="text-center">#</th>
-                                                                    <th>Nama</th>
-                                                                    <th>Skor</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <?php 
-                                                            $stmt = $koneksi->prepare("
-                                                                SELECT siswa.nama_siswa, skor_game.skor
-                                                                FROM skor_game
-                                                                JOIN siswa ON skor_game.id_siswa = siswa.id_siswa
-                                                                WHERE skor_game.nama_game = ?
-                                                                ORDER BY skor_game.skor DESC
-                                                                LIMIT 10
-                                                            ");
-                                                            $stmt->bind_param("s", $game);
-                                                            $stmt->execute();
-                                                            $res = $stmt->get_result();
-                                                            $rank = 1;
-                                                            while ($row = $res->fetch_assoc()):
-                                                                $icon = '';
-                                                                if ($rank == 1) $icon = '<i class="fas fa-medal text-warning"></i>'; // Gold
-                                                                elseif ($rank == 2) $icon = '<i class="fas fa-medal text-secondary"></i>'; // Silver
-                                                                elseif ($rank == 3) $icon = '<i class="fas fa-medal" style="color: #cd7f32;"></i>'; // Bronze
-                                                            ?>
-                                                                <tr>
-                                                                    <td class="text-center"><?= $icon ?: $rank ?></td>
-                                                                    <td><?= htmlspecialchars($row['nama_siswa']) ?></td>
-                                                                    <td><?= (int)$row['skor'] ?></td>
-                                                                </tr>
-                                                            <?php 
-                                                                $rank++;
-                                                            endwhile; 
-                                                            ?>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-6 md-4">
-                                            <div class="card card-minimal h-100">
-                                                <div class="card-body">
-                                                    <div class="card-title">Leaderboard - Scramble Text</div>
-                                                    <p class="text-muted small mb-3">10 Skor Tertinggi</p>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered table-striped table-sm mb-0">
-                                                            <thead class="table-secondary">
-                                                                <tr>
-                                                                    <th class="text-center">#</th>
-                                                                    <th>Nama</th>
-                                                                    <th>Skor</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <?php 
-                                                            $stmt2 = $koneksi->prepare("
-                                                                SELECT siswa.nama_siswa, skor_game.skor
-                                                                FROM skor_game
-                                                                JOIN siswa ON skor_game.id_siswa = siswa.id_siswa
-                                                                WHERE skor_game.nama_game = ?
-                                                                ORDER BY skor_game.skor DESC
-                                                                LIMIT 10
-                                                            ");
-                                                            $stmt2->bind_param("s", $game2);
-                                                            $stmt2->execute();
-                                                            $res2 = $stmt2->get_result();
-                                                            $rank2 = 1;
-                                                            while ($row2 = $res2->fetch_assoc()):
-                                                                $icon2 = '';
-                                                                if ($rank2 == 1) $icon2 = '<i class="fas fa-medal text-warning"></i>'; // Gold
-                                                                elseif ($rank2 == 2) $icon2 = '<i class="fas fa-medal text-secondary"></i>'; // Silver
-                                                                elseif ($rank2 == 3) $icon2 = '<i class="fas fa-medal" style="color: #cd7f32;"></i>'; // Bronze
-                                                            ?>
-                                                                <tr>
-                                                                    <td class="text-center"><?= $icon2 ?: $rank2 ?></td>
-                                                                    <td><?= htmlspecialchars($row2['nama_siswa']) ?></td>
-                                                                    <td><?= (int)$row2['skor'] ?></td>
-                                                                </tr>
-                                                            <?php 
-                                                                $rank2++;
-                                                            endwhile; 
-                                                            ?>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
                                     </div>
                                 </div>

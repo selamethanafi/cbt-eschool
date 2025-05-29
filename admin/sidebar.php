@@ -85,6 +85,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                     </li>
 
+                    <li class="sidebar-item <?= ($currentPage == 'leaderboard.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="leaderboard.php">
+                        <i class="fa fa-gamepad" aria-hidden="true"></i> <span class="align-middle">Mini Games</span>
+                        </a>
+                    </li>
+
                     <li class="sidebar-item <?= ($currentPage == 'backup.php') ? 'active' : '' ?> <?= ($currentPage == 'reset_database.php') ? 'active' : '' ?> <?= ($currentPage == 'backup_gbr.php') ? 'active' : '' ?>">
                     <a data-bs-toggle="collapse" href="#backup" class="sidebar-link collapsed">
                         <i class="align-middle fa fa-hdd"></i> <span class="align-middle">Backup </span><i class="fa fa-chevron-down ms-auto float-end"></i>
@@ -113,7 +119,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             <i class="align-middle fas fa-history"></i> <span class="align-middle">Log Activity</span>
                         </a>
                     </li>
-                    
+
                     <li class="sidebar-item <?= ($currentPage == 'setting.php') ? 'active' : '' ?> <?= ($currentPage == 'pass.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="setting.php">
                             <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan</span>
