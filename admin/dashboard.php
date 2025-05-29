@@ -100,6 +100,7 @@ $game2 = $_GET['game'] ?? 'scramble';
                                                                 <img src="https://img.shields.io/github/forks/gludugbanyu/cbt-eschool?style=social"
                                                                     alt="GitHub Forks">
                                                             </div>
+                                                            <br>
                                                             <a href="https://github.com/gludugbanyu/cbt-eschool"
                                                                 target="_blank" class="btn btn-sm btn-outline-dark">
                                                                 <i class="fab fa-github me-1"></i> Lihat di GitHub
@@ -114,69 +115,96 @@ $game2 = $_GET['game'] ?? 'scramble';
                                         </div>
 
                                         <div class="col-md-8">
-                                            <div class="card shadow border border-danger mb3" style="min-height:180px;">
+                                            <div class="card shadow border-secondary border  mb-3" style="min-height:180px;">
                                                 <div class="card-body">
-                                                    <div class="d-flex align-items-start">
-                                                        <div class="me-3">
-                                                            <i class="fas fa-exclamation-triangle fa-2x text-warning"></i>
-                                                        </div>
+                                                    <div class="d-flex align-items-center justify-content-between">
                                                         <div>
                                                             <h4 class="card-title text-danger fw-bold mb-2">Aturan Penggunaan</h4>
                                                             <ul class="mb-2" style="font-size:12px;">
-                                                                <li>Aplikasi ini <strong>gratis 100%</strong> untuk digunakan.</li>
+                                                                <li>Aplikasi ini <strong>gratis 100%</strong> untuk digunakan dikalangan Pendidikan.</li>
                                                                 <li><strong>Dilarang memperjualbelikan</strong> aplikasi ini dalam bentuk apa pun.</li>
                                                                 <li><strong>Dilarang menghapus atau mengubah footer</strong> hak cipta pengembang.</li>
-                                                                <li><strong>Dilarang menghapus</strong> Alert ini.</li>
+                                                                <li><strong>Dilarang menghapus</strong> Aturan Penggunaan.</li>
                                                             </ul>
                                                             <p class="small text-muted mb-0">
                                                                 Melanggar aturan ini termasuk pelanggaran lisensi sumber terbuka dan dapat dikenakan tindakan hukum.
                                                             </p>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <i class="fas fa-circle-exclamation fa-3x text-danger"></i>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-
                                         <!-- Statistik Siswa -->
-                                        <div class="col-md-4">
-                                            <div class="card text-dark bg-white border border-primary mb-3">
+                                         <div class="col-md-4">
+                                            <div class="card shadow border-secondary border  mb-3">
                                                 <div class="card-body">
-                                                    <h5 class="card-title text-dark">Jumlah Siswa</h5>
-                                                    <p class="card-text"><?php echo $total_siswa; ?> siswa terdaftar</p>
-                                                    <a href="tambah_siswa.php" class="btn btn-outline-primary">
-                                                        <i class="fas fa-plus"></i> Tambah Siswa
-                                                    </a>
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <h5 class="card-title text-dark fw-bold mb-2">Jumlah Siswa
+                                                            </h5>
+                                                            <p class="card-text mb-1"><?php echo $total_siswa; ?> siswa terdaftar
+                                                            </p>
+                                                            <a href="tambah_siswa.php" class="btn btn-sm btn-outline-secondary">
+                                                                <i class="fas fa-plus"></i> Tambah Siswa
+                                                            </a>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <i class="fa fa-user-circle fa-3x text-black-50"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
-
                                         <!-- Statistik Soal -->
-                                        <div class="col-md-4">
-                                            <div class="card text-dark bg-white border border-info mb-3">
+                                         <div class="col-md-4">
+                                            <div class="card shadow border-secondary border  mb-3">
                                                 <div class="card-body">
-                                                    <h5 class="card-title text-dark">Jumlah Soal</h5>
-                                                    <p class="card-text"><?php echo $total_soal; ?> soal tersedia</p>
-                                                    <a href="tambah_soal.php" class="btn btn-outline-danger">
-                                                        <i class="fas fa-plus"></i> Tambah Soal
-                                                    </a>
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <h5 class="card-title text-dark fw-bold mb-2">Jumlah Soal
+                                                            </h5>
+                                                            <p class="card-text mb-1"><?php echo $total_soal; ?> soal tersedia
+                                                            </p>
+                                                            <a href="tambah_soal.php" class="btn btn-sm btn-outline-secondary">
+                                                                <i class="fas fa-plus"></i> Tambah Soal
+                                                            </a>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <i class="fa fa-pen-to-square fa-3x text-black-50"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Statistik Ujian -->
-                                        <div class="col-md-4">
-                                            <div class="card text-dark bg-white border border-secondary mb-3">
+                                         <div class="col-md-4">
+                                            <div class="card shadow border-secondary border  mb-3">
                                                 <div class="card-body">
-                                                    <h5 class="card-title text-dark">Ujian</h5>
-                                                    <p class="card-text"><?php echo $total_ujian; ?> Siswa Selesai</p>
-                                                    <a href="hasil.php" class="btn btn-outline-secondary">
-                                                        <i class="fas fa-edit"></i> Nilai
-                                                    </a>
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div>
+                                                            <h5 class="card-title text-dark fw-bold mb-2">Ujian
+                                                            </h5>
+                                                            <p class="card-text mb-1"><?php echo $total_ujian; ?> Siswa Selesai
+                                                            </p>
+                                                            <a href="hasil.php" class="btn btn-sm btn-outline-secondary">
+                                                                <i class="fa fa-square-check"></i> Lihat Nilai
+                                                            </a>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <i class="fa fa-square-check fa-3x text-black-50"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        <!-- Chart Statistik -->
                                         <div class="col-lg-4 md-4">
                                             <div class="card mb-3">
                                                 <div class="card-header">
