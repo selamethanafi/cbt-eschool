@@ -5,7 +5,6 @@ include '../inc/functions.php';
 check_login('admin');
 include '../inc/dataadmin.php';
 
-// Ambil data admin dari session
 $id_admin = $_SESSION['admin_id'] ?? null;
 
 if (!$id_admin) {
@@ -14,7 +13,6 @@ if (!$id_admin) {
     exit;
 }
 
-// Ambil data admin dari database
 $stmt = $koneksi->prepare("SELECT * FROM admins WHERE id = ?");
 $stmt->bind_param("i", $id_admin);
 $stmt->execute();
@@ -22,38 +20,63 @@ $result = $stmt->get_result();
 $admin = $result->fetch_assoc();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nama_admin = trim($_POST['nama_admin'] ?? '');
     $password_lama = $_POST['password_lama'] ?? '';
     $password_baru = $_POST['password_baru'] ?? '';
     $konfirmasi = $_POST['konfirmasi_password'] ?? '';
 
-    // Validasi input
-    if (empty($password_lama) || empty($password_baru) || empty($konfirmasi)) {
-        $_SESSION['error'] = 'Semua kolom harus diisi.';
+    // Validasi nama_admin
+    if (empty($nama_admin)) {
+        $_SESSION['error'] = 'Nama admin tidak boleh kosong.';
         header('Location: pass.php');
         exit;
     }
 
-    if (!password_verify($password_lama, $admin['password'])) {
-        $_SESSION['error'] = 'Password lama salah.';
-        header('Location: pass.php');
-        exit;
+    $berhasil = false;
+
+    // Update nama jika berbeda
+    if ($nama_admin !== $admin['nama_admin']) {
+        $updateNama = $koneksi->prepare("UPDATE admins SET nama_admin = ? WHERE id = ?");
+        $updateNama->bind_param("si", $nama_admin, $id_admin);
+        if ($updateNama->execute()) {
+            $_SESSION['success'] = 'Nama berhasil diperbarui.';
+            $berhasil = true;
+        } else {
+            $_SESSION['error'] = 'Gagal memperbarui nama.';
+            header('Location: pass.php');
+            exit;
+        }
     }
 
-    if ($password_baru !== $konfirmasi) {
-        $_SESSION['error'] = 'Konfirmasi password tidak cocok.';
-        header('Location: pass.php');
-        exit;
-    }
+    // Jika password lama diisi, lakukan validasi dan update password
+    if (!empty($password_lama) || !empty($password_baru) || !empty($konfirmasi)) {
+        if (empty($password_lama) || empty($password_baru) || empty($konfirmasi)) {
+            $_SESSION['error'] = 'Semua kolom password harus diisi.';
+            header('Location: pass.php');
+            exit;
+        }
 
-    // Update password
-    $password_baru_hash = password_hash($password_baru, PASSWORD_DEFAULT);
-    $update = $koneksi->prepare("UPDATE admins SET password = ? WHERE id = ?");
-    $update->bind_param("si", $password_baru_hash, $id_admin);
+        if (!password_verify($password_lama, $admin['password'])) {
+            $_SESSION['error'] = 'Password lama salah.';
+            header('Location: pass.php');
+            exit;
+        }
 
-    if ($update->execute()) {
-        $_SESSION['success'] = 'Password berhasil diperbarui.';
-    } else {
-        $_SESSION['error'] = 'Gagal memperbarui password.';
+        if ($password_baru !== $konfirmasi) {
+            $_SESSION['error'] = 'Konfirmasi password tidak cocok.';
+            header('Location: pass.php');
+            exit;
+        }
+
+        $password_baru_hash = password_hash($password_baru, PASSWORD_DEFAULT);
+        $update = $koneksi->prepare("UPDATE admins SET password = ? WHERE id = ?");
+        $update->bind_param("si", $password_baru_hash, $id_admin);
+
+        if ($update->execute()) {
+            $_SESSION['success'] = $berhasil ? 'Nama dan Password berhasil diperbarui.' : 'Password berhasil diperbarui.';
+        } else {
+            $_SESSION['error'] = 'Gagal memperbarui password.';
+        }
     }
 
     header('Location: pass.php');
@@ -65,8 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Password</title>
+    <title>Update Profil</title>
     <?php include '../inc/css.php'; ?>
 </head>
 
@@ -82,23 +104,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="col-12 col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="card-title mb-0">Ubah Password</h5>
+                                    <h5 class="card-title mb-0">Ubah Profil Admin</h5>
                                 </div>
                                 <div class="card-body">
                                     <form method="post">
                                         <div class="mb-3">
+                                            <label>Nama Admin</label>
+                                            <input type="text" name="nama_admin" class="form-control" value="<?= htmlspecialchars($admin['nama_admin']) ?>" required>
+                                        </div>
+                                        <hr>
+                                        <div class="mb-3">
                                             <label>Password Lama</label>
-                                            <input type="password" name="password_lama" class="form-control" required>
+                                            <input type="password" name="password_lama" class="form-control">
                                         </div>
                                         <div class="mb-3">
                                             <label>Password Baru</label>
-                                            <input type="password" name="password_baru" class="form-control" required>
+                                            <input type="password" name="password_baru" class="form-control">
                                         </div>
                                         <div class="mb-3">
                                             <label>Konfirmasi Password Baru</label>
-                                            <input type="password" name="konfirmasi_password" class="form-control" required>
+                                            <input type="password" name="konfirmasi_password" class="form-control">
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <p class="text-muted"><small>Biarkan kolom password kosong jika tidak ingin mengubahnya.</small></p>
+                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                     </form>
                                 </div>
                             </div>
