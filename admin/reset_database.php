@@ -36,7 +36,7 @@ include '../inc/dataadmin.php';
                                         <label class="form-label fw-bold fs-5 mb-3">🗂️ Pilih Data yang Ingin Direset:</label>
 
                                         <div class="p-3 mb-3 border rounded bg-light d-flex align-items-start gap-2">
-                                            <i class="fa fa-user text-primary fs-3"></i>
+                                            <i class="fa fa-chalkboard-teacher text-primary fs-3"></i>
                                             <div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="reset[]" value="siswa" id="resetSiswa">
@@ -49,7 +49,7 @@ include '../inc/dataadmin.php';
                                         </div>
 
                                         <div class="p-3 mb-3 border rounded bg-light d-flex align-items-start gap-2">
-                                            <i class="fas fa-chalkboard-teacher text-danger fs-3"></i>
+                                            <i class="fas fa fa-person-chalkboard text-danger fs-3"></i>
                                             <div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="reset[]" value="soal" id="resetSoal">
