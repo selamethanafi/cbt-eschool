@@ -86,7 +86,7 @@ $game2 = $_GET['game'] ?? 'scramble';
                                         
 
                                         <div class="col-md-4">
-                                            <div class="card shadow border-secondary border  mb-3" style="min-height:180px;">
+                                            <div class="card shadow border-secondary border mb-3 position-relative overflow-hidden" style="height: 180px;">
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <div>
@@ -107,7 +107,8 @@ $game2 = $_GET['game'] ?? 'scramble';
                                                             </a>
                                                         </div>
                                                         <div class="ms-3">
-                                                            <i class="fab fa-github fa-3x text-dark"></i>
+                                                            <i class="fab fa-github position-absolute text-secondary" 
+                                                            style="font-size: 120px; bottom: -30px; right: -30px; opacity: 0.1; z-index: 0;"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -115,7 +116,7 @@ $game2 = $_GET['game'] ?? 'scramble';
                                         </div>
 
                                         <div class="col-md-8">
-                                            <div class="card shadow border-secondary border  mb-3" style="min-height:180px;">
+                                            <div class="card shadow border-secondary border mb-3 position-relative overflow-hidden" style="height: 180px;">
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <div>
@@ -131,7 +132,8 @@ $game2 = $_GET['game'] ?? 'scramble';
                                                             </p>
                                                         </div>
                                                         <div class="ms-3">
-                                                            <i class="fas fa-circle-exclamation fa-3x text-danger"></i>
+                                                            <i class="fas fa-circle-exclamation position-absolute text-danger" 
+                                                            style="font-size: 120px; bottom: -30px; right: -30px; opacity: 0.1; z-index: 0;"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -140,29 +142,28 @@ $game2 = $_GET['game'] ?? 'scramble';
 
                                         <!-- Statistik Siswa -->
                                          <div class="col-md-4">
-                                            <div class="card shadow border-secondary border  mb-3">
-                                                <div class="card-body">
+                                            <div class="card shadow border-secondary border mb-3 position-relative overflow-hidden" style="height: 150px;">
+                                                <div class="card-body position-relative z-1">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <div>
-                                                            <h5 class="card-title text-dark fw-bold mb-2">Jumlah Siswa
-                                                            </h5>
-                                                            <p class="card-text mb-1"><?php echo $total_siswa; ?> siswa terdaftar
-                                                            </p>
+                                                            <h5 class="card-title text-dark fw-bold mb-2">Jumlah Siswa</h5>
+                                                            <p class="card-text mb-1"><?php echo $total_siswa; ?> siswa terdaftar</p>
                                                             <a href="tambah_siswa.php" class="btn btn-sm btn-outline-secondary">
                                                                 <i class="fas fa-plus"></i> Tambah Siswa
                                                             </a>
                                                         </div>
-                                                        <div class="ms-3">
-                                                            <i class="fa fa-user-circle fa-3x text-black-50"></i>
-                                                        </div>
                                                     </div>
                                                 </div>
+                                                <!-- Icon besar di belakang, terpotong oleh card -->
+                                                <i class="fa fa-user-circle position-absolute text-secondary" 
+                                                style="font-size: 120px; bottom: -30px; right: -30px; opacity: 0.1; z-index: 0;"></i>
                                             </div>
                                         </div>
 
+
                                         <!-- Statistik Soal -->
                                          <div class="col-md-4">
-                                            <div class="card shadow border-secondary border  mb-3">
+                                            <div class="card shadow border-secondary border mb-3 position-relative overflow-hidden" style="height: 150px;">
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <div>
@@ -175,7 +176,8 @@ $game2 = $_GET['game'] ?? 'scramble';
                                                             </a>
                                                         </div>
                                                         <div class="ms-3">
-                                                            <i class="fa fa-pen-to-square fa-3x text-black-50"></i>
+                                                            <i class="fa fa-pen-to-square position-absolute text-secondary" 
+                                                            style="font-size: 120px; bottom: -30px; right: -30px; opacity: 0.1; z-index: 0;"></i>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -184,7 +186,7 @@ $game2 = $_GET['game'] ?? 'scramble';
 
                                         <!-- Statistik Ujian -->
                                          <div class="col-md-4">
-                                            <div class="card shadow border-secondary border  mb-3">
+                                            <div class="card shadow border-secondary border mb-3 position-relative overflow-hidden" style="height: 150px;">
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <div>
@@ -197,7 +199,8 @@ $game2 = $_GET['game'] ?? 'scramble';
                                                             </a>
                                                         </div>
                                                         <div class="ms-3">
-                                                            <i class="fa fa-square-check fa-3x text-black-50"></i>
+                                                            <i class="fa fa-address-card position-absolute text-secondary" 
+                                                            style="font-size: 120px; bottom: -30px; right: -30px; opacity: 0.1; z-index: 0;"></i>
                                                         </div>
                                                     </div>
                                                 </div>
