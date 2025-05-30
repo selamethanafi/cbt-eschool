@@ -59,7 +59,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     $persentase = ($totalSoal > 0) ? round(($jumlahDijawab / $totalSoal) * 100) : 0;
 
-    // Warna dinamis: Merah < 50, Kuning < 80, Hijau >= 80
     $barColor = 'bg-danger';
     if ($persentase >= 80) {
         $barColor = 'bg-success';
@@ -67,7 +66,6 @@ while ($row = mysqli_fetch_assoc($result)) {
         $barColor = 'bg-warning text-dark';
     }
 
-    // Progress bar tipis dengan text di atas
     $progres = '
     <div style="font-size: 0.9rem; margin-bottom: 4px; font-weight: 600;">' . $jumlahDijawab . '/' . $totalSoal . '</div>
     <div class="progress" style="height: 6px; background-color: #e9ecef; border-radius: 3px; overflow: hidden;">
@@ -80,13 +78,21 @@ while ($row = mysqli_fetch_assoc($result)) {
       </div>
     </div>';
 
+    $aksi = '<button class="btn btn-sm btn-danger simpan-paksa-btn" 
+                data-kode="' . $row['kode_soal'] . '" 
+                data-nama="' . $row['nama_siswa'] . '" 
+                data-siswa="' . $row['id_siswa'] . '">
+                Simpan Paksa <i class="fas fa-save"></i>
+         </button>';
+
     $data[] = [
         'nama_siswa' => $row['nama_siswa'],
         'kode_soal' => $kodeSoal,
         'waktu_sisa' => $row['waktu_sisa'],
         'waktu_dijawab' => $row['waktu_dijawab'],
         'status_badge' => $badge,
-        'progres' => $progres
+        'progres' => $progres,
+        'aksi' => $aksi
     ];
 }
 

@@ -5,6 +5,7 @@ include '../inc/functions.php';
 include '../inc/dataadmin.php';
 // Cek jika sudah login
 check_login('admin');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,6 +47,7 @@ check_login('admin');
                                                     <th>Waktu Mulai</th>
                                                     <th>Status Ujian</th>
                                                     <th>Progres Ujian</th>
+                                                    <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -75,7 +77,8 @@ $(document).ready(function () {
             { data: 'progres', title: 'Progres Ujian' },
             { data: 'waktu_sisa', title: 'Waktu Sisa' },
             { data: 'waktu_dijawab', title: 'Waktu Dijawab' },
-            { data: 'status_badge', title: 'Status Ujian' }
+            { data: 'status_badge', title: 'Status Ujian' },
+            { data: 'aksi', title: 'Aksi' }
         ],
         columnDefs: [
             { targets: 4, orderable: false, searchable: false }
@@ -102,5 +105,55 @@ $(document).ready(function () {
     }
 });
 </script>
+<script>
+$(document).on('click', '.simpan-paksa-btn', function () {
+    const kodeSoal = $(this).data('kode');
+    const idSiswa = $(this).data('siswa');
+    const namaSiswa = $(this).data('nama');
+
+    Swal.fire({
+        title: 'Yakin simpan paksa ujian ini?',
+        html: `<b>${namaSiswa}</b> akan dianggap <b>selesai</b> mengerjakan Ujian (<code>${kodeSoal}</code>)`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Simpan Paksa!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = `simpan_paksa.php?kode_soal=${kodeSoal}&id_siswa=${idSiswa}`;
+        }
+    });
+});
+</script>
+<?php if (isset($_SESSION['success_message'])): ?>
+<script>
+    $(document).ready(function() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: '<?= $_SESSION['success_message']; ?>',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+    });
+</script>
+<?php unset($_SESSION['success_message']); endif; ?>
+
+<?php if (isset($_SESSION['error_message'])): ?>
+<script>
+    $(document).ready(function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: '<?= $_SESSION['error_message']; ?>',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'OK'
+        });
+    });
+</script>
+<?php unset($_SESSION['error_message']); endif; ?>
+
 </body>
 </html>

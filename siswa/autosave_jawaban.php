@@ -21,6 +21,15 @@ $waktu_sisa = (int)($_POST['waktu_sisa'] ?? 0);
 $jawaban = $_POST['jawaban'] ?? [];
 $soal_kiri = $_POST['soal_kiri'] ?? [];
 
+$q_nilai = mysqli_query($koneksi, "SELECT * FROM nilai WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'");
+if (mysqli_num_rows($q_nilai) > 0) {
+    echo json_encode([
+        'status' => 'already_done',
+        'message' => 'Kamu sudah mengerjakan soal ini.',
+        'redirect_url' => 'ujian.php'
+    ]);
+    exit;
+}
 // [3] Debugging - Catat semua data input
 error_log("Data Diterima:\n" . print_r([
     'kode_soal' => $kode_soal,

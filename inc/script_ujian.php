@@ -77,12 +77,28 @@ setInterval(() => {
     data.append('waktu_sisa', Math.ceil(waktu / 60));
 
     fetch('autosave_jawaban.php', {
-            method: 'POST',
-            body: data
-        })
-        .then(res => res.text())
-        .then(txt => console.log('Auto-saved:', txt));
+        method: 'POST',
+        body: data
+    })
+    .then(res => res.json())
+    .then(response => {
+        if (response.status === 'already_done') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Ujian Sudah Dikerjakan',
+                text: response.message
+            }).then(() => {
+                window.location.href = response.redirect_url;
+            });
+        } else if (response.status === 'success') {
+            console.log('Auto-saved:', response.debug?.final_jawaban ?? 'ok');
+        } else {
+            console.warn('Auto-save error:', response.message);
+        }
+    })
+    .catch(err => console.error('Auto-save fetch error:', err));
 }, syncInterval);
+
 
 document.addEventListener("DOMContentLoaded", function() {
     var base64Text = "<?php echo $encryptedText; ?>";
