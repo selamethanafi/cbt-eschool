@@ -82,7 +82,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                 data-kode="' . $row['kode_soal'] . '" 
                 data-nama="' . $row['nama_siswa'] . '" 
                 data-siswa="' . $row['id_siswa'] . '">
-                Simpan Paksa <i class="fas fa-save"></i>
+                Selesai Paksa <i class="fas fa-save"></i>
          </button>';
 
     $data[] = [
