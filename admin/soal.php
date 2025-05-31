@@ -90,7 +90,7 @@ if (!$result) {
                                                 <td><?php echo $row['jumlah_butir']; ?></td>
                                                 <td><i class="fa fa-clock" aria-hidden="true"></i>
                                                     <?php echo $row['waktu_ujian']; ?></td>
-                                                <td><i class="fa fa-calendar" aria-hidden="true"></i>
+                                                <td><i class="fa fa-calendar-alt" aria-hidden="true"></i>
                                                     <?php echo date('d M Y', strtotime($row['tanggal'])); ?></td>
                                                 <td><?php echo $row['tampilan_soal']; ?></td>
                                                 <td>
@@ -122,12 +122,12 @@ if (!$result) {
                                                     <a href="preview_soal.php?kode_soal=<?php echo $row['kode_soal']; ?>"
                                                         class="btn btn-sm btn-outline-secondary"><i
                                                             class="fa fa-eye"></i> Preview</a>
+                                                    <a href="edit_soal.php?id_soal=<?php echo $row['id_soal']; ?>"
+                                                        class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>
+                                                        Edit</a>
                                                     <a href="#" class="btn btn-sm btn-info btn-duplicate" data-kode="<?php echo $row['kode_soal']; ?>">
                                                         <i class="fa fa-copy"></i> Duplikat
                                                     </a>
-                                                    <a href="edit_soal.php?id_soal=<?php echo $row['id_soal']; ?>"
-                                                        class="btn btn-sm btn-warning"><i class="fa fa-edit"></i>
-                                                        Edit</a>
                                                     <a href="daftar_butir_soal.php?kode_soal=<?php echo $row['kode_soal']; ?>"
                                                         class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Input
                                                         Soal</a>
