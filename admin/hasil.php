@@ -247,9 +247,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($.fn.DataTable.isDataTable('#nilaiTableData')) {
                 $('#nilaiTableData').DataTable().destroy();
             }
-            
+
             $('#nilaiTableData').DataTable({
-                dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"l><"col-sm-12 col-md-7 text-end"p>>', 
+                dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"l><"col-sm-12 col-md-7 text-end"p>>',
                 buttons: [
                     'copy', 'excel', 
                     {
@@ -265,19 +265,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     { targets: 0, orderable: false, searchable: false },
                     { targets: -1, orderable: false, searchable: false }
                 ],
-                lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"] ],
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],
                 language: {
-                decimal: ",",
-                thousands: ".",
-                lengthMenu: "Tampilkan _MENU_ data",
-                search: "Cari:",
-                zeroRecords: "Data tidak ditemukan",
-                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                infoFiltered: "(disaring dari _MAX_ total data)",
-            }
+                    decimal: ",",
+                    thousands: ".",
+                    lengthMenu: "Tampilkan _MENU_ data",
+                    search: "Cari:",
+                    zeroRecords: "Data tidak ditemukan",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                    infoFiltered: "(disaring dari _MAX_ total data)",
+                },
+                drawCallback: function(settings) {
+                    var api = this.api();
+                    api.column(0, {search: 'applied', order: 'applied'}).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
             });
         }
+
 
         // Reset Filter
         window.resetFilter = () => {
