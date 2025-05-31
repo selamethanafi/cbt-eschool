@@ -92,7 +92,7 @@ $game2 = $_GET['game'] ?? 'scramble';
                                                         <div>
                                                             <h5 class="card-title text-dark fw-bold mb-2">GitHub Projek
                                                             </h5>
-                                                            <p class="card-text mb-1">CBT eSchool - Sistem Ujian Online
+                                                            <p class="card-text mb-1">CBT-Eschool - Sistem Ujian Online
                                                             </p>
                                                             <div class="mb-2">
                                                                 <img src="https://img.shields.io/github/stars/gludugbanyu/cbt-eschool?style=social"
@@ -120,7 +120,15 @@ $game2 = $_GET['game'] ?? 'scramble';
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center justify-content-between">
                                                         <div>
-                                                            <h4 class="card-title text-danger fw-bold mb-2">Aturan Penggunaan</h4>
+                                                            <h4 class="card-title text-danger fw-bold mb-2">Aturan Penggunaan 
+                                                                <b style="color:black;">
+                                                                    <?php
+                                                                    $q = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1");
+                                                                    $data = mysqli_fetch_assoc($q);
+                                                                    ?>
+                                                                    CBT-Eschool v.<?= $data['versi_aplikasi'] ?>
+                                                                </b>
+                                                            </h4>
                                                             <ul class="mb-2" style="font-size:12px;">
                                                                 <li>Aplikasi ini <strong>gratis 100%</strong> untuk digunakan dikalangan Pendidikan.</li>
                                                                 <li><strong>Dilarang memperjualbelikan</strong> aplikasi ini dalam bentuk apa pun.</li>
