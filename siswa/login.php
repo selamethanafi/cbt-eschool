@@ -10,14 +10,6 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Generate CAPTCHA jika belum ada
-if (empty($_SESSION['captcha_question'])) {
-    $a = rand(1, 9);
-    $b = rand(1, 9);
-    $_SESSION['captcha_question'] = "$a + $b";
-    $_SESSION['captcha_answer'] = $a + $b;
-}
-
 // Redirect jika sudah login
 if (isset($_SESSION['siswa_logged_in']) && $_SESSION['siswa_logged_in'] === true) {
     header("Location: dashboard.php");
@@ -35,13 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = trim($_POST['password']);
     $captcha_input = $_POST['captcha'] ?? '';
 
-    if ((int)$captcha_input !== $_SESSION['captcha_answer']) {
+    if (!isset($_SESSION['captcha']) || strtolower($captcha_input) !== strtolower($_SESSION['captcha'])) {
         $error = 'Captcha salah!';
     } else {
         if (authenticate_user($username, $password, 'siswa')) {
-            unset($_SESSION['captcha_question'], $_SESSION['captcha_answer']);
-            header("Location: dashboard.php");
-            exit;
+        unset($_SESSION['captcha']); // hapus captcha
+        header("Location: dashboard.php");
+        exit;
         } else {
             // Cek apakah login gagal karena sesi sudah aktif
             $settings = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT login_ganda FROM pengaturan WHERE id = 1"));
@@ -212,11 +204,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </span>
                             </div>
                             <div class="mb-3">
-                                <label for="captcha" class="form-label">
-                                    Berapa hasil dari: <b><?php echo $_SESSION['captcha_question']; ?></b> ?
-                                </label>
-                                <input type="number" class="form-control" id="captcha" name="captcha" placeholder="Jawaban" required autocomplete="off">
-                            </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <img src="../inc/captcha.php?rand=<?= rand() ?>" alt="CAPTCHA Image"
+                                            style="border-radius:20px; height: 40px;">
+                                        <input type="text" class="form-control" id="captcha" name="captcha"
+                                            placeholder="Ketik kode Captcha" required autocomplete="off">
+                                    </div>
+                                </div>
                             <button type="submit" class="btn btn-primary w-100" id="loginButton">Login <i class="fa fa-sign-in"></i></button>
                         </form><br>
                         <div id="enc" style="font-size:13px;">
