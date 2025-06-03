@@ -92,7 +92,6 @@ Ekstensi **GD** pada PHP digunakan untuk manipulasi gambar, seperti membuat CAPT
 ### 2. Cari dan Edit Baris GD Extension
 
 - Cari baris:
-```ini
 ;extension=gd
 
 - Hapus tanda titik koma ; di depannya agar menjadi:
