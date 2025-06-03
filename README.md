@@ -68,7 +68,46 @@ Aplikasi CBT eSchool adalah sistem Computer-Based Test berbasis **PHP 8** dan **
 
 
 ---
+### 9. Pastikan Extensi GD aktif
+# 📷 Cara Mengaktifkan Ekstensi GD di XAMPP (Windows)
 
+Ekstensi **GD** pada PHP digunakan untuk manipulasi gambar, seperti membuat CAPTCHA, thumbnail, watermark, dan lainnya. Jika Anda menggunakan XAMPP dan mendapatkan error seperti:
+
+> "The image cannot be displayed because it contains errors"
+
+...kemungkinan besar ekstensi GD belum diaktifkan.
+
+---
+
+## 🔧 Langkah-langkah Mengaktifkan GD Extension
+
+### 1. Buka File `php.ini`
+
+- Masuk ke folder:xampp\php\php.ini
+
+- Gunakan editor teks seperti Notepad, Notepad++, VS Code, dll.
+
+---
+
+### 2. Cari dan Edit Baris GD Extension
+
+- Cari baris:
+```ini
+;extension=gd
+
+    Hapus tanda titik koma ; di depannya agar menjadi:
+
+    extension=gd
+
+Tanda ; menandakan baris tersebut dikomentari. Menghapusnya akan mengaktifkan ekstensi.
+3. Simpan Perubahan dan Tutup File
+4. Restart Apache di XAMPP
+
+    Buka XAMPP Control Panel
+
+    Klik Stop pada Apache
+
+    Lalu klik Start lagi
 
 # Screenshots Aplikasi CBT eSchool
 
