@@ -95,7 +95,7 @@ Ekstensi **GD** pada PHP digunakan untuk manipulasi gambar, seperti membuat CAPT
 ```ini
 ;extension=gd
 
-    Hapus tanda titik koma ; di depannya agar menjadi:
+- Hapus tanda titik koma ; di depannya agar menjadi:
 
     extension=gd
 
@@ -109,36 +109,34 @@ Tanda ; menandakan baris tersebut dikomentari. Menghapusnya akan mengaktifkan ek
 
     Lalu klik Start lagi
     
----
-# Screenshots Aplikasi CBT eSchool
+...
 
-## Dashboard Admin  
+
+## 📷 Screenshots Aplikasi CBT eSchool
+
+### Dashboard Admin  
 ![Dashboard Admin](https://i.imgur.com/u0IX0Zi.png)
 
-## Manajemen Soal  
+### Manajemen Soal  
 ![Manajemen Soal](https://i.imgur.com/ybX16a0.png)
 
-## Print Soal  
+### Print Soal  
 ![Print Soal](https://i.imgur.com/pxwfIUf.png)
 
-## Dashboard Siswa  
+### Dashboard Siswa  
 ![Dashboard Siswa](https://i.imgur.com/6tCz8aI.png)
 
-## Mini Games  
+### Mini Games  
 ![Mini Games](https://i.imgur.com/PjE6HHo.png)
 
-## ChatBox  
+### ChatBox  
 ![ChatBox](https://i.imgur.com/Vxb4Sor.png)
 
-## Tampilan Ujian 1  
+### Tampilan Ujian 1  
 ![Tampilan Ujian 1](https://i.imgur.com/toxWv1S.png)
 
-## Tampilan Ujian 2  
+### Tampilan Ujian 2  
 ![Tampilan Ujian 2](https://i.imgur.com/0eI7HNK.png)
-
-## ✅ Selamat Menggunakan Aplikasi CBT eSchool!
-
----
 
 © 2025 — Dikembangkan oleh **Gludug Codelite**  
 Semua hak cipta dilindungi undang-undang.
