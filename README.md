@@ -95,18 +95,15 @@ Ekstensi **GD** pada PHP digunakan untuk manipulasi gambar, seperti membuat CAPT
 ;extension=gd
 
 - Hapus tanda titik koma ; di depannya agar menjadi:
-
-    extension=gd
+extension=gd
 
 Tanda ; menandakan baris tersebut dikomentari. Menghapusnya akan mengaktifkan ekstensi.
-3. Simpan Perubahan dan Tutup File
-4. Restart Apache di XAMPP
+### 3. Simpan Perubahan dan Tutup File
+### 4. Restart Apache di XAMPP
 
-    Buka XAMPP Control Panel
-
-    Klik Stop pada Apache
-
-    Lalu klik Start lagi
+- Buka XAMPP Control Panel
+- Klik Stop pada Apache
+- Lalu klik Start lagi
     
 ...
 
