@@ -108,7 +108,8 @@ Tanda ; menandakan baris tersebut dikomentari. Menghapusnya akan mengaktifkan ek
     Klik Stop pada Apache
 
     Lalu klik Start lagi
-
+    
+---
 # Screenshots Aplikasi CBT eSchool
 
 ## Dashboard Admin  
