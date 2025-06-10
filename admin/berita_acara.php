@@ -21,6 +21,24 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Berita Acara</title>
     <?php include '../inc/css.php'; ?>
+    <style>
+    /* Style for Select2 */
+    .select2-container--default .select2-selection--multiple {
+        min-height: 70px !important;
+        border: 1px solid #ced4da !important; /* Default Bootstrap border color */
+        border-radius: 0.25rem !important; /* Bootstrap default border radius */
+        padding: 0.375rem 0.75rem !important; /* Bootstrap default padding */
+    }
+    
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        margin-top: 0.35rem !important;
+        margin-right: 0.5rem !important;
+    }
+    
+    .select2-container--default .select2-selection--multiple .select2-selection__clear {
+        margin-top: 0.5rem !important;
+    }
+</style>
 </head>
 
 <body>
@@ -93,8 +111,8 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                             <div class="col-md-12 mt-3">
                                                 <label for="pengawas" class="form-label">Nama Pengawas</label>
                                                 <textarea name="pengawas" id="pengawas" class="form-control" rows="3"
-                                                    placeholder="Pisahkan dengan baris baru jika lebih dari satu"
                                                     required></textarea>
+                                                    <small class="text-muted">Pisahkan dengan baris baru jika lebih dari satu</small>
                                             </div>
                                             <div class="col-md-3 mt-3">
                                                 <label for="jumlah_hadir" class="form-label">Jumlah Hadir</label>
@@ -106,10 +124,10 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                             </div>
                                             <div class="col-md-12 mt-3">
                                                 <label for="tidak_hadir" class="form-label">Siswa Tidak Hadir</label>
-                                                <select name="tidak_hadir[]" id="tidak_hadir" class="form-control" multiple required>
+                                                <select name="tidak_hadir[]" id="tidak_hadir" class="form-control select2" multiple="multiple" required style="width: 100%;height">
                                                     <option value="">Pilih Kelas dan Rombel Dulu</option>
                                                 </select>
-                                                <small class="text-muted">Pilih lebih dari satu siswa dengan Ctrl (Windows) / Cmd (Mac)</small>
+                                                <small class="text-muted">Pilih Kelas, rombel dan Ketik untuk mencari atau pilih beberapa siswa</small>
                                             </div>
 
                                             <div class="col-md-12 mt-3">
@@ -218,15 +236,21 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                 </tr>
                                 <tr>
                                     <td><strong>Siswa Tidak Hadir</strong></td>
-                                    <td>: <?php
-                                                                        if(count($tidak_hadir) > 0){
-                                                                            foreach($tidak_hadir as $siswa_tidak_hadir){
-                                                                                echo "$siswa_tidak_hadir, ";
-                                                                            }
-                                                                        } else {
-                                                                            echo "Tidak ada yang absen.";
-                                                                        }
-                                                                        ?></td>
+                                    <td>
+                                    <?php
+                                    if (count($tidak_hadir) > 0) {
+                                        if (count($tidak_hadir) == 1) {
+                                            // Jika hanya satu siswa, tampilkan tanpa koma
+                                            echo $tidak_hadir[0];
+                                        } else {
+                                            // Jika lebih dari satu, gabungkan dengan koma sebagai pemisah
+                                            echo implode(", ", $tidak_hadir);
+                                        }
+                                    } else {
+                                        echo "Tidak ada yang absen.";
+                                    }
+                                    ?>
+                                </td>
                                 </tr>
                             </table>
                             <div class="mt-4">
@@ -279,11 +303,20 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
             </main>
         </div>
     </div>
-
-    <?php include '../inc/js.php'; ?>
-    <script src="../assets/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
+<?php include '../inc/js.php'; ?>
+<link href="../assets/js/select2.min.css" rel="stylesheet" />
+<script src="../assets/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
+<script src="../assets/js/select2.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.select2').select2({
+        placeholder: "Pilih siswa",
+        allowClear: true
+    });
+});
+</script>
     <style>
-@media print {
+    @media print {
     @page {
         size: A4 portrait;
         margin: 0;
@@ -317,7 +350,7 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
     #canvas_div_pdf table {
     width: 100%;
     table-layout: fixed; /* Pastikan semua kolom proporsional */
-}
+    }
 
     .btn,
     .btn * {
