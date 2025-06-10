@@ -60,38 +60,16 @@ body {
     font-size: 10pt;
 }
 
-
 .kartu {
     border: 1px solid #ccc;
     padding: 8px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     font-size: 10pt;
     height: 100%;
     border-radius: 6px;
     background-color: #fdfdfd;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-}
-
-.qr {
-    width: 35%;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.qr img {
-    width: 100%;
-    max-width: 90px;
-}
-
-.info {
-    width: 65%;
-    padding-left: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .info table {
@@ -117,7 +95,6 @@ body {
         display: none;
     }
 }
-
     </style>
 </head>
 <body>
@@ -141,23 +118,50 @@ if (mysqli_num_rows($result) > 0):
             QRcode::png($row['username'], $qr_filename, QR_ECLEVEL_L, 3);
         }
 
-        ?>
-
-        <div class="kartu">
-            <div class="qr">
-                <img src="<?php echo $qr_filename; ?>" alt="QR">
-            </div>
-            <div class="info">
-                <table>
-                    <tr><th>Nama</th><td><?php echo htmlspecialchars($row['nama_siswa']); ?></td></tr>
-                    <tr><th>User</th><td><?php echo htmlspecialchars($row['username']); ?></td></tr>
-                    <tr><th>Pass</th><td><?php echo htmlspecialchars($decrypted); ?></td></tr>
-                    <tr><th>Kelas</th><td><?php echo htmlspecialchars($row['kelas'] . $row['rombel']); ?></td></tr>
-                </table>
-            </div>
+        $thn_sekarang = date('Y');
+        $thn_pelajaran = $thn_sekarang . '/' . ($thn_sekarang + 1);
+?>
+    <div class="kartu">
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 20%;">
+                <center><img src="../assets/images/kemdikbud.png" alt="Logo" style="height: 35px;"></center>
+                </td>
+                <td style="width: 80%; text-align: center; vertical-align: middle; font-size: 12px;">
+                <center><strong>KARTU PESERTA UJIAN CBT</strong><br>
+                    TAHUN PELAJARAN <?php echo $thn_pelajaran; ?></center>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <table style="width: 100%; font-size: 12px;padding:10px;">
+            <tr>
+                <td>Nama</td>
+                <td>:</td>
+                <td><?php echo htmlspecialchars($row['nama_siswa']); ?></td>
+            </tr>
+            <tr>
+                <td>Kelas</td>
+                <td>:</td>
+                <td><?php echo htmlspecialchars($row['kelas'] . $row['rombel']); ?></td>
+            </tr>
+            <tr>
+                <td>Username</td>
+                <td>:</td>
+                <td><?php echo htmlspecialchars($row['username']); ?></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>:</td>
+                <td><?php echo htmlspecialchars($decrypted); ?></td>
+            </tr>
+        </table>
+        <br>
+        <div style="text-align: right;">
+            <img src="<?php echo $qr_filename; ?>" alt="QR" style="height: 50px;">
         </div>
-
-        <?php
+    </div>
+<?php
         $counter++;
         if ($counter % 9 == 0 && $counter < mysqli_num_rows($result)) {
             echo '</div><div class="page">';
@@ -171,17 +175,6 @@ endif;
 
 <script src="../assets/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
 <script>
-    window.addEventListener("load", function () {
-        var element = document.getElementById('canvas_div_pdf');
-        html2pdf().set({
-            margin: 0.2,
-            filename: 'KartuUjianCbt.pdf',
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 2, logging: false },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-        }).from(element).save();
-    });
-
     window.addEventListener("load", function () {
         var element = document.getElementById('canvas_div_pdf');
         html2pdf().set({

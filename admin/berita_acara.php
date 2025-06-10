@@ -19,7 +19,7 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Hadir</title>
+    <title>Berita Acara</title>
     <?php include '../inc/css.php'; ?>
 </head>
 
@@ -34,7 +34,7 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                         <div class="col-12">
                             <div class="card mb-4">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5 class="card-title mb-0">Form Cetak Daftar Hadir</h5>
+                                    <h5 class="card-title mb-0">Form Cetak Berita Acara</h5>
                                     <button class="btn btn-sm btn-outline-secondary" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#formCetak" aria-expanded="false"
                                         aria-controls="formCetak">
@@ -96,6 +96,22 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                                     placeholder="Pisahkan dengan baris baru jika lebih dari satu"
                                                     required></textarea>
                                             </div>
+                                            <div class="col-md-3 mt-3">
+                                                <label for="jumlah_hadir" class="form-label">Jumlah Hadir</label>
+                                                <input type="number" name="jumlah_hadir" id="jumlah_hadir" class="form-control" required>
+                                            </div>
+                                            <div class="col-md-9 mt-3">
+                                                <label for="catatan" class="form-label">Catatan</label>
+                                                <input type="text" name="catatan" id="catatan" class="form-control">
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <label for="tidak_hadir" class="form-label">Siswa Tidak Hadir</label>
+                                                <select name="tidak_hadir[]" id="tidak_hadir" class="form-control" multiple required>
+                                                    <option value="">Pilih Kelas dan Rombel Dulu</option>
+                                                </select>
+                                                <small class="text-muted">Pilih lebih dari satu siswa dengan Ctrl (Windows) / Cmd (Mac)</small>
+                                            </div>
+
                                             <div class="col-md-12 mt-3">
                                                 <button type="submit" name="tampilkan"
                                                     class="btn btn-secondary w-100">Tampilkan</button>
@@ -114,7 +130,9 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                 $nama_sekolah = mysqli_real_escape_string($koneksi, htmlspecialchars($_POST['nama_sekolah']));
                                 $pengawas_input = trim($_POST['pengawas']);
                                 $daftar_pengawas = preg_split('/\r\n|\r|\n/', $pengawas_input, -1, PREG_SPLIT_NO_EMPTY);
-
+                                $jumlah_hadir = $_POST['jumlah_hadir'];
+                                $catatan = htmlspecialchars($_POST['catatan']);
+                                $tidak_hadir = isset($_POST['tidak_hadir']) ? $_POST['tidak_hadir'] : [];        
                                 $soalInfo = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal' LIMIT 1");
                                 $soal = mysqli_fetch_assoc($soalInfo);
 
@@ -144,7 +162,7 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
 
                                         <!-- Judul di tengah -->
                                         <td style="text-align: center;">
-                                            <h4 style="margin-bottom: 5px;text-align: center;">DAFTAR HADIR</h4>
+                                            <h4 style="margin-bottom: 5px;text-align: center;">BERITA ACARA PELAKSANAAN</h4>
                                             <h3 style="margin-bottom: 5px;text-align: center;"><?= strtoupper($nama_ujian) ?></h3>
                                             <h4 style="margin-bottom: 0;text-align: center;"><?= strtoupper($nama_sekolah) ?></h4>
                                         </td>
@@ -155,106 +173,100 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                 </table>
 
                             <hr style="border-top: 4px double black;">
-                                    <table class="table table-borderless mb-3" style="width: 100%; font-size: 12px;">
-                                        <tr>
-                                            <!-- Kolom kiri -->
-                                            <td style="width: 50%;">
-                                                <table style="width: 100%;">
-                                                    <tr>
-                                                        <td><strong>Kode Soal</strong></td>
-                                                        <td class="px-2">:</td>
-                                                        <td><?= $soal['kode_soal'] ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>Waktu Ujian</strong></td>
-                                                        <td class="px-2">:</td>
-                                                        <td><?= $soal['waktu_ujian'] ?> menit</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>Tanggal</strong></td>
-                                                        <td class="px-2">:</td>
-                                                        <td><?= $tanggal_hari_ini ?></td>
-                                                    </tr>
-                                                </table>
-                                            </td>
+                            <?php
+                                // Mendapatkan informasi tanggal hari ini
+                                $hariArray = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+                                $bulanArray = [
+                                    '01'=>'Januari','02'=>'Februari','03'=>'Maret','04'=>'April','05'=>'Mei','06'=>'Juni',
+                                    '07'=>'Juli','08'=>'Agustus','09'=>'September','10'=>'Oktober','11'=>'November','12'=>'Desember'
+                                ];
 
-                                            <!-- Kolom kanan -->
-                                            <td style="width: 50%; text-align: right;">
-                                                <table style="width: 100%;">
-                                                    <tr>
-                                                        <td style="text-align: right;"><strong>Mata Pelajaran</strong>
-                                                        </td>
-                                                        <td class="px-2 text-end">:</td>
-                                                        <td class="text-end"><?= $soal['mapel'] ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="text-align: right;"><strong>Kelas / Rombel</strong>
-                                                        </td>
-                                                        <td class="px-2 text-end">:</td>
-                                                        <td class="text-end"><?= $kelas ?> / <?= $rombel ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="3">&nbsp;</td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                $hariIni = $hariArray[date('w')]; // 0 = Minggu, 6 = Sabtu
+                                $tanggal = date('d');
+                                $bulan = $bulanArray[date('m')];
+                                $tahun = date('Y');
+                            ?>
+                            <p style="text-align: justify; font-size: 13px;padding:10px;">
+                                Pada hari ini, <strong><?= $hariIni ?></strong> tanggal <strong><?= $tanggal ?></strong> bulan <strong><?= $bulan ?></strong> tahun <strong><?= $tahun ?></strong>, 
+                                di <strong><?= strtoupper($nama_sekolah) ?></strong>, telah diselenggarakan <strong><?= strtoupper($nama_ujian) ?></strong> untuk mata pelajaran 
+                                <strong><?= strtoupper($soal['mapel']) ?></strong> dengan kode soal <strong><?= $soal['kode_soal'] ?></strong>.
+                            </p>
+                            <table class="table table-bordered mb-3" style="width: 100%; font-size: 12px; border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 30%;"><strong>Kode Soal</strong></td>
+                                    <td>: <?= $soal['kode_soal'] ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Waktu Ujian</strong></td>
+                                    <td>: <?= $soal['waktu_ujian'] ?> menit</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tanggal</strong></td>
+                                    <td>: <?= $tanggal_hari_ini ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mata Pelajaran</strong></td>
+                                    <td>: <?= $soal['mapel'] ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Kelas / Rombel</strong></td>
+                                    <td>: <?= $kelas ?> / <?= $rombel ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Jumlah Hadir</strong></td>
+                                    <td>: <?= $jumlah_hadir ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Siswa Tidak Hadir</strong></td>
+                                    <td>: <?php
+                                                                        if(count($tidak_hadir) > 0){
+                                                                            foreach($tidak_hadir as $siswa_tidak_hadir){
+                                                                                echo "$siswa_tidak_hadir, ";
+                                                                            }
+                                                                        } else {
+                                                                            echo "Tidak ada yang absen.";
+                                                                        }
+                                                                        ?></td>
+                                </tr>
+                            </table>
+                            <div class="mt-4">
+                            <h6><strong>Catatan :</strong></h6>
+                             <table class="table table-bordered" style="width: 100%;border-collapse: collapse;">
+                                <tr>
+                                    <td style="text-align: center;height:100px;">
+                                        <?= nl2br($catatan) ?>
+                                    </td>
+                                </tr>
+                            </table>
+                                    </div>
 
-                                    <table class="table table-bordered mt-2">
-                                        <thead class="table-dark">
-                                            <tr>
-                                                <th style="width: 5%;">No</th>
-                                                <th>Nama Siswa</th>
-                                                <th>Username</th>
-                                                <th>Kelas</th>
-                                                <th style="width: 25%;">Tanda Tangan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $no = 1;
-                                            while ($siswa = mysqli_fetch_assoc($siswaQuery)) {
-                                                echo "<tr>
-                                                        <td>{$no}</td>
-                                                        <td>{$siswa['nama_siswa']}</td>
-                                                        <td>{$siswa['username']}</td>
-                                                        <td>{$siswa['kelas']}{$siswa['rombel']}</td>
-                                                        <td>{$no}.</td>
-                                                    </tr>";
-                                                $no++;
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
 
                                     <!-- TAMPILKAN DAFTAR PENGAWAS DENGAN KOLOM TANDA TANGAN -->
                                     <div class="mt-5">
                                         <h6><strong>Pengawas Ujian:</strong></h6>
                                         <table class="table table-bordered" style="width: 100%;">
-    <?php
-    $totalPengawas = count($daftar_pengawas);
-    for ($i = 0; $i < $totalPengawas; $i += 2) {
-        echo "<tr>";
-        // Kolom pertama
-        echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
-                <div>" . htmlspecialchars($daftar_pengawas[$i]) . "</div>
-                <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
-              </td>";
-        // Kolom kedua (jika ada)
-        if (isset($daftar_pengawas[$i + 1])) {
-            echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
-                    <div>" . htmlspecialchars($daftar_pengawas[$i + 1]) . "</div>
-                    <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
-                  </td>";
-        } else {
-            echo "<td></td>";
-        }
-        echo "</tr>";
-    }
-    ?>
-</table>
-
+                                            <?php
+                                            $totalPengawas = count($daftar_pengawas);
+                                            for ($i = 0; $i < $totalPengawas; $i += 2) {
+                                                echo "<tr>";
+                                                // Kolom pertama
+                                                echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
+                                                        <div>{$daftar_pengawas[$i]}</div>
+                                                        <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
+                                                    </td>";
+                                                // Kolom kedua (jika ada)
+                                                if (isset($daftar_pengawas[$i + 1])) {
+                                                    echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
+                                                            <div>{$daftar_pengawas[$i + 1]}</div>
+                                                            <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
+                                                        </td>";
+                                                } else {
+                                                    echo "<td></td>";
+                                                }
+                                                echo "</tr>";
+                                            }
+                                            ?>
+                                        </table>
                                     </div>
                                     <br><br>
                                    <p class="text-center" id="encr" style="font-size:11px;color:grey;"></p>             
@@ -271,23 +283,28 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
     <?php include '../inc/js.php'; ?>
     <script src="../assets/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
     <style>
-    @media print {
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
 
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-        }
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+    }
 
-        body * {
-            visibility: hidden !important;
-        }
+    body * {
+        visibility: hidden !important;
+    }
 
-        #canvas_div_pdf,
-        #canvas_div_pdf * {
-            visibility: visible !important;
-        }
-        #canvas_div_pdf {
+    #canvas_div_pdf,
+    #canvas_div_pdf * {
+        visibility: visible !important;
+    }
+
+    #canvas_div_pdf {
         width: 7.5in !important; /* Kunci ke 7.5in */
         padding: 0.2in !important;
         box-sizing: border-box !important;
@@ -302,25 +319,22 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
     table-layout: fixed; /* Pastikan semua kolom proporsional */
 }
 
-#canvas_div_pdf td, #canvas_div_pdf th {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-        .btn,
-        .btn * {
-            display: none !important;
-        }
-
-        .card,
-        .card-body {
-            box-shadow: none !important;
-            border: none !important;
-        }
-        .card-header { /* Tambahan penting */
+    .btn,
+    .btn * {
         display: none !important;
-        }
     }
-    </style>
+
+    .card,
+    .card-body {
+        box-shadow: none !important;
+        border: none !important;
+    }
+    .card-header { /* Tambahan penting */
+        display: none !important;
+    }
+}
+</style>
+
     <script>
     function printDiv() {
         window.print();
@@ -351,13 +365,35 @@ function exportPDF() {
     function generatePDF() {
         html2pdf().set({
             margin: [0.1, 0.5, 0.5, 0.5], // top, left, bottom, right in inches
-            filename: 'DaftarHadir_' + '<?= $kode_soal ?>' + '_<?= $kelas . $rombel ?>.pdf',
+            filename: 'BeritaAcara_' + '<?= $kode_soal ?>' + '_<?= $kelas . $rombel ?>.pdf',
             image: { type: 'jpeg', quality: 1 },
             html2canvas: { scale: 2, logging: true },
             jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
         }).from(element).save();
     }
 }
+</script>
+<script>
+$(document).ready(function(){
+    function loadSiswa() {
+        var kelas = $("#kelas").val();
+        var rombel = $("#rombel").val();
+        if(kelas !== "" && rombel !== ""){
+            $.ajax({
+                url: "get_siswa.php",
+                type: "POST",
+                data: {kelas: kelas, rombel: rombel},
+                success: function(data){
+                    $("#tidak_hadir").html(data);
+                }
+            });
+        }
+    }
+
+    $("#kelas, #rombel").change(function(){
+        loadSiswa();
+    });
+});
 </script>
 
 </body>
