@@ -269,7 +269,7 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                         </table>
                                     </div>
                                     <br><br>
-                                   <p class="text-center" id="encr" style="font-size:11px;color:grey;"></p>             
+                                   <p class="text-center" id="encr" style="font-size:9px;color:grey;"></p>             
                                 </div>
                             </div>
                             <?php endif; ?>
@@ -364,7 +364,7 @@ function exportPDF() {
 
     function generatePDF() {
         html2pdf().set({
-            margin: [0.1, 0.5, 0.5, 0.5], // top, left, bottom, right in inches
+            margin: [0.3, 0.5, 0.5, 0.5], // top, left, bottom, right in inches
             filename: 'BeritaAcara_' + '<?= $kode_soal ?>' + '_<?= $kelas . $rombel ?>.pdf',
             image: { type: 'jpeg', quality: 1 },
             html2canvas: { scale: 2, logging: true },

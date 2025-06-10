@@ -135,26 +135,28 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
 
                                 <div class="card-body" id="canvas_div_pdf">
 
-                                <table style="width: 100%; margin-bottom: 10px; border-collapse: collapse;">
-                                    <tr>
-                                        <!-- Logo di kiri -->
-                                        <td style="width: 80px; vertical-align: middle;">
-                                        <img src="<?= $logoSrc ?>" alt="Logo" style="height: 60px;">
-                                        </td>
+                                    <table style="width: 100%; margin-bottom: 10px; border-collapse: collapse;">
+                                        <tr>
+                                            <!-- Logo di kiri -->
+                                            <td style="width: 80px; vertical-align: middle;">
+                                                <img src="<?= $logoSrc ?>" alt="Logo" style="height: 60px;">
+                                            </td>
 
-                                        <!-- Judul di tengah -->
-                                        <td style="text-align: center;">
-                                            <h4 style="margin-bottom: 5px;text-align: center;">DAFTAR HADIR</h4>
-                                            <h3 style="margin-bottom: 5px;text-align: center;"><?= strtoupper($nama_ujian) ?></h3>
-                                            <h4 style="margin-bottom: 0;text-align: center;"><?= strtoupper($nama_sekolah) ?></h4>
-                                        </td>
+                                            <!-- Judul di tengah -->
+                                            <td style="text-align: center;">
+                                                <h4 style="margin-bottom: 5px;text-align: center;">DAFTAR HADIR</h4>
+                                                <h3 style="margin-bottom: 5px;text-align: center;">
+                                                    <?= strtoupper($nama_ujian) ?></h3>
+                                                <h4 style="margin-bottom: 0;text-align: center;">
+                                                    <?= strtoupper($nama_sekolah) ?></h4>
+                                            </td>
 
-                                        <!-- Kolom kanan kosong untuk keseimbangan -->
-                                        <td style="width: 80px;"></td>
-                                    </tr>
-                                </table>
+                                            <!-- Kolom kanan kosong untuk keseimbangan -->
+                                            <td style="width: 80px;"></td>
+                                        </tr>
+                                    </table>
 
-                            <hr style="border-top: 4px double black;">
+                                    <hr style="border-top: 4px double black;">
                                     <table class="table table-borderless mb-3" style="width: 100%; font-size: 12px;">
                                         <tr>
                                             <!-- Kolom kiri -->
@@ -232,32 +234,32 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                     <div class="mt-5">
                                         <h6><strong>Pengawas Ujian:</strong></h6>
                                         <table class="table table-bordered" style="width: 100%;">
-    <?php
-    $totalPengawas = count($daftar_pengawas);
-    for ($i = 0; $i < $totalPengawas; $i += 2) {
-        echo "<tr>";
-        // Kolom pertama
-        echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
-                <div>" . htmlspecialchars($daftar_pengawas[$i]) . "</div>
-                <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
-              </td>";
-        // Kolom kedua (jika ada)
-        if (isset($daftar_pengawas[$i + 1])) {
-            echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
-                    <div>" . htmlspecialchars($daftar_pengawas[$i + 1]) . "</div>
-                    <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
-                  </td>";
-        } else {
-            echo "<td></td>";
-        }
-        echo "</tr>";
-    }
-    ?>
-</table>
+                                            <?php
+                                                $totalPengawas = count($daftar_pengawas);
+                                                for ($i = 0; $i < $totalPengawas; $i += 2) {
+                                                    echo "<tr>";
+                                                    // Kolom pertama
+                                                    echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
+                                                            <div>" . htmlspecialchars($daftar_pengawas[$i]) . "</div>
+                                                            <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
+                                                        </td>";
+                                                    // Kolom kedua (jika ada)
+                                                    if (isset($daftar_pengawas[$i + 1])) {
+                                                        echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
+                                                                <div>" . htmlspecialchars($daftar_pengawas[$i + 1]) . "</div>
+                                                                <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
+                                                            </td>";
+                                                    } else {
+                                                        echo "<td></td>";
+                                                    }
+                                                    echo "</tr>";
+                                                }
+                                                ?>
+                                        </table>
 
                                     </div>
                                     <br><br>
-                                   <p class="text-center" id="encr" style="font-size:11px;color:grey;"></p>             
+                                    <p class="text-center" id="encr" style="font-size:9px;color:grey;"></p>
                                 </div>
                             </div>
                             <?php endif; ?>
@@ -287,25 +289,31 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
         #canvas_div_pdf * {
             visibility: visible !important;
         }
-        #canvas_div_pdf {
-        width: 7.5in !important; /* Kunci ke 7.5in */
-        padding: 0.2in !important;
-        box-sizing: border-box !important;
-        position: absolute;
-        top: 0;
-        left: 0;
-        min-height: 100vh;
-        margin: 0 !important;
-    }
-    #canvas_div_pdf table {
-    width: 100%;
-    table-layout: fixed; /* Pastikan semua kolom proporsional */
-}
 
-#canvas_div_pdf td, #canvas_div_pdf th {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
+        #canvas_div_pdf {
+            width: 7.5in !important;
+            /* Kunci ke 7.5in */
+            padding: 0.2in !important;
+            box-sizing: border-box !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-height: 100vh;
+            margin: 0 !important;
+        }
+
+        #canvas_div_pdf table {
+            width: 100%;
+            table-layout: fixed;
+            /* Pastikan semua kolom proporsional */
+        }
+
+        #canvas_div_pdf td,
+        #canvas_div_pdf th {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
         .btn,
         .btn * {
             display: none !important;
@@ -316,8 +324,10 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
             box-shadow: none !important;
             border: none !important;
         }
-        .card-header { /* Tambahan penting */
-        display: none !important;
+
+        .card-header {
+            /* Tambahan penting */
+            display: none !important;
         }
     }
     </style>
@@ -327,38 +337,48 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
     }
     </script>
     <script>
-function exportPDF() {
-    var element = document.getElementById('canvas_div_pdf');
-    var images = element.getElementsByTagName('img');
-    var totalImages = images.length;
-    var imagesLoaded = 0;
+    function exportPDF() {
+        var element = document.getElementById('canvas_div_pdf');
+        var images = element.getElementsByTagName('img');
+        var totalImages = images.length;
+        var imagesLoaded = 0;
 
-    if (totalImages === 0) generatePDF();
-    else {
-        for (var i = 0; i < totalImages; i++) {
-            if (images[i].complete) {
-                imagesLoaded++;
-                if (imagesLoaded === totalImages) generatePDF();
-            } else {
-                images[i].addEventListener('load', function () {
+        if (totalImages === 0) generatePDF();
+        else {
+            for (var i = 0; i < totalImages; i++) {
+                if (images[i].complete) {
                     imagesLoaded++;
                     if (imagesLoaded === totalImages) generatePDF();
-                });
+                } else {
+                    images[i].addEventListener('load', function() {
+                        imagesLoaded++;
+                        if (imagesLoaded === totalImages) generatePDF();
+                    });
+                }
             }
         }
-    }
 
-    function generatePDF() {
-        html2pdf().set({
-            margin: [0.1, 0.5, 0.5, 0.5], // top, left, bottom, right in inches
-            filename: 'DaftarHadir_' + '<?= $kode_soal ?>' + '_<?= $kelas . $rombel ?>.pdf',
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 2, logging: true },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-        }).from(element).save();
+        function generatePDF() {
+            html2pdf().set({
+                margin: [0.3, 0.5, 0.5, 0.5], // top, left, bottom, right in inches
+                filename: 'DaftarHadir_' + '<?= $kode_soal ?>' + '_<?= $kelas . $rombel ?>.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 1
+                },
+                html2canvas: {
+                    scale: 2,
+                    logging: true
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
+            }).from(element).save();
+        }
     }
-}
-</script>
+    </script>
 
 </body>
 
