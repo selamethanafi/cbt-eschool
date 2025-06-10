@@ -114,41 +114,49 @@ if (!$koneksi) {
                                             if (!file_exists($qr_filename)) {
                                                 QRcode::png($row['username'], $qr_filename, QR_ECLEVEL_L, 3);
                                             }
+                                            $thn_sekarang = date('Y');
+                                            $thn_pelajaran = $thn_sekarang . '/' . ($thn_sekarang + 1);
                                         ?>
                                         <div class="col-lg-4 col-md-6 mb-4">
-                                            <div class="border p-3 h-100 kartu">
-                                                <div class="row">
-                                                    <div class="col-4 text-center">
-                                                        <img src="<?php echo $qr_filename; ?>" alt="QR"
-                                                            style="width: 100%;">
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <table class="table table-sm mb-0">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th style="height:60px; vertical-align: middle;"
-                                                                        scope="row">Nama</th>
-                                                                    <td style="height:60px;">
-                                                                        <?php echo htmlspecialchars($row['nama_siswa']); ?>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">Username</th>
-                                                                    <td><?php echo htmlspecialchars($row['username']); ?>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">Password</th>
-                                                                    <td><?php echo htmlspecialchars($decrypted); ?></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row">Kelas</th>
-                                                                    <td><?php echo htmlspecialchars($row['kelas'] . $row['rombel']); ?>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                            <div class="p-3 h-100 kartu" style="border:1px solid #000;">
+                                                <table style="width: 100%;">
+                                                    <tr>
+                                                        <td style="width: 20%;">
+                                                        <center><img src="../assets/images/kemdikbud.png" alt="Logo" style="height: 35px;"></center>
+                                                        </td>
+                                                        <td style="width: 80%; text-align: right; font-size: 12px;">
+                                                            <center><strong>KARTU PESERTA UJIAN CBT</strong><br>
+                                                            TAHUN PELAJARAN <?php echo $thn_pelajaran; ?></center>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <br>
+                                                <table style="width: 100%; font-size: 12px;padding:10px;">
+
+                                                    <tr>
+                                                        <td>Nama</td>
+                                                        <td>:</td>
+                                                        <td><?php echo htmlspecialchars($row['nama_siswa']); ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kelas</td>
+                                                        <td>:</td>
+                                                        <td><?php echo htmlspecialchars($row['kelas'] . $row['rombel']); ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width: 35%;">Username</td>
+                                                        <td style="width: 5%;">:</td>
+                                                        <td><?php echo htmlspecialchars($row['username']); ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Password</td>
+                                                        <td>:</td>
+                                                        <td><?php echo htmlspecialchars($decrypted); ?></td>
+                                                    </tr>
+                                                </table>
+                                                <br>
+                                                <div style="text-align: right;">
+                                                    <img src="<?php echo $qr_filename; ?>" alt="QR" style="height: 50px;">
                                                 </div>
                                             </div>
                                         </div>

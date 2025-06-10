@@ -112,8 +112,8 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                 $rombel = mysqli_real_escape_string($koneksi, $_POST['rombel']);
                                 $nama_ujian = mysqli_real_escape_string($koneksi, htmlspecialchars($_POST['nama_ujian']));
                                 $nama_sekolah = mysqli_real_escape_string($koneksi, htmlspecialchars($_POST['nama_sekolah']));
-                                $pengawas_input = mysqli_real_escape_string($koneksi, trim($_POST['pengawas']));
-                                $daftar_pengawas = explode("\n", $pengawas_input);
+                                $pengawas_input = trim($_POST['pengawas']);
+                                $daftar_pengawas = preg_split('/\r\n|\r|\n/', $pengawas_input, -1, PREG_SPLIT_NO_EMPTY);
 
                                 $soalInfo = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal' LIMIT 1");
                                 $soal = mysqli_fetch_assoc($soalInfo);
@@ -232,28 +232,29 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                     <div class="mt-5">
                                         <h6><strong>Pengawas Ujian:</strong></h6>
                                         <table class="table table-bordered" style="width: 100%;">
-                                            <?php
-                                            $totalPengawas = count($daftar_pengawas);
-                                            for ($i = 0; $i < $totalPengawas; $i += 2) {
-                                                echo "<tr>";
-                                                // Kolom pertama
-                                                echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
-                                                        <div>{$daftar_pengawas[$i]}</div>
-                                                        <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
-                                                    </td>";
-                                                // Kolom kedua (jika ada)
-                                                if (isset($daftar_pengawas[$i + 1])) {
-                                                    echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
-                                                            <div>{$daftar_pengawas[$i + 1]}</div>
-                                                            <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
-                                                        </td>";
-                                                } else {
-                                                    echo "<td></td>";
-                                                }
-                                                echo "</tr>";
-                                            }
-                                            ?>
-                                        </table>
+    <?php
+    $totalPengawas = count($daftar_pengawas);
+    for ($i = 0; $i < $totalPengawas; $i += 2) {
+        echo "<tr>";
+        // Kolom pertama
+        echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
+                <div>" . htmlspecialchars($daftar_pengawas[$i]) . "</div>
+                <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
+              </td>";
+        // Kolom kedua (jika ada)
+        if (isset($daftar_pengawas[$i + 1])) {
+            echo "<td style='height: 80px; width: 50%; vertical-align: bottom;'>
+                    <div>" . htmlspecialchars($daftar_pengawas[$i + 1]) . "</div>
+                    <div style='margin-top: 40px;'>Tanda Tangan: ...................</div>
+                  </td>";
+        } else {
+            echo "<td></td>";
+        }
+        echo "</tr>";
+    }
+    ?>
+</table>
+
                                     </div>
                                     <br><br>
                                    <p class="text-center" id="encr" style="font-size:11px;color:grey;"></p>             
