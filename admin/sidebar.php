@@ -20,7 +20,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <?= ($currentPage == 'tambah_soal.php') ? 'active' : '' ?> <?= ($currentPage == 'edit_butir_soal.php') ? 'active' : '' ?> 
                         <?= ($currentPage == 'tambah_butir_soal.php') ? 'active' : '' ?> <?= ($currentPage == 'preview_soal.php') ? 'active' : '' ?> 
                         <?= ($currentPage == 'daftar_butir_soal.php') ? 'active' : '' ?> <?= ($currentPage == 'upload-gambar.php') ? 'active' : '' ?> 
-                        <?= ($currentPage == 'kartu_siswa.php') ? 'active' : '' ?> <?= ($currentPage == 'daftar_hadir.php') ? 'active' : '' ?>">
+                        <?= ($currentPage == 'kartu_siswa.php') ? 'active' : '' ?> <?= ($currentPage == 'daftar_hadir.php') ? 'active' : '' ?>
+                        <?= ($currentPage == 'berita_acara.php') ? 'active' : '' ?>">
                     <a data-bs-toggle="collapse" href="#soal" class="sidebar-link collapsed">
                         <i class="align-middle fa fa-file"></i> <span class="align-middle">Manajemen Ujian </span><i class="fa fa-chevron-down ms-auto float-end"></i>
                     </a>
@@ -43,6 +44,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <li class="sidebar-item submenu">
                             <a class="sidebar-link" href="daftar_hadir.php">
                                 <i class="align-middle fa fa-print"></i> <span class="align-middle">Cetak Daftar Hadir</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item submenu">
+                            <a class="sidebar-link" href="berita_acara.php">
+                                <i class="align-middle fa fa-print"></i> <span class="align-middle">Cetak Berita Acara</span>
                             </a>
                         </li>
                     </ul>
