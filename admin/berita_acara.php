@@ -124,7 +124,7 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                             </div>
                                             <div class="col-md-12 mt-3">
                                                 <label for="tidak_hadir" class="form-label">Siswa Tidak Hadir</label>
-                                                <select name="tidak_hadir[]" id="tidak_hadir" class="form-control select2" multiple="multiple" required style="width: 100%;height">
+                                                <select name="tidak_hadir[]" id="tidak_hadir" class="form-control select2" multiple="multiple" style="width: 100%;height">
                                                     <option value="">Pilih Kelas dan Rombel Dulu</option>
                                                 </select>
                                                 <small class="text-muted">Pilih Kelas, rombel dan Ketik untuk mencari atau pilih beberapa siswa</small>
@@ -247,7 +247,7 @@ $logoSrc = 'data:image/png;base64,' . $logoData;
                                             echo implode(", ", $tidak_hadir);
                                         }
                                     } else {
-                                        echo "Tidak ada yang absen.";
+                                        echo "Tidak ada.";
                                     }
                                     ?>
                                 </td>
