@@ -149,7 +149,7 @@ include '../inc/dataadmin.php';
       extend: 'excelHtml5',
       title: 'Daftar Siswa',
       exportOptions: {
-        columns: [1, 2, 3, 4] // Tanpa ID, Password, dan Aksi
+        columns: [1, 2, 3, 4, 5] 
       }
     }
   ]
