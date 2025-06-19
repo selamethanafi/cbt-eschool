@@ -170,7 +170,7 @@ CREATE TABLE `pengaturan` (
 --
 
 INSERT INTO `pengaturan` (`id`, `nama_aplikasi`, `logo_sekolah`, `warna_tema`, `waktu_sinkronisasi`, `sembunyikan_nilai`, `login_ganda`, `chat`, `versi_aplikasi`) VALUES
-(1, 'CBT-Eschool', 'logo_1747650742.png', '#2f90c1', 60, 0, 'izinkan', 'izinkan', '1.1.1');
+(1, 'CBT-Eschool', 'logo_1747650742.png', '#2f90c1', 60, 0, 'izinkan', 'izinkan', '1.1.5');
 
 -- --------------------------------------------------------
 
