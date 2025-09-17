@@ -15,7 +15,7 @@ function allBenarSalah($arr) {
 
 // Ambil data POST
 $kode_soal = mysqli_real_escape_string($koneksi, $_POST['kode_soal'] ?? '');
-$waktu_sisa = round(((int)($_POST['waktu_sisa'] ?? 0)) / 60);
+$waktu_sisa = ceil(((int)($_POST['waktu_sisa'] ?? 0)) / 60);
 $jawaban = $_POST['jawaban'] ?? [];
 $soal_kiri = $_POST['soal_kiri'] ?? [];
 

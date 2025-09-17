@@ -70,9 +70,14 @@ if (mysqli_num_rows($q_nilai) > 0) {
 
 // Get remaining time and answers
 $waktu_sisa = 0;
-$get_waktu = mysqli_query($koneksi, "SELECT waktu_sisa, jawaban_siswa FROM jawaban_siswa WHERE kode_soal='$kode_soal' AND id_siswa='$id_siswa'");
+$get_waktu = mysqli_query($koneksi, 
+    "SELECT waktu_sisa, jawaban_siswa 
+     FROM jawaban_siswa 
+     WHERE kode_soal='$kode_soal' AND id_siswa='$id_siswa'");
 $jawaban_tersimpan = [];
+
 if ($w = mysqli_fetch_assoc($get_waktu)) {
+    // Sudah pernah mulai → pakai waktu yang tersimpan
     $waktu_sisa = (int) $w['waktu_sisa'];
     $string_jawaban = $w['jawaban_siswa'];
     preg_match_all('/\[(\d+):([^\]]+)\]/', $string_jawaban, $matches, PREG_SET_ORDER);
@@ -104,7 +109,16 @@ if ($w = mysqli_fetch_assoc($get_waktu)) {
             $jawaban_tersimpan[$nomor] = $jawab;
         }
     }
+
+} else {
+    // ⚠️ Tambahan: pertama kali mulai → ambil waktu dari soal
+    $waktu_sisa = (int)$data_soal['waktu_ujian']; // MENIT
+    // Buat baris jawaban_siswa supaya nanti bisa diupdate
+    mysqli_query($koneksi, 
+        "INSERT INTO jawaban_siswa (id_siswa, kode_soal, waktu_sisa, status_ujian, jawaban_siswa)
+         VALUES ('$id_siswa', '$kode_soal', '$waktu_sisa', 'Aktif', '')");
 }
+
 
 $stmt = $koneksi->prepare("UPDATE jawaban_siswa SET status_ujian = 'Aktif' WHERE id_siswa = ? AND kode_soal = ?");
 if (!$stmt) {

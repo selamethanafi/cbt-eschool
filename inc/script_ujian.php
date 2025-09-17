@@ -1,6 +1,6 @@
     <script>
 // Timer Logic
-let waktu = <?= $waktu_sisa > 0 ? ($waktu_sisa * 60) : 3600 ?>;
+let waktu = <?= max(1, (int)$waktu_sisa) ?> * 60; // waktu_sisa menit -> detik
 let soalAktif = 0;
 const totalSoal = <?= count($soal) ?>;
 

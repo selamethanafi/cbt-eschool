@@ -452,9 +452,16 @@ body {
 main.content {
     flex: 1;
     overflow-y: auto;
-    padding-bottom: 20px;
-    margin-bottom: 120px;
+    padding-bottom: 120px; /* sebelumnya 20px */
+    margin-bottom: 0; /* hilangkan margin agar tidak dobel spacing */
 }
+
+@media (max-width: 768px) {
+    main.content {
+        padding-bottom: 160px; /* extra space di HP agar tombol tidak ketutupan */
+    }
+}
+
 
 /* Loading Spinner Styles */
 #loadingOverlay {
