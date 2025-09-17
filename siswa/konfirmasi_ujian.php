@@ -130,17 +130,19 @@ $_SESSION['konfirmasi_ujian'] = true;
             flex-direction: column;
             height: 100vh;
         }
-        main.content {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 20px;
-        }
-        main.content {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 20px;
-            margin-bottom: 120px;
-        }
+       main.content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 220px; /* beri ruang sebesar tinggi footer */
+    margin-bottom: 0; /* hapus margin agar tidak dobel spacing */
+}
+
+/* Tambahkan media query agar lebih lega di HP */
+@media (max-width: 768px) {
+    main.content {
+        padding-bottom: 260px; /* beri ruang ekstra di HP */
+    }
+}
 </style>
 </head>
 <body>
