@@ -163,6 +163,10 @@ include '../inc/dataadmin.php';
                                     <button type="button" class="btn btn-outline-secondary" id="btnCekUpdate">
                                         <i class="fas fa-sync-alt"></i> Cek Update
                                     </button>
+                                     <!-- Tambahkan setelah tombol Cek Update -->
+                                    <button type="button" class="btn btn-outline-info" id="btnLihatLog">
+                                        <i class="fas fa-clipboard-list"></i> Lihat Log Update
+                                    </button>
                                 </div>
                                 <div id="hasilUpdate" class="form-text text-muted mt-2"></div>
                                 </form>
@@ -173,6 +177,20 @@ include '../inc/dataadmin.php';
 
         </div>
         </main>
+<!-- Modal untuk log update -->
+<div class="modal fade" id="logModal" tabindex="-1" aria-labelledby="logModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="logModalLabel" style="color:white;">Riwayat Update</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="font-family: monospace; white-space: pre-wrap;">
+        Memuat log...
+      </div>
+    </div>
+  </div>
+</div>
 
     </div>
     </div>
@@ -388,6 +406,22 @@ include '../inc/dataadmin.php';
             b.classList.add('border');
         });
     });
+    
+    document.getElementById('btnLihatLog').addEventListener('click', function() {
+    fetch('lihat_update_log.php')
+        .then(res => res.text())
+        .then(data => {
+            document.querySelector('#logModal .modal-body').textContent = data || 'Belum ada log update.';
+            var modal = new bootstrap.Modal(document.getElementById('logModal'));
+            modal.show();
+        })
+        .catch(() => {
+            document.querySelector('#logModal .modal-body').textContent = 'Gagal memuat log.';
+            var modal = new bootstrap.Modal(document.getElementById('logModal'));
+            modal.show();
+        });
+});
+
     </script>
 </body>
 

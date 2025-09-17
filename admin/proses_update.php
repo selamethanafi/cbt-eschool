@@ -64,17 +64,14 @@ file_put_contents($tmp_zip, file_get_contents($url));
 // Ekstrak file ZIP
 $zip = new ZipArchive();
 if ($zip->open($tmp_zip) === TRUE) {
-    // Buat folder ekstrak jika belum ada
     if (!is_dir($folder_extract)) {
         mkdir($folder_extract, 0755, true);
     }
-    
-    // Ekstrak semua file
+
     $zip->extractTo($folder_extract);
     $zip->close();
-    unlink($tmp_zip); // Hapus file zip setelah diekstrak
+    unlink($tmp_zip);
 
-    // Cari folder utama dalam ekstrak
     $folders = array_diff(scandir($folder_extract), ['.', '..']);
     $source_folder = null;
     
@@ -86,23 +83,25 @@ if ($zip->open($tmp_zip) === TRUE) {
     }
 
     if ($source_folder) {
-        // Salin semua file rekursif ke root aplikasi
         copyRecursive($source_folder, $root_path);
-        
-        // Perbaiki permission jika perlu
-        // shell_exec("chmod -R 755 " . escapeshellarg($root_path));
-        
-        // Hapus folder temporary
         hapusFolder($folder_extract);
-        
-        // Update versi di database
-        mysqli_query($koneksi, "UPDATE pengaturan SET versi_aplikasi = '$versi_baru' WHERE id = 1");
-        
+
+        // 🔐 Escape versi sebelum update database
+        $versi_baru_safe = mysqli_real_escape_string($koneksi, $versi_baru);
+        mysqli_query($koneksi, "UPDATE pengaturan SET versi_aplikasi = '$versi_baru_safe' WHERE id = 1");
+
+        // 📝 Log setiap update (disimpan di file update_log.txt)
+        file_put_contents(
+            __DIR__ . '/update_log.txt',
+            "[" . date('Y-m-d H:i:s') . "] Update berhasil → versi baru: $versi_baru_safe\n",
+            FILE_APPEND
+        );
+
         echo json_encode(['success' => true]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Struktur folder update tidak valid']);
     }
 } else {
-    unlink($tmp_zip);
+    @unlink($tmp_zip);
     echo json_encode(['success' => false, 'message' => 'Gagal ekstrak file ZIP']);
 }
