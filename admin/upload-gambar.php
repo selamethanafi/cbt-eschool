@@ -62,7 +62,7 @@ include '../inc/dataadmin.php';
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $directory = "../gambar/";
+                                                $directory = "../gambar/".$id_saya."/";
                                                 $files = array_diff(scandir($directory), array('..', '.'));
                                                 $validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
@@ -91,10 +91,10 @@ include '../inc/dataadmin.php';
                                                         <tr>
                                                             <td><input type="checkbox" class="checkbox-delete" name="delete_files[]" value="<?= $image ?>"></td>
                                                             <td><?= $image ?></td>
-                                                            <td><a href="../gambar/<?= $image ?>" target="_blank"><img src="../gambar/<?= $image ?>" width="100" alt="<?= $image ?>"></a></td>
+                                                            <td><a href="../gambar/<?php echo $id_saya.'/'.$image ?>" target="_blank"><img src="../gambar/<?php echo $id_saya.'/'.$image ?>" width="100" alt="<?= $image ?>"></a></td>
                                                             <td>
                                                                 <button class="btn btn-outline-secondary copy-btn" data-target="imgTag<?= md5($image) ?>">Copy <i class="fa fa-copy"></i></button>
-                                                                <code id="imgTag<?= md5($image) ?>" style="display: none;">&lt;img src="../gambar/<?= $image ?>"&gt;</code>
+                                                                <code id="imgTag<?= md5($image) ?>" style="display: none;">&lt;img src="../gambar/<?php echo $id_saya.'/'.$image ?>"&gt;</code>
                                                             </td>
                                                             <td><?= $fileSizeFormatted ?></td>
                                                             <td><?= $uploadDate ?></td>
@@ -276,3 +276,4 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
 </script>
 </body>
 </html>
+

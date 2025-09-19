@@ -8,7 +8,6 @@ if (empty($_GET['kode_soal']) || empty($_GET['nomer_baru'])) {
     header("Location: soal.php"); // Ganti dengan URL halaman yang sesuai
     exit();
 }
-$user_id = $_SESSION['admin_id'];
 $kode_soal = $_GET['kode_soal'];
 $nomer_baru = $_GET['nomer_baru'];
 

@@ -9,7 +9,7 @@ $query = "
         s.id_soal, s.kode_soal, s.nama_soal, s.mapel, s.kelas, s.tampilan_soal, s.status, s.tanggal, s.waktu_ujian, s.token,
         COUNT(b.id_soal) AS jumlah_butir
     FROM soal s
-    LEFT JOIN butir_soal b ON s.kode_soal = b.kode_soal
+    LEFT JOIN butir_soal b ON s.kode_soal = b.kode_soal where user_id = $id_saya
     GROUP BY s.id_soal, s.kode_soal, s.nama_soal, s.mapel, s.kelas, s.status,  s.tanggal, s.waktu_ujian, s.token
 ";
 

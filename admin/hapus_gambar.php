@@ -1,13 +1,14 @@
 <?php
 // hapus_gambar.php
-
+session_start();
+$id_saya = $_SESSION['admin_id'];
 // Pastikan ada data file yang diterima
 if (isset($_POST['files']) && !empty($_POST['files'])) {
     $files = $_POST['files'];  // Mendapatkan daftar file yang akan dihapus
     $response = [];
 
     foreach ($files as $file) {
-        $filePath = "../gambar/" . $file;
+        $filePath = "../gambar/".$id_saya."/" . $file;
 
         // Cek apakah file ada dan apakah file tersebut dapat dihapus
         if (file_exists($filePath)) {

@@ -91,6 +91,7 @@ exit();
         $pilihan_2 = mysqli_real_escape_string($koneksi, $_POST['pilihan_2']);
         $pilihan_3 = mysqli_real_escape_string($koneksi, $_POST['pilihan_3']);
         $pilihan_4 = mysqli_real_escape_string($koneksi, $_POST['pilihan_4']);
+	$pilihan_5 = mysqli_real_escape_string($koneksi, $_POST['pilihan_5']);
 
         if (!isset($_POST['jawaban_benar']) || count($_POST['jawaban_benar']) == 0) {
             die("Harap pilih minimal satu jawaban benar");
@@ -105,7 +106,8 @@ exit();
                   pilihan_1='$pilihan_1', 
                   pilihan_2='$pilihan_2', 
                   pilihan_3='$pilihan_3', 
-                  pilihan_4='$pilihan_4', 
+                  pilihan_4='$pilihan_4',
+                  pilihan_5='$pilihan_5',  
                   jawaban_benar='$jawaban_benar'
                   WHERE id_soal='$id_soal'";
 
@@ -118,6 +120,7 @@ exit();
         $pilihan_2 = mysqli_real_escape_string($koneksi, $_POST['pilihan_2']);
         $pilihan_3 = mysqli_real_escape_string($koneksi, $_POST['pilihan_3']);
         $pilihan_4 = mysqli_real_escape_string($koneksi, $_POST['pilihan_4']);
+	$pilihan_5 = mysqli_real_escape_string($koneksi, $_POST['pilihan_5']);
 
         $query = "UPDATE butir_soal SET 
                   pertanyaan='$pertanyaan', 
@@ -127,6 +130,7 @@ exit();
                   pilihan_2='$pilihan_2', 
                   pilihan_3='$pilihan_3', 
                   pilihan_4='$pilihan_4', 
+                  pilihan_5='$pilihan_5',  
                   jawaban_benar='$jawaban_benar'
                   WHERE id_soal='$id_soal'";
 
@@ -357,6 +361,13 @@ exit();
                                                 <input type="checkbox" name="jawaban_benar[]" value="pilihan_4" onclick="checkOnlyOne(this)"> Jawaban Benar
                                                 <hr>
                                             </div>
+                                            <div class="mb-3">
+                                                <label for="pilihan_4" class="form-label">Pilihan 5</label>
+                                                <textarea class="form-control" id="pilihan_5" name="pilihan_5" required><?= htmlspecialchars($butir_soal['pilihan_5']) ?></textarea>
+                                                <input type="checkbox" name="jawaban_benar[]" value="pilihan_5" onclick="checkOnlyOne(this)"> Jawaban Benar
+                                                <hr>
+                                            </div>
+
                                         </div>
 
                                         <!-- Fields for Pilihan Ganda Kompleks -->
@@ -383,6 +394,12 @@ exit();
                                                 <label for="kompleks_4" class="form-label">Pilihan 4</label>
                                                 <textarea type="text" class="form-control" id="kompleks_4" name="pilihan_4"><?= htmlspecialchars($butir_soal['pilihan_4']) ?></textarea>
                                                 <input type="checkbox" name="jawaban_benar[]" value="pilihan_4"> Jawaban Benar
+                                                <hr>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="kompleks_4" class="form-label">Pilihan 5</label>
+                                                <textarea type="text" class="form-control" id="kompleks_5" name="pilihan_5"><?= htmlspecialchars($butir_soal['pilihan_5']) ?></textarea>
+                                                <input type="checkbox" name="jawaban_benar[]" value="pilihan_5"> Jawaban Benar
                                                 <hr>
                                             </div>
                                         </div>
@@ -514,7 +531,7 @@ exit();
     };
 
             $('#pertanyaan').summernote(configEditor);
-            $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4').summernote({
+            $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #pilihan_5, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #kompleks_5, #bs_1, #bs_2, #bs_3, #bs_4').summernote({
                 ...configEditor,
                 height: 80
             });

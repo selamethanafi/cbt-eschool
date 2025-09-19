@@ -1,7 +1,7 @@
 <?php
 session_start();
-
-$targetDir = "../gambar/";
+$id_saya = $_SESSION['admin_id'];
+$targetDir = "../gambar/".$id_saya."/";
 $allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 $maxSize = 2 * 1024 * 1024; // 2MB
 $responses = [];
