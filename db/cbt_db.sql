@@ -203,7 +203,7 @@ CREATE TABLE `siswa` (
   `username` varchar(200) NOT NULL,
   `kelas` varchar(100) NOT NULL,
   `rombel` varchar(100) NOT NULL,
-  `status` text NOT NULL DEFAULT 'Nonaktif',
+  `status` varchar(100) NOT NULL DEFAULT 'Nonaktif',
   `session_token` varchar(255) NOT NULL,
   `last_activity` datetime DEFAULT NULL,
   `page_url` text NOT NULL,

@@ -1,4 +1,6 @@
 <?php
+session_start();
+$user_id = $_SESSION['admin_id'];
 if ($_FILES['file']['name']) {
     $allowedMimeTypes = ['image/gif', 'image/jpeg', 'image/png'];
     $allowedExtensions = ['gif', 'jpg', 'jpeg', 'png'];
@@ -10,7 +12,7 @@ if ($_FILES['file']['name']) {
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
     if (in_array($fileType, $allowedMimeTypes) && in_array($fileExt, $allowedExtensions) && $fileSize <= 1024 * 1024) {
-        $uploadDir = '../gambar/';
+        $uploadDir = '../gambar/'.$user_id.'/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -74,7 +76,7 @@ if ($_FILES['file']['name']) {
 //$publicPath = $protocol . $host . $basePath . '/gambar/' . $newFileName;
 //$imgTag = '<img id="gbrsoal" src="' . $publicPath . '">';
 //echo json_encode(['img' => $imgTag, 'url' => $publicPath]);
-$relativePath = '../gambar/' . $newFileName;
+$relativePath = '../gambar/'.$user_id.'/' . $newFileName;
 $imgTag = '<img id="gbrsoal" src="' . $relativePath . '" style="width: 100%;">';
 echo json_encode(['img' => $imgTag, 'url' => $relativePath]);
         } else {

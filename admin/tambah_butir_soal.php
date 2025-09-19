@@ -8,7 +8,7 @@ if (empty($_GET['kode_soal']) || empty($_GET['nomer_baru'])) {
     header("Location: soal.php"); // Ganti dengan URL halaman yang sesuai
     exit();
 }
-
+$user_id = $_SESSION['admin_id'];
 $kode_soal = $_GET['kode_soal'];
 $nomer_baru = $_GET['nomer_baru'];
 
@@ -86,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pilihan_2 = mysqli_real_escape_string($koneksi, $_POST['pilihan_2']);
         $pilihan_3 = mysqli_real_escape_string($koneksi, $_POST['pilihan_3']);
         $pilihan_4 = mysqli_real_escape_string($koneksi, $_POST['pilihan_4']);
+        $pilihan_5 = mysqli_real_escape_string($koneksi, $_POST['pilihan_5']);
 
         if (!isset($_POST['jawaban_benar']) || count($_POST['jawaban_benar']) == 0) {
             die("Harap pilih minimal satu jawaban benar");
@@ -94,9 +95,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $jawaban_benar = implode(",", $_POST['jawaban_benar']);
 
         $query = "INSERT INTO butir_soal (kode_soal, nomer_soal, pertanyaan, tipe_soal,
-                  pilihan_1, pilihan_2, pilihan_3, pilihan_4, jawaban_benar, status_soal)
+                  pilihan_1, pilihan_2, pilihan_3, pilihan_4, pilihan_5, jawaban_benar, status_soal)
                   VALUES ('$kode_soal', '$nomer_soal', '$pertanyaan', '$tipe_soal',
-                  '$pilihan_1', '$pilihan_2', '$pilihan_3', '$pilihan_4', '$jawaban_benar', 'Aktif')";
+                  '$pilihan_1', '$pilihan_2', '$pilihan_3', '$pilihan_4', '$pilihan_5', '$jawaban_benar', 'Aktif')";
 
     } elseif ($tipe_soal == 'Benar/Salah') {
         if (empty($_POST['jawaban_benar'])) {
@@ -107,11 +108,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $pilihan_2 = mysqli_real_escape_string($koneksi, $_POST['pilihan_2']);
         $pilihan_3 = mysqli_real_escape_string($koneksi, $_POST['pilihan_3']);
         $pilihan_4 = mysqli_real_escape_string($koneksi, $_POST['pilihan_4']);
+        $pilihan_5 = mysqli_real_escape_string($koneksi, $_POST['pilihan_5']);
 
         $query = "INSERT INTO butir_soal (kode_soal, nomer_soal, pertanyaan, tipe_soal,
-                  pilihan_1, pilihan_2, pilihan_3, pilihan_4, jawaban_benar, status_soal)
+                  pilihan_1, pilihan_2, pilihan_3, pilihan_4, pilihan_5, jawaban_benar, status_soal)
                   VALUES ('$kode_soal', '$nomer_soal', '$pertanyaan', '$tipe_soal',
-                  '$pilihan_1', '$pilihan_2', '$pilihan_3', '$pilihan_4', '$jawaban_benar', 'Aktif')";
+                  '$pilihan_1', '$pilihan_2', '$pilihan_3', '$pilihan_4', '$pilihan_5', '$jawaban_benar', 'Aktif')";
 
     } elseif ($tipe_soal == 'Menjodohkan') {
     $pasangan_data = [];
@@ -332,6 +334,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <input type="checkbox" name="jawaban_benar[]" value="pilihan_4" onclick="checkOnlyOne(this)"> Jawaban Benar
                                                 <hr>
                                             </div>
+                                            <div class="mb-3">
+                                                <label for="pilihan_4" class="form-label">Pilihan 5</label>
+                                                <textarea class="form-control" id="pilihan_5" name="pilihan_5" required></textarea>
+                                                <input type="checkbox" name="jawaban_benar[]" value="pilihan_5" onclick="checkOnlyOne(this)"> Jawaban Benar
+                                                <hr>
+                                            </div>
+
                                         </div>
 
                                         <!-- Fields for Pilihan Ganda Kompleks -->
@@ -360,6 +369,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <input type="checkbox" name="jawaban_benar[]" value="pilihan_4"> Jawaban Benar
                                                 <hr>
                                             </div>
+                                            <div class="mb-3">
+                                                <label for="kompleks_4" class="form-label">Pilihan 5</label>
+                                                <textarea type="text" class="form-control" id="kompleks_5" name="pilihan_5"></textarea>
+                                                <input type="checkbox" name="jawaban_benar[]" value="pilihan_5"> Jawaban Benar
+                                                <hr>
+                                            </div>
+
                                         </div>
 
                                         <!-- Benar/Salah -->
@@ -389,6 +405,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <label><input type="radio" name="jawaban_benar[3]" value="Salah"> Salah</label>
                                                 <hr><br><br>
                                             </div>
+
                                         </div>
 
                                         <!-- Menjodohkan -->
@@ -485,7 +502,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $('#pertanyaan').summernote(configEditor);
 
     // Untuk pilihan, kompleks, dan bs
-    $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #bs_1, #bs_2, #bs_3, #bs_4')
+    $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #pilihan_5, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #kompleks_5, #bs_1, #bs_2, #bs_3, #bs_4')
         .summernote({
             ...configEditor,
             height: 80
