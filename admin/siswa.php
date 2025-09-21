@@ -47,6 +47,10 @@ include '../inc/dataadmin.php';
                       <button id="exportExcel" class="btn btn-outline-secondary">
                         <i class="fas fa-file-excel"></i> Export Excel
                       </button>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdunduh">
+  Unduh Dari Sistem Informasi Madrasah
+</button>
+
                     </div>
                   </div>
                   <div class=" table-wrapper">
@@ -57,6 +61,7 @@ include '../inc/dataadmin.php';
                         <th>No</th>
                         <th>Nama Siswa</th>
                         <th>Kelas</th>
+                        <th>Ruang</th>
                         <th>Username</th>
                         <th>Password</th>
                         <th>Aksi</th>
@@ -79,7 +84,7 @@ include '../inc/dataadmin.php';
                         echo "<td style='display:none;'>{$data['id_siswa']}</td>"; // kolom untuk sorting
                         echo "<td>{$no}</td>";
                         echo "<td>{$data['nama_siswa']}</td>";
-                        echo "<td>{$data['kelas']}{$data['rombel']}</td>";
+                        echo "<td>{$data['kelas']}</td><td>{$data['rombel']}</td>";
                         echo "<td>{$data['username']}</td>";
                         echo "<td>{$decrypted}</td>";
                         echo '<td>
@@ -108,6 +113,24 @@ include '../inc/dataadmin.php';
       </main>
     </div>
   </div>
+  <!-- Modal -->
+<div class="modal fade" id="mdunduh" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi Unduh dari SIM</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Yakin hendak mengunduh siswa dari sistem informasi madrasah?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batak</button>
+        <a href="sinkron_peserta.php" class="btn btn-success">Yakin</a>
+      </div>
+    </div>
+  </div>
+</div>
 <?php include '../inc/js.php'; ?>
   <!--<script src="../assets/datatables/dataTables.buttons.min.js"></script>
   <script src="../assets/datatables/buttons.bootstrap5.min.js"></script>-->
