@@ -14,7 +14,7 @@ $dataDb = mysqli_fetch_assoc($q);
 $versi_saat_ini = $dataDb['versi_aplikasi'] ?? '0.0.0';
 
 // Ambil versi terbaru dari GitHub Release
-$url = 'https://api.github.com/repos/gludugbanyu/cbt-eschool/releases/latest';
+$url = 'https://api.github.com/repos/selamethanafi/cbt-eschool/releases/latest';
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
