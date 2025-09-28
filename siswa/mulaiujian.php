@@ -1,4 +1,10 @@
+<style>
+.my-custom-card-body {
+    height: 500px; /* Tinggi yang ditentukan */
+}
+</style>
 <?php
+
 session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
@@ -284,8 +290,8 @@ foreach ($matches as $match) {
 
                                             <?php if ($tipe == 'Pilihan Ganda'): ?>
                                             <?php
-                                                    $huruf_opsi = ['A', 'B', 'C', 'D'];
-                                                    for ($i = 1; $i <= 4; $i++):
+                                                    $huruf_opsi = ['A', 'B', 'C', 'D', 'E'];
+                                                    for ($i = 1; $i <= 5; $i++):
                                                         $huruf = $huruf_opsi[$i - 1];
                                                     ?>
                                             <label class="option-circle">
@@ -441,8 +447,8 @@ foreach ($matches as $match) {
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="card-body p-2">
-                                                <div class="question-nav d-flex flex-wrap" style="gap: 5px;">
+                                            <div class="card-body p2 my-custom-card-body">
+                                                <div>
                                                     <?php foreach ($soal as $index => $s): ?>
                                                     <?php
                                                             $no_urut = $index + 1;
@@ -465,6 +471,19 @@ foreach ($matches as $match) {
                         </div>
                     </div>
                 </div>
+<?php foreach ($soal as $index => $s): ?>
+                                                    <?php
+                                                            $no_urut = $index + 1;
+                                                            $no_asli = $s['nomer_soal'];
+                                                            $is_answered = isset($status_soal[$no_asli]) && $status_soal[$no_asli]; // TRUE jika sudah dijawab
+                                                        ?>
+                                                    <button type="button" class="nav-btn"
+                                                        onclick="tampilSoal(<?= $index ?>); hideNav()"
+                                                        data-nomor="<?= $no_asli ?>" data-urut="<?= $no_urut ?>"
+                                                        <?= $is_answered ? 'data-answered="true"' : '' ?>>
+                                                        <?= $no_urut ?>
+                                                    </button>
+                                                    <?php endforeach; ?>
             </main>
         </div>
     </div>

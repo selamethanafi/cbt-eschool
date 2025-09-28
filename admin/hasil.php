@@ -4,7 +4,7 @@ include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
 include '../inc/dataadmin.php';
-
+$user_id = $_SESSION['admin_id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama_siswa = $_POST['nama_siswa'] ?? '';
     $kelas_rombel = $_POST['kelas_rombel'] ?? '';
@@ -186,9 +186,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <select class="form-select" name="kode_soal" id="kode_soal">
                                             <option value="">Semua Kode</option>
                                             <?php
-                                            $qSoal = mysqli_query($koneksi, "SELECT DISTINCT kode_soal FROM nilai");
+                                            $qSoal = mysqli_query($koneksi, "SELECT DISTINCT kode_soal, `nama_soal` FROM soal where `user_id` = '$user_id'");
                                             while ($soal = mysqli_fetch_assoc($qSoal)) {
-                                                echo "<option value='{$soal['kode_soal']}'>{$soal['kode_soal']}</option>";
+                                                echo "<option value='{$soal['kode_soal']}'>{$soal['kode_soal']} {$soal['nama_soal']}</option>";
                                             }
                                             ?>
                                         </select>

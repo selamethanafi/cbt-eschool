@@ -71,6 +71,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             <i class="align-middle fas fa-redo"></i> <span class="align-middle">Reset Login</span>
                         </a>
                     </li>
+                    <li class="sidebar-item <?= ($currentPage == 'hapus_login.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="hapus_login.php">
+                            <i class="align-middle fas fa-redo"></i> <span class="align-middle"> Hapus Sesi Login</span>
+                        </a>
+                    </li>
 
                     <li class="sidebar-item <?= ($currentPage == 'hasil.php') ? 'active' : '' ?>">
                         <a class="sidebar-link" href="hasil.php">
