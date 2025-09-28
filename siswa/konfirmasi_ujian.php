@@ -147,6 +147,26 @@ $_SESSION['konfirmasi_ujian'] = true;
 </head>
 <body>
     <div style="height: 80px;"></div>
+    <?php
+    $boleh = 0;
+    if($data_soal['exambrowser'] == 1)
+    {
+          $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown User Agent';
+//echo "The user agent is: " . $userAgent;
+
+            if(($userAgent == $agen_1) or ($userAgent == $agen_2) or ($userAgent == $agen_3) or ($userAgent == $agen_4) or ($userAgent == $agen_5) or ($userAgent == $agen_6))
+            {
+               $boleh++; // kalau perangkat sesuai
+            }
+    }
+    else
+    {
+        $boleh++;
+    }
+    if($boleh > 0 )
+    {
+?>
+
     <div class="wrapper">
         <div class="main">
             <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top" style="border-bottom:5px solid <?php echo htmlspecialchars($warna_tema); ?> !important;">
@@ -239,6 +259,65 @@ $_SESSION['konfirmasi_ujian'] = true;
             </main>
         </div>
     </div>
+    <?php
+            }
+            else 
+                 {
+?>
+ <div class="wrapper">
+        <div class="main">
+            <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top" style="border-bottom:5px solid <?php echo htmlspecialchars($warna_tema); ?> !important;">
+                <!-- Logo -->
+                <a class="navbar-brand ms-3" href="#">
+                    <img src="../assets/images/<?php echo $data_tema['logo_sekolah']; ?>" alt="Logo" style="height: 36px;">
+                </a>
+
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav navbar-align ms-auto">
+                        <!-- User Info -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-1"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><span class="dropdown-item-text"><strong><?php echo $nama_siswa; ?></strong></span></li>
+                                <li><span class="dropdown-item-text"><?php echo $kelas_siswa . $rombel_siswa; ?></span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger btnLogout" href="logout.php"><i class="fas fa-sign-out-alt me-1"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="content">
+                <div class="container p-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card shadow">
+                                    <div class="card-header text-white" style="background-color:<?= htmlspecialchars($warna_tema) ?>">
+                                        <h1 class="mb-0 text-white"><i class="fas fa-clipboard-check"></i> Gunakan Exambrowser</h1>
+                                    </div>
+                                    <div class="card-body">
+                                    <a href="ujian.php" class="btn btn-danger">Kembali</a>    
+                                        
+
+                                        
+
+                                        
+
+                                 </div>       
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>    
+<?php
+
+            }
+            ?>
     <footer class="footer mt-auto py-3 bg-dark sticky-bottom">
                                                     <div class="container-fluid">
                                                         <div class="row text-grey">

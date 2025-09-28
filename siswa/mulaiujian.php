@@ -237,7 +237,7 @@ foreach ($matches as $match) {
                 </div>
             </nav>
             <main class="content">
-                <div class="container-fluid p-0">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
                             <div class="card shadow">
@@ -270,7 +270,7 @@ foreach ($matches as $match) {
 
                                 </div>
 
-                                <div class="card-body wadah">
+                                
                                     <div id="autoSaveStatus"></div>
                                     <form id="formUjian" method="post" action="simpan_jawaban.php">
                                         <input type="hidden" name="waktu_sisa" id="waktu_sisa">
@@ -305,6 +305,7 @@ foreach ($matches as $match) {
 
 
                                             <?php elseif ($tipe == 'Pilihan Ganda Kompleks'):
+						echo '<p class="text-danger">Jawaban bisa satu atau beberapa pilihan</p>';
                                                     if (!is_array($jawaban)) {
                                                         $jawaban = [$jawaban];
                                                     }
@@ -350,7 +351,8 @@ foreach ($matches as $match) {
                                                 <?php endfor; ?>
                                             </table>
 
-                                            <?php elseif ($tipe == 'Menjodohkan'):
+                                            <?php
+                                            /* elseif ($tipe == 'Menjodohkan'):
                                                     $raw = trim($s['jawaban_benar'], "[]");
                                                     $raw = preg_replace('/^\d+\s*:/', '', $raw);
                                                     $pasangan_list = explode('|', $raw);
@@ -404,7 +406,94 @@ foreach ($matches as $match) {
                                                 </tr>
                                                 <?php endforeach; ?>
                                             </table>
-                                            <?php endif; ?>
+                                            <?php endif; 
+                                            */
+                                            ?>
+  <?php elseif ($tipe == 'Menjodohkan'):
+    $raw = trim($s['jawaban_benar'], "[]");
+    $raw = preg_replace('/^\d+\s*:/', '', $raw);
+    $pasangan_list = explode('|', $raw);
+
+    $opsi = [];
+    foreach ($pasangan_list as $item) {
+        if (strpos($item, ':') !== false) {
+            list($kiri, $kanan) = explode(':', $item, 2);
+            $kiri = trim($kiri);
+            $kanan = trim($kanan);
+            if ($kiri !== '' && $kanan !== '') {
+                $opsi[] = ['kiri' => $kiri, 'kanan' => $kanan];
+            }
+        }
+    }
+
+    $jawaban_soal = (is_array($jawaban)) ? $jawaban : [];
+    $daftar_kanan = array_values(array_unique(array_column($opsi, 'kanan')));
+    shuffle($daftar_kanan);
+?>
+
+<?php if (count($opsi) === 0): ?>
+    <div class="alert alert-warning">Soal menjodohkan belum memiliki pasangan yang valid.</div>
+<?php else: ?>
+    <?php foreach ($opsi as $p): ?>
+        <input type="hidden" name="soal_kiri[<?= $no_asli ?>][]"
+            value="<?= htmlspecialchars($p['kiri']) ?>">
+    <?php endforeach; ?>
+
+    <style>
+        .matching-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .matching-table th, .matching-table td {
+            border: 1px solid #aaa;
+            padding: 8px;
+            vertical-align: top;
+        }
+        .option-box {
+            display: inline-block;
+            margin: 4px;
+            padding: 6px 10px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #f9f9f9;
+        }
+        .option-box:hover {
+            background: #eef;
+        }
+        .option-box input {
+            margin-right: 6px;
+        }
+    </style>
+
+    <table class="matching-table">
+        <tr>
+            <th style="width:40%;">Kiri</th>
+            <th style="width:60%;">Pilih Pasangan Kanan</th>
+        </tr>
+        <?php foreach ($opsi as $p):
+            $kiri = $p['kiri'];
+            $selected = $jawaban_soal[$kiri] ?? '';
+        ?>
+        <tr>
+            <td><?= htmlspecialchars($kiri) ?></td>
+            <td>
+                <?php foreach ($daftar_kanan as $dk): ?>
+                    <label class="option-box">
+                        <input type="radio"
+                            name="jawaban[<?= $no_asli ?>][<?= htmlspecialchars($kiri) ?>]"
+                            value="<?= htmlspecialchars($dk) ?>"
+                            <?= ($selected === $dk) ? 'checked' : '' ?>>
+                        <?= htmlspecialchars($dk) ?>
+                    </label>
+                <?php endforeach; ?>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
+
 
                                             <?php elseif ($tipe == 'Uraian'): ?>
                                             <textarea name="jawaban[<?= $no_asli ?>]"
@@ -466,7 +555,7 @@ foreach ($matches as $match) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

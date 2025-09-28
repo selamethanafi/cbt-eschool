@@ -106,6 +106,19 @@ $result = mysqli_query($koneksi, $query);
     </style>
 </head>
 <body>
+<?php
+ $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown User Agent';
+//echo "The user agent is: " . $userAgent;
+
+if(($userAgent == $agen_1) or ($userAgent == $agen_2) or ($userAgent == $agen_3) or ($userAgent == $agen_4) or ($userAgent == $agen_5) or ($userAgent == $agen_6))
+{
+      $os_agen = 'Sesuai';
+}
+else
+{
+	$os_agen = $userAgent;
+}
+?>
     <div class="wrapper">
         <?php include 'sidebar.php'; ?>
         <div class="main">
@@ -132,7 +145,7 @@ $result = mysqli_query($koneksi, $query);
                                                 </tr>
                                                 <tr>
                                                     <th>OS & Browser</th>
-                                                    <td id="userAgent">Memuat...</td>
+                                                    <td><?php echo $os_agen;?></td>
                                                 </tr>
                                                 <tr>
                                                     <th>RAM (perkiraan)</th>
@@ -193,6 +206,7 @@ $result = mysqli_query($koneksi, $query);
     <?php include '../inc/js.php'; ?>
 
     <script>
+	  const agen_1 = "<?php echo $agen_1; ?>";
     document.addEventListener('DOMContentLoaded', function () {
         function $(id) { return document.getElementById(id); }
 
@@ -223,8 +237,18 @@ $result = mysqli_query($koneksi, $query);
             });
 
         // OS & Browser (User Agent)
-        $('userAgent').textContent = navigator.userAgent;
-        $('userAgent').className = "";
+/*
+	if (navigator.userAgent === <?php echo $agen_1;?>) 
+	{
+	        $('userAgent').textContent = "Oke";
+	        $('userAgent').className = "";
+	}
+	else
+	{
+	        $('userAgent').textContent = "";
+	        $('userAgent').className = "";
+	}
+*/
 
         // RAM (perkiraan)
         if (navigator.deviceMemory) {
