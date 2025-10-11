@@ -403,6 +403,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                              <label><input type="radio" name="jawaban_benar[3]" value="Benar"> Benar</label>
                                                 <label><input type="radio" name="jawaban_benar[3]" value="Salah"> Salah</label>
                                                 <hr><br><br>
+                                            <div class="form-group">
+                                            <textarea type="text" class="form-control mb-1" id="bs_5" name="pilihan_5" placeholder="Pernyataan 4"></textarea>
+                                             <label><input type="radio" name="jawaban_benar[4]" value="Benar"> Benar</label>
+                                                <label><input type="radio" name="jawaban_benar[4]" value="Salah"> Salah</label>
+                                                <hr><br><br>
+                                            </div>
                                             </div>
 
                                         </div>
@@ -501,7 +507,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $('#pertanyaan').summernote(configEditor);
 
     // Untuk pilihan, kompleks, dan bs
-    $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #pilihan_5, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #kompleks_5, #bs_1, #bs_2, #bs_3, #bs_4')
+    $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #pilihan_5, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #kompleks_5, #bs_1, #bs_2, #bs_3, #bs_4, #bs_5')
         .summernote({
             ...configEditor,
             height: 80

@@ -185,8 +185,8 @@ $kode_soal = $_GET['kode_soal'];
 
                                         if ($soal['tipe_soal'] === 'Pilihan Ganda') {
                                             echo "<p class='text-dark'>" . $soal['pertanyaan'] . "</p>";
-                                            $opsi_huruf = ['A', 'B', 'C', 'D'];
-                                            for ($i = 1; $i <= 4; $i++) {
+                                            $opsi_huruf = ['A', 'B', 'C', 'D','E'];
+                                            for ($i = 1; $i <= 5; $i++) {
                                                 $opsi_label = $opsi_huruf[$i - 1];
                                                 $opsi_nama = 'pilihan_' . $i;
                                                 $nilai = $soal[$opsi_nama];
@@ -202,8 +202,8 @@ $kode_soal = $_GET['kode_soal'];
                                         } elseif ($soal['tipe_soal'] === 'Pilihan Ganda Kompleks') {
                                             echo "<p class='text-dark'>" . $soal['pertanyaan'] . "</p>";
                                             $jawaban_benar = array_map('trim', explode(',', $soal['jawaban_benar']));
-                                            $opsi_huruf = ['A', 'B', 'C', 'D'];
-                                            for ($i = 1; $i <= 4; $i++) {
+                                            $opsi_huruf = ['A', 'B', 'C', 'D','E'];
+                                            for ($i = 1; $i <= 5; $i++) {
                                                 $opsi_label = $opsi_huruf[$i - 1];
                                                 $opsi_nama = 'pilihan_' . $i;
                                                 $nilai = $soal[$opsi_nama];
@@ -237,7 +237,7 @@ $kode_soal = $_GET['kode_soal'];
                                         } elseif ($soal['tipe_soal'] === 'Benar/Salah') {
                                             echo "<p class='text-dark'>" . $soal['pertanyaan'] . "</p>";
                                             $opsi = [];
-                                            for ($i = 1; $i <= 4; $i++) {
+                                            for ($i = 1; $i <= 5; $i++) {
                                                 $opsi_nama = 'pilihan_' . $i;
                                                 $nilai = $soal[$opsi_nama];
                                                 if (!empty($nilai)) {

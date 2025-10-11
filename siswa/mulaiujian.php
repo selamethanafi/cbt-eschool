@@ -309,8 +309,8 @@ foreach ($matches as $match) {
                                                     if (!is_array($jawaban)) {
                                                         $jawaban = [$jawaban];
                                                     }
-                                                    $huruf_opsi = ['A', 'B', 'C', 'D'];
-                                                    for ($i = 1; $i <= 4; $i++):
+                                                    $huruf_opsi = ['A', 'B', 'C', 'D','E'];
+                                                    for ($i = 1; $i <= 5; $i++):
                                                         $huruf = $huruf_opsi[$i - 1];
                                                 ?>
                                             <label class="option-circle">
@@ -325,7 +325,7 @@ foreach ($matches as $match) {
 
                                             <?php elseif ($tipe == 'Benar/Salah'): ?>
                                             <table class="matching-table">
-                                                <?php for ($i = 1; $i <= 4; $i++):
+                                                <?php for ($i = 1; $i <= 5; $i++):
                                                             $pernyataan = $s['pilihan_' . $i];
                                                             if (trim($pernyataan) == '')
                                                                 continue;

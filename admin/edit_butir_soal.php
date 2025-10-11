@@ -45,7 +45,8 @@ if ($data_soal['status'] == 'Aktif') {
 $query_butir = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE id_soal='$id_soal'");
 $butir_soal = mysqli_fetch_assoc($query_butir);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+{
     if (empty($_POST['pertanyaan']) || empty($_POST['tipe_soal']) || empty($_POST['nomor_soal'])) {
         die("Harap isi semua field wajib");
     }
@@ -58,8 +59,8 @@ $cek_duplikat = mysqli_query($koneksi, "SELECT * FROM butir_soal
 WHERE nomer_soal = '$nomor_soal' 
 AND kode_soal = '$kode_soal' 
 AND id_soal != '$id_soal'");
-
-if (mysqli_num_rows($cek_duplikat) > 0) {
+	if (mysqli_num_rows($cek_duplikat) > 0) 
+{
 echo '
 <!DOCTYPE html>
 <html lang="id">
@@ -245,14 +246,13 @@ exit();
 
     $query = "INSERT INTO butir_soal (kode_soal, nomer_soal, pertanyaan, tipe_soal,
               jawaban_benar, status_soal)
-              VALUES ('$kode_soal', '$nomer_soal', '$pertanyaan', '$tipe_soal',
+              VALUES ('$kode_soal', '$nomor_soal', '$pertanyaan', '$tipe_soal',
               '$jawaban_benar', 'Aktif')";
 } elseif ($tipe_soal == 'Uraian') {
         if (empty($_POST['jawaban_benar'])) {
             die("Harap isi jawaban benar");
         }
         $jawaban_benar = mysqli_real_escape_string($koneksi, $_POST['jawaban_benar']);
-
         $query = "UPDATE butir_soal SET 
                   pertanyaan='$pertanyaan', 
                   tipe_soal='$tipe_soal',
@@ -362,7 +362,7 @@ exit();
                                                 <hr>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="pilihan_4" class="form-label">Pilihan 5</label>
+                                                <label for="pilihan_5" class="form-label">Pilihan 5</label>
                                                 <textarea class="form-control" id="pilihan_5" name="pilihan_5" required><?= htmlspecialchars($butir_soal['pilihan_5']) ?></textarea>
                                                 <input type="checkbox" name="jawaban_benar[]" value="pilihan_5" onclick="checkOnlyOne(this)"> Jawaban Benar
                                                 <hr>
@@ -429,6 +429,12 @@ exit();
                                             <textarea type="text" class="form-control mb-1" id="bs_4" name="pilihan_4" placeholder="Pernyataan 4"><?= htmlspecialchars($butir_soal['pilihan_4']) ?></textarea>
                                              <label><input type="radio" name="jawaban_benar[3]" value="Benar"> Benar</label>
                                                 <label><input type="radio" name="jawaban_benar[3]" value="Salah"> Salah</label>
+                                                <hr><br><br>
+                                            </div>
+                                            <div class="form-group">
+                                            <textarea type="text" class="form-control mb-1" id="bs_5" name="pilihan_5" placeholder="Pernyataan 4"><?= htmlspecialchars($butir_soal['pilihan_5']) ?></textarea>
+                                             <label><input type="radio" name="jawaban_benar[4]" value="Benar"> Benar</label>
+                                                <label><input type="radio" name="jawaban_benar[4]" value="Salah"> Salah</label>
                                                 <hr><br><br>
                                             </div>
                                         </div>
@@ -531,7 +537,7 @@ exit();
     };
 
             $('#pertanyaan').summernote(configEditor);
-            $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #pilihan_5, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #kompleks_5, #bs_1, #bs_2, #bs_3, #bs_4').summernote({
+            $('#pilihan_1, #pilihan_2, #pilihan_3, #pilihan_4, #pilihan_5, #kompleks_1, #kompleks_2, #kompleks_3, #kompleks_4, #kompleks_5, #bs_1, #bs_2, #bs_3, #bs_4, #bs_5').summernote({
                 ...configEditor,
                 height: 80
             });

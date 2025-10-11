@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (base64Text) {
         var decodedText = atob(base64Text);
-        document.getElementById("enc").innerHTML = decodedText + " v." + versiSaya;
+        document.getElementById("enc").innerHTML = decodedText + " v." + versiSaya + " Forked by Selamet Hanafi ";
     } else {
         document.getElementById("enc").innerHTML = "v." + versiSaya;
     }
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (base64Text) {
         var decodedText = atob(base64Text);
-        document.getElementById("encr").innerHTML = decodedText + " v." + versiSaya;
+        document.getElementById("encr").innerHTML = decodedText + " v." + versiSaya + " Forked by Selamet Hanafi ";
     } else {
         document.getElementById("encr").innerHTML = "v." + versiSaya;
     }

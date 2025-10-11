@@ -1,13 +1,13 @@
 <?php
 include '../koneksi/koneksi.php';
 
-$kode_soal = 'SR9-01';
-$id_siswa = 1;
+$kode_soal = '12581';
+$id_siswa = 172;
 
 $q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
 $data_soal = mysqli_fetch_assoc($q_soal);
 $kode_soal = $data_soal['kode_soal'];
-
+echo "SELECT * FROM jawaban_siswa WHERE kode_soal = '$kode_soal' AND id_siswa='$id_siswa'";
 $q_jawaban = mysqli_query($koneksi, "SELECT * FROM jawaban_siswa WHERE kode_soal = '$kode_soal' AND id_siswa='$id_siswa'");
 $data_jawaban = mysqli_fetch_assoc($q_jawaban);
 $jawaban_siswa = $data_jawaban['jawaban_siswa'] ?? '';
@@ -141,10 +141,10 @@ for ($i = 0; $i < $total_soal; $i++) {
     }
 
     $nilai_total += $skor;
-
+//SELECT tipe_soal FROM butir_soal WHERE kode_soal = '$kode_soal' AND nomer_soal = '$nomer_kunci' 
     echo "<tr>";
     echo "<td>$nomer_kunci</td>";
-    echo "<td>$isi_kunci</td>";
+    echo "<td>$tipe_soal $isi_kunci</td>";
     echo "<td>$jawaban_ditulis</td>";
     echo "<td>$detail_skor</td>";
     echo "<td>$status</td>";

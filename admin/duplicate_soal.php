@@ -3,7 +3,6 @@ session_start();
 include '../koneksi/koneksi.php';
 
 header('Content-Type: application/json');
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['status' => 'error', 'message' => 'Metode request tidak valid']);
     exit;
@@ -45,7 +44,7 @@ try {
     $dataSoal['kode_soal'] = $newKode;
     $dataSoal['nama_soal'] .= ' (Copy)';
     $dataSoal['status'] = 'Nonaktif';
-    $dataSoal['tanggal'] = date('Y-m-d');
+    $dataSoal['tanggal'] = date('Y-m-d').' 07:00:00';
     
     // Insert soal baru
     $columns = array_keys($dataSoal);
@@ -70,6 +69,7 @@ try {
             pilihan_2,
             pilihan_3,
             pilihan_4,
+            pilihan_5,
             jawaban_benar,
             status_soal
         FROM butir_soal 

@@ -285,7 +285,7 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                     $no = (int)$soal['nomer_soal'];
                     $jawab = isset($jawaban_siswa[$no]) ? $jawaban_siswa[$no] : '';
                     $tipe = $soal['tipe_soal'];
-                    $opsi_huruf = ['A', 'B', 'C', 'D'];
+                    $opsi_huruf = ['A', 'B', 'C', 'D', 'E'];
                 ?>
                             <div class="row">
                                 <div class="card mb-4">
@@ -301,7 +301,7 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                         switch ($tipe) {
                             case 'Pilihan Ganda':
                                 echo "<ul>";
-                                for ($i=1; $i<=4; $i++) {
+                                for ($i=1; $i<=5; $i++) {
                                     $huruf = $opsi_huruf[$i-1];
                                     $checked = ($jawab == "pilihan_$i") ? "✓" : "";
                                     echo "<li>$huruf. " . $soal["pilihan_$i"] . " $checked</li>";
@@ -315,7 +315,7 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                             case 'Pilihan Ganda Kompleks':
                                 $jawaban_arr = array_map('trim', explode(',', $jawab));
                                 echo "<ul>";
-                                for ($i=1; $i<=4; $i++) {
+                                for ($i=1; $i<=5; $i++) {
                                     $huruf = $opsi_huruf[$i-1];
                                     $checked = in_array("pilihan_$i", $jawaban_arr) ? "✓" : "";
                                     echo "<li>$huruf. " . $soal["pilihan_$i"] . " $checked</li>";
@@ -332,7 +332,7 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
 
                             case 'Benar/Salah':
                                 $pernyataan = [];
-                                for ($i=1; $i<=4; $i++) {
+                                for ($i=1; $i<=5; $i++) {
                                     if (!empty($soal["pilihan_$i"])) {
                                         $pernyataan[] = $soal["pilihan_$i"];
                                     }

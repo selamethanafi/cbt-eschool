@@ -44,7 +44,7 @@ if (strtolower($data_soal['status']) !== 'aktif') {
     exit;
 } 
 // Cek jika tanggal hari ini kurang dari tanggal soal (belum dimulai)
-$tanggal_soal = $data_soal['tanggal'];
+$tanggal_soal = substr($data_soal['tanggal'],0,10);
 $tanggal_hari_ini = date('Y-m-d');
 
 if (strtotime($tanggal_hari_ini) < strtotime($tanggal_soal)) {

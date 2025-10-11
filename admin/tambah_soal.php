@@ -4,6 +4,7 @@ include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
 include '../inc/dataadmin.php';
+$user_id = $_SESSION['admin_id'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kode_soal = mysqli_real_escape_string($koneksi, $_POST['kode_soal']);
     $nama_soal = mysqli_real_escape_string($koneksi, $_POST['nama_soal']);
@@ -11,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kelas = mysqli_real_escape_string($koneksi, $_POST['kelas']);
     $tampilan_soal = mysqli_real_escape_string($koneksi, $_POST['tampilan_soal']);
     $waktu_ujian = mysqli_real_escape_string($koneksi, $_POST['waktu_ujian']);
-    $tanggal = mysqli_real_escape_string($koneksi, $_POST['tanggal']);
+    $tanggal = mysqli_real_escape_string($koneksi, $_POST['tanggal']).' 07:00:00';
 
     // Cek duplikasi kode_soal
     $cek_kode = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
@@ -21,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    $query = "INSERT INTO soal (kode_soal, nama_soal, mapel, kelas, waktu_ujian, tampilan_soal, tanggal)
-              VALUES ('$kode_soal', '$nama_soal', '$mapel', '$kelas', '$waktu_ujian', '$tampilan_soal', '$tanggal')";
+    $query = "INSERT INTO soal (kode_soal, nama_soal, mapel, kelas, waktu_ujian, tampilan_soal, tanggal, user_id)
+              VALUES ('$kode_soal', '$nama_soal', '$mapel', '$kelas', '$waktu_ujian', '$tampilan_soal', '$tanggal', $user_id)";
 
     if (mysqli_query($koneksi, $query)) {
         $_SESSION['success'] = 'Soal berhasil ditambahkan.';
