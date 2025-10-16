@@ -170,6 +170,12 @@ if ($data_soal['status'] == 'Aktif') {
                                                         <i class="fas fa-upload"></i> Import Soal Excel
                                                     </a>
                                                 </li>
+                                                 <li>
+                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#modalImportElearning">
+                                                        <i class="fas fa-upload"></i> Unduh dari Elearning
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
 
@@ -245,7 +251,34 @@ if ($data_soal['status'] == 'Aktif') {
                             </form>
                         </div>
                     </div>
-
+ <!-- Modal Import Elearning -->
+                    <div class="modal fade" id="modalImportElearning" tabindex="-1" aria-labelledby="modalImportElearningLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form action="import_soal_elearning.php" method="post">
+                                <input type="hidden" name="kode_soal" value="<?= $kode_soal; ?>">                                
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalImportElearningLabel">Import Soal dari Elearning</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Tutup"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="kode_soal" class="form-label">Kode Soal Elearning</label>
+                                            <input type="number" class="form-control" name="kode_soal_elearning" id="kode_soal"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Unduh</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
             </main>
         </div>
     </div>
@@ -318,6 +351,25 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const formImport = document.querySelector('#modalImportElearning form');
+
+    if (formImport) {
+        formImport.addEventListener('submit', function(e) {
+            Swal.fire({
+                title: 'Mengimpor...',
+                html: 'Harap tunggu, sistem sedang memproses file.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        });
+    }
+});
+</script>
+
     <?php
 if (isset($_SESSION['import_result'])) {
     $res = $_SESSION['import_result'];
