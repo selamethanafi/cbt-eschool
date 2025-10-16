@@ -12,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kelas = mysqli_real_escape_string($koneksi, $_POST['kelas']);
     $tampilan_soal = mysqli_real_escape_string($koneksi, $_POST['tampilan_soal']);
     $waktu_ujian = mysqli_real_escape_string($koneksi, $_POST['waktu_ujian']);
-    $tanggal = mysqli_real_escape_string($koneksi, $_POST['tanggal']).' 07:00:00';
+    $tanggal = mysqli_real_escape_string($koneksi, $_POST['tanggal']);
+    $exambrowser = mysqli_real_escape_string($koneksi, $_POST['exambrowser']);
 
     // Cek duplikasi kode_soal
     $cek_kode = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
@@ -22,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    $query = "INSERT INTO soal (kode_soal, nama_soal, mapel, kelas, waktu_ujian, tampilan_soal, tanggal, user_id)
-              VALUES ('$kode_soal', '$nama_soal', '$mapel', '$kelas', '$waktu_ujian', '$tampilan_soal', '$tanggal', $user_id)";
+    $query = "INSERT INTO soal (kode_soal, nama_soal, mapel, kelas, waktu_ujian, tampilan_soal, tanggal, user_id, exambrowser)
+              VALUES ('$kode_soal', '$nama_soal', '$mapel', '$kelas', '$waktu_ujian', '$tampilan_soal', '$tanggal', $user_id, $exambrowser)";
 
     if (mysqli_query($koneksi, $query)) {
         $_SESSION['success'] = 'Soal berhasil ditambahkan.';
@@ -103,6 +104,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <label for="tanggal" class="form-label">Tanggal Ujian</label>
                                             <input type="date" class="form-control" id="tanggal" name="tanggal" required onclick="this.showPicker()">
                                         </div>
+                                       <div class="mb-3">
+                                            <label for="tampilan_soal" class="form-label">Menggunakan Exambrowser</label>
+                                            <select class="form-control" id="tampilan_soal" name="exambrowser" required>
+                                                <option value="1">Ya</option>
+                                                <option value="0">Tidak</option> 
+                                            </select>
+                                        </div>
+                                        
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
 										<a href="soal.php" class="btn btn-danger">Batal</a>
                                     </form>

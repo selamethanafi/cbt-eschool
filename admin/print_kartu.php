@@ -171,6 +171,7 @@ if (mysqli_num_rows($result) > 0):
 else:
     echo "<p style='text-align:center;'>Tidak ada data siswa untuk ditampilkan.</p>";
 endif;
+/*
 ?>
 
 <script src="../assets/html2pdf.js/dist/html2pdf.bundle.min.js"></script>
@@ -188,5 +189,7 @@ endif;
         });
     });
 </script>
+*/
+?>
 </body>
 </html>

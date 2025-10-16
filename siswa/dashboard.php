@@ -159,6 +159,8 @@ $result = mysqli_query($koneksi, $query);
                                     <div class="container pb-5">
                                         <div class="row g-4">
 
+<?php
+/*
                                             <div class="col-md-6 col-sm-6 col-lg-4">
                                                 <a href="#" class="text-decoration-none text-dark">
                                                     <div
@@ -180,7 +182,8 @@ $result = mysqli_query($koneksi, $query);
                                                     </div>
                                                 </a>
                                             </div>
-
+*/
+?>
                                             <div class="col-md-6 col-sm-6 col-lg-4">
                                                 <a href="ujian.php" class="text-decoration-none text-dark">
                                                     <div

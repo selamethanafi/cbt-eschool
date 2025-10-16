@@ -4,7 +4,23 @@ include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 
 $error = '';
-
+if(isset($_GET['nopes']))
+{
+	$nopes= $_GET['nopes'];
+}
+else
+{
+	$nopes = '';
+}
+if(isset($_GET['kode']))
+{
+	$kode= $_GET['kode'];
+}
+else
+{
+	$kode = '';
+}
+	
 // Generate CSRF token
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -195,10 +211,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <form action="" method="POST" class="mt-3" id="loginForm">
                             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                             <div class="mb-3">
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autocomplete="off"> 
+                                <input type="text" class="form-control" id="username" name="username" value="<?php echo $nopes;?>" placeholder="Username" required autocomplete="off"> 
                             </div>
                             <div class="mb-3 position-relative">
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required autocomplete="off">
+                                <input type="password" class="form-control" id="password" name="password" value ="<?php echo $kode;?>" placeholder="Password" required autocomplete="off">
                                 <span class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor:pointer;" onclick="togglePassword()">
                                     <i style="color:grey;" class="fa fa-eye" id="togglePasswordIcon"></i>
                                 </span>

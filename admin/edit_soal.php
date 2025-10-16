@@ -39,7 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tampilan_soal = mysqli_real_escape_string($koneksi, $_POST['tampilan_soal']);
     $waktu_ujian = mysqli_real_escape_string($koneksi, $_POST['waktu_ujian']);
     $tanggal = mysqli_real_escape_string($koneksi, $_POST['tanggal']);
-
+    $id_user = mysqli_real_escape_string($koneksi, $_POST['id_user']);
+    $exambrowser = mysqli_real_escape_string($koneksi, $_POST['exambrowser']);    
     // Update data soal
     $update_query = "UPDATE soal SET 
                         kode_soal = '$kode_soal', 
@@ -48,9 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         kelas = '$kelas', 
                         tampilan_soal = '$tampilan_soal', 
                         waktu_ujian = '$waktu_ujian', 
+                        user_id = '$id_user',
                         tanggal = '$tanggal'
                     WHERE id_soal = '$id_soal'";
-
+	echo $update_query;
     if (mysqli_query($koneksi, $update_query)) {
         $_SESSION['success_message'] = 'Data soal berhasil diupdate!';
         header('Location: soal.php');
@@ -134,6 +136,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <label for="tanggal" class="form-label">Tanggal Ujian</label>
                                             <input type="date" class="form-control" id="tanggal" name="tanggal" value="<?php echo $row['tanggal']; ?>" required onclick="this.showPicker()">
                                         </div>
+                                       <div class="mb-3">
+                                            <label for="tampilan_soal" class="form-label">Menggunakan Exambrowser</label>
+                                            <select class="form-control" id="tampilan_soal" name="exambrowser" required>
+                                            <?php
+                                            if($row['exambrowser'] == '1')
+                                            {?>
+                                                <option value="<?php echo $row['exambrowser']; ?>">Ya</option>
+                                                <option value="0">Tidak</option>     
+                                                <?php                                          
+                                                }
+                                                else
+                                                
+                                            {?>
+                                                <option value="<?php echo $row['exambrowser']; ?>">Tidak</option>
+                                                <option value="1">Ya</option>     
+                                                <?php                                          
+                                                }
+?>                                                 
+                                            </select>
+                                        </div>
+                                       <div class="mb-3">
+                                            <label for="tampilan_soal" class="form-label">Guru Pengampu</label>
+                                            <select class="form-control" id="tampilan_soal" name="id_user" required>
+                                            <?php
+                                            $user_idx = $row['user_id'];
+                                            $ta = mysqli_query($koneksi, "select * from `admins` where `id` = '$user_idx'");
+                                            $da = mysqli_fetch_assoc($ta);
+                                            $nama_guru = $da['nama_admin'];
+                                            ?>
+                                                <option value="<?php echo $user_idx; ?>"><?php echo $nama_guru; ?></option>
+                                            <?php
+                                            $ta = mysqli_query($koneksi, "select * from `admins` where `id` > 1");
+                                            $da = mysqli_fetch_assoc($ta);
+                                            while($da = mysqli_fetch_assoc($ta))
+                                            {?>
+                                                <option value="<?php echo $da['id']; ?>"><?php echo $da['nama_admin']; ?></option>
+                                                <?php                                          
+                                                }
+?>                                                 
+                                            </select>
+                                        </div>
+                                         
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
 										<a href="soal.php" class="btn btn-danger">Batal</a>
                                     </form>
