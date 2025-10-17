@@ -269,6 +269,10 @@ if ($data_soal['status'] == 'Aktif') {
                                             <input type="number" class="form-control" name="kode_soal_elearning" id="kode_soal"
                                                 required>
                                         </div>
+                                        <div class="alert alert-info">
+                                            <strong>Perhatian!</strong> Soal - soal akan dihapus terlebih dahulu<br>
+                                        </div>
+
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary">Unduh</button>

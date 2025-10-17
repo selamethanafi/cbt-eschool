@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode_soal_elearning']
 	$ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'cbt_elearning'");
 	$da = mysqli_fetch_assoc($ta);
 	$sianis = $da['konfigurasi_isi'];
-	echo $key.' '.$sianis.' '.$kode_soal;
+	//echo $key.' '.$sianis.' '.$form_kode_soal;
 	if((!empty($key)) and (!empty($sianis)))
 	{
     		$url = $sianis.'/cbtzya/soalperujian/'.$key.'/'.$kode_soal_elearning;
@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode_soal_elearning']
     		$json = via_curl($url);
     		if($json)
 		{
+			mysqli_query($koneksi, "delete FROM `butir_soal` WHERE `kode_soal` = '$form_kode_soal'");
 			//echo 'dapat jawaban dari elearning';
 			$cacahsoal = 0;
 			$urutan = 0;
