@@ -134,7 +134,7 @@ if (mysqli_num_rows($result) > 0):
             </tr>
         </table>
         <br>
-        <table style="width: 100%; font-size: 12px;padding:10px;">
+        <table style="width: 100%; font-size: 12px;padding:5px;">
             <tr>
                 <td>Nama</td>
                 <td>:</td>

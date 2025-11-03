@@ -15,6 +15,37 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <i class="align-middle fas fa-tachometer-alt"></i> <span class="align-middle">Dashboard</span>
                         </a>
                     </li>
+                    <?php
+                    if($id_saya == '1')
+                    {?>
+                     <li class="sidebar-item <?= ($currentPage == 'soal_aktif.php') ? 'active' : '' ?>
+                         <?= ($currentPage == 'hasil_harian.php') ? 'active' : '' ?>  
+			">
+                    <a data-bs-toggle="collapse" href="#soals" class="sidebar-link collapsed">
+                        <i class="align-middle fa fa-file"></i> <span class="align-middle">Ujian Bersama</span><i class="fa fa-chevron-down ms-auto float-end"></i>
+                    </a>
+                    <ul id="soals" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                        <li class="sidebar-item submenu">
+                            <a class="sidebar-link" href="soal_hari_ini.php">
+                                <i class="align-middle fas fa-book"></i> <span class="align-middle">Daftar Ujian Hari Ini</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item submenu">
+                            <a class="sidebar-link" href="soal_aktif.php">
+                                <i class="align-middle fas fa-book"></i> <span class="align-middle">Daftar Ujian Aktif</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item submenu">
+                            <a class="sidebar-link" href="hasil_harian.php">
+                                <i class="align-middle fas fa-upload"></i> <span class="align-middle">Hasil Per Hari</span>
+                            </a>
+                        </li>
+                    </ul>
+                    </li>
+                    
+                    <?php
+                    }
+                    ?>
 
                     <li class="sidebar-item <?= ($currentPage == 'soal.php') ? 'active' : '' ?> <?= ($currentPage == 'edit_soal.php') ? 'active' : '' ?>  
                         <?= ($currentPage == 'tambah_soal.php') ? 'active' : '' ?> <?= ($currentPage == 'edit_butir_soal.php') ? 'active' : '' ?> 
@@ -106,7 +137,9 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <i class="fa fa-gamepad" aria-hidden="true"></i> <span class="align-middle">Mini Games</span>
                         </a>
                     </li>
-
+                    <?php
+                    if($id_saya == '1')
+                    {?>
                     <li class="sidebar-item <?= ($currentPage == 'backup.php') ? 'active' : '' ?> <?= ($currentPage == 'reset_database.php') ? 'active' : '' ?> <?= ($currentPage == 'backup_gbr.php') ? 'active' : '' ?>">
                     <a data-bs-toggle="collapse" href="#backup" class="sidebar-link collapsed">
                         <i class="align-middle fa fa-hdd"></i> <span class="align-middle">Backup </span><i class="fa fa-chevron-down ms-auto float-end"></i>
@@ -141,7 +174,14 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan</span>
                         </a>
                     </li>
-
+                    <li class="sidebar-item <?= ($currentPage == 'setting_lokal.php') ? 'active' : '' ?> <?= ($currentPage == 'pass.php') ? 'active' : '' ?>">
+                        <a class="sidebar-link" href="setting_lokal.php">
+                            <i class="align-middle fas fa-cogs"></i> <span class="align-middle">Pengaturan Aplikasi</span>
+                        </a>
+                    </li>
+<?php
+}
+?>
                     <li class="sidebar-item">
                         <a class="sidebar-link btnLogout" href="logout.php">
                             <i class="align-middle fas fa-sign-out-alt"></i> <span class="align-middle">Logout</span>

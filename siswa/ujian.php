@@ -187,7 +187,7 @@ $basePath = rtrim(dirname($scriptPath, 1), '/');
         });
     });
     </script>
-    <?php unset($_SESSION['warning_message']); ?>
+    <?php unset($_SESSION['alert']); ?>
     <?php endif; ?>
 </body>
 

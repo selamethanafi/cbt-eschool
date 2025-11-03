@@ -13,7 +13,7 @@ $result = mysqli_query($koneksi, $query);
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dashboard Siswa</title>
+    <title>Perangkat Siswa</title>
     <?php include '../inc/css.php'; ?>
 
     <style>
@@ -110,7 +110,8 @@ $result = mysqli_query($koneksi, $query);
  $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown User Agent';
 //echo "The user agent is: " . $userAgent;
 
-if(($userAgent == $agen_1) or ($userAgent == $agen_2) or ($userAgent == $agen_3) or ($userAgent == $agen_4) or ($userAgent == $agen_5) or ($userAgent == $agen_6))
+$q_a = mysqli_query($koneksi, "SELECT * FROM agen WHERE nama = '$userAgent'");
+if (mysqli_num_rows($q_a) > 0) 
 {
       $os_agen = 'Sesuai';
 }
@@ -206,7 +207,6 @@ else
     <?php include '../inc/js.php'; ?>
 
     <script>
-	  const agen_1 = "<?php echo $agen_1; ?>";
     document.addEventListener('DOMContentLoaded', function () {
         function $(id) { return document.getElementById(id); }
 
@@ -236,19 +236,6 @@ else
                 $('ip').className = "";
             });
 
-        // OS & Browser (User Agent)
-/*
-	if (navigator.userAgent === <?php echo $agen_1;?>) 
-	{
-	        $('userAgent').textContent = "Oke";
-	        $('userAgent').className = "";
-	}
-	else
-	{
-	        $('userAgent').textContent = "";
-	        $('userAgent').className = "";
-	}
-*/
 
         // RAM (perkiraan)
         if (navigator.deviceMemory) {
@@ -322,3 +309,4 @@ else
     <?php include '../inc/check_activity.php'; ?>
 </body>
 </html>
+

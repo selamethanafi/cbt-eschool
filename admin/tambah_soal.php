@@ -7,6 +7,8 @@ include '../inc/dataadmin.php';
 $user_id = $_SESSION['admin_id'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kode_soal = mysqli_real_escape_string($koneksi, $_POST['kode_soal']);
+    $tahun = mysqli_real_escape_string($koneksi, $_POST['tahun']);
+    $semester = mysqli_real_escape_string($koneksi, $_POST['semester']);
     $nama_soal = mysqli_real_escape_string($koneksi, $_POST['nama_soal']);
     $mapel = mysqli_real_escape_string($koneksi, $_POST['mapel']);
     $kelas = mysqli_real_escape_string($koneksi, $_POST['kelas']);
@@ -23,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    $query = "INSERT INTO soal (kode_soal, nama_soal, mapel, kelas, waktu_ujian, tampilan_soal, tanggal, user_id, exambrowser)
-              VALUES ('$kode_soal', '$nama_soal', '$mapel', '$kelas', '$waktu_ujian', '$tampilan_soal', '$tanggal', $user_id, $exambrowser)";
+    $query = "INSERT INTO soal (kode_soal, nama_soal, mapel, kelas, waktu_ujian, tampilan_soal, tanggal, user_id, exambrowser, tahun, semester)
+              VALUES ('$kode_soal', '$nama_soal', '$mapel', '$kelas', '$waktu_ujian', '$tampilan_soal', '$tanggal', $user_id, $exambrowser, $tahun, $semester)";
 
     if (mysqli_query($koneksi, $query)) {
         $_SESSION['success'] = 'Soal berhasil ditambahkan.';
@@ -48,6 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="wrapper">
         <?php include 'sidebar.php'; ?>
+        <?php $semester = cari_semester();
+        $ajaran = cari_thnajaran();
+        ?>
         <div class="main">
             <?php include 'navbar.php'; ?>
             <main class="content">
@@ -65,6 +70,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         $result_kelas = mysqli_query($koneksi, $query_kelas);
                                         ?>
                                     <form method="POST">
+                                     <div class="mb-3">
+                                            <label for="tampilan_soal" class="form-label">Tahun</label>
+                                            <select class="form-control" id="tampilan_soal" name="tahun" required>
+                                                <option value="<?php echo $ajaran;?>"><?php echo $ajaran;?></option>
+                                            </select>
+                                        </div>
+	                                  <div class="mb-3">
+                                            <label for="tampilan_soal" class="form-label">Tahun</label>
+                                            <select class="form-control" id="tampilan_soal" name="semester" required>
+                                                <option value="<?php echo $semester;?>"><?php echo $semester;?></option>
+                                            </select>
+                                        </div>
+
                                         <div class="mb-3">
                                             <label for="kode_soal" class="form-label">Kode Soal</label>
                                             <input type="text" class="form-control" id="kode_soal" name="kode_soal" required>
@@ -102,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </div>
                                         <div class="mb-3">
                                             <label for="tanggal" class="form-label">Tanggal Ujian</label>
-                                            <input type="date" class="form-control" id="tanggal" name="tanggal" required onclick="this.showPicker()">
+                                            <input type="datetime-local" class="form-control" id="tanggal" name="tanggal" value="<?php echo $row['tanggal']; ?>" required onclick="this.showPicker()">
                                         </div>
                                        <div class="mb-3">
                                             <label for="tampilan_soal" class="form-label">Menggunakan Exambrowser</label>

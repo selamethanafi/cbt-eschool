@@ -33,6 +33,8 @@ if ($row['status'] == 'Aktif') {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Ambil data dari form
     $kode_soal = mysqli_real_escape_string($koneksi, $_POST['kode_soal']);
+    $tahun = mysqli_real_escape_string($koneksi, $_POST['tahun']);
+    $semester = mysqli_real_escape_string($koneksi, $_POST['semester']);
     $nama_soal = mysqli_real_escape_string($koneksi, $_POST['nama_soal']);
     $mapel = mysqli_real_escape_string($koneksi, $_POST['mapel']);
     $kelas = mysqli_real_escape_string($koneksi, $_POST['kelas']);
@@ -40,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $waktu_ujian = mysqli_real_escape_string($koneksi, $_POST['waktu_ujian']);
     $tanggal = mysqli_real_escape_string($koneksi, $_POST['tanggal']);
     $id_user = mysqli_real_escape_string($koneksi, $_POST['id_user']);
-    $exambrowser = mysqli_real_escape_string($koneksi, $_POST['exambrowser']);    
+    $exambrowser = mysqli_real_escape_string($koneksi, $_POST['exambrowser']);
     // Update data soal
     $update_query = "UPDATE soal SET 
                         kode_soal = '$kode_soal', 
@@ -50,9 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         tampilan_soal = '$tampilan_soal', 
                         waktu_ujian = '$waktu_ujian', 
                         user_id = '$id_user',
-                        tanggal = '$tanggal'
-                    WHERE id_soal = '$id_soal'";
-	echo $update_query;
+                        tanggal = '$tanggal',
+                        exambrowser = '$exambrowser'
+                        WHERE id_soal = '$id_soal'";
+                        echo $update_query;
     if (mysqli_query($koneksi, $update_query)) {
         $_SESSION['success_message'] = 'Data soal berhasil diupdate!';
         header('Location: soal.php');
@@ -101,6 +104,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <h2>Kode Soal : <?php echo $row['kode_soal']; ?></h2>
                                             <input type="hidden" class="form-control" id="kode_soal" name="kode_soal" value="<?php echo $row['kode_soal']; ?>" required>
                                         </div>
+                                                                                <div class="mb-3">
+                                            <label for="tampilan_soal" class="form-label">Tahun</label>
+                                            <input type="number" class="form-control" id="tampilan_soal" name="tahun" value="<?php echo $row['tahun'];?>" required>
+                                        </div>
+	                                  <div class="mb-3">
+                                            <label for="tampilan_soal" class="form-label">Semester</label>
+                                            <input type="number" class="form-control" id="tampilan_soal" name="semester" value="<?php echo $row['semester'];?>" required>
+
+                                        </div>
+
                                         <div class="mb-3">
                                             <label for="nama_soal" class="form-label">Nama Soal</label>
                                             <input type="text" class="form-control" id="nama_soal" name="nama_soal" value="<?php echo $row['nama_soal']; ?>" required>
@@ -134,8 +147,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </div>
                                         <div class="mb-3">
                                             <label for="tanggal" class="form-label">Tanggal Ujian</label>
-                                            <input type="date" class="form-control" id="tanggal" name="tanggal" value="<?php echo $row['tanggal']; ?>" required onclick="this.showPicker()">
+                                            <input type="datetime-local" class="form-control" id="tanggal" name="tanggal" value="<?php echo $row['tanggal']; ?>" required onclick="this.showPicker()">
                                         </div>
+
                                        <div class="mb-3">
                                             <label for="tampilan_soal" class="form-label">Menggunakan Exambrowser</label>
                                             <select class="form-control" id="tampilan_soal" name="exambrowser" required>
@@ -177,7 +191,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>                                                 
                                             </select>
                                         </div>
-                                         
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
 										<a href="soal.php" class="btn btn-danger">Batal</a>
                                     </form>
@@ -194,3 +207,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include '../inc/js.php'; ?>
 </body>
 </html>
+

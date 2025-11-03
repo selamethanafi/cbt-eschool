@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_excel'])) {
                     (nomer_soal, kode_soal, pertanyaan, tipe_soal, pilihan_1, pilihan_2, pilihan_3, pilihan_4, pilihan_5, jawaban_benar, status_soal)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            echo "$nomer_soal . $kode_soal . $pertanyaan . $tipe_soal . $pilihan_1 . $pilihan_2 $pilihan_3 $pilihan_4 $pilihan_5 $jawaban_benar, $status_soal";
+           // echo "$nomer_soal . $kode_soal . $pertanyaan . $tipe_soal . $pilihan_1 . $pilihan_2 $pilihan_3 $pilihan_4 $pilihan_5 $jawaban_benar, $status_soal";
             
                 $stmt->bind_param("issssssssss",$nomer_soal, $kode_soal, $pertanyaan, $tipe_soal, $pilihan_1, $pilihan_2, $pilihan_3, $pilihan_4, $pilihan_5, $jawaban_benar, $status_soal);
                 if ($stmt->execute()) {

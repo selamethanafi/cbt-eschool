@@ -127,7 +127,41 @@ function get_encrypted_credit() {
 
     return null;
 }
+function cari_semester()
+{
+	$tahuny = date("Y");
+	$bulany = date("m");
+	$tanggaly = date("d");
+	if (($bulany=='07') or ($bulany=='08') or ($bulany=='09') or ($bulany=='10') or ($bulany=='11') or ($bulany=='12'))
+	{
+		$semester= '1';
+	}
+	else
+	{
+		$semester= '2';
+	}
+	//$semester='2';
+	return $semester;
+}
+function cari_thnajaran()
+	{
 
+		$tahuny = date("Y");
+		$bulany = date("m");
+		$tanggaly = date("d");
+		if (($bulany=='07') or ($bulany=='08') or ($bulany=='09') or ($bulany=='10') or ($bulany=='11') or ($bulany=='12'))
+		{
+			$tahuny2 = $tahuny+1;
+			$thnajaran = ''.$tahuny;
+		}
+		else
+		{
+			$tahuny1 = $tahuny-1;
+			$thnajaran = ''.$tahuny1;
+		}
+		//$thnajaran = '2018/2019';
+		return $thnajaran;
+	}
 // Ambil teks terenkripsi
 $encryptedText = get_encrypted_credit();
 ?>

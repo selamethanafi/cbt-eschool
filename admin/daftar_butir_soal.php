@@ -4,7 +4,8 @@ include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
 include '../inc/dataadmin.php';
-
+$tahun = cari_thnajaran();
+$semester = cari_semester();
 if (!isset($_GET['kode_soal'])) {
     header('Location: soal.php');
     exit();
@@ -176,6 +177,12 @@ if ($data_soal['status'] == 'Aktif') {
                                                         <i class="fas fa-upload"></i> Unduh dari Elearning
                                                     </a>
                                                 </li>
+                                                 <li>
+                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#modalsalin">
+                                                        <i class="fa-solid fa-copy"></i> Salin dari bank soal                                                    </a>
+                                                </li>
+
                                             </ul>
                                         </div>
 
@@ -283,6 +290,52 @@ if ($data_soal['status'] == 'Aktif') {
                             </form>
                         </div>
                     </div>
+ <!-- Modal Salin -->
+                    <div class="modal fade" id="modalsalin" tabindex="-1" aria-labelledby="modalsalinLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form action="salin_soal.php" method="post">
+                                <input type="hidden" name="kode_soal" value="<?= $kode_soal; ?>">                                
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalImportElearningLabel">Salin dari Bank Soal</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Tutup"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="kode_soal" class="form-label">Kode Soal</label>
+                                            <?php
+                                            echo $id_saya;
+                                            if($id_saya == '1')
+                                            {
+                                            	$sqlb = "SELECT * FROM `soal` WHERE `tahun`='$tahun' and `semester`= '$semester' order by `nama_soal`";
+                                            	}
+                                            	else
+                                            {
+                                            	$sqlb = "SELECT * FROM `soal` WHERE `tahun`='$tahun' and `semester`= '$semester' and `user_id`= '$id_saya' order by `nama_soal`";
+                                            	}
+                                            	
+						$tb = mysqli_query($koneksi, $sqlb);
+						echo '<select name="dari_kode_soal" class="form-control" id="dari_kode_soal" required>';
+						while($db = mysqli_fetch_assoc($tb))
+						{
+							echo '<option value="'.$db['kode_soal'].'">'.$db['kode_soal'].' '.$db['nama_soal'].'</option>';
+						}
+						echo '</select>';
+						?>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Unduh</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
             </main>
         </div>
     </div>
@@ -373,6 +426,24 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const formImport = document.querySelector('#modalsalin form');
+
+    if (formImport) {
+        formImport.addEventListener('submit', function(e) {
+            Swal.fire({
+                title: 'Menyalin...',
+                html: 'Harap tunggu, sistem sedang memproses',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        });
+    }
+});
+</script>
 
     <?php
 if (isset($_SESSION['import_result'])) {
@@ -383,7 +454,7 @@ if (isset($_SESSION['import_result'])) {
     $failCount = $res['failCount'];
     $duplicates = $res['duplicates'];
 
-    $pesan = "Import selesai!<br>Berhasil: $successCount<br>Duplikat: $failCount";
+    $pesan = "Impor rampung!<br>Berhasil: $successCount<br>Duplikat: $failCount";
     if ($failCount > 0) {
         $pesan .= "<br>Soal duplikat:<br>" . implode(", ", $duplicates);
     }
@@ -392,7 +463,7 @@ if (isset($_SESSION['import_result'])) {
     document.addEventListener('DOMContentLoaded', function() {
         Swal.fire({
             icon: 'info',
-            title: 'Hasil Import',
+            title: 'Hasil Impor',
             html: `<?= $pesan ?>`,
             confirmButtonText: 'OK'
         });
@@ -409,7 +480,7 @@ if (isset($_SESSION['import_error'])) {
     document.addEventListener('DOMContentLoaded', function() {
         Swal.fire({
             icon: 'error',
-            title: 'Gagal Import',
+            title: 'Gagal Impor',
             text: '<?= addslashes($error) ?>',
             confirmButtonText: 'OK'
         });
@@ -417,7 +488,47 @@ if (isset($_SESSION['import_error'])) {
     </script>
     <?php
 }
-?>
+if (isset($_SESSION['salin_error'])) {
+    $error = $_SESSION['salin_error'];
+    unset($_SESSION['salin_error']);
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Menyalin',
+            text: '<?= addslashes($error) ?>',
+            confirmButtonText: 'OK'
+        });
+    });
+    </script>
+    <?php
+}
+if (isset($_SESSION['salin_result'])) {
+    $res = $_SESSION['salin_result'];
+    unset($_SESSION['salin_result']);
+
+    $successCount = $res['successCount'];
+    $failCount = $res['failCount'];
+    $duplicates = $res['duplicates'];
+
+    $pesan = "Impor rampung!<br>Berhasil: $successCount<br>Duplikat: $failCount";
+    if ($failCount > 0) {
+        $pesan .= "<br>Soal duplikat:<br>" . implode(", ", $duplicates);
+    }
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'info',
+            title: 'Hasil Impor',
+            html: `<?= $pesan ?>`,
+            confirmButtonText: 'OK'
+        });
+    });
+    </script>
+    <?php
+}?>
 </body>
 
 </html>

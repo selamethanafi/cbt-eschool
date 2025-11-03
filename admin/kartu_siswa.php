@@ -110,9 +110,12 @@ if (!$koneksi) {
                                             $encrypted_data = substr($decoded, $iv_length);
                                             $decrypted = openssl_decrypt($encrypted_data, $method, $rahasia, 0, $iv2);
                                             $qr_filename = $qr_temp_dir . $row['username'] . '.png';
-
+					    if (file_exists($qr_filename))
+					    {
+					    	unlink($qr_filename);
+					    }
                                             if (!file_exists($qr_filename)) {
-                                                QRcode::png($row['username'], $qr_filename, QR_ECLEVEL_L, 3);
+                                                QRcode::png('http://192.168.10.10/siswa/login.php?nopes='.$row['username'].'&kode='.$decrypted, $qr_filename, 'H', 10);
                                             }
                                             $thn_sekarang = date('Y');
                                             $thn_pelajaran = $thn_sekarang . '/' . ($thn_sekarang + 1);
@@ -156,7 +159,7 @@ if (!$koneksi) {
                                                 </table>
                                                 <br>
                                                 <div style="text-align: right;">
-                                                    <img src="<?php echo $qr_filename; ?>" alt="QR" style="height: 50px;">
+                                                    <img src="<?php echo $qr_filename; ?>" alt="QR" style="height: 100px;">
                                                 </div>
                                             </div>
                                         </div>

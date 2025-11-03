@@ -96,7 +96,10 @@ include '../inc/dataadmin.php';
                                   <button type="submit" class="btn btn-danger btn-sm btn-delete">
                                     <i class="fa fa-close"></i> Hapus
                                   </button>
-                                </form>
+                               </form>
+                                <a href="sinkron_siswa.php?id=' . $data['id_siswa'] . '" class="btn btn-sm btn-info">
+                                  <i class="fas fa-download"></i> Sinkron Siswa
+                                </a>
                               </td>';
                         echo "</tr>";
                         $no++;
@@ -125,7 +128,7 @@ include '../inc/dataadmin.php';
         Yakin hendak mengunduh siswa dari sistem informasi madrasah?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batak</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         <a href="sinkron_peserta.php" class="btn btn-success">Yakin</a>
       </div>
     </div>

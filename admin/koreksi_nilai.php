@@ -1,14 +1,41 @@
 <?php
 include '../koneksi/koneksi.php';
-
-$kode_soal = '12581';
-$id_siswa = 172;
+function ubah($masuk)
+{
+    if($masuk == 'pilihan_1')
+    {
+        $jjj = 'A';
+    }
+    elseif($masuk == 'pilihan_2')
+    {
+        $jjj = 'B';
+    }
+    elseif($masuk == 'pilihan_3')
+    {
+        $jjj = 'C';
+    }
+    elseif($masuk == 'pilihan_4')
+    {
+        $jjj = 'D';
+    }
+    elseif($masuk == 'pilihan_5')
+    {
+        $jjj = 'E';
+    }
+    else
+    {
+        $jjj = '?';
+    }
+    return $jjj;
+    
+}
+$kode_soal = 'C12575';
+$id_siswa = 132;
 
 $q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
 $data_soal = mysqli_fetch_assoc($q_soal);
 $kode_soal = $data_soal['kode_soal'];
-echo "SELECT * FROM jawaban_siswa WHERE kode_soal = '$kode_soal' AND id_siswa='$id_siswa'";
-$q_jawaban = mysqli_query($koneksi, "SELECT * FROM jawaban_siswa WHERE kode_soal = '$kode_soal' AND id_siswa='$id_siswa'");
+$q_jawaban = mysqli_query($koneksi, "SELECT * FROM nilai WHERE kode_soal = '$kode_soal' AND id_siswa='$id_siswa'");
 $data_jawaban = mysqli_fetch_assoc($q_jawaban);
 $jawaban_siswa = $data_jawaban['jawaban_siswa'] ?? '';
 
@@ -54,7 +81,7 @@ echo "<h3>Kode Soal: $kode_soal</h3>";
 echo "<p>Jumlah Soal: $total_soal</p>";
 echo "<table border='1' cellpadding='5' cellspacing='0'>";
 echo "<tr><th>No</th><th>Kunci</th><th>Jawaban Siswa</th><th>Skor</th><th>Status</th></tr>";
-
+$jwb_siswa = '';
 for ($i = 0; $i < $total_soal; $i++) {
     list($nomer_kunci, $isi_kunci) = explode(':', $kunci_array[$i], 2);
     $isi_jawaban = $jawaban_siswa_arr[$nomer_kunci] ?? '';
@@ -132,6 +159,17 @@ for ($i = 0; $i < $total_soal; $i++) {
         if (strtolower(trim($isi_kunci)) === strtolower(trim($isi_jawaban))) {
             $skor = $nilai_per_soal;
             $status = "✅ Benar"; $benar++;
+            $kk = ubah(strtolower(trim($isi_jawaban)));
+            if(empty($jwb_siswa))
+            {
+                
+                $jwb_siswa .= $kk;
+            }
+            else
+            {
+                $jwb_siswa .= ','.$kk;
+            }
+            
         } else {
             $skor = 0;
             $status = "❌ Salah"; $salah++;
@@ -154,6 +192,8 @@ for ($i = 0; $i < $total_soal; $i++) {
 $nilai_akhir = round($nilai_total, 2);
 
 echo "</table>";
+echo '<p>'.$jwb_siswa.'</p>';
 echo "<p>Benar: $benar | Salah: $salah | Kurang Lengkap: $kurang_lengkap</p>";
 echo "<p><strong>Nilai Akhir: $nilai_akhir%</strong></p>";
 ?>
+

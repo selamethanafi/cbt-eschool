@@ -46,9 +46,51 @@ function parseJawabanSiswa($str) {
 $jawaban_siswa = parseJawabanSiswa($jawaban_siswa_raw);
 
 // Get answer key and calculate scores per question
-$query_kunci = mysqli_query($koneksi, "SELECT kunci FROM soal WHERE kode_soal='$kode_soal'");
+$query_kunci = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal='$kode_soal'");
 $data_kunci = mysqli_fetch_assoc($query_kunci);
 $kunci_jawaban = $data_kunci['kunci'] ?? '';
+$npg = $data_soal['npg'] ?? 0;
+$npgk = $data_soal['npgk'] ?? 0;
+$njd = $data_soal['njd'] ?? 0;
+$nbs = $data_soal['nbs'] ?? 0;
+$nuraian = $data_soal['nuraian'] ?? 0;
+$spg = $data_soal['spg'] ?? 0;
+$spgk = $data_soal['spgk'] ?? 0;
+$sjd = $data_soal['sjd'] ?? 0;
+$sbs = $data_soal['sbs'] ?? 0;
+$suraian = $data_soal['suraian'] ?? 0;
+if($npg > 0)
+{
+	$nilai_per_soal_pg = $spg / $npg;
+}
+else
+{
+	$nilai_per_soal_pg = 0;
+}
+if($npgk > 0)
+{
+	$nilai_per_soal_pgk = $spgk / $npgk;
+}
+else
+{
+	$nilai_per_soal_pgk = 0;
+}
+if($njd > 0)
+{
+	$nilai_per_soal_jd = $sjd / $njd;
+}
+else
+{
+	$nilai_per_soal_jd = 0;
+}
+if($nbs > 0)
+{
+	$nilai_per_soal_bs = $sbs / $nbs;
+}
+else
+{
+	$nilai_per_soal_bs = 0;
+}
 
 function removeCommasOutsideBrackets($str) {
     $result = '';
@@ -87,11 +129,11 @@ if (!empty($kunci_jawaban)) {
         }
         $skor = 0;
         
-        if (in_array($tipe_soal, ['benar/salah', 'menjodohkan'])) {
+        if ($tipe_soal === 'benar/salah') {
             $kunci_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_kunci)));
             $jawaban_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_jawaban)));
             $jumlah_kunci = count($kunci_opsi);
-            $nilai_per_opsi = $nilai_per_soal / $jumlah_kunci;
+            $nilai_per_opsi = $nilai_per_soal_bs / $jumlah_kunci;
             $jumlah_benar = 0;
             
             for ($j = 0; $j < $jumlah_kunci; $j++) {
@@ -101,7 +143,21 @@ if (!empty($kunci_jawaban)) {
             }
             $skor = $jumlah_benar * $nilai_per_opsi;
             
-        } elseif ($tipe_soal === 'pilihan ganda kompleks') {
+        } else if ($tipe_soal === 'menjodohkan') {
+            $kunci_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_kunci)));
+            $jawaban_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_jawaban)));
+            $jumlah_kunci = count($kunci_opsi);
+            $nilai_per_opsi = $nilai_per_soal_jd / $jumlah_kunci;
+            $jumlah_benar = 0;
+            
+            for ($j = 0; $j < $jumlah_kunci; $j++) {
+                if (isset($jawaban_opsi[$j]) && $kunci_opsi[$j] === $jawaban_opsi[$j]) {
+                    $jumlah_benar++;
+                }
+            }
+            $skor = $jumlah_benar * $nilai_per_opsi;
+            
+        } else if ($tipe_soal === 'pilihan ganda kompleks') {
             $kunci_opsi = array_map('strtolower', array_map('trim', explode(',', str_replace('|', ',', $isi_kunci))));
             $jawaban_opsi = array_map('strtolower', array_map('trim', explode(',', str_replace('|', ',', $isi_jawaban))));
             
@@ -122,7 +178,7 @@ if (!empty($kunci_jawaban)) {
             if ($jumlah_benar === $jumlah_kunci) {
                 $skor = $nilai_per_soal;
             } else {
-                $skor = ($jumlah_benar / $jumlah_kunci) * $nilai_per_soal;
+                $skor = ($jumlah_benar / $jumlah_kunci) * $nilai_per_soal_pgk;
             }
             
             selesai_pilgan_kompleks:
@@ -131,7 +187,7 @@ if (!empty($kunci_jawaban)) {
         } else {
             // PG tunggal atau uraian
             if (strtolower(trim($isi_kunci)) === strtolower(trim($isi_jawaban))) {
-                $skor = $nilai_per_soal;
+                $skor = $nilai_per_soal_pg;
             }
         }
         

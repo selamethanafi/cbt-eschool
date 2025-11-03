@@ -200,6 +200,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <?php
                                         $q = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1");
                                         $data = mysqli_fetch_assoc($q);
+                                        $ruang = '?';
+                                        $ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'cbt_ruang'");
+                                        $da = mysqli_fetch_assoc($ta);
+                                        $ruang = $da['konfigurasi_isi'];
                                         ?>
                         <img src="../assets/images/<?php echo $data['logo_sekolah']; ?>" width="300" height="auto">
                         </div>
@@ -208,6 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <?php echo htmlspecialchars($error); ?>
                             </div>
                         <?php endif; ?>
+                        <h2 class="text-center">Ruang <?php echo $ruang;?></h2>
                         <form action="" method="POST" class="mt-3" id="loginForm">
                             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                             <div class="mb-3">

@@ -1,10 +1,4 @@
-<style>
-.my-custom-card-body {
-    height: 500px; /* Tinggi yang ditentukan */
-}
-</style>
 <?php
-
 session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
@@ -21,7 +15,9 @@ if (empty($kode_soal)) {
     header('Location: ujian.php');
     exit;
 }
-
+$ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode`='batas'");
+$da = mysqli_fetch_assoc($ta);
+$batas = $da['konfigurasi_isi'];
 // Ambil data siswa
 $q_siswa = mysqli_query($koneksi, "SELECT * FROM siswa WHERE id_siswa = '$id_siswa'");
 $data_siswa = mysqli_fetch_assoc($q_siswa);
@@ -44,7 +40,7 @@ if (strtolower($data_soal['status']) !== 'aktif') {
 } 
 
 $tanggal_soal = $data_soal['tanggal'];
-$tanggal_hari_ini = date('Y-m-d');
+$tanggal_hari_ini = date('Y-m-d H:i:s');
 
 if (strtotime($tanggal_hari_ini) < strtotime($tanggal_soal)) {
     $_SESSION['alert'] = true;
@@ -121,8 +117,8 @@ if ($w = mysqli_fetch_assoc($get_waktu)) {
     $waktu_sisa = (int)$data_soal['waktu_ujian']; // MENIT
     // Buat baris jawaban_siswa supaya nanti bisa diupdate
     mysqli_query($koneksi, 
-        "INSERT INTO jawaban_siswa (id_siswa, kode_soal, waktu_sisa, status_ujian, jawaban_siswa)
-         VALUES ('$id_siswa', '$kode_soal', '$waktu_sisa', 'Aktif', '')");
+        "INSERT INTO jawaban_siswa (id_siswa, nama_siswa, kode_soal, waktu_sisa, status_ujian, jawaban_siswa)
+         VALUES ('$id_siswa', '$nama_siswa', '$kode_soal', '$waktu_sisa', 'Aktif', '')");
 }
 
 
@@ -184,7 +180,6 @@ foreach ($matches as $match) {
     $status_soal[$nomor] = !empty($isi);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -197,6 +192,11 @@ foreach ($matches as $match) {
     <script>
     const syncInterval = <?= $interval_ms ?>;
     </script>
+    <style>
+.my-custom-card-body {
+    height: 500px; /* Tinggi yang ditentukan */
+}
+</style>
 </head>
 
 <body>
@@ -274,6 +274,7 @@ foreach ($matches as $match) {
                                     <div id="autoSaveStatus"></div>
                                     <form id="formUjian" method="post" action="simpan_jawaban.php">
                                         <input type="hidden" name="waktu_sisa" id="waktu_sisa">
+                                        <input type="hidden" name="batas" value="<?= $batas;?>">
                                         <input type="hidden" name="kode_soal"
                                             value="<?= htmlspecialchars($kode_soal) ?>">
 

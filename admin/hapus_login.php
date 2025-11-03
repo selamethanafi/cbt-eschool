@@ -81,24 +81,7 @@ include '../inc/dataadmin.php';
       </main>
     </div>
   </div>
-  <!-- Modal -->
-<div class="modal fade" id="mdunduh" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi Unduh dari SIM</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Yakin hendak mengunduh siswa dari sistem informasi madrasah?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batak</button>
-        <a href="sinkron_peserta.php" class="btn btn-success">Yakin</a>
-      </div>
-    </div>
-  </div>
-</div>
+
 <?php include '../inc/js.php'; ?>
   <!--<script src="../assets/datatables/dataTables.buttons.min.js"></script>
   <script src="../assets/datatables/buttons.bootstrap5.min.js"></script>-->
@@ -198,7 +181,7 @@ Swal.fire({
 Swal.fire({
     icon: 'error',
     title: 'Gagal!',
-    text: '<?= $_SESSION['error']; ?>',
+    text: '<?= $_SESSION['alert']; ?>',
     confirmButtonColor: '#dc3545'
 });
 </script>

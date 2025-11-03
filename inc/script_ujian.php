@@ -1,5 +1,7 @@
     <script>
 // Timer Logic
+let batas = <?= $batas;?> * 60; // waktu_sisa menit -> detik
+let batasmenit =  <?= $batas;?> ;
 let waktu = <?= max(1, (int)$waktu_sisa) ?> * 60; // waktu_sisa menit -> detik
 let soalAktif = 0;
 const totalSoal = <?= count($soal) ?>;
@@ -143,28 +145,49 @@ setInterval(() => {
 // Tangani klik tombol "Selesai"
 document.getElementById('submitBtn').addEventListener('click', function(e) {
     e.preventDefault();
-
+    const batasWaktu = batas; // 5 menit = 300 detik
+    const batasMenit = batasmenit;
     const sisaDetik = parseInt(waktu) || 0;
     const menit = Math.floor(sisaDetik / 60);
     const detik = sisaDetik % 60;
     const formatWaktu = `${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
+    const sisa_menit = Math.floor(batasWaktu / 60);
+
+    // Tentukan isi HTML SweetAlert tergantung sisa waktu
+    let htmlContent = `
+        Sisa waktu Anda: <strong>${formatWaktu}</strong> batas ${batasMenit} menit<br><br>
+        <div id="checkboxArea">
+                ${
+                    waktu <= batasWaktu
+                        ? `<input type="checkbox" id="konfirmasiCek"> Saya yakin ingin menyelesaikan ujian ini.`
+                        : `<em>Checkbox akan muncul otomatis ketika waktu tersisa kurang dari batas</em>`
+                }
+            </div>
+    `;
 
     Swal.fire({
         title: 'Selesaikan Ujian?',
-        html: `
-            Sisa waktu Anda: <strong>${formatWaktu}</strong><br><br>
-            <input type="checkbox" id="konfirmasiCek"> Saya yakin ingin menyelesaikan ujian ini.
-        `,
+        html: htmlContent,
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Ya, Selesai',
         cancelButtonText: 'Batal',
         preConfirm: () => {
             const checkbox = document.getElementById('konfirmasiCek');
-            if (!checkbox.checked) {
-                Swal.showValidationMessage('Anda harus menyetujui konfirmasi terlebih dahulu.');
+
+            // Jika checkbox belum muncul (karena waktunya belum cukup), tampilkan pesan
+            if (sisaDetik > batasWaktu) {
+                Swal.showValidationMessage('Anda belum bisa menyelesaikan ujian sebelum waktu tersisa kurangdari batas.');
+                return false;
             }
-            return checkbox.checked;
+
+            // Jika sudah muncul tapi belum dicentang
+            if (checkbox && !checkbox.checked) {
+                Swal.showValidationMessage('Anda harus mencentang konfirmasi terlebih dahulu.');
+                return false;
+            }
+
+            return true;
         }
     }).then((result) => {
         if (result.isConfirmed) {
@@ -172,6 +195,7 @@ document.getElementById('submitBtn').addEventListener('click', function(e) {
         }
     });
 });
+
 
 
 // Panggil pertama kali untuk inisialisasi

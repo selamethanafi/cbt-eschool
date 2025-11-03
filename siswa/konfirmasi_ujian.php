@@ -10,7 +10,7 @@ $kode_soal = $_GET['kode_soal'] ?? '';
 if (!$id_siswa || !$kode_soal) {
     $_SESSION['alert'] = true;
     $_SESSION['warning_message'] = 'Data tidak lengkap.';
-    header('Location: ujian.php');
+    header('Location: ujian1.php');
     exit;
 }
 
@@ -44,8 +44,8 @@ if (strtolower($data_soal['status']) !== 'aktif') {
     exit;
 } 
 // Cek jika tanggal hari ini kurang dari tanggal soal (belum dimulai)
-$tanggal_soal = substr($data_soal['tanggal'],0,10);
-$tanggal_hari_ini = date('Y-m-d');
+$tanggal_soal = $data_soal['tanggal'];
+$tanggal_hari_ini = date('Y-m-d H:i:s');
 
 if (strtotime($tanggal_hari_ini) < strtotime($tanggal_soal)) {
     $_SESSION['alert'] = true;
@@ -153,11 +153,11 @@ $_SESSION['konfirmasi_ujian'] = true;
     {
           $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown User Agent';
 //echo "The user agent is: " . $userAgent;
-
-            if(($userAgent == $agen_1) or ($userAgent == $agen_2) or ($userAgent == $agen_3) or ($userAgent == $agen_4) or ($userAgent == $agen_5) or ($userAgent == $agen_6))
-            {
-               $boleh++; // kalau perangkat sesuai
-            }
+	$q_a = mysqli_query($koneksi, "SELECT * FROM agen WHERE nama = '$userAgent'");
+	if (mysqli_num_rows($q_a) > 0) 
+	{
+             $boleh++; // kalau perangkat sesuai
+        }
     }
     else
     {

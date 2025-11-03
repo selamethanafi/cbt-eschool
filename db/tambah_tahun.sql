@@ -1,0 +1,1 @@
+ALTER TABLE `soal` ADD `tahun` VARCHAR(4) NULL DEFAULT NULL AFTER `exambrowser`, ADD `semester` VARCHAR(2) NULL DEFAULT NULL AFTER `tahun`;

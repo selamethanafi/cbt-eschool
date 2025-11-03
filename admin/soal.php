@@ -4,15 +4,30 @@ include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
 include '../inc/dataadmin.php';
-$query = "
+$semester = cari_semester();
+$ajaran = cari_thnajaran();
+if($id_saya == '1')
+{
+	$query = "
     SELECT 
         s.id_soal, s.kode_soal, s.nama_soal, s.mapel, s.kelas, s.tampilan_soal, s.status, s.tanggal, s.waktu_ujian, s.token,
         COUNT(b.id_soal) AS jumlah_butir
     FROM soal s
-    LEFT JOIN butir_soal b ON s.kode_soal = b.kode_soal where user_id = $id_saya
+    LEFT JOIN butir_soal b ON s.kode_soal = b.kode_soal where tahun = '$ajaran' and semester = '$semester'
     GROUP BY s.id_soal, s.kode_soal, s.nama_soal, s.mapel, s.kelas, s.status,  s.tanggal, s.waktu_ujian, s.token
 ";
-
+}
+else
+{
+	$query = "
+    SELECT 
+        s.id_soal, s.kode_soal, s.nama_soal, s.mapel, s.kelas, s.tampilan_soal, s.status, s.tanggal, s.waktu_ujian, s.token,
+        COUNT(b.id_soal) AS jumlah_butir
+    FROM soal s
+    LEFT JOIN butir_soal b ON s.kode_soal = b.kode_soal where user_id = '$id_saya' and tahun = '$ajaran' and semester = '$semester'
+    GROUP BY s.id_soal, s.kode_soal, s.nama_soal, s.mapel, s.kelas, s.status,  s.tanggal, s.waktu_ujian, s.token
+";
+}
 $result = mysqli_query($koneksi, $query);
 
 // Check if the query was successful
@@ -91,7 +106,7 @@ if (!$result) {
                                                 <td><i class="fa fa-clock" aria-hidden="true"></i>
                                                     <?php echo $row['waktu_ujian']; ?></td>
                                                 <td><i class="fa fa-calendar-alt" aria-hidden="true"></i>
-                                                    <?php echo date('d M Y', strtotime($row['tanggal'])); ?></td>
+                                                    <?php echo date('d M Y H:i', strtotime($row['tanggal'])); ?></td>
                                                 <td><?php echo $row['tampilan_soal']; ?></td>
                                                 <td>
                                                     <?php if ($row['status'] == 'Aktif') { ?>

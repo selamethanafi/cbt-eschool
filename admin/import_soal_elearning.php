@@ -25,14 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode_soal_elearning']
     // Ambil kode_soal dari input form
     $form_kode_soal = isset($_POST['kode_soal']) ? trim($_POST['kode_soal']) : '';
     $kode_soal_elearning =$_POST['kode_soal_elearning'];
-    
-	$ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'cbt_key_elearning'");
-	$da = mysqli_fetch_assoc($ta);
-	$key = $da['konfigurasi_isi'];
-	$ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'cbt_elearning'");
-	$da = mysqli_fetch_assoc($ta);
-	$sianis = $da['konfigurasi_isi'];
-	//echo $key.' '.$sianis.' '.$form_kode_soal;
+	$key = 'RSj4dSorRAu2CUBQaOxP';
+	$sianis = 'https://tim.man2semarang.sch.id';
+	echo $key.' '.$sianis.' '.$form_kode_soal;
 	if((!empty($key)) and (!empty($sianis)))
 	{
     		$url = $sianis.'/cbtzya/soalperujian/'.$key.'/'.$kode_soal_elearning;

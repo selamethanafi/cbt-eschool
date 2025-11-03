@@ -61,6 +61,10 @@ check_login('admin');
             </main>
         </div>
     </div>
+    		<script>setTimeout(function () {
+		 window.location.href= 'monitor.php';
+			},<?php echo 300000;?>);
+			</script>
 <?php include '../inc/js.php'; ?>
 <script>
 $(document).ready(function () {
