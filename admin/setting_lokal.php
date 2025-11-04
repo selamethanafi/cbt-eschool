@@ -34,6 +34,11 @@ if(mysqli_num_rows($ta) == 0)
 {
 	mysqli_query($koneksi, "insert into `cbt_konfigurasi` (`konfigurasi_kode`, `konfigurasi_isi`, `konfigurasi_keterangan`) values ('url_bank_soal', '', 'URL Bank Soal')");
 }
+$ta = mysqli_query($koneksi, "select * from `cbt_konfigurasi` where `konfigurasi_kode` = 'url_cbt'");
+if(mysqli_num_rows($ta) == 0)
+{
+	mysqli_query($koneksi, "insert into `cbt_konfigurasi` (`konfigurasi_kode`, `konfigurasi_isi`, `konfigurasi_keterangan`) values ('url_cbt', '', 'URL CBT')");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

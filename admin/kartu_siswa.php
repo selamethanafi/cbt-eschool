@@ -10,6 +10,9 @@ check_login('admin');
 if (!$koneksi) {
     die("Koneksi database gagal: " . mysqli_connect_error());
 }
+$ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'url_cbt'");
+$da = mysqli_fetch_assoc($ta);
+$url_cbt = $da['konfigurasi_isi'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,10 +118,11 @@ if (!$koneksi) {
 					    	unlink($qr_filename);
 					    }
                                             if (!file_exists($qr_filename)) {
-                                                QRcode::png('http://192.168.10.10/siswa/login.php?nopes='.$row['username'].'&kode='.$decrypted, $qr_filename, 'H', 10);
+                                                QRcode::png($url_cbt.'/siswa/login.php?nopes='.$row['username'].'&kode='.$decrypted, $qr_filename, 'H', 10);
                                             }
                                             $thn_sekarang = date('Y');
                                             $thn_pelajaran = $thn_sekarang . '/' . ($thn_sekarang + 1);
+                                            $skr =  strtotime(date("Y-m-d H:i:s"));
                                         ?>
                                         <div class="col-lg-4 col-md-6 mb-4">
                                             <div class="p-3 h-100 kartu" style="border:1px solid #000;">
@@ -159,7 +163,7 @@ if (!$koneksi) {
                                                 </table>
                                                 <br>
                                                 <div style="text-align: right;">
-                                                    <img src="<?php echo $qr_filename; ?>" alt="QR" style="height: 100px;">
+                                                    <img src="<?php echo $qr_filename.'?'.$skr; ?>" alt="QR" style="height: 100px;">
                                                 </div>
                                             </div>
                                         </div>
