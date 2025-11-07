@@ -50,7 +50,9 @@ include '../inc/dataadmin.php';
                       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdunduh">
   Unduh Dari Sistem Informasi Madrasah
 </button>
-
+                      <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mdunduh2">
+  Unduh Per Ruang dari SIM
+</button>
                     </div>
                   </div>
                   <div class=" table-wrapper">
@@ -130,6 +132,23 @@ include '../inc/dataadmin.php';
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         <a href="sinkron_peserta.php" class="btn btn-success">Yakin</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="mdunduh2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi Unduh Peserta Ruang ini dari SIM</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Yakin hendak mengunduh siswa ruang ini dari sistem informasi madrasah?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <a href="sinkron_peserta_per_ruang.php" class="btn btn-success">Yakin</a>
       </div>
     </div>
   </div>

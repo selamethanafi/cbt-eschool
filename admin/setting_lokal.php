@@ -93,7 +93,7 @@ if(mysqli_num_rows($ta) == 0)
                                         while($data = mysqli_fetch_assoc($q))
                                         {?>
                                         <div class="row g-3">
-                                            <div class="col-12 col-md-6">
+                                            <div class="col-12 col-md-12">
                                                     <label for="<?php echo $data['konfigurasi_kode'];?>" class="form-label"><?php echo $data['konfigurasi_keterangan'];?></label>
                                                 <input type="text" class="form-control" name="nilai_<?php echo $nomor;?>"
                                                     id="<?php echo $data['konfigurasi_kode'];?>" value="<?= $data['konfigurasi_isi'] ?? '';?>"
@@ -102,6 +102,7 @@ if(mysqli_num_rows($ta) == 0)
                                             <?php
                                             echo '<input type="hidden" name="id_referensi_'.$nomor.'" value="'.$data['konfigurasi_id'].'">';
 					 $nomor++;
+					 echo '</div>';
 					}
 					$cacah_item = $nomor;
 					echo '<input type="hidden" name="cacah" value="'.$cacah_item.'">';

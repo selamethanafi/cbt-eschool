@@ -22,11 +22,14 @@ $key = $da['konfigurasi_isi'];
 $ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'cbt_sianis'");
 $da = mysqli_fetch_assoc($ta);
 $sianis = $da['konfigurasi_isi'];
+$ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'cbt_ruang'");
+$da = mysqli_fetch_assoc($ta);
+$ruang = $da['konfigurasi_isi'];
 
 // ----------------------
 // Ambil Total Peserta
 // ----------------------
-$url = $sianis.'/cbtzya/jml_peserta/'.$key.'/semua';
+$url = $sianis.'/cbtzya/jml_peserta/'.$key.'/'.$ruang;
 $json = via_curl($url);
 $total = 0;
 
@@ -101,7 +104,7 @@ $id = 0;
 echo 'Total = '.$total;
 while($id <= $total){
 
-    $url = $sianis.'/cbtzya/peserta/'.$key.'/'.$id;
+    $url = $sianis.'/cbtzya/peserta/'.$key.'/'.$id.'/'.$ruang;
     $json = via_curl($url);
     $pesan = "[Data tidak ditemukan]";
 
@@ -131,13 +134,13 @@ while($id <= $total){
 	    	$cek = mysqli_query($koneksi, "SELECT * FROM siswa WHERE `id_siswa` = '$nis'");
 	    	if (mysqli_num_rows($cek) > 0) 
 	    	{
-	    	    $sql = "update `siswa` set `nama_siswa` = '$nama', `username` = '$username', `password` = '$final', `kelas` = '$kelas', `rombel` = '$rombel', `nis` = '$nis' where `id_siswa` = '$nis'";
+	    	    $sql = "update `siswa` set `nama_siswa` = '$nama', `username` = '$username', `password` = '$final', `kelas` = '$kelas', `rombel` = '$rombel' where `id_siswa` = '$nis'";
 	    	    $insert = mysqli_query($koneksi, $sql);	        
 	    	}
 	    	else 
 	    	{
 		        // Insert DB
-		        $sql = "INSERT INTO siswa (id_siswa, nama_siswa, username, password, kelas, rombel, `nis`) VALUES ($nis, '$nama', '$username', '$final', '$kelas', '$rombel', '$nis')";
+		        $sql = "INSERT INTO siswa (id_siswa, nama_siswa, username, password, kelas, rombel, `nis`) VALUES ('$nis', '$nama', '$username', '$final', '$kelas', '$rombel', '$nis')";
 		        $insert = mysqli_query($koneksi, $sql);
 		    }
 	    }

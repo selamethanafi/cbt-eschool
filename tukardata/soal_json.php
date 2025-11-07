@@ -49,7 +49,7 @@ if($app_key == $key)
     	$ajaran = cari_thnajaran();
     	$semester = cari_semester();
 	$response = array();
-	$tb = mysqli_query($koneksi, "SELECT * FROM `butir_soal` WHERE `kode_soal`= '$kode_soal'  limit $ke,1");   
+	$tb = mysqli_query($koneksi, "SELECT * FROM `butir_soal` WHERE `kode_soal`= '$kode_soal'  limit $ke,1 order by `nomer_soal`");   
 	$db = mysqli_fetch_assoc($tb);
 	if(mysqli_num_rows($tb) > 0)
 	{
