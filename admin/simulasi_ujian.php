@@ -2,135 +2,37 @@
 session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
-check_login('siswa');
-include '../inc/datasiswa.php';
+check_login('admin');
+include '../inc/dataadmin.php';
 
-$kode_soal = $_POST['kode_soal'] ?? $_GET['kode_soal'] ?? '';
-$token = $_POST['token'];
-$id_siswa = $_POST['id_siswa'];
+$kode_soal = $_GET['kode_soal'] ?? $_GET['kode_soal'] ?? '';
 
 if (empty($kode_soal)) {
-    $_SESSION['alert'] = true;
-    $_SESSION['warning_message'] = 'Kode soal Tidak Tersedia';
-    header('Location: ujian.php');
+    header('Location: dashboard.php');
     exit;
 }
 $ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode`='batas'");
 $da = mysqli_fetch_assoc($ta);
 $batas = $da['konfigurasi_isi'];
-// Ambil data siswa
-$q_siswa = mysqli_query($koneksi, "SELECT * FROM siswa WHERE id_siswa = '$id_siswa'");
-$data_siswa = mysqli_fetch_assoc($q_siswa);
 // Ambil data soal
-$q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
+$q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal' and `user_id`= '$id_saya'");
 $data_soal = mysqli_fetch_assoc($q_soal);
 
 if (!$data_soal) {
     $_SESSION['alert'] = true;
     $_SESSION['warning_message'] = 'Soal tidak ditemukan.';
-    header('Location: ujian.php');
+    header('Location: soal.php');
     exit;
 }
-
-if (strtolower($data_soal['status']) !== 'aktif') {
-    $_SESSION['alert'] = true;
-    $_SESSION['warning_message'] = 'Soal Tidak Aktif! Silakan hubungi pengawas.';
-    header('Location: ujian.php');
-    exit;
-} 
 
 $tanggal_soal = $data_soal['tanggal'];
 $tanggal_hari_ini = date('Y-m-d H:i:s');
 
-if (strtotime($tanggal_hari_ini) < strtotime($tanggal_soal)) {
-    $_SESSION['alert'] = true;
-    $_SESSION['warning_message'] = 'Soal belum bisa dikerjakan. Jadwal ujian belum dimulai.';
-    header('Location: ujian.php');
-    exit;
-}
-if ($kelas_siswa !== $data_soal['kelas']) {
-    $_SESSION['alert'] = true;
-    $_SESSION['warning_message'] = 'Soal ini bukan untuk kelas kamu.';
-    header('Location: ujian.php');
-    exit;
-}
-if ($token !== $data_soal['token']) {
-    $_SESSION['alert'] = true;
-    $_SESSION['warning_message'] = 'Token tidak Valid.';
-    header('Location: ujian.php');
-    exit;
-}
-
-// Cek jika siswa sudah pernah mengerjakan
-$q_nilai = mysqli_query($koneksi, "SELECT * FROM nilai WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'");
-if (mysqli_num_rows($q_nilai) > 0) {
-    $_SESSION['alert'] = true;
-    $_SESSION['warning_message'] = 'Kamu sudah mengerjakan soal ini.';
-    header('Location: ujian.php');
-    exit;
-}
-
 // Get remaining time and answers
-$waktu_sisa = 0;
-$get_waktu = mysqli_query($koneksi, 
-    "SELECT waktu_sisa, jawaban_siswa 
-     FROM jawaban_siswa 
-     WHERE kode_soal='$kode_soal' AND id_siswa='$id_siswa'");
+$waktu_sisa = 60;
+
 $jawaban_tersimpan = [];
 
-if ($w = mysqli_fetch_assoc($get_waktu)) {
-    // Sudah pernah mulai → pakai waktu yang tersimpan
-    $waktu_sisa = (int) $w['waktu_sisa'];
-    $string_jawaban = $w['jawaban_siswa'];
-    preg_match_all('/\[(\d+):([^\]]+)\]/', $string_jawaban, $matches, PREG_SET_ORDER);
-
-    foreach ($matches as $match) {
-        $nomor = (int) $match[1];
-        $jawab = $match[2];
-
-        if (strpos($jawab, '|') !== false && substr_count($jawab, ':') > 1) {
-            $pasangan = explode('|', $jawab);
-            $hasil = [];
-            foreach ($pasangan as $p) {
-                if (substr_count($p, ':') === 1) {
-                    [$kiri, $kanan] = explode(':', $p, 2);
-                    $kiri = trim($kiri);
-                    $kanan = trim($kanan);
-                    if (!empty($kiri) && !empty($kanan)) {
-                        $hasil[$kiri] = $kanan;
-                    }
-                }
-            }
-            $jawaban_tersimpan[$nomor] = $hasil;
-        }
-        elseif (strpos($jawab, '|') !== false) {
-            $jawaban_tersimpan[$nomor] = explode('|', $jawab);
-        } elseif (strpos($jawab, ',') !== false) {
-            $jawaban_tersimpan[$nomor] = explode(',', $jawab);
-        } else {
-            $jawaban_tersimpan[$nomor] = $jawab;
-        }
-    }
-
-} else {
-    // ⚠️ Tambahan: pertama kali mulai → ambil waktu dari soal
-    $waktu_sisa = (int)$data_soal['waktu_ujian']; // MENIT
-    // Buat baris jawaban_siswa supaya nanti bisa diupdate
-    mysqli_query($koneksi, 
-        "INSERT INTO jawaban_siswa (id_siswa, nama_siswa, kode_soal, waktu_sisa, status_ujian, jawaban_siswa)
-         VALUES ('$id_siswa', '$nama_siswa', '$kode_soal', '$waktu_sisa', 'Aktif', '')");
-}
-
-
-$stmt = $koneksi->prepare("UPDATE jawaban_siswa SET status_ujian = 'Aktif' WHERE id_siswa = ? AND kode_soal = ?");
-if (!$stmt) {
-    die("Prepare gagal: " . $koneksi->error);
-}
-
-$stmt->bind_param("ss", $id_siswa, $kode_soal);
-if (!$stmt->execute()) {
-    die("Eksekusi gagal: " . $stmt->error);
-}
 
 // Get all questions
 $tampil = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT tampilan_soal FROM soal WHERE kode_soal='$kode_soal' LIMIT 1"));
@@ -164,7 +66,7 @@ $data_tema = mysqli_fetch_assoc($q_tema);
 $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
 $interval_ms = ((int)$data_tema['waktu_sinkronisasi']) * 1000;
 $query = "SELECT jawaban_siswa FROM jawaban_siswa 
-          WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'";
+          WHERE id_siswa = '1' AND kode_soal = '$kode_soal'";
 $result = mysqli_query($koneksi, $query);
 $row = mysqli_fetch_assoc($result);
 
@@ -226,12 +128,6 @@ foreach ($matches as $match) {
                                 id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user-circle me-1"></i>
                             </div>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-wide">
-                                <li><span class="dropdown-item-text"><strong><?php echo $nama_siswa; ?></strong></span>
-                                </li>
-                                <li><span class="dropdown-item-text"><?php echo $kelas_siswa . $rombel_siswa; ?></span>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -270,14 +166,8 @@ foreach ($matches as $match) {
 
                                 </div>
 
-                                
-                                    <div id="autoSaveStatus"></div>
-                                    <form id="formUjian" method="post" action="simpan_jawaban.php">
-                                        <input type="hidden" name="waktu_sisa" id="waktu_sisa">
-                                        <input type="hidden" name="batas" value="<?= $batas;?>">
-                                        <input type="hidden" name="kode_soal"
-                                            value="<?= htmlspecialchars($kode_soal) ?>">
 
+                                    <form id="formUjian" method="post" action="">
                                         <?php foreach ($soal as $index => $s):
                                             $no_asli = $s['nomer_soal'];
                                             $no_urut = $index + 1;
@@ -352,64 +242,7 @@ foreach ($matches as $match) {
                                                 <?php endfor; ?>
                                             </table>
 
-                                            <?php
-                                            /* elseif ($tipe == 'Menjodohkan'):
-                                                    $raw = trim($s['jawaban_benar'], "[]");
-                                                    $raw = preg_replace('/^\d+\s*:/', '', $raw);
-                                                    $pasangan_list = explode('|', $raw);
-
-                                                    $opsi = [];
-                                                    foreach ($pasangan_list as $item) {
-                                                        if (strpos($item, ':') !== false) {
-                                                            list($kiri, $kanan) = explode(':', $item, 2);
-                                                            $kiri = trim($kiri);
-                                                            $kanan = trim($kanan);
-                                                            if ($kiri !== '' && $kanan !== '') {
-                                                                $opsi[] = ['kiri' => $kiri, 'kanan' => $kanan];
-                                                            }
-                                                        }
-                                                    }
-
-                                                    $jawaban_soal = (is_array($jawaban)) ? $jawaban : [];
-                                                    $daftar_kanan = array_values(array_unique(array_column($opsi, 'kanan')));
-                                                    shuffle($daftar_kanan);
-                                                    ?>
-
-                                            <?php if (count($opsi) === 0): ?>
-                                            <div class="alert alert-warning">Soal menjodohkan belum memiliki pasangan
-                                                yang valid.</div>
-                                            <?php else: ?>
-                                            <?php foreach ($opsi as $p): ?>
-                                            <input type="hidden" name="soal_kiri[<?= $no_asli ?>][]"
-                                                value="<?= htmlspecialchars($p['kiri']) ?>">
-                                            <?php endforeach; ?>
-
-                                            <table class="matching-table">
-                                                <?php foreach ($opsi as $p):
-                                                                $kiri = $p['kiri'];
-                                                                $selected = $jawaban_soal[$kiri] ?? '';
-                                                            ?>
-                                                <tr>
-                                                    <td><?= htmlspecialchars($kiri) ?></td>
-                                                    <td>
-                                                        <select
-                                                            name="jawaban[<?= $no_asli ?>][<?= htmlspecialchars($kiri) ?>]"
-                                                            class="form-select">
-                                                            <option value="">-- Pilih --</option>
-                                                            <?php foreach ($daftar_kanan as $dk): ?>
-                                                            <option value="<?= htmlspecialchars($dk) ?>"
-                                                                <?= ($selected === $dk) ? 'selected' : '' ?>>
-                                                                <?= htmlspecialchars($dk) ?>
-                                                            </option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <?php endforeach; ?>
-                                            </table>
-                                            <?php endif; 
-                                            */
-                                            ?>
+                                            
   <?php elseif ($tipe == 'Menjodohkan'):
     $raw = trim($s['jawaban_benar'], "[]");
     $raw = preg_replace('/^\d+\s*:/', '', $raw);
@@ -561,19 +394,6 @@ foreach ($matches as $match) {
                         </div>
                     </div>
                 </div>
-<?php foreach ($soal as $index => $s): ?>
-                                                    <?php
-                                                            $no_urut = $index + 1;
-                                                            $no_asli = $s['nomer_soal'];
-                                                            $is_answered = isset($status_soal[$no_asli]) && $status_soal[$no_asli]; // TRUE jika sudah dijawab
-                                                        ?>
-                                                    <button type="button" class="nav-btn"
-                                                        onclick="tampilSoal(<?= $index ?>); hideNav()"
-                                                        data-nomor="<?= $no_asli ?>" data-urut="<?= $no_urut ?>"
-                                                        <?= $is_answered ? 'data-answered="true"' : '' ?>>
-                                                        <?= $no_urut ?>
-                                                    </button>
-                                                    <?php endforeach; ?>
             </main>
         </div>
     </div>

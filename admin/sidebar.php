@@ -40,6 +40,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                                 <i class="align-middle fas fa-upload"></i> <span class="align-middle">Hasil Per Hari</span>
                             </a>
                         </li>
+                        <li class="sidebar-item submenu">
+                            <a class="sidebar-link" href="penyiapan.php">
+                                <i class="align-middle fas fa-download"></i> <span class="align-middle"> Penyiapan Bank Soal</span>
+                            </a>
+                        </li>
                     </ul>
                     </li>
                     

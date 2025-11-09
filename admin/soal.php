@@ -140,8 +140,8 @@ if (!$result) {
                                                     <a href="edit_soal.php?id_soal=<?php echo $row['id_soal']; ?>"
                                                         class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>
                                                         Edit</a>
-                                                    <a href="#" class="btn btn-sm btn-info btn-duplicate" data-kode="<?php echo $row['kode_soal']; ?>">
-                                                        <i class="fa fa-copy"></i> Duplikat
+                                                    <a href="simulasi_ujian.php?kode_soal=<?php echo $row['kode_soal']; ?>" target="_blank" class="btn btn-sm btn-info btn-duplicate">
+                                                        <i class="fa fa-copy"></i> Simulasi
                                                     </a>
                                                     <a href="daftar_butir_soal.php?kode_soal=<?php echo $row['kode_soal']; ?>"
                                                         class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Input
@@ -167,64 +167,6 @@ if (!$result) {
     <?php include '../inc/js.php'; ?>
     <script>
         // Tambahkan di bagian script yang sudah ada
-document.querySelectorAll('.btn-duplicate').forEach(function(button) {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const oldKode = this.getAttribute('data-kode');
-        
-        Swal.fire({
-            title: 'Duplikasi Soal',
-            input: 'text',
-            inputLabel: 'Masukkan Kode Soal Baru',
-            inputPlaceholder: 'Kode unik untuk soal duplikat',
-            showCancelButton: true,
-            confirmButtonText: 'Duplikat',
-            cancelButtonText: 'Batal',
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'Kode soal baru harus diisi!';
-                }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const newKode = result.value;
-                
-                // Kirim permintaan AJAX
-                fetch('duplicate_soal.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `old_kode=${encodeURIComponent(oldKode)}&new_kode=${encodeURIComponent(newKode)}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: data.message,
-                            timer: 2000,
-                            showConfirmButton: false
-                        }).then(() => {
-                            window.location.reload();
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal!',
-                            text: data.message
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire('Error', 'Terjadi kesalahan saat memproses permintaan.', 'error');
-                });
-            }
-        });
-    });
-});
 
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize DataTables

@@ -51,6 +51,16 @@ $ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi
 $da = mysqli_fetch_assoc($ta);
 $url_bank_soal = $da['konfigurasi_isi'];
 //echo $key.' '.$url_bank_soal;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Unduh Tes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<?php
 if(empty($id))
 {
 	$id = 0;
@@ -60,9 +70,11 @@ if(empty($jenis))
 	echo 'Silakan memilih <h1><a href="unduh_tes.php?jenis=pas&id=0">PAS</a> <a href="unduh_tes.php?jenis=pat&id=0">PAT</a> <a href="unduh_tes.php?jenis=pht&id=0">PHT</a>  <a href="unduh_tes.php?jenis=um&id=0">Asesmen Madrasah</a></h1>';
 	die();
 }
+//echo $key.' '.$url_bank_soal;
 if((!empty($key)) and (!empty($url_bank_soal)))
 {
 	$url = $url_bank_soal.'/tukardata/cacah_ujian.php?app_key='.$key.'&jenis='.$jenis;
+	//echo '<a href="'.$url.'">cek</a>';
 	$json = via_curl($url);
 	$cacah = 0;
 	if($json)
@@ -72,20 +84,28 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 			$cacah = $dm['cacah'];
 		}
 	}
+	else
+	{
+		die('tidak tersambung ke bank soal');
+	}
 //	echo 'Cacah Tes '.$cacah;
 	if($cacah > 0)
 	{
 		if($id < $cacah )
 		{
 			$url = $url_bank_soal.'/tukardata/ujian_json.php?app_key='.$key.'&jenis='.$jenis.'&id='.$id;
-			echo $url.'<br />';
+			//echo $url.'<br />';
+//			die();
 			$json = via_curl($url);
-			if($id == 0)
-			{
-				mysqli_query($koneksi, "SET FOREIGN_KEY_CHECKS = 0");
-			}
+			
 			if($json)
 			{
+				if($id == 0)
+				{
+					mysqli_query($koneksi, "SET FOREIGN_KEY_CHECKS = 0");
+					mysqli_query($koneksi,"truncate `soal`");
+					mysqli_query($koneksi,"SET FOREIGN_KEY_CHECKS = 1");
+				}
 				//echo 'oke';
 				foreach($json as $dm)
 				{
@@ -122,6 +142,17 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 						
 					}
 				}
+				    // Hitung progress
+    $progress = ($cacah > 0) ? round(($id / $cacah) * 100) : 0;
+?>
+<div class="container-fluid">
+<div class="progress" style="width: 300px;">
+  <div class="progress-bar" role="progressbar" style="width: <?= $progress ?>%;" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="<?= $cacah;?>">
+    <?= $progress ?>%
+  </div>
+</div>
+</div>
+<?php
 					$id++;
         					echo 'Terproses '.$id.' dari '.$cacah.' tes';
     					    $lanjut = 'unduh_tes.php?jenis='.$jenis.'&id='.$id;
@@ -151,3 +182,6 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 		}
 	}
 }
+?>
+</body>
+</html>

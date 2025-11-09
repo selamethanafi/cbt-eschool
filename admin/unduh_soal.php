@@ -63,6 +63,16 @@ $ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi
 $da = mysqli_fetch_assoc($ta);
 $url_bank_soal = $da['konfigurasi_isi'];
 //echo $key.' '.$sianis;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Unduh Soal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<?php
 if(empty($id))
 {
 	$id = 0;
@@ -85,6 +95,7 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 	{
 		$ta = mysqli_query($koneksi, "SELECT * FROM `soal` where `tahun` = '$tahun' and `semester` = '$semester' and `kode_soal` like '$jenis%' limit $id,1");
 		mysqli_query($koneksi, "SET FOREIGN_KEY_CHECKS = 0");
+		
 		while($da = mysqli_fetch_assoc($ta))
 		{
 			$kode_soal = $da['kode_soal'];
@@ -102,7 +113,8 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 			}
 			else
 			{
-				echo 'gagal terhubung dengan bank soal';
+				echo 'gagal terhubung dengan bank soal '.$url;
+				die();
 			}
 			echo 'Terproses '.$id.' tes dari '.$cacah.' tes<br />';
 			echo 'Nama Tes '.$da['nama_soal'].'<br />';
@@ -110,31 +122,65 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 			echo 'soal terproses '.$ke.'<br />';
 			if($ke < $cacah_soal)
 			{
+				if($ke == 0)
+				{
+				mysqli_query($koneksi, "delete FROM `butir_soal` where `kode_soal` = '$kode_soal'");
+				}	
 				$url2 = $url_bank_soal.'/tukardata/soal_json.php?app_key='.$key.'&kode_soal='.$kode_soal.'&ke='.$ke;
 				$json2 = via_curl($url2);
+				if(!$json2)
+				{
+					die('tidak dapat mengunduh soal '.$url2);
+				}
 		        	foreach($json2 as $dms)
 				{
 					$pesan = $dms['pesan'];
 					if($pesan == 'ada')
 					{
-						$id_soal = $dms['id_soal'];
-						$nomer_soal = $dms['nomer_soal'];
-						$kode_soal = $dms['kode_soal'];
-						$tipe_soal = $dms['tipe_soal'];
-						$pertanyaan = $dms['pertanyaan'];
-						$pilihan_1 = $dms['pilihan_1'];
-						$pilihan_2 = $dms['pilihan_2'];
-						$pilihan_3 = $dms['pilihan_3'];
-						$pilihan_4 = $dms['pilihan_4'];
-						$pilihan_5 = $dms['pilihan_5'];
-						$jawaban_benar = $dms['jawaban_benar'];
-						$status_soal = $dms['status_soal'];
-						$created_at = $dms['created_at'];
-						$sqli = "INSERT INTO butir_soal 
-    (`id_soal`,`nomer_soal`, `kode_soal`, `pertanyaan`, `tipe_soal`, `pilihan_1`, `pilihan_2`, `pilihan_3`, `pilihan_4`, `pilihan_5`, `jawaban_benar`, `status_soal`, `created_at`)
-    VALUES ('$id_soal', '$nomer_soal', '$kode_soal', '$pertanyaan', '$tipe_soal', '$pilihan_1', '$pilihan_2', '$pilihan_3', '$pilihan_4', '$pilihan_5',  '$jawaban_benar', '$status_soal','$created_at')";
-    						//echo $sqli;
-						$stmt = mysqli_query($koneksi, $sqli);
+						// Ambil dari array dms
+						$id_soal        = $dms['id_soal'];
+						$nomer_soal     = $dms['nomer_soal'];
+						$kode_soal      = $dms['kode_soal'];
+						$pertanyaan     = $dms['pertanyaan'];
+						$tipe_soal      = $dms['tipe_soal'];
+						$pilihan_1      = $dms['pilihan_1'];
+						$pilihan_2      = $dms['pilihan_2'];
+						$pilihan_3      = $dms['pilihan_3'];
+						$pilihan_4      = $dms['pilihan_4'];
+						$pilihan_5      = $dms['pilihan_5'];
+						$jawaban_benar  = $dms['jawaban_benar'];
+						$status_soal    = $dms['status_soal'];
+						$created_at     = $dms['created_at']; // bisa s&j default juga
+						
+						$sql = "INSERT INTO butir_soal 
+(id_soal, nomer_soal, kode_soal, pertanyaan, tipe_soal, pilihan_1, pilihan_2, pilihan_3, pilihan_4, pilihan_5, jawaban_benar, status_soal, created_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+						
+						$stmt = $koneksi->prepare($sql);
+						$stmt->bind_param(
+    "iisssssssssss",
+    $id_soal,
+    $nomer_soal,
+    $kode_soal,
+    $pertanyaan,
+    $tipe_soal,
+    $pilihan_1,
+    $pilihan_2,
+    $pilihan_3,
+    $pilihan_4,
+    $pilihan_5,
+    $jawaban_benar,
+    $status_soal,
+    $created_at
+);
+
+						if ($stmt->execute()) {
+						    echo "Insert sukses";
+						} else {
+						    echo "Error: " . $stmt->error;
+						    die();
+						}
+						$stmt->close();
 						$ke++;
 						$lanjut = 'unduh_soal.php?jenis='.$jenis.'&id='.$id.'&ke='.$ke;
 							?>
@@ -172,3 +218,6 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 					<?php
 	}
 }
+?>
+</body>
+</html>

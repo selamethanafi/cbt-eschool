@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </div>
                                         <div class="mb-3">
                                             <label for="tanggal" class="form-label">Tanggal Ujian</label>
-                                            <input type="datetime-local" class="form-control" id="tanggal" name="tanggal" value="<?php echo $row['tanggal']; ?>" required onclick="this.showPicker()">
+                                            <input type="datetime-local" class="form-control" id="tanggal" name="tanggal" value="" required onclick="this.showPicker()">
                                         </div>
                                        <div class="mb-3">
                                             <label for="tampilan_soal" class="form-label">Menggunakan Exambrowser</label>
