@@ -182,6 +182,11 @@ if ($data_soal['status'] == 'Aktif') {
                                                         data-bs-target="#modalsalin">
                                                         <i class="fa-solid fa-copy"></i> Salin dari bank soal                                                    </a>
                                                 </li>
+                                                 <li>
+                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#modalunduh">
+                                                        <i class="fa-solid fa-copy"></i> Unduh dari Server Pusat </a>
+                                                </li>
 
                                             </ul>
                                         </div>
@@ -335,7 +340,30 @@ if ($data_soal['status'] == 'Aktif') {
                             </form>
                         </div>
                     </div>
+                    <div class="modal fade" id="modalunduh" tabindex="-1" aria-labelledby="modalunduhlabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                                <input type="hidden" name="kode_soal" value="<?= $kode_soal; ?>">                                
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalunduhlabel"> Unduh Soal dari Server Pusat</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Tutup"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-info">
+                                            <strong>Perhatian!</strong> Soal - soal akan dihapus terlebih dahulu<br>
+                                        </div>
 
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="unduh_soal_dari_server_pusat.php?kode_soal=<?= $kode_soal; ?>" class="btn btn-primary">Unduh</a>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
             </main>
         </div>
     </div>
@@ -528,7 +556,29 @@ if (isset($_SESSION['salin_result'])) {
     });
     </script>
     <?php
-}?>
+}
+if (isset($_SESSION['success'])): ?>
+    <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: '<?php echo addslashes($_SESSION['success']); ?>',
+        showConfirmButton: false,
+        timer: 2000
+    });
+    </script>
+    <?php unset($_SESSION['success']); endif; ?>
+    <?php if (isset($_SESSION['error'])): ?>
+    <script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: '<?php echo addslashes($_SESSION['error']); ?>',
+        showConfirmButton: false,
+        timer: 2000
+    });
+    </script>
+    <?php unset($_SESSION['error']); endif; ?>?>
 </body>
 
 </html>

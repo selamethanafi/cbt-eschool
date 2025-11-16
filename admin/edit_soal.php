@@ -125,7 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <div class="mb-3">
                                             <label for="kelas" class="form-label">Kelas</label>
                                             <select class="form-control" id="kelas" name="kelas" required>
-                                                <option value="">-- Pilih Kelas --</option>
+                                                     <option value="<?php echo $row['kelas']; ?>"> <?php echo $row['kelas'];?></option>
+
                                                 <?php while ($kelas_row = mysqli_fetch_assoc($result_kelas)): ?>
                                                     <option value="<?php echo $kelas_row['kelas']; ?>" <?php echo ($kelas_row['kelas'] == $row['kelas']) ? 'selected' : ''; ?>>
                                                         <?php echo $kelas_row['kelas']; ?>

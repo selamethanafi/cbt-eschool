@@ -49,48 +49,7 @@ $jawaban_siswa = parseJawabanSiswa($jawaban_siswa_raw);
 $query_kunci = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal='$kode_soal'");
 $data_kunci = mysqli_fetch_assoc($query_kunci);
 $kunci_jawaban = $data_kunci['kunci'] ?? '';
-$npg = $data_soal['npg'] ?? 0;
-$npgk = $data_soal['npgk'] ?? 0;
-$njd = $data_soal['njd'] ?? 0;
-$nbs = $data_soal['nbs'] ?? 0;
-$nuraian = $data_soal['nuraian'] ?? 0;
-$spg = $data_soal['spg'] ?? 0;
-$spgk = $data_soal['spgk'] ?? 0;
-$sjd = $data_soal['sjd'] ?? 0;
-$sbs = $data_soal['sbs'] ?? 0;
-$suraian = $data_soal['suraian'] ?? 0;
-if($npg > 0)
-{
-	$nilai_per_soal_pg = $spg / $npg;
-}
-else
-{
-	$nilai_per_soal_pg = 0;
-}
-if($npgk > 0)
-{
-	$nilai_per_soal_pgk = $spgk / $npgk;
-}
-else
-{
-	$nilai_per_soal_pgk = 0;
-}
-if($njd > 0)
-{
-	$nilai_per_soal_jd = $sjd / $njd;
-}
-else
-{
-	$nilai_per_soal_jd = 0;
-}
-if($nbs > 0)
-{
-	$nilai_per_soal_bs = $sbs / $nbs;
-}
-else
-{
-	$nilai_per_soal_bs = 0;
-}
+
 
 function removeCommasOutsideBrackets($str) {
     $result = '';
@@ -133,7 +92,7 @@ if (!empty($kunci_jawaban)) {
             $kunci_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_kunci)));
             $jawaban_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_jawaban)));
             $jumlah_kunci = count($kunci_opsi);
-            $nilai_per_opsi = $nilai_per_soal_bs / $jumlah_kunci;
+            $nilai_per_opsi = $nilai_per_soal / $jumlah_kunci;
             $jumlah_benar = 0;
             
             for ($j = 0; $j < $jumlah_kunci; $j++) {
@@ -147,14 +106,17 @@ if (!empty($kunci_jawaban)) {
             $kunci_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_kunci)));
             $jawaban_opsi = array_map('strtolower', array_map('trim', explode('|', $isi_jawaban)));
             $jumlah_kunci = count($kunci_opsi);
-            $nilai_per_opsi = $nilai_per_soal_jd / $jumlah_kunci;
+            //echo '<br />jumlah kunci '.$jumlah_kunci;
+            $nilai_per_opsi = $nilai_per_soal / $jumlah_kunci;
             $jumlah_benar = 0;
             
             for ($j = 0; $j < $jumlah_kunci; $j++) {
+            //echo '<br />'.$jawaban_opsi[$j].'<br />'.$kunci_opsi[$j];
                 if (isset($jawaban_opsi[$j]) && $kunci_opsi[$j] === $jawaban_opsi[$j]) {
                     $jumlah_benar++;
                 }
             }
+            //echo $jumlah_benar.' '.$nilai_per_opsi;
             $skor = $jumlah_benar * $nilai_per_opsi;
             
         } else if ($tipe_soal === 'pilihan ganda kompleks') {
@@ -187,7 +149,7 @@ if (!empty($kunci_jawaban)) {
         } else {
             // PG tunggal atau uraian
             if (strtolower(trim($isi_kunci)) === strtolower(trim($isi_jawaban))) {
-                $skor = $nilai_per_soal_pg;
+                $skor = $nilai_per_soal;
             }
         }
         
@@ -404,7 +366,7 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
                             case 'Menjodohkan':
                                 // Tampilkan jawaban siswa dalam tabel
                                 $pairs = explode('|', $jawab);
-                                echo "<table border='1' cellpadding='5' cellspacing='0'><thead><tr><th>#</th><th>Pilihan</th><th>Pasangan</th></tr></thead><tbody>";
+                                echo "<table border='1' cellpadding='5' cellspacing='0'><thead><tr><th>#</th><th>Pilihan </th><th>Pasangan</th></tr></thead><tbody>";
                                 foreach ($pairs as $i => $pair) {
                                     list($a, $b) = explode(':', $pair) + [null, null];
                                     echo "<tr><td>" . ($i + 1) . "</td><td>" . htmlspecialchars($a) . "</td><td>" . htmlspecialchars($b) . "</td></tr>";

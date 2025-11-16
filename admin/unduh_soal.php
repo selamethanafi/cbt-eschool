@@ -39,7 +39,7 @@ if(isset($_GET['ke']))
 }
 else
 {
-	$ke = '';
+	$ke = '0';
 }
 if(isset($_GET['jenis']))
 {

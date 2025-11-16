@@ -76,8 +76,10 @@ if (!$result) {
                                     <h5 class="card-title mb-0">Daftar Soal</h5>
                                 </div>
                                 <div class="card-body table-wrapper">
-                                    <a href="tambah_soal.php" class="btn btn-primary mb-3"><i class="fas fa-plus"></i>
-                                        Tambah Soal Baru</a>
+                                    <a href="tambah_soal.php" class="btn btn-primary"><i class="fas fa-plus"></i>
+                                        Tambah Soal Baru</a>  <a class="btn btn-warning" href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#modalunduhtes">  <i class="fas fa-download"></i> Unduh CBT dari Server Lain</a>
+
                                     <table id="soalTable" class="table table-striped">
                                         <thead>
                                             <tr>
@@ -164,6 +166,32 @@ if (!$result) {
             </main>
         </div>
     </div>
+    <div class="modal fade" id="modalunduhtes" tabindex="-1" aria-labelledby="modalunduhtes"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form action="unduh_tes_dari_server_pusat.php" method="post">
+                               
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalImportExcelLabel">Unduh CBT dari Server lain</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Tutup"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="file_excel" class="form-label">Kode soal</label>
+                                             <input type="text" name="kode_soal" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Unduh</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
     <?php include '../inc/js.php'; ?>
     <script>
         // Tambahkan di bagian script yang sudah ada

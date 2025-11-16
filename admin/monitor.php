@@ -5,7 +5,14 @@ include '../inc/functions.php';
 include '../inc/dataadmin.php';
 // Cek jika sudah login
 check_login('admin');
-
+if(isset($_GET['aksi']))
+{
+	$aksi = $_GET['aksi'];
+	}
+else
+{
+	$aksi = '';	
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +54,11 @@ check_login('admin');
                                                     <th>Waktu Mulai</th>
                                                     <th>Status Ujian</th>
                                                     <th>Progres Ujian</th>
-                                                    <th>Aksi</th>
+                                                    <?php
+                                                    if($aksi == 'paksa')
+							{
+                                                    echo '<th>Aksi</th>';
+                                                    }?>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -66,6 +77,11 @@ check_login('admin');
 			},<?php echo 300000;?>);
 			</script>
 <?php include '../inc/js.php'; ?>
+<?php
+if($aksi == 'paksa')
+{
+?>
+
 <script>
 $(document).ready(function () {
     var table = $('#monitor').DataTable({
@@ -109,6 +125,57 @@ $(document).ready(function () {
     }
 });
 </script>
+<?php
+}
+else
+{
+?>
+
+<script>
+$(document).ready(function () {
+    var table = $('#monitor').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: 'monitor_data.php',
+            type: 'GET'
+        }, 
+        columns: [
+            { data: 'nama_siswa', title: 'Nama Siswa' },
+            { data: 'kode_soal', title: 'Kode Soal' },
+            { data: 'progres', title: 'Progres Ujian' },
+            { data: 'waktu_sisa', title: 'Waktu Sisa' },
+            { data: 'waktu_dijawab', title: 'Waktu Dijawab' },
+            { data: 'status_badge', title: 'Status Ujian' }
+        ],
+        columnDefs: [
+            { targets: 4, orderable: false, searchable: false }
+        ],
+        initComplete: function () {
+            // Panggil pertama kali
+            updateTimestamp();
+
+            // Ulangi setiap 1 menit
+            setInterval(function () {
+                table.ajax.reload(null, false); // Reload data tanpa reset halaman
+                updateTimestamp();
+            }, 60000); // 60 detik
+        }
+    });
+
+    function updateTimestamp() {
+        let now = new Date();
+        let formatted = now.toLocaleTimeString();
+        $('#last-updated').html(
+            '<i class="fa fa-refresh fa-spin me-1" style="color:green;" aria-hidden="true"></i>' +
+            'Terakhir diperbarui: ' + formatted
+        );
+    }
+});
+</script>
+<?php
+}
+?>
 <script>
 $(document).on('click', '.simpan-paksa-btn', function () {
     const kodeSoal = $(this).data('kode');

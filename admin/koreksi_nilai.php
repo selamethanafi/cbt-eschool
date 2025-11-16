@@ -29,8 +29,8 @@ function ubah($masuk)
     return $jjj;
     
 }
-$kode_soal = 'C12575';
-$id_siswa = 132;
+$kode_soal = $_GET['kode_soal'];
+$id_siswa = $_GET['id_siswa'];
 
 $q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
 $data_soal = mysqli_fetch_assoc($q_soal);

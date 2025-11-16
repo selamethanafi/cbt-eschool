@@ -33,32 +33,8 @@ die('tanggal salah');
 
 function ubah($masuk)
 {
-if($masuk == 'pilihan_1')
-{
-$jjj = 'A';
-}
-elseif($masuk == 'pilihan_2')
-{
-$jjj = 'B';
-}
-elseif($masuk == 'pilihan_3')
-{
-$jjj = 'C';
-}
-elseif($masuk == 'pilihan_4')
-{
-$jjj = 'D';
-}
-elseif($masuk == 'pilihan_5')
-{
-$jjj = 'E';
-}
-else
-{
-$jjj = '_';
-}
-return $jjj;
-
+	$jjj = str_replace('pilihan_','',$masuk);
+	return $jjj;
 }
 function postcurl($urlsms,$params) 
 	{
@@ -96,7 +72,7 @@ if(mysqli_num_rows($ta) == 0)
 {
 	if($ke>0)
 	{
-	    $query = "UPDATE soal SET status = '$status', token = NULL";
+	    $query = "UPDATE soal SET status = '', token = NULL";
 	    mysqli_query($koneksi, $query);
 	?>
 		<script>setTimeout(function () {
@@ -128,6 +104,8 @@ while($da = mysqli_fetch_assoc($ta))
 	$kode_soal = $data_soal['kode_soal'];
 	$jawaban_siswa = $da['jawaban_siswa'] ?? ''; 
 	$kunci = $data_soal['kunci'] ?? '';
+	$analisis = '';
+	$kunci_jawaban = '';
 	function removeCommasOutsideBrackets($str) 
 	{
 		$result = '';
@@ -169,26 +147,38 @@ while($da = mysqli_fetch_assoc($ta))
 	{
 		list($nomer_kunci, $isi_kunci) = explode(':', $kunci_array[$i], 2);
 		$isi_jawaban = $jawaban_siswa_arr[$nomer_kunci] ?? '';
-
-			$kk = ubah(strtolower(trim($isi_jawaban)));
+			//echo $isi_jawaban.'<br />';
+			$kk = strtolower(trim($isi_jawaban));
 			if(empty($jwb_siswa))
 			{
 				$jwb_siswa .= $kk;
 			}
 			else
 			{
-				//$jwb_siswa .= ','.$kk;
-				$jwb_siswa .= $kk;
+				$jwb_siswa .= '|'.$kk;
+				//$jwb_siswa .= $kk;
+			}
+			$kunci_jawabane = strtolower(trim($isi_kunci));
+			if(empty($kunci_jawaban))
+			{
+				$kunci_jawaban .= $kunci_jawabane;
+			}
+			else
+			{
+				$kunci_jawaban .= '|'.$kunci_jawabane;
+				//$jwb_siswa .= $kk;
 			}
 			if (strtolower(trim($isi_kunci)) === strtolower(trim($isi_jawaban))) 
 			{
 				$skor = $nilai_per_soal;
 				$status = "✅ Benar"; $benar++;
+				$analisis .= '1';
 			} 
 			else 
 			{
 				$skor = 0;
 				$status = "❌ Salah"; $salah++;
+				$analisis .= '0';				
 			}
 			$detail_skor = "Skor: " . round($skor, 2);
 			$jawaban_ditulis = $isi_jawaban ?: '-';
@@ -197,35 +187,48 @@ while($da = mysqli_fetch_assoc($ta))
 	}
 
 	$nilai_akhir = $nilai;
-	echo '<p>'.$jwb_siswa.'</p>';
+	//echo '<p>'.$jwb_siswa.'</p>';
 	echo "<p>Benar: $benar | Salah: $salah | Kurang Lengkap: $kurang_lengkap</p>";
+	echo "<p>analisis: $analisis</p>";
+	//echo "<p>kunci: $kunci_jawaban</p>";
 	echo "<p><strong>Nilai Akhir: $nilai_akhir%</strong></p>";
  // echo 'panjang jawaban '.strlen($jwb_siswa);
-$url = $sianis.'/tukardata/terimajawaban';
+$url = $sianis.'/tukardata/terimajawabanubk';
 		$params=[
 			'app_key'=>$key,
 			'tmujian_id' => $kode_soal,
 			'nis' => $nis,
 			'jawaban_pg' => $jwb_siswa,
 			'nilai' => $nilai_akhir,
+			'hasil_analisis' => $analisis,
+			'kunci_jawaban' => $kunci_jawaban,
 			];
 			//echo $url.' '.$kode_soal.' '.$jwb_siswa.' '.$key.'<br />';
 if($hasil = postcurl($url,$params))
 	{
+	//echo $hasil;
 		$json = json_decode($hasil, true);
-		foreach($json as $dt)
+		if($json)
 		{
-		//echo 'Berhasil';
-			$pesan = $dt['pesan'];
-			if($pesan == 'oke')
+			foreach($json as $dt)
 			{
-				echo 'berhasil terkirim';
+				echo 'Berhasil';
+				$pesan = $dt['pesan'];
+				if($pesan == 'oke')
+				{
+					echo ' terkirim';
+				}
+				else
+				{
+					echo 'Gagal mengirim, <a href="kirim_nilai.php?tanggal='.$tanggal.'&ke='.$ke.'">Ulang</a>';
+					die();
+				}
 			}
-			else
-			{
-				echo 'Gagal mengirim, <a href="kirim_nilai.php">Ulang</a>';
-				die();
-			}
+		}
+		else
+		{
+			echo 'Tidak terikirim';
+			die();
 		}
 	}
 	else

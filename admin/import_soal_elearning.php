@@ -27,11 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode_soal_elearning']
     $kode_soal_elearning =$_POST['kode_soal_elearning'];
 	$key = 'RSj4dSorRAu2CUBQaOxP';
 	$sianis = 'https://tim.man2semarang.sch.id';
-	echo $key.' '.$sianis.' '.$form_kode_soal;
+	//echo $key.' '.$sianis.' '.$form_kode_soal;
 	if((!empty($key)) and (!empty($sianis)))
 	{
     		$url = $sianis.'/cbtzya/soalperujian/'.$key.'/'.$kode_soal_elearning;
     		//echo $url;
+    		//die();
     		$json = via_curl($url);
     		if($json)
 		{
@@ -47,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode_soal_elearning']
 				{
 					 //echo 'No '.$urutan.'ada soal<br />';
 					$urutan++;
-					$soal_tipe = '';
+					$soal_tipe = $dm['jenis'];
 					$nomer_soal     = $urutan;
 					$soal_id = $dm['id'];
 					$soal = $dm['soal'];
@@ -59,7 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['kode_soal_elearning']
 	 				$soal = str_replace("'", "", $soal);
 	 				//echo $soal.'<br /><br />';
 			               	$pertanyaan     = $soal;
-			                $tipe_soal      = 'Pilihan ganda';
+					if($soal_tipe == '5')
+					{
+				                $tipe_soal      = 'Uraian';
+				        }
+			                else
+				        {
+				                $tipe_soal      = 'Pilihan ganda';
+				        }        
 					$opsi = $dm['opsi_a'];
 	 				$opsi = str_replace("https://elearning.man2semarang.sch.id",$url_cbt,$opsi);
 	 				$opsi = str_replace("https://elearning.man2kabsemarang.sch.id",$url_cbt,$opsi);
