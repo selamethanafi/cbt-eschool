@@ -88,7 +88,7 @@ $no = 1;
                     <td>{$row['nama_siswa']}</td>
                     <td>{$row['kode_soal']}</td>
                     <td>{$row['total_soal']}</td>
-                    <td>{$row['kelas']} {$row['rombel']}</td>
+                    <td>{$row['kelas']}</td>
                     <td>{$nilai}</td>
                     <td>{$row['nilai_uraian']}</td>
                     <td class='nilai-col'>{$nilai_akhir}</td>

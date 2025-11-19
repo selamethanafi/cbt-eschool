@@ -1,8 +1,4 @@
 <?php
-set_time_limit(0);
-ini_set('max_execution_time', 0);
-ini_set('memory_limit', '-1');
-ignore_user_abort(true);
 session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
@@ -35,78 +31,44 @@ if($json){
         $total = $dm['cacah'];
     }
 }
+else
+{
+	die('tidak terhubung ke sistem informasi madrasah, periksa internet');
+}
+$id=0;
+if(isset($_GET['id']))
+{
+	$id = $_GET['id'];
+}
+?>
+<?php
+// Nilai progress (0 - 100)
 
-// Agar output real-time tampil
-@ini_set('output_buffering', 'off');
-@ini_set('zlib.output_compression', false);
-while (ob_get_level()) { ob_end_flush(); }
-ob_implicit_flush(true);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Progress Sinkron Data</title>
-<style>
-    .progress-container {
-        width: 100%;
-        max-width: 450px;
-        background: #eee;
-        border-radius: 20px;
-        overflow: hidden;
-        margin: 20px 0;
-        height: 30px;
-    }
-    .progress-bar {
-        height: 30px;
-        width: 0%;
-        background: green;
-        color: #fff;
-        text-align: center;
-        line-height: 30px;
-        transition: width 0.2s;
-        font-size: 14px;
-    }
-    #log {
-        font-family: monospace;
-        margin-top: 10px;
-        padding: 10px;
-        width: 670px;
-        background: #fafafa;
-        border: 1px solid #ddd;
-        height: 150px;
-        overflow-y: auto;
-        white-space: pre-line;
-    }
-</style>
+    <meta charset="UTF-8">
+    <title>Progress Unduh Siswa dari Sistem Informasi Madrasah</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body>
-
-<h3 id="status">Menyiapkan proses...</h3>
-
-<div class="progress-container">
-    <div class="progress-bar" id="progressBar">0%</div>
-</div>
-
-<div id="log">Menunggu proses dimulai...</div>
-
 <?php
-echo "<script>document.getElementById('status').innerHTML = 'Memproses data...'; document.getElementById('log').textContent='';</script>";
-flush();
 
-// ----------------------
-// PROSES PER-PESERTA
-// ----------------------
-$id = 0;
 echo 'Total = '.$total;
-while($id <= $total){
+//die('id '.$id.' dari '.$total);
+$progress = $id * 100 / $total;
+$progress = round($progress);
+if($id < $total)
+{
 
     $url = $sianis.'/cbtzya/peserta/'.$key.'/'.$id;
     $json = via_curl($url);
     $pesan = "[Data tidak ditemukan]";
-
-    if($json){
-        foreach($json as $dm){
+    if($json)
+    {
+        foreach($json as $dm)
+        {
             $pesan = $dm['pesan']; // <-- bisa diganti $dm['nama'] jika tersedia
             $nama = $dm['nama'];
 	    $nis = mysqli_real_escape_string($koneksi,$dm['nisn']);
@@ -143,49 +105,38 @@ while($id <= $total){
 	    }
         }
     }
-
-    // Hitung progress
-    $progress = ($total > 0) ? round(($id / $total) * 100) : 0;
-
-    // Warna progres dinamis
-    if($progress < 50){
-        $color = "red";
-    } elseif($progress < 80){
-        $color = "gold";
-    } else {
-        $color = "green";
-    }
-
-    // Kirim update progres + nama peserta ke browser
-    echo "
-    <script>
-        var bar = document.getElementById('progressBar');
-        bar.style.width = '$progress%';
-        bar.style.background = '$color';
-        bar.textContent = '$progress%';
-
-        var logBox = document.getElementById('log');
-        logBox.textContent += 'Memproses: $nama $kelas\\n';
-        logBox.scrollTop = logBox.scrollHeight;
-    </script>
-    ";
-
-    flush();
-    //usleep(120000); // 0.12 detik supaya progres halus (boleh dihapus)
-
-    $id++;
-}
 ?>
+<body class="p-4">
 
+<div class="progress" style="width: 300px;">
+  <div class="progress-bar" role="progressbar" style="width: <?= $progress ?>%;" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="100">
+    <?= $progress ?>%
+  </div>
+</div>
+<?php
+				$id++;
+				$lanjut = 'sinkron_peserta.php?id='.$id;
+			?>
+					<script>setTimeout(function () {
+						   window.location.href= '<?php echo $lanjut;?>';
+					},1);
+					</script>
+					<?php
+
+}
+else
+{
+	echo 'Rampung';
+?>
 <script>
-document.getElementById('status').innerHTML = '✅ Selesai Memproses Semua Data! <a href="siswa.php">Kembali</a>';
-document.getElementById('log').textContent += '\n--- PROSES SELESAI ---\n';
 // Auto redirect setelah 2 detik
 setTimeout(function(){
     window.location.href = 'siswa.php';
 }, 2000);
 </script>
-
+<?php
+}
+?>
 </body>
 </html>
 

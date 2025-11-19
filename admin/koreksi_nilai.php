@@ -1,34 +1,5 @@
 <?php
 include '../koneksi/koneksi.php';
-function ubah($masuk)
-{
-    if($masuk == 'pilihan_1')
-    {
-        $jjj = 'A';
-    }
-    elseif($masuk == 'pilihan_2')
-    {
-        $jjj = 'B';
-    }
-    elseif($masuk == 'pilihan_3')
-    {
-        $jjj = 'C';
-    }
-    elseif($masuk == 'pilihan_4')
-    {
-        $jjj = 'D';
-    }
-    elseif($masuk == 'pilihan_5')
-    {
-        $jjj = 'E';
-    }
-    else
-    {
-        $jjj = '?';
-    }
-    return $jjj;
-    
-}
 $kode_soal = $_GET['kode_soal'];
 $id_siswa = $_GET['id_siswa'];
 
@@ -159,7 +130,7 @@ for ($i = 0; $i < $total_soal; $i++) {
         if (strtolower(trim($isi_kunci)) === strtolower(trim($isi_jawaban))) {
             $skor = $nilai_per_soal;
             $status = "✅ Benar"; $benar++;
-            $kk = ubah(strtolower(trim($isi_jawaban)));
+            $kk = strtolower(trim($isi_jawaban));
             if(empty($jwb_siswa))
             {
                 
@@ -167,7 +138,7 @@ for ($i = 0; $i < $total_soal; $i++) {
             }
             else
             {
-                $jwb_siswa .= ','.$kk;
+                $jwb_siswa .= '#'.$kk;
             }
             
         } else {

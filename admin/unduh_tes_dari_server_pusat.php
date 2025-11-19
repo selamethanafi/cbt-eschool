@@ -22,9 +22,9 @@ function via_curl($url_ard_unduh)
 	return $json;	
 }
 
-if(isset($_GET['kode_soal']))
+if(isset($_POST['kode_soal']))
 {
-	$kode_soal = $_GET['kode_soal'];
+	$kode_soal = $_POST['kode_soal'];
 }
 else
 {
