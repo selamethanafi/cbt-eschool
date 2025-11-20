@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label for="kelas_rombel" class="form-label">Kelas & Rombel</label>
+                                    <label for="kelas_rombel" class="form-label">Kelas & Ruang</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fas fa-users"></i></span>
                                         <select class="form-select" name="kelas_rombel" id="kelas_rombel">

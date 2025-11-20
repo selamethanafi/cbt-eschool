@@ -204,7 +204,7 @@ for ($i = 0; $i < $total_soal; $i++) {
             $status = "⚠️ Kurang Lengkap"; $kurang_lengkap++;
             $analisis .= '0';
         }
-	if(empty($skor_per_soal))
+        if(strlen($skor_per_soal)== 0)
 	{
 		$skor_per_soal .= round($skor, 2);
 	}
@@ -235,6 +235,7 @@ for ($i = 0; $i < $total_soal; $i++) {
         if ($ada_salah) {
             $skor = 0;
             $status = "❌ Salah"; $salah++;
+            $analisis .= '0';
         } else {
             if ($jumlah_benar == $jumlah_kunci) {
                 $skor = $nilai_per_soal;
@@ -247,7 +248,7 @@ for ($i = 0; $i < $total_soal; $i++) {
                 $analisis .= '0';
             }
         }
-	if(empty($skor_per_soal))
+	if(strlen($skor_per_soal)== 0)
 	{
 		$skor_per_soal .= round($skor, 2);
 	}
@@ -271,8 +272,9 @@ for ($i = 0; $i < $total_soal; $i++) {
             $status = "❌ Salah"; $salah++;
             $analisis .= '0';
         }
-        if(empty($skor_per_soal))
+       	if(strlen($skor_per_soal)== 0)
 	{
+		echo 'x'.$skor_per_soal.'x';
 		$skor_per_soal .= round($skor, 2);
 	}
 	else
@@ -285,8 +287,7 @@ for ($i = 0; $i < $total_soal; $i++) {
     }
     else
     {
-        $skor = 0;
-           $status = "?";
+        $status = "?";
         $detail_skor = "Uraian";
         $jawaban_ditulis = $isi_jawaban ?: '-';
     }
@@ -310,7 +311,7 @@ $kk = strtolower(trim($isi_jawaban));
     echo "<td>$detail_skor</td>";
     echo "<td>$status</td>";
     echo "</tr>";
-    */
+*/   
     
 }
 
