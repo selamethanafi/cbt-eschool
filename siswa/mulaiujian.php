@@ -6,8 +6,7 @@ check_login('siswa');
 include '../inc/datasiswa.php';
 
 $kode_soal = $_POST['kode_soal'] ?? $_GET['kode_soal'] ?? '';
-$token = $_POST['token'];
-$id_siswa = $_POST['id_siswa'];
+$token = $_POST['token'] ?? $_GET['token'] ?? '';;
 
 if (empty($kode_soal)) {
     $_SESSION['alert'] = true;
@@ -60,7 +59,6 @@ if ($token !== $data_soal['token']) {
     header('Location: ujian.php');
     exit;
 }
-
 // Cek jika siswa sudah pernah mengerjakan
 $q_nilai = mysqli_query($koneksi, "SELECT * FROM nilai WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'");
 if (mysqli_num_rows($q_nilai) > 0) {
@@ -133,8 +131,9 @@ if (!$stmt->execute()) {
 }
 
 // Get all questions
-$tampil = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT tampilan_soal FROM soal WHERE kode_soal='$kode_soal' LIMIT 1"));
+$tampil = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal='$kode_soal' LIMIT 1"));
 $tampilan = $tampil['tampilan_soal'] ?? 'Urut';
+$durasi = $tampil['waktu_ujian'] ?? '120';
 
 // Simpan urutan soal ke session
 if ($tampilan === 'Acak') {
@@ -163,10 +162,11 @@ $q_tema = mysqli_query($koneksi, "SELECT * FROM pengaturan WHERE id = 1 LIMIT 1"
 $data_tema = mysqli_fetch_assoc($q_tema);
 $warna_tema = $data_tema['warna_tema'] ?? '#0d6efd';
 $interval_ms = ((int)$data_tema['waktu_sinkronisasi']) * 1000;
-$query = "SELECT jawaban_siswa FROM jawaban_siswa 
+$query = "SELECT jawaban_siswa, waktu_dijawab FROM jawaban_siswa 
           WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'";
 $result = mysqli_query($koneksi, $query);
 $row = mysqli_fetch_assoc($result);
+$mulai_mengerjakan = $row['waktu_dijawab'];
 
 // Parse format [1:...][2:...]
 $jawaban = $row['jawaban_siswa'] ?? '';
@@ -275,6 +275,8 @@ foreach ($matches as $match) {
                                     <form id="formUjian" method="post" action="simpan_jawaban.php">
                                         <input type="hidden" name="waktu_sisa" id="waktu_sisa">
                                         <input type="hidden" name="batas" value="<?= $batas;?>">
+                                        <input type="hidden" name="durasi" value="<?= $durasi;?>">
+                                        <input type="hidden" name="mulai_mengerjakan" value="<?= $mulai_mengerjakan;?>">
                                         <input type="hidden" name="kode_soal"
                                             value="<?= htmlspecialchars($kode_soal) ?>">
 
@@ -515,12 +517,18 @@ foreach ($matches as $match) {
                                                     onclick="nextSoal()" style="float: right;">
                                                     Berikutnya <i class="fas fa-arrow-right ms-1"></i>
                                                 </button>
+                                                
                                                 <button type="submit" class="btn btn-success" id="submitBtn"
                                                     style="display: none; float: right;">
                                                     <i class="fas fa-check-circle me-1"></i> Selesai
                                                 </button>
                                             </div>
                                         </div>
+                                                                                        <div class="text-center my-2">
+    <a href="mulaiujian.php?kode_soal=<?= $kode_soal;?>&token=<?= $token;?>" 
+       class="btn btn-warning">Refresh</a>
+</div>
+
                                     </form>
                                     <button id="navToggle" class="btn btn-primary rounded-circle"
                                         style="border:none;position: fixed; bottom: 80px; right: 20px; z-index: 1000; width: 50px; height: 50px;background-color:<?php echo htmlspecialchars($warna_tema); ?>;">

@@ -1,4 +1,7 @@
 <?php
+$lifetime = 24 * 60 * 60;
+session_set_cookie_params($lifetime);
+ini_set('session.gc_maxlifetime', $lifetime);
 session_start();
 include '../koneksi/koneksi.php';
 include '../inc/datasiswa.php';
@@ -17,9 +20,16 @@ function allBenarSalah($arr) {
 
 // [2] Dapatkan semua input
 $kode_soal = mysqli_real_escape_string($koneksi, $_POST['kode_soal'] ?? '');
-$waktu_sisa = (int)($_POST['waktu_sisa'] ?? 0);
+$waktu_sekarang = date("Y-m-d H:i:s");
+$sekarang = strtotime($waktu_sekarang);
 $jawaban = $_POST['jawaban'] ?? [];
 $soal_kiri = $_POST['soal_kiri'] ?? [];
+$durasi = $_POST['durasi'];
+$post_mulai_mengerjakan = $_POST['mulai_mengerjakan'];
+$mulai_mengerjakan = strtotime($post_mulai_mengerjakan);
+$beda_detik = abs($sekarang - $mulai_mengerjakan);
+$waktu_terlampui = floor($beda_detik / 60);
+$waktu_sisa = $durasi - $waktu_terlampui;
 
 $q_nilai = mysqli_query($koneksi, "SELECT * FROM nilai WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'");
 if (mysqli_num_rows($q_nilai) > 0) {
@@ -30,14 +40,22 @@ if (mysqli_num_rows($q_nilai) > 0) {
     ]);
     exit;
 }
+
 // [3] Debugging - Catat semua data input
+/*
 error_log("Data Diterima:\n" . print_r([
     'kode_soal' => $kode_soal,
+    'sekarang' => $sekarang,
+    'mulai_mengerjakan' => $mulai_mengerjakan,
+    'waktu_sekarang' => $waktu_sekarang,
+    'waktu_mulai_mengerjakan' => $post_mulai_mengerjakan,
+    'beda_detik' => $beda_detik,
+    'durasi' => $durasi,
     'waktu_sisa' => $waktu_sisa,
     'jawaban' => $jawaban,
     'soal_kiri' => $soal_kiri
 ], true));
-
+*/
 // [4] Proses semua jawaban
 $format_jawaban = [];
 

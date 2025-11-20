@@ -1,4 +1,7 @@
 <?php
+$lifetime = 24 * 60 * 60;
+session_set_cookie_params($lifetime);
+ini_set('session.gc_maxlifetime', $lifetime);
 session_start();
 include '../koneksi/koneksi.php';
 include '../inc/functions.php';
@@ -87,6 +90,7 @@ $(document).ready(function () {
     var table = $('#monitor').DataTable({
         processing: true,
         serverSide: true,
+        pageLengrh: 50,
         ajax: {
             url: 'monitor_data.php',
             type: 'GET'
@@ -136,6 +140,7 @@ $(document).ready(function () {
     var table = $('#monitor').DataTable({
         processing: true,
         serverSide: true,
+        pageLengrh: 50,
         ajax: {
             url: 'monitor_data.php',
             type: 'GET'
