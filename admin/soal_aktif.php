@@ -219,6 +219,7 @@ document.querySelectorAll('.btn-duplicate').forEach(function(button) {
         $(document).ready(function() {
             $('#soalTable').DataTable({
                 paging: true,
+                        pageLength: 50,
                 lengthChange: true,
                 searching: true,
                 ordering: true,

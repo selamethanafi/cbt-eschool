@@ -30,7 +30,10 @@ $mulai_mengerjakan = strtotime($post_mulai_mengerjakan);
 $beda_detik = abs($sekarang - $mulai_mengerjakan);
 $waktu_terlampui = floor($beda_detik / 60);
 $waktu_sisa = $durasi - $waktu_terlampui;
-
+if($waktu_sisa < 0)
+{
+	$waktu_sisa = 1;
+}
 $q_nilai = mysqli_query($koneksi, "SELECT * FROM nilai WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal'");
 if (mysqli_num_rows($q_nilai) > 0) {
     echo json_encode([

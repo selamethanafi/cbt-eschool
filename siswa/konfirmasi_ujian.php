@@ -63,8 +63,13 @@ if ($data_siswa['kelas'] !== $data_soal['kelas']) {
 // Cek jika masih ujian aktif
 $q_jawaban = mysqli_query($koneksi, "SELECT * FROM jawaban_siswa WHERE id_siswa = '$id_siswa' AND kode_soal = '$kode_soal' AND status_ujian = 'Aktif'");
 if (mysqli_num_rows($q_jawaban) > 0) {
+	$ta = mysqli_query($koneksi, "SELECT * FROM `reset` WHERE `id_siswa` = '$id_siswa' and `macam` = 'tes'");
+	if(mysqli_num_rows($ta) == 0)
+	{
+		mysqli_query($koneksi, "insert into reset (`id_siswa`, `macam`, `nama`, `kode_soal`) values ('$id_siswa', 'tes', '$nama_siswa', '$kode_soal')");
+	}
     $_SESSION['alert'] = true;
-    $_SESSION['warning_message'] = 'Status Ujian Masih Aktif! Silakan Reset Login.';
+    $_SESSION['warning_message'] = 'Status Ujian Masih Aktif! Permintaan reset sudah dikirimkan.';
     header('Location: ujian.php');
     exit;
 }

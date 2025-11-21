@@ -41,11 +41,54 @@ else
                 <div class="container-fluid p-0">
                     <div class="row">
                         <div class="col-12">
+                        <?php
+                                $ta = mysqli_query($koneksi, "SELECT * FROM `reset`");
+                                if(mysqli_num_rows($ta) > 0)
+				{
+					?>
+					<div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">Daftar Permintaan Reset</h5>
+                                </div>
+                            </div>
+                                    <div class="card-body">
+	                                    <div class="table-wrapper">
+                             		           <table class="table table-bordered table-striped" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama Siswa</th>
+                                                    <th>Rest</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <?php
+                                            while($da=mysqli_fetch_assoc($ta))
+                                            {
+                                            	echo '<tr><td>'.$da['nama'].'</td><td>'.$da['macam'].'</td><td>';
+                                            	if($da['macam'] == 'perangkat')
+                                            	{
+                                            		echo '<a href="reset_siswa.php?reset=perangkat&id_siswa='.$da['id_siswa'].'" class="btn btn-danger">Reset</a>';
+                                            	}
+                                            	if($da['macam'] == 'tes')
+                                            	{
+                                            		echo '<a href="reset_siswa.php?reset=tes&id_siswa='.$da['id_siswa'].'&kode_soal='.$da['kode_soal'].'" class="btn btn-warning">Reset</a>';
+                                            	}
+                                            	echo '</td></tr>';
+                                            }
+                                            ?>
+                                        </table>
+                                    </div>
+                                </div>
+                                <?php
+                                }
+                                ?>
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">Monitor Ujian</h5>
                                     <small id="last-updated" class="text-muted"></small>
                                 </div>
+                            </div>
+				
                                 <div class="card-body">
                                     <div class="table-wrapper">
                                         <table id="monitor" class="table table-bordered table-striped" style="width:100%">
@@ -90,7 +133,7 @@ $(document).ready(function () {
     var table = $('#monitor').DataTable({
         processing: true,
         serverSide: true,
-        pageLengrh: 50,
+        pageLength: 50,
         ajax: {
             url: 'monitor_data.php',
             type: 'GET'
@@ -140,7 +183,7 @@ $(document).ready(function () {
     var table = $('#monitor').DataTable({
         processing: true,
         serverSide: true,
-        pageLengrh: 50,
+        pageLength: 50,
         ajax: {
             url: 'monitor_data.php',
             type: 'GET'

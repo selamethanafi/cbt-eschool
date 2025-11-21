@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $user = mysqli_fetch_assoc($result);
 
                 if ($user && !empty($user['session_token'])) {
-                    $error = 'Akun sedang aktif di perangkat lain.';
+                    $error = 'Akun sedang aktif di perangkat lain. <a href="kirim_permintaan_reset.php?nopes='.$username.'&kode='.$password.'&reset=perangkat">Kirim permintaan Reset</a>';
                 } else {
                     $error = 'Username atau password salah!';
                 }
@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                         <?php if (!empty($error)): ?>
                             <div id="customAlert" class="text-danger text-center my-3" role="alert" style="font-weight: bold;">
-                                <?php echo htmlspecialchars($error); ?>
+                                <?php echo $error; ?>
                             </div>
                         <?php endif; ?>
                         <h2 class="text-center">Ruang <?php echo $ruang;?></h2>
@@ -243,6 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 </body>
+<?php include '../inc/js.php'; ?>
 <script src="../assets/bootstrap-5.3.6/js/bootstrap.bundle.min.js"></script>
 <script>
     function togglePassword() {
@@ -264,9 +265,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (alert) {
             alert.style.transition = "opacity 0.5s ease-out";
             alert.style.opacity = 0;
-            setTimeout(() => alert.remove(), 500);
+            setTimeout(() => alert.remove(), 10000);
         }
-    }, 4000);
+    }, 10000);
 
     document.addEventListener("DOMContentLoaded", function() {
         var base64Text = "<?php echo $encryptedText; ?>"; 
@@ -297,4 +298,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     });
 </script>
+    <?php if (isset($_SESSION['warning_message'])): ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Permintaan reset telah dikirimkan',
+            text: '<?php echo $_SESSION['warning_message']; ?>',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    });
+    </script>
+    <?php unset($_SESSION['warning_message']); ?>
+    <?php endif; ?>
+
 </html>

@@ -109,6 +109,7 @@ include '../inc/dataadmin.php';
         '>',
   paging: true,
   lengthChange: true,
+  pageLength: 50,  
   searching: true,
   ordering: true,
   info: true,

@@ -88,6 +88,7 @@ include '../inc/dataadmin.php';
         var table = $('#tabelReset').DataTable({
             processing: true,
             serverSide: true,
+	    pageLength: 50,            
             ajax: {
                 url: 'reset_data.php',
                 data: function(d) {
