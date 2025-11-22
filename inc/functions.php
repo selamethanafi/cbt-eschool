@@ -162,6 +162,60 @@ function cari_thnajaran()
 		//$thnajaran = '2018/2019';
 		return $thnajaran;
 	}
+function cegah($str) 
+	{
+	$str = preg_replace("/'/", "xpsijix", $str);
+	$str = preg_replace("/`/", "xpiringx", $str);
+	$str = preg_replace("/-/", "xdashx", $str);
+	$str = preg_replace("/\//", "xmiringx", $str);
+	$str = preg_replace("/@/", "xtkeongx", $str);
+	$str = preg_replace("/%/", "xpersenx", $str);
+	$str = preg_replace("/_/", "xgwahx", $str);
+	$str = preg_replace("/1=1/", "x1smdgan1x", $str);
+	$str = str_replace("/", "xgmringx", $str);
+	$str = preg_replace("/!/", "xpentungx", $str);
+	$str = str_replace("<", "xkkirix", $str);
+	$str = preg_replace("/>/", "xkkananx", $str);
+	$str = preg_replace("/{/", "xkkurix", $str);
+	$str = preg_replace("/}/", "xkkurnanx", $str);
+	$str = preg_replace("/;/", "xkommax", $str);
+	$str = preg_replace("/-/", "xstrix", $str);
+	$str = preg_replace("/_/", "xstripbwhx", $str);
+	$str = preg_replace("/ /", "xspasix", $str);
+	$str = preg_replace("/\(/", "xkubux", $str);
+	$str = preg_replace("/\)/", "xkutux", $str);
+	$str = preg_replace("/,/", "xkomax", $str);
+	return $str;
+  	}
+function balikin($str) 
+	{
+	$str = preg_replace("/xpiringx/", "`", $str);
+	$str = preg_replace("/xdashx/", "-", $str);
+	$str = preg_replace("/xpersenx/", "%", $str);
+	$str = preg_replace("/xtkeongx/", "@", $str);
+	$str = preg_replace("/xgwahx/", "_", $str);
+	$str = preg_replace("/xmiringx/", "/", $str);
+	$str = preg_replace("/x1smdgan1x/", "1=1", $str);
+	$str = preg_replace("/xgmringx/", "/", $str);
+	$str = preg_replace("/xpentungx/", "!", $str);
+	$str = preg_replace("/xpsijix/", "'", $str);
+	$str = preg_replace("/xkkirix/", "<", $str);
+	$str = preg_replace("/xkkananx/", ">", $str);
+	$str = preg_replace("/xkkurix/", "{", $str);
+	$str = preg_replace("/xkkurnanx/", "}", $str);
+	$str = preg_replace("/xkommax/", ";", $str);
+	$str = preg_replace("/xstrix/", "-", $str);
+	$str = preg_replace("/xstripbwhx/", "_", $str);
+	$str = preg_replace("/ koma /", ",", $str);
+	$str = preg_replace("/xspasix/", " ", $str);
+	$str = preg_replace("/xkubux/", "(", $str);
+	$str = preg_replace("/xkutux/", ")", $str);
+	$str = preg_replace("/xkomax/", ",", $str);
+	$str = str_replace(CHR(13), "", $str);
+	$str = str_replace(CHR(10) & CHR(10), "</P><P>", $str);
+	$str = str_replace(CHR(10), "<BR>", $str);
+	return $str;
+  	}  		
 // Ambil teks terenkripsi
 $encryptedText = get_encrypted_credit();
 ?>

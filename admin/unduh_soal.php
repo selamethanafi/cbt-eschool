@@ -105,7 +105,7 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 			$kode_soal = $da['kode_soal'];
 			//ambil cacah_soal
 			$url = $url_bank_soal.'/tukardata/cacah_soal_json.php?app_key='.$key.'&kode_soal='.$kode_soal;
-			//echo $url;
+			echo $url;
 			$json = via_curl($url);
 			$cacah_soal = 0;
 			if($json)

@@ -355,62 +355,7 @@ foreach ($matches as $match) {
                                             </table>
 
                                             <?php
-                                            /* elseif ($tipe == 'Menjodohkan'):
-                                                    $raw = trim($s['jawaban_benar'], "[]");
-                                                    $raw = preg_replace('/^\d+\s*:/', '', $raw);
-                                                    $pasangan_list = explode('|', $raw);
-
-                                                    $opsi = [];
-                                                    foreach ($pasangan_list as $item) {
-                                                        if (strpos($item, ':') !== false) {
-                                                            list($kiri, $kanan) = explode(':', $item, 2);
-                                                            $kiri = trim($kiri);
-                                                            $kanan = trim($kanan);
-                                                            if ($kiri !== '' && $kanan !== '') {
-                                                                $opsi[] = ['kiri' => $kiri, 'kanan' => $kanan];
-                                                            }
-                                                        }
-                                                    }
-
-                                                    $jawaban_soal = (is_array($jawaban)) ? $jawaban : [];
-                                                    $daftar_kanan = array_values(array_unique(array_column($opsi, 'kanan')));
-                                                    shuffle($daftar_kanan);
-                                                    ?>
-
-                                            <?php if (count($opsi) === 0): ?>
-                                            <div class="alert alert-warning">Soal menjodohkan belum memiliki pasangan
-                                                yang valid.</div>
-                                            <?php else: ?>
-                                            <?php foreach ($opsi as $p): ?>
-                                            <input type="hidden" name="soal_kiri[<?= $no_asli ?>][]"
-                                                value="<?= htmlspecialchars($p['kiri']) ?>">
-                                            <?php endforeach; ?>
-
-                                            <table class="matching-table">
-                                                <?php foreach ($opsi as $p):
-                                                                $kiri = $p['kiri'];
-                                                                $selected = $jawaban_soal[$kiri] ?? '';
-                                                            ?>
-                                                <tr>
-                                                    <td><?= htmlspecialchars($kiri) ?></td>
-                                                    <td>
-                                                        <select
-                                                            name="jawaban[<?= $no_asli ?>][<?= htmlspecialchars($kiri) ?>]"
-                                                            class="form-select">
-                                                            <option value="">-- Pilih --</option>
-                                                            <?php foreach ($daftar_kanan as $dk): ?>
-                                                            <option value="<?= htmlspecialchars($dk) ?>"
-                                                                <?= ($selected === $dk) ? 'selected' : '' ?>>
-                                                                <?= htmlspecialchars($dk) ?>
-                                                            </option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <?php endforeach; ?>
-                                            </table>
-                                            <?php endif; 
-                                            */
+                                            
                                             ?>
   <?php elseif ($tipe == 'Menjodohkan'):
     $raw = trim($s['jawaban_benar'], "[]");
@@ -499,8 +444,14 @@ foreach ($matches as $match) {
 
 
                                             <?php elseif ($tipe == 'Uraian'): ?>
+                                            <p class="text-danger">Jangan menulis , (koma)</p>
                                             <textarea name="jawaban[<?= $no_asli ?>]"
-                                                class="essay-textarea"><?= htmlspecialchars($jawaban) ?></textarea>
+                                                class="essay-textarea"><?php
+                                                if (is_array($jawaban)) {
+                                                $jawaban = implode(",", $jawaban);
+                                                } 
+                                                    echo htmlspecialchars($jawaban);
+     ?></textarea>
                                             <?php endif; ?>
                                         </div>
                                         <?php endforeach; ?>
