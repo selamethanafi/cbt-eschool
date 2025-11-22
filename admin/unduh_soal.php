@@ -83,7 +83,7 @@ if(empty($ke))
 }
 if(empty($jenis))
 {
-	echo 'Silakan memilih <h1><a href="unduh_soal.php?jenis=pas&id=0">PAS</a> <a href="unduh_soal.php?jenis=pat&id=0">PAT</a> <a href="unduh_soal.php?jenis=pht&id=0">PHT</a>  <a href="unduh_soal.php?jenis=um&id=0">Asesmen Madrasah</a></h1>';
+	echo 'Silakan memilih <h1><a href="unduh_soal.php?jenis=pht&id=0">PHT</a>  <a href="unduh_soal.php?jenis=pas&id=0">PAS</a>  <a href="unduh_soal.php?jenis=um&id=0">Asesmen Madrasah</a></h1>';
 	die();
 }
 $tunjukkan_hasil = '0';
@@ -94,8 +94,12 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 	if($id < $cacah )
 	{
 		$ta = mysqli_query($koneksi, "SELECT * FROM `soal` where `tahun` = '$tahun' and `semester` = '$semester' and `kode_soal` like '$jenis%' limit $id,1");
-		mysqli_query($koneksi, "SET FOREIGN_KEY_CHECKS = 0");
-		
+		if($id == 0)
+		{
+			mysqli_query($koneksi, "SET FOREIGN_KEY_CHECKS = 0");
+			mysqli_query($koneksi,"truncate `butir_soal`");
+			mysqli_query($koneksi,"SET FOREIGN_KEY_CHECKS = 1");
+		}
 		while($da = mysqli_fetch_assoc($ta))
 		{
 			$kode_soal = $da['kode_soal'];

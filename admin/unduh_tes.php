@@ -67,7 +67,7 @@ if(empty($id))
 }
 if(empty($jenis))
 {
-	echo 'Silakan memilih <h1><a href="unduh_tes.php?jenis=pas&id=0">PAS</a> <a href="unduh_tes.php?jenis=pat&id=0">PAT</a> <a href="unduh_tes.php?jenis=pht&id=0">PHT</a>  <a href="unduh_tes.php?jenis=um&id=0">Asesmen Madrasah</a></h1>';
+	echo 'Silakan memilih <h1><a href="unduh_tes.php?jenis=pht&id=0">PHT</a>  <a href="unduh_tes.php?jenis=pas&id=0">PAS</a>  <a href="unduh_tes.php?jenis=um&id=0">Asesmen Madrasah</a></h1>';
 	die();
 }
 //echo $key.' '.$url_bank_soal;
