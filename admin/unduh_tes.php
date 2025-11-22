@@ -104,6 +104,8 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 				{
 					mysqli_query($koneksi, "SET FOREIGN_KEY_CHECKS = 0");
 					mysqli_query($koneksi,"truncate `soal`");
+					mysqli_query($koneksi,"truncate `jawaban_siswa`");
+					mysqli_query($koneksi,"truncate `nilai`");
 					mysqli_query($koneksi,"SET FOREIGN_KEY_CHECKS = 1");
 				}
 				//echo 'oke';
