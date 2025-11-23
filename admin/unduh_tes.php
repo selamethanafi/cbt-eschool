@@ -179,7 +179,7 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 		{
 			//echo 'Rampung';
 			mysqli_query($koneksi, "SET FOREIGN_KEY_CHECKS = 1");
-			header('Location: ../admin/soal.php');
+			header('Location: ../admin/unduh_soal_per_kode_soal.php?jenis='.$jenis);
 		exit;
 		}
 	}

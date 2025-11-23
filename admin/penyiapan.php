@@ -121,7 +121,7 @@ include '../inc/dataadmin.php';
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <a href="unduh_soal.php" class="btn btn-success">Yakin</a>
+        <a href="unduh_soal_per_kode_soal.php" class="btn btn-success">Yakin</a>
       </div>
     </div>
   </div>
