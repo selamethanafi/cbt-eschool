@@ -65,6 +65,9 @@ include '../inc/dataadmin.php';
   Unduh Gambar dari Bank Soal
 </button>
 		<?php
+			$tb = mysqli_query($koneksi, "SELECT * FROM `gambar` order by `created_at` DESC limit 0,1");
+			$db = mysqli_fetch_assoc($tb);
+			echo '<br/><br/><br/><div class="alert alert-info"><a href="'.$url_bank_soal.'/backup/'.$db['filename'].'">'.$db['filename'].'</a> '.$db['created_at'].'</div> ';
 		}
 		?>
                 </div>

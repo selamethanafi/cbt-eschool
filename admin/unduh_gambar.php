@@ -67,8 +67,13 @@ exec($cmd, $output, $result);
 if ($result !== 0) {
     die("Gagal mengekstrak file.");
 }
-
+$stmt = $koneksi->prepare("INSERT INTO gambar (filename, created_at) VALUES (?, NOW())");
+	$stmt->bind_param("s", $nama_file);
+	$stmt->execute();
+	$stmt->close();
+	$koneksi->close();
 // 3. (Opsional) Hapus file arsip setelah ekstrak
+
 unlink($localFile);
 
 echo "Restore berhasil dilakukan ke folder gambar.";
