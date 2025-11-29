@@ -41,6 +41,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             </a>
                         </li>
                         <li class="sidebar-item submenu">
+                            <a class="sidebar-link" href="daftar_hadir_tes_bersama.php">
+                                <i class="align-middle fa fa-print"></i> <span class="align-middle"> Berita Acara dan Daftar Hadir</span>
+                            </a>
+                        </li>
+                        
+                        <li class="sidebar-item submenu">
                             <a class="sidebar-link" href="penyiapan.php">
                                 <i class="align-middle fas fa-download"></i> <span class="align-middle"> Penyiapan Bank Soal</span>
                             </a>

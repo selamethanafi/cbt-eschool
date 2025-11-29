@@ -39,6 +39,21 @@ if(mysqli_num_rows($ta) == 0)
 {
 	mysqli_query($koneksi, "insert into `cbt_konfigurasi` (`konfigurasi_kode`, `konfigurasi_isi`, `konfigurasi_keterangan`) values ('url_cbt', '', 'URL CBT')");
 }
+$ta = mysqli_query($koneksi, "select * from `cbt_konfigurasi` where `konfigurasi_kode` = 'nama_kamad'");
+if(mysqli_num_rows($ta) == 0)
+{
+	mysqli_query($koneksi, "insert into `cbt_konfigurasi` (`konfigurasi_kode`, `konfigurasi_isi`, `konfigurasi_keterangan`) values ('nama_kamad', '', 'Nama Kepala Madrasah')");
+}
+$ta = mysqli_query($koneksi, "select * from `cbt_konfigurasi` where `konfigurasi_kode` = 'nip_kamad'");
+if(mysqli_num_rows($ta) == 0)
+{
+	mysqli_query($koneksi, "insert into `cbt_konfigurasi` (`konfigurasi_kode`, `konfigurasi_isi`, `konfigurasi_keterangan`) values ('nip_kamad', '', 'NIP kepala madrasah')");
+}
+$ta = mysqli_query($koneksi, "select * from `cbt_konfigurasi` where `konfigurasi_kode` = 'nama_tes_bersama'");
+if(mysqli_num_rows($ta) == 0)
+{
+	mysqli_query($koneksi, "insert into `cbt_konfigurasi` (`konfigurasi_kode`, `konfigurasi_isi`, `konfigurasi_keterangan`) values ('nama_tes_bersama', '', 'nama tes bersama')");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

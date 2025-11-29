@@ -162,60 +162,109 @@ function cari_thnajaran()
 		//$thnajaran = '2018/2019';
 		return $thnajaran;
 	}
-function cegah($str) 
-	{
-	$str = preg_replace("/'/", "xpsijix", $str);
-	$str = preg_replace("/`/", "xpiringx", $str);
-	$str = preg_replace("/-/", "xdashx", $str);
-	$str = preg_replace("/\//", "xmiringx", $str);
-	$str = preg_replace("/@/", "xtkeongx", $str);
-	$str = preg_replace("/%/", "xpersenx", $str);
-	$str = preg_replace("/_/", "xgwahx", $str);
-	$str = preg_replace("/1=1/", "x1smdgan1x", $str);
-	$str = str_replace("/", "xgmringx", $str);
-	$str = preg_replace("/!/", "xpentungx", $str);
-	$str = str_replace("<", "xkkirix", $str);
-	$str = preg_replace("/>/", "xkkananx", $str);
-	$str = preg_replace("/{/", "xkkurix", $str);
-	$str = preg_replace("/}/", "xkkurnanx", $str);
-	$str = preg_replace("/;/", "xkommax", $str);
-	$str = preg_replace("/-/", "xstrix", $str);
-	$str = preg_replace("/_/", "xstripbwhx", $str);
-	$str = preg_replace("/ /", "xspasix", $str);
-	$str = preg_replace("/\(/", "xkubux", $str);
-	$str = preg_replace("/\)/", "xkutux", $str);
-	$str = preg_replace("/,/", "xkomax", $str);
-	return $str;
-  	}
-function balikin($str) 
-	{
-	$str = preg_replace("/xpiringx/", "`", $str);
-	$str = preg_replace("/xdashx/", "-", $str);
-	$str = preg_replace("/xpersenx/", "%", $str);
-	$str = preg_replace("/xtkeongx/", "@", $str);
-	$str = preg_replace("/xgwahx/", "_", $str);
-	$str = preg_replace("/xmiringx/", "/", $str);
-	$str = preg_replace("/x1smdgan1x/", "1=1", $str);
-	$str = preg_replace("/xgmringx/", "/", $str);
-	$str = preg_replace("/xpentungx/", "!", $str);
-	$str = preg_replace("/xpsijix/", "'", $str);
-	$str = preg_replace("/xkkirix/", "<", $str);
-	$str = preg_replace("/xkkananx/", ">", $str);
-	$str = preg_replace("/xkkurix/", "{", $str);
-	$str = preg_replace("/xkkurnanx/", "}", $str);
-	$str = preg_replace("/xkommax/", ";", $str);
-	$str = preg_replace("/xstrix/", "-", $str);
-	$str = preg_replace("/xstripbwhx/", "_", $str);
-	$str = preg_replace("/ koma /", ",", $str);
-	$str = preg_replace("/xspasix/", " ", $str);
-	$str = preg_replace("/xkubux/", "(", $str);
-	$str = preg_replace("/xkutux/", ")", $str);
-	$str = preg_replace("/xkomax/", ",", $str);
-	$str = str_replace(CHR(13), "", $str);
-	$str = str_replace(CHR(10) & CHR(10), "</P><P>", $str);
-	$str = str_replace(CHR(10), "<BR>", $str);
-	return $str;
-  	}  		
+	
 // Ambil teks terenkripsi
 $encryptedText = get_encrypted_credit();
+function tanggal_ke_hari($str) 
+	{
+	$dinane='?';
+	if(strlen($str)==10)
+	{
+	$x = substr($str,0,4);
+	$y = substr($str,5,2);
+	$z = substr($str,8,2);
+	$dina = date("l", mktime(0, 0, 0, $y, $z, $x));
+
+	if ($dina == 'Sunday')
+		{
+		$dinane = 'Minggu';
+		}
+	if ($dina == 'Monday')
+		{
+		$dinane = 'Senin';
+		}
+	if ($dina == 'Tuesday')
+		{
+		$dinane = 'Selasa';
+		}
+	if ($dina == 'Wednesday')
+		{
+		$dinane = 'Rabu';
+		}
+	if ($dina == 'Thursday')
+		{
+		$dinane = 'Kamis';
+		}
+	if ($dina == 'Friday')
+		{
+		$dinane = 'Jumat';
+		}
+	if ($dina == 'Saturday')
+		{
+		$dinane = 'Sabtu';
+		}
+	}
+	return $dinane;
+  	}
+function angka_jadi_bulan($postedmonth)
+	{
+		$bulan='';
+		if ($postedmonth=="01")
+			{
+			$bulan = "Januari";
+			}
+		if ($postedmonth=="02")
+			{
+			$bulan = "Februari";
+			}
+		if ($postedmonth=="03")
+			{
+			$bulan = "Maret";
+			}
+		if ($postedmonth=="04")
+			{
+			$bulan = "April";
+			}
+		if ($postedmonth=="05")
+			{
+			$bulan = "Mei";
+			}
+		if ($postedmonth=="06")
+			{
+			$bulan = "Juni";
+			}
+		if ($postedmonth=="07")
+			{
+			$bulan = "Juli";
+			}
+		if ($postedmonth=="08")
+			{
+			$bulan = "Agustus";
+			}
+		if ($postedmonth=="09")
+			{
+			$bulan = "September";
+			}
+		if ($postedmonth=="10")
+			{
+			$bulan = "Oktober";
+			}
+		if ($postedmonth=="11")
+			{
+			$bulan = "November";
+			}
+		if ($postedmonth=="12")
+			{
+			$bulan = "Desember";
+			}
+		return $bulan;	
+	} 
+function tanggal($str)
+	{
+		$postedyear=substr($str,0,4);
+		$postedmonth=substr($str,5,2);
+  		$postedday=substr($str,8,2);
+		$tanggalbiasa = $postedday.'-'.$postedmonth.'-'.$postedyear;	
+		return $tanggalbiasa;	
+	}	
 ?>

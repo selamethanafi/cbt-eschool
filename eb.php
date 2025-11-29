@@ -29,7 +29,6 @@
 */
 ?>
 		<p><a href="apk/CBTMANDUSA.apk" >Download Exam Browser Utama</a></p>
-		<p><a href="apk/EXAMBROWSER_MAN_2_SEMARANG.apk" >Download Exam Browser Alternatif</a></p>
         <p>Untuk mengakses Aplikasi Ujian Online MAN 2 Semarang menggunakan IOS, silakan memasang Safeexambrowser, lalu unduh file konfigurasi berikut</p>
 		<p>Kalau menggunakan internet <a href="apk/MAN2SMG_INET.seb" >Download Konfigurasi Safeexambrowser IOS Full Online</a></p>
 		<p>Kalau mengerjakan di ruang tes <a href="apk/MAN2SMG_lokal.seb" >Download Konfigurasi Safeexambrowser IOS Semi Online</a></p>

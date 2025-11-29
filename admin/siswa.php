@@ -185,6 +185,7 @@ include '../inc/dataadmin.php';
   info: true,
   autoWidth: true,
   responsive: true,
+  pageLength: 50,
   order: [[0, 'desc']], // Urutkan berdasarkan kolom tersembunyi ID
   columnDefs: [
     { targets: 0, visible: false }, // Sembunyikan kolom ID

@@ -55,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         tanggal = '$tanggal',
                         exambrowser = '$exambrowser'
                         WHERE id_soal = '$id_soal'";
-                        echo $update_query;
     if (mysqli_query($koneksi, $update_query)) {
         $_SESSION['success_message'] = 'Data soal berhasil diupdate!';
         header('Location: soal.php');

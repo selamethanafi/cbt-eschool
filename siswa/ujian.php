@@ -102,20 +102,14 @@ $basePath = rtrim(dirname($scriptPath, 1), '/');
     const appFolder = pathNameParts.length > 0 ? '/' + pathNameParts[0] : '';
 
     let allCardsHTML = '';
-    const qrList = []; // Simpan data QR yang perlu digenerate
 
     data.forEach(ujian => {
-        const cardId = 'qr-' + ujian.kode_soal;
-        const qrLink = `${window.location.origin}${appFolder}/siswa/konfirmasi_ujian.php?kode_soal=${encodeURIComponent(ujian.kode_soal)}`;
-
-        qrList.push({ id: cardId, link: qrLink }); // Simpan data QR-nya
-
         allCardsHTML += `
         <div class="col-12 col-lg-4 col-xl-3 col-sm-6 col-md-4">
             <div class="card ujian-card h-100 shadow-sm border-0 bg-light ujian-card-hover">
                 <div class="card-body d-flex flex-column text-center py-4">
-                    <div id="${cardId}" class="icon-wrapper mb-3 mx-auto"></div>
-                    <h5 class="card-title text-dark fw-bold mb-2">${ujian.kode_soal}</h5>
+                    
+                    <h5 class="card-title text-dark fw-bold mb-2">${ujian.nama_soal}</h5>
                     <hr class="my-2">
                     <p class="mb-1"><i class="far fa-file-alt text-secondary me-1"></i> ${ujian.mapel}</p>
                     <p class="mb-1"><i class="fas fa-stopwatch text-secondary me-1"></i> ${ujian.waktu_ujian} menit</p>
@@ -130,20 +124,7 @@ $basePath = rtrim(dirname($scriptPath, 1), '/');
 
     container.innerHTML = allCardsHTML;
 
-    // Setelah semua elemen ada di DOM, generate semua QR code
-    qrList.forEach(({ id, link }) => {
-        const el = document.getElementById(id);
-        if (el) {
-            new QRCode(el, {
-                text: link,
-                width: 80,
-                height: 80,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.L
-            });
-        }
-    });
+    
 }
 
     function loadUjian() {

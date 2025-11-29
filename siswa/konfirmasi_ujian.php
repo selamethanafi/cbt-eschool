@@ -157,11 +157,24 @@ $_SESSION['konfirmasi_ujian'] = true;
     if($data_soal['exambrowser'] == 1)
     {
           $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown User Agent';
-//echo "The user agent is: " . $userAgent;
-	$q_a = mysqli_query($koneksi, "SELECT * FROM agen WHERE nama = '$userAgent'");
-	if (mysqli_num_rows($q_a) > 0) 
-	{
+//        echo "The user agent is: " . $userAgent;
+    	$q_a = mysqli_query($koneksi, "SELECT * FROM agen WHERE nama = '$userAgent'");
+    	if (mysqli_num_rows($q_a) > 0) 
+	    {
              $boleh++; // kalau perangkat sesuai
+        }
+        else
+        {
+        	$q_a = mysqli_query($koneksi, "SELECT * FROM agen");
+        	while($da = mysqli_fetch_assoc($q_a))
+        	{
+        	    $agen_terdaftar = $da['nama'];
+        	    $p = strlen($agen_terdaftar);
+        	    if(substr($userAgent,-$p) == $agen_terdaftar)
+        	    {
+        	        $boleh++;
+        	    }
+        	}
         }
     }
     else
@@ -306,7 +319,9 @@ $_SESSION['konfirmasi_ujian'] = true;
                                     <div class="card-body">
                                     <a href="ujian.php" class="btn btn-danger">Kembali</a>    
                                         
-
+<?php
+echo "The user agent is: " . $userAgent;
+?>
                                         
 
                                         
@@ -340,3 +355,4 @@ $_SESSION['konfirmasi_ujian'] = true;
 </script>
 </body>
 </html>
+

@@ -4,6 +4,38 @@ include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
 include '../inc/dataadmin.php';
+function via_curl($url){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $out = curl_exec($ch);
+    curl_close($ch);
+    return json_decode($out, true);
+}
+$ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'app_key_server_cbt_lokal'");
+$da = mysqli_fetch_assoc($ta);
+$key = $da['konfigurasi_isi'];
+$ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'url_bank_soal'");
+$da = mysqli_fetch_assoc($ta);
+$url_bank_soal = $da['konfigurasi_isi'];
+$url = $url_bank_soal.'/tukardata/nama_file_gambar_json.php?app_key='.$key;
+//echo $url;
+$json = via_curl($url);
+$cacah_soal = 0;
+$pesan ='';
+$nama_file = 'x';
+if($json)
+{
+      	foreach($json as $dm)
+	{
+		$pesan = $dm['pesan'];
+		$nama_file = $dm['nama'];
+	}
+}
+else
+{
+	die('tidak terhubung dengan bank soal');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,6 +100,15 @@ include '../inc/dataadmin.php';
 			$tb = mysqli_query($koneksi, "SELECT * FROM `gambar` order by `created_at` DESC limit 0,1");
 			$db = mysqli_fetch_assoc($tb);
 			echo '<br/><br/><br/><div class="alert alert-info"><a href="'.$url_bank_soal.'/backup/'.$db['filename'].'">'.$db['filename'].'</a> '.$db['created_at'].'</div> ';
+			if($db['filename'] == $nama_file)
+			{
+				echo '<div class="alert alert-success">Salinan digital sudah sesuai</div> ';
+			}
+			else
+			{
+				echo '<div class="alert alert-danger">Salinan digital tidak sesuai</div> ';
+			}
+			
 		}
 		?>
                 </div>
