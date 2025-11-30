@@ -71,7 +71,7 @@ if(empty($id))
 }
 if(empty($jenis))
 {
-	echo 'Silakan memilih <h1><a href="unduh_soal_per_kode_soal.php?jenis=pht&id=0">PHT</a>  <a href="unduh_soal_per_kode_soal.php?jenis=pas&id=0">PAS</a>  <a href="unduh_soal_per_kode_soal.php?jenis=um&id=0">Asesmen Madrasah</a></h1>';
+	echo 'Silakan memilih <h1><a href="unduh_soal_kosong_per_kode_soal.php?jenis=pht&id=0">PHT</a>  <a href="unduh_soal_kosong_per_kode_soal.php?jenis=pas&id=0">PAS</a>  <a href="unduh_soal_kosong_per_kode_soal.php?jenis=um&id=0">Asesmen Madrasah</a></h1>';
 	die();
 }
 $tunjukkan_hasil = '0';
@@ -82,33 +82,31 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 	if($id < $cacah )
 	{
 		$ta = mysqli_query($koneksi, "SELECT * FROM `soal` where `tahun` = '$tahun' and `semester` = '$semester' and `kode_soal` like '$jenis%' limit $id,1");
-		if($id == 0)
-		{
-			mysqli_query($koneksi, "SET FOREIGN_KEY_CHECKS = 0");
-			mysqli_query($koneksi,"truncate `butir_soal`");
-			mysqli_query($koneksi,"SET FOREIGN_KEY_CHECKS = 1");
-		}
 		while($da = mysqli_fetch_assoc($ta))
 		{
 			$kode_soal = $da['kode_soal'];
-			//ambil cacah_soal
-			$url = $url_bank_soal.'/tukardata/cacah_soal_json.php?app_key='.$key.'&kode_soal='.$kode_soal;
-			//echo $url;
-			$json = via_curl($url);
-			$cacah_soal = 0;
-			if($json)
+			//periksa dulu soal apakah masih kosong?
+			$tb = mysqli_query($koneksi, "select * FROM `butir_soal` where `kode_soal` = '$kode_soal'");
+			if(mysqli_num_rows($tb) == 0)
 			{
-			       	foreach($json as $dm)
+				//ambil cacah_soal
+				$url = $url_bank_soal.'/tukardata/cacah_soal_json.php?app_key='.$key.'&kode_soal='.$kode_soal;
+				//echo $url;
+				$json = via_curl($url);
+				$cacah_soal = 0;
+				if($json)
 				{
-					$cacah_soal = $dm['cacah'];
+				       	foreach($json as $dm)
+					{
+						$cacah_soal = $dm['cacah'];
+					}
 				}
-			}
-			else
-			{
-				echo 'gagal terhubung dengan bank soal '.$url;
-				die();
-			}
-			    $progress = ($cacah > 0) ? round(($id / $cacah) * 100) : 0;
+				else
+				{
+					echo 'gagal terhubung dengan bank soal '.$url;
+					die();
+				}
+				    $progress = ($cacah > 0) ? round(($id / $cacah) * 100) : 0;
 ?>
 <div class="container-fluid">
 <div class="progress" style="width: 300px;">
@@ -118,68 +116,67 @@ if((!empty($key)) and (!empty($url_bank_soal)))
 </div>
 </div>
 <?php
-			echo 'Terproses '.$id.' tes dari '.$cacah.' tes<br />';
-			echo 'Nama Tes '.$da['nama_soal'].'<br />';
-			echo 'cacah_soal '.$cacah_soal.'<br />';
-			$url2 = $url_bank_soal.'/tukardata/soal_per_kode_soal_json.php?app_key='.$key.'&kode_soal='.$kode_soal;
-			$json2 = via_curl($url2);
-			if(!$json2)
-			{
-				die('tidak dapat mengunduh soal '.$url2);
-			}
-			mysqli_query($koneksi, "delete FROM `butir_soal` where `kode_soal` = '$kode_soal'");
-	        	foreach($json2 as $dms)
-			{
-				$pesan = $dms['pesan'];
-				if($pesan == 'ada')
+				echo 'Terproses '.$id.' tes dari '.$cacah.' tes<br />';
+				echo 'Nama Tes '.$da['nama_soal'].'<br />';
+				echo 'cacah_soal '.$cacah_soal.'<br />';
+				$url2 = $url_bank_soal.'/tukardata/soal_per_kode_soal_json.php?app_key='.$key.'&kode_soal='.$kode_soal;
+				$json2 = via_curl($url2);
+				if(!$json2)
 				{
-					// Ambil dari array dms
-					$id_soal        = $dms['id_soal'];
-					$nomer_soal     = $dms['nomer_soal'];
-					$kode_soal      = $dms['kode_soal'];
-					$pertanyaan     = $dms['pertanyaan'];
-					$tipe_soal      = $dms['tipe_soal'];
-					$pilihan_1      = $dms['pilihan_1'];
-					$pilihan_2      = $dms['pilihan_2'];
-					$pilihan_3      = $dms['pilihan_3'];
-					$pilihan_4      = $dms['pilihan_4'];
-					$pilihan_5      = $dms['pilihan_5'];
-					$jawaban_benar  = $dms['jawaban_benar'];
-					$status_soal    = $dms['status_soal'];
-					$created_at     = $dms['created_at']; // bisa s&j default juga
-					$sql = "INSERT INTO butir_soal 
+					die('tidak dapat mengunduh soal '.$url2);
+				}
+				
+				foreach($json2 as $dms)
+				{
+					$pesan = $dms['pesan'];
+					if($pesan == 'ada')
+					{
+						// Ambil dari array dms
+						$id_soal        = $dms['id_soal'];
+						$nomer_soal     = $dms['nomer_soal'];
+						$kode_soal      = $dms['kode_soal'];
+						$pertanyaan     = $dms['pertanyaan'];
+						$tipe_soal      = $dms['tipe_soal'];
+						$pilihan_1      = $dms['pilihan_1'];
+						$pilihan_2      = $dms['pilihan_2'];
+						$pilihan_3      = $dms['pilihan_3'];
+						$pilihan_4      = $dms['pilihan_4'];
+						$pilihan_5      = $dms['pilihan_5'];
+						$jawaban_benar  = $dms['jawaban_benar'];
+						$status_soal    = $dms['status_soal'];
+						$created_at     = $dms['created_at']; // bisa s&j default juga
+						$sql = "INSERT INTO butir_soal 
 (id_soal, nomer_soal, kode_soal, pertanyaan, tipe_soal, pilihan_1, pilihan_2, pilihan_3, pilihan_4, pilihan_5, jawaban_benar, status_soal, created_at)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-					$stmt = $koneksi->prepare($sql);
-					$stmt->bind_param(
-    "iisssssssssss",
-    $id_soal,
-    $nomer_soal,
-    $kode_soal,
-    $pertanyaan,
-    $tipe_soal,
-    $pilihan_1,
-    $pilihan_2,
-    $pilihan_3,
-    $pilihan_4,
-    $pilihan_5,
-    $jawaban_benar,
-    $status_soal,
-    $created_at
-);
-					if ($stmt->execute()) {
-					    //echo "Insert sukses";
-					} else {
-						    echo "Error: " . $stmt->error;
-						    die();
+						$stmt = $koneksi->prepare($sql);
+						$stmt->bind_param(
+						    "iisssssssssss",
+						    $id_soal,
+						    $nomer_soal,
+						    $kode_soal,
+						    $pertanyaan,
+						    $tipe_soal,
+						    $pilihan_1,
+						    $pilihan_2,
+						    $pilihan_3,
+						    $pilihan_4,
+						    $pilihan_5,
+						    $jawaban_benar,
+						    $status_soal,
+						    $created_at
+						);
+						if ($stmt->execute()) {
+						    //echo "Insert sukses";
+						} else {
+							    echo "Error: " . $stmt->error;
+							    die();
+						}
+						$stmt->close();
 					}
-					$stmt->close();
-				}
-		
+				}	
 			}
-			mysqli_query($koneksi, "SET FOREIGN_KEY_CHECKS = 1");
 			$id++;
-			$lanjut = 'unduh_soal_per_kode_soal.php?jenis='.$jenis.'&id='.$id;
+			$lanjut = 'unduh_soal_kosong_per_kode_soal.php?jenis='.$jenis.'&id='.$id;
 			?>
 					<script>setTimeout(function () {
 						   window.location.href= '<?php echo $lanjut;?>';

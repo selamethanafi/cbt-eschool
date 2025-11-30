@@ -96,6 +96,8 @@ else
 			<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#mdunduh4">
   Unduh Gambar dari Bank Soal
 </button>
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mdunduh5">
+  Unduh Lagi Soal belum terunduh</button>
 		<?php
 			$tb = mysqli_query($koneksi, "SELECT * FROM `gambar` order by `created_at` DESC limit 0,1");
 			$db = mysqli_fetch_assoc($tb);
@@ -183,6 +185,23 @@ else
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         <a href="unduh_gambar.php" class="btn btn-success">Yakin</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="mdunduh5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi Unduh Soal Belum Terunduh</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Yakin hendak mengunduh soal yang belum terunduh dari bank soal?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <a href="unduh_soal_kosong_per_kode_soal.php" class="btn btn-success">Yakin</a>
       </div>
     </div>
   </div>
