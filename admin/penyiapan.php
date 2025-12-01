@@ -18,6 +18,11 @@ $key = $da['konfigurasi_isi'];
 $ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'url_bank_soal'");
 $da = mysqli_fetch_assoc($ta);
 $url_bank_soal = $da['konfigurasi_isi'];
+		if(empty($url_bank_soal))
+		{
+		}
+		else
+		{
 $url = $url_bank_soal.'/tukardata/nama_file_gambar_json.php?app_key='.$key;
 //echo $url;
 $json = via_curl($url);
@@ -35,6 +40,7 @@ if($json)
 else
 {
 	die('tidak terhubung dengan bank soal');
+}
 }
 ?>
 <!DOCTYPE html>
@@ -60,12 +66,12 @@ else
                 </div>
                 <div class="card-body">
                 <?php
-                $ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'url_bank_soal'");
-		$da = mysqli_fetch_assoc($ta);
-		$url_bank_soal = $da['konfigurasi_isi'];
 		if(empty($url_bank_soal))
 		{?>
                   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                          			<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#mdunduh7">
+  Isi Kunci Uraian</button>
+
                     <div class="btn-group" role="group" aria-label="Button group">
                       <a href="gambar.php" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Kompress Folder Gambar
@@ -100,6 +106,8 @@ else
   Unduh Lagi Soal belum terunduh</button>
   			<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mdunduh6">
   Unduh Jadwal</button>
+    			<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#mdunduh7">
+  Isi Kunci Uraian</button>
 		<?php
 			$tb = mysqli_query($koneksi, "SELECT * FROM `gambar` order by `created_at` DESC limit 0,1");
 			$db = mysqli_fetch_assoc($tb);
@@ -225,6 +233,24 @@ else
     </div>
   </div>
 </div>
+<div class="modal fade" id="mdunduh7" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi Unduh Jadwal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Yakin hendak mengisi kunci soal yang kuncinya masih kosong?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <a href="isi_kunci_uraian.php" class="btn btn-success">Yakin</a>
+      </div>
+    </div>
+  </div>
+</div>
 <?php include '../inc/js.php'; ?>
 </body>
 </html>
+

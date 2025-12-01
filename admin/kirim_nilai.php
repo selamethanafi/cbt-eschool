@@ -5,7 +5,7 @@ include '../inc/functions.php';
 // Cek jika sudah login
 check_login('admin');
 include '../inc/dataadmin.php';
-$waktu = 100;
+$waktu = 10;
 if(isset($_GET['ke']))
 {
 $ke = $_GET['ke'];
@@ -29,12 +29,6 @@ if (checkdate($month, $day, $year)) {
 
 } else {
 die('tanggal salah');
-}
-
-function ubah($masuk)
-{
-	$jjj = str_replace('pilihan_','',$masuk);
-	return $jjj;
 }
 function postcurl($urlsms,$params) 
 	{
@@ -123,13 +117,11 @@ function removeCommasOutsideBrackets($str) {
 }
 
 $kuncifix = removeCommasOutsideBrackets($kunci);
-
+$kuncifix = str_replace("\n", " ", $kuncifix);
 preg_match_all('/\[(.*?)\]/', $kuncifix, $kunci_matches);
 preg_match_all('/\[(.*?)\]/', $jawaban_siswa, $jawaban_matches);
-
 $kunci_array = $kunci_matches[1];
 $jawaban_array = $jawaban_matches[1];
-
 $total_soal = count($kunci_array);
 $benar = 0;
 $salah = 0;
@@ -274,7 +266,7 @@ for ($i = 0; $i < $total_soal; $i++) {
         }
        	if(strlen($skor_per_soal)== 0)
 	{
-		echo 'x'.$skor_per_soal.'x';
+		//echo 'x'.$skor_per_soal.'x';
 		$skor_per_soal .= round($skor, 2);
 	}
 	else
@@ -302,8 +294,8 @@ $kk = strtolower(trim($isi_jawaban));
                 $jwb_siswa .= '#'.$kk;
             }
     $nilai_total += $skor;
-
 /*
+
     echo "<tr>";
     echo "<td>$nomer_kunci</td>";
     echo "<td>$tipe_soal $isi_kunci</td>";
@@ -311,8 +303,7 @@ $kk = strtolower(trim($isi_jawaban));
     echo "<td>$detail_skor</td>";
     echo "<td>$status</td>";
     echo "</tr>";
-*/   
-    
+*/
 }
 
 $nilai_akhir = round($nilai_total, 2);
@@ -322,7 +313,7 @@ echo '<p>jawaban siswa '.$jwb_siswa.'</p>';
 echo "<p>Benar: $benar | Salah: $salah | Kurang Lengkap: $kurang_lengkap</p>";
 	echo "<p>analisis: $analisis</p>";
 	echo "<p>Rincian skor: $skor_per_soal</p>";
-	echo "<p>kunci: $kunci_jawaban</p>";
+	//echo "<p>kunci: $kunci_jawaban</p>";
 	echo "<p><strong>Nilai Akhir: $nilai_akhir%</strong></p>";
  // echo 'panjang jawaban '.strlen($jwb_siswa);
 $url = $sianis.'/tukardata/terimajawabanubk';
@@ -337,7 +328,6 @@ $url = $sianis.'/tukardata/terimajawabanubk';
 			'skor_per_soal' => $skor_per_soal,
 			];
 			//echo $url.' '.$kode_soal.' '.$jwb_siswa.' '.$key.'<br />';
-			
 if($hasil = postcurl($url,$params))
 	{
 	//echo $hasil;
@@ -411,5 +401,6 @@ if($hasil = postcurl($url,$params))
 		<?php
 }
 ?>
+
 
 

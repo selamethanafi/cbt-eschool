@@ -140,7 +140,7 @@ if (!empty($kunci_jawaban)) {
             if ($jumlah_benar === $jumlah_kunci) {
                 $skor = $nilai_per_soal;
             } else {
-                $skor = ($jumlah_benar / $jumlah_kunci) * $nilai_per_soal_pgk;
+                $skor = ($jumlah_benar / $jumlah_kunci) * $nilai_per_soal;
             }
             
             selesai_pilgan_kompleks:

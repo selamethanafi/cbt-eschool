@@ -26,13 +26,13 @@ function removeCommasOutsideBrackets($str) {
 }
 
 $kuncifix = removeCommasOutsideBrackets($kunci);
-
+$kuncifix = str_replace("\n", "<br />", $kuncifix);
 preg_match_all('/\[(.*?)\]/', $kuncifix, $kunci_matches);
 preg_match_all('/\[(.*?)\]/', $jawaban_siswa, $jawaban_matches);
 
 $kunci_array = $kunci_matches[1];
 $jawaban_array = $jawaban_matches[1];
-
+print_r($kunci_array);
 $total_soal = count($kunci_array);
 $benar = 0;
 $salah = 0;
