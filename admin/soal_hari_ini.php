@@ -4,7 +4,7 @@ include '../koneksi/koneksi.php';
 include '../inc/functions.php';
 check_login('admin');
 include '../inc/dataadmin.php';
-$tanggal = date("Y-m-d");
+
 if(isset($_GET['jam']))
 {
 	$jam = $_GET['jam'];
@@ -12,6 +12,19 @@ if(isset($_GET['jam']))
 else
 {
 	$jam = '';
+}
+if(isset($_GET['tgl']))
+{
+	$tgl= $_GET['tgl'];
+	}
+else
+{
+	$tgl = '';
+}
+$tanggal = $tgl;
+if(empty($tgl))
+{
+	$tanggal = date("Y-m-d");
 }
 $waktu = $tanggal.' '.$jam;
 if((empty($waktu)) or ($waktu == ' '))
@@ -75,13 +88,14 @@ if (!$result) {
                                 </div>
                                 <div class="card-body table-wrapper">
                                 <?php
+                                echo $tanggal;
                                 if(empty($jam))
                                 {
                                 	echo '<p>Pilih waktu tes</p>';
                                 	$ta = mysqli_query($koneksi, "SELECT DISTINCT `tanggal` FROM `soal` WHERE `tanggal` like '$tanggal%'");
                                 	while ($da = mysqli_fetch_assoc($ta)) 
                                 	{
-                                		echo '<p><a href="soal_hari_ini.php?jam='.substr($da['tanggal'],-8).'">'.substr($da['tanggal'],-8).'</a></p>';
+                                		echo '<p><a href="soal_hari_ini.php?tgl='.$tanggal.'&jam='.substr($da['tanggal'],-8).'">'.substr($da['tanggal'],-8).'</a></p>';
                                 	}
                                 }
                                 else
@@ -164,163 +178,7 @@ if (!$result) {
   </div>
 </div>
     <?php include '../inc/js.php'; ?>
-    <script>
-        // Tambahkan di bagian script yang sudah ada
-document.querySelectorAll('.btn-duplicate').forEach(function(button) {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const oldKode = this.getAttribute('data-kode');
-        
-        Swal.fire({
-            title: 'Duplikasi Soal',
-            input: 'text',
-            inputLabel: 'Masukkan Kode Soal Baru',
-            inputPlaceholder: 'Kode unik untuk soal duplikat',
-            showCancelButton: true,
-            confirmButtonText: 'Duplikat',
-            cancelButtonText: 'Batal',
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'Kode soal baru harus diisi!';
-                }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const newKode = result.value;
-                
-                // Kirim permintaan AJAX
-                fetch('duplicate_soal.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `old_kode=${encodeURIComponent(oldKode)}&new_kode=${encodeURIComponent(newKode)}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: data.message,
-                            timer: 2000,
-                            showConfirmButton: false
-                        }).then(() => {
-                            window.location.reload();
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal!',
-                            text: data.message
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire('Error', 'Terjadi kesalahan saat memproses permintaan.', 'error');
-                });
-            }
-        });
-    });
-});
-
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize DataTables
-        $(document).ready(function() {
-            $('#soalTable').DataTable({
-                paging: true,
-                lengthChange: true,
-                searching: true,
-                ordering: true,
-                info: true,
-                autoWidth: false,
-                responsive: true
-            });
-        });
-        document.querySelectorAll('.btn-hapus').forEach(function(button) {
-            button.addEventListener('click', function() {
-                const kodeSoal = this.getAttribute('data-kode');
-
-                Swal.fire({
-                    title: 'Konfirmasi Hapus',
-                    html: 'Ketik <strong>HAPUS</strong> untuk menghapus data soal ini.',
-                    input: 'text',
-                    inputPlaceholder: 'Ketik HAPUS di sini',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Hapus',
-                    confirmButtonColor: '#d33',
-                    cancelButtonText: 'Batal',
-                    preConfirm: (inputValue) => {
-                        if (inputValue !== 'HAPUS') {
-                            Swal.showValidationMessage(
-                                'Anda harus mengetik "HAPUS" dengan benar (huruf besar semua)'
-                                );
-                        }
-                        return inputValue;
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed && result.value === 'HAPUS') {
-                        window.location.href = 'hapus_soal.php?kode_soal=' +
-                            encodeURIComponent(kodeSoal);
-                    }
-                });
-            });
-        });
-
-
-    });
-    </script>
-    <?php if (isset($_SESSION['success'])): ?>
-    <script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil',
-        text: '<?php echo addslashes($_SESSION['success']); ?>',
-        showConfirmButton: false,
-        timer: 2000
-    });
-    </script>
-    <?php unset($_SESSION['success']); endif; ?>
-    <?php if (isset($_SESSION['error'])): ?>
-    <script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: '<?php echo addslashes($_SESSION['error']); ?>',
-        showConfirmButton: false,
-        timer: 2000
-    });
-    </script>
-    <?php unset($_SESSION['error']); endif; ?>
-    <?php if (isset($_SESSION['success_message'])): ?>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            title: 'Berhasil!',
-            text: '<?php echo $_SESSION['success_message']; ?>',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        });
-    });
-    </script>
-    <?php unset($_SESSION['success_message']); ?>
-    <?php endif; ?>
-    <?php if (isset($_SESSION['warning_message'])): ?>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Tidak Bisa Diedit!',
-            text: '<?php echo $_SESSION['warning_message']; ?>',
-            showConfirmButton: false,
-            timer: 2000
-        });
-    });
-    </script>
-    <?php unset($_SESSION['warning_message']); ?>
-    <?php endif; ?>
+    
 </body>
 
 </html>

@@ -1,5 +1,6 @@
                                                 <div id="toast-container">
                                                     <?php 
+                                                    /*
                                                         $ujian_terdekat = mysqli_query($koneksi, "SELECT * FROM soal WHERE tanggal > NOW() ORDER BY tanggal ASC");
 
                                                         if (mysqli_num_rows($ujian_terdekat) > 0):
@@ -23,6 +24,7 @@
                                                     <?php 
                                                             endwhile;
                                                         endif;
+                                                        */
                                                         ?>
                                                 </div>
                                                 <footer class="footer mt-auto py-3 bg-dark">
