@@ -133,7 +133,7 @@ $cacah_siswa = mysqli_num_rows($tsisru);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Acara Tes <?php echo $tanggal.' Ruang '.$ruang;?></title>
+    <title>Berita Acara Tes <?php echo $waktu.' Ruang '.$ruang;?></title>
 	<link rel="stylesheet" href="../inc/cetak.css">
 </head>
 
