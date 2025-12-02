@@ -327,7 +327,8 @@ $url = $sianis.'/tukardata/terimajawabanubk';
 			'kunci_jawaban' => $kunci_jawaban,
 			'skor_per_soal' => $skor_per_soal,
 			];
-			//echo $url.' '.$kode_soal.' '.$jwb_siswa.' '.$key.'<br />';
+			echo $url.' '.$kode_soal.' '.$jwb_siswa.' '.$key.'<br />';
+
 if($hasil = postcurl($url,$params))
 	{
 	//echo $hasil;
@@ -351,7 +352,7 @@ if($hasil = postcurl($url,$params))
 		}
 		else
 		{
-			echo 'Tidak terikirim';
+			echo 'Tidak terkirim';
 			die();
 		}
 	}
@@ -380,7 +381,6 @@ if($hasil = postcurl($url,$params))
 			
 		}
 	}
-	$hadir = 'NN';
 	if(($hadir == 'NN') or ($hadir == 'N'))
 	{
 		//echo 'kurang dari 85%';
@@ -390,7 +390,7 @@ if($hasil = postcurl($url,$params))
 		$final = base64_encode($iv . $encrypted);
 		//echo $final;
 		$sql = "update `siswa` set `password` = '$final' where `nis` = '$nis'";
-		$insert = mysqli_query($koneksi, $sql);                                            
+		//$insert = mysqli_query($koneksi, $sql);                                            
 	}
 	$ke++;
 	?>

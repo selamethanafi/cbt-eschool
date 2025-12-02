@@ -41,6 +41,9 @@ include '../inc/dataadmin.php';
                       <a href="tambah_siswa.php" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Tambah Siswa
                       </a>
+                      <a href="sinkron_password.php" class="btn btn-danger">
+                        <i class="fas fa-sync"></i> Sinkron Password
+                      </a>
                       <a href="import_siswa.php" class="btn btn-outline-secondary">
                         <i class="fas fa-file-import"></i> Import Siswa
                       </a>
