@@ -75,7 +75,6 @@ if (!$result) {
                                                 <th>Tampilan</th>
                                                 <th>Status</th>
                                                 <th>Token</th>
-                                                <th>Generate</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -100,23 +99,6 @@ if (!$result) {
                                                     <?php } ?>
                                                 </td>
                                                 <td><?php echo $row['token']; ?></td>
-                                                <td>
-                                                    <?php if ($row['status'] == 'Aktif') { ?>
-                                                    <a href="generate_token.php?id_soal=<?php echo $row['id_soal']; ?>"
-                                                        class="btn btn-sm btn-outline-secondary"><i
-                                                            class="fa fa-history"></i> Token</a>
-                                                    <?php } else { ?>
-                                                    <?php } ?>
-                                                    <?php if ($row['status'] == 'Aktif') { ?>
-                                                    <a href="ubah_status_soal.php?id_soal=<?= $row['id_soal']; ?>&aksi=nonaktif"
-                                                        class="btn btn-sm btn-secondary"><i class="fa fa-toggle-off"
-                                                            aria-hidden="true"></i> Nonaktifkan</a>
-                                                    <?php } else { ?>
-                                                    <a href="ubah_status_soal.php?id_soal=<?= $row['id_soal']; ?>&aksi=aktif"
-                                                        class="btn btn-sm btn-info"><i class="fa fa-toggle-on"
-                                                            aria-hidden="true"></i> Aktifkan</a>
-                                                    <?php } ?>
-                                                </td>
                                                 <td>
                                                     <a href="preview_soal.php?kode_soal=<?php echo $row['kode_soal']; ?>"
                                                         class="btn btn-sm btn-outline-secondary"><i

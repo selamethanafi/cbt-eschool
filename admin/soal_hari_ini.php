@@ -132,17 +132,7 @@ if (!$result) {
                                                 <td>
                                                     <?php echo $row['tanggal']; ?></td>
                                                 <td><?php echo $row['tampilan_soal']; ?></td>
-                                                <td>
-                                                                                                    <?php if ($row['status'] == 'Aktif') { ?>
-                                                    <a href="ubah_status_soal.php?id_soal=<?= $row['id_soal']; ?>&aksi=nonaktif"
-                                                        class="btn btn-sm btn-secondary"><i class="fa fa-toggle-off"
-                                                            aria-hidden="true"></i> Nonaktifkan</a>
-                                                    <?php } else { ?>
-                                                    <a href="ubah_status_soal.php?id_soal=<?= $row['id_soal']; ?>&aksi=aktif"
-                                                        class="btn btn-sm btn-info"><i class="fa fa-toggle-on"
-                                                            aria-hidden="true"></i> Aktifkan</a>
-                                                    <?php } ?>
-
+                                                <td><?php echo $row['status'];?>
                                                 </td>
                                                 <td><?php echo $row['token']; ?></td>
                                             </tr>

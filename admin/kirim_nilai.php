@@ -352,13 +352,14 @@ if($hasil = postcurl($url,$params))
 		}
 		else
 		{
-			echo 'Tidak terkirim';
+			echo 'Tidak terkirim <a href="kirim_nilai.php?tanggal='.$tanggal.'&ke='.$ke.'">Ulang</a>';
 			die();
 		}
 	}
 	else
 	{
-		echo 'Gagal terhubung ke simamad, gagal mengirim nilai <a href="kirim_nilai.php">Ulang</a>';
+		echo 'Hasil '.$hasil.' ';
+		echo 'Gagal terhubung ke simamad, gagal mengirim nilai <a href="kirim_nilai.php?tanggal='.$tanggal.'&ke='.$ke.'">Ulang</a>';
 		die();
 	}
 	$url_cek_absen = $sianis.'/tukardata/ambilkehadirantes/'.$key.'/'.$token.'/'.$nomor_peserta.'/'.$tanggal;
@@ -366,7 +367,7 @@ if($hasil = postcurl($url,$params))
 	$json = via_curl($url_cek_absen);
 	if(!$json)
 	{
-		echo 'Gagal terhubung ke simamad, gagal mengambil data kehadiran, <a href="kirim_nilai.php">Ulang</a>';
+		echo 'Gagal terhubung ke simamad, gagal mengambil data kehadiran, <a href="kirim_nilai.php?tanggal='.$tanggal.'&ke='.$ke.'">Ulang</a>';
 		die();
 	}
 	else
