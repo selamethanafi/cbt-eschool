@@ -49,6 +49,10 @@ $nama_siswa = '';
 $rekap_kode_soal = '';
 $no = 1;
 $rekap_peserta = '';
+$kode_token = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6));
+$status = 'Aktif';
+$query = "UPDATE soal SET status = '$status', token = '$kode' WHERE id_soal = '$id_soal'";
+mysqli_query($koneksi, $query);
 while($da = mysqli_fetch_assoc($ta))
 {
  	$kode_soal = $da['kode_soal'];
@@ -99,6 +103,8 @@ while($ds = mysqli_fetch_assoc($tsisru))
 			$ada_tc = mysqli_num_rows($tc);
 			if($ada_tc == 0)
 			{
+				$query = "UPDATE soal SET status = 'Aktif', `token` = '$kode_token' where `kode_soal` = '$kode_soal'";
+			        mysqli_query($koneksi, $query);
 				if(empty($siswa_absen))
 				{
 					$siswa_belum .= $nama_siswa;

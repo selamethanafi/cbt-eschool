@@ -67,8 +67,7 @@ if(mysqli_num_rows($ta) == 0)
 {
 	if($ke>0)
 	{
-	    $query = "UPDATE soal SET status = '', token = NULL";
-	    mysqli_query($koneksi, $query);
+		
 	?>
 		<script>setTimeout(function () {
 		 window.location.href= 'reset_credential.php';
