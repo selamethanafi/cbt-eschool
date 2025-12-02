@@ -105,7 +105,7 @@ while($ds = mysqli_fetch_assoc($tsisru))
 			{
 				$query = "UPDATE soal SET status = 'Aktif', `token` = '$kode_token' where `kode_soal` = '$kode_soal'";
 			        mysqli_query($koneksi, $query);
-				if(empty($siswa_absen))
+				if(empty($siswa_belum))
 				{
 					$siswa_belum .= $nama_siswa;
 				}
