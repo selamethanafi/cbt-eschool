@@ -51,8 +51,6 @@ $no = 1;
 $rekap_peserta = '';
 $kode_token = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6));
 $status = 'Aktif';
-$query = "UPDATE soal SET status = '$status', token = '$kode' WHERE id_soal = '$id_soal'";
-mysqli_query($koneksi, $query);
 while($da = mysqli_fetch_assoc($ta))
 {
  	$kode_soal = $da['kode_soal'];

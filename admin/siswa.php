@@ -105,6 +105,9 @@ include '../inc/dataadmin.php';
                                 <a href="sinkron_siswa.php?id=' . $data['id_siswa'] . '" class="btn btn-sm btn-info">
                                   <i class="fas fa-download"></i> Sinkron Siswa
                                 </a>
+                                <a href="hasil_per_siswa.php?id_siswa=' . $data['id_siswa'] . '" class="btn btn-sm btn-warning">
+                                  <i class="fas fa-list"></i> Hasil
+                                </a>
                               </td>';
                         echo "</tr>";
                         $no++;

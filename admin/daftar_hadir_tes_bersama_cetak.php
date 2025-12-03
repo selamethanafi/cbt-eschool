@@ -60,7 +60,7 @@ $belum = 0;
 
 <?php
 $sek_kab = "Kabupaten Semarang";
-
+$jml_tidak_hadir = 20;
 if(($cacah_siswa < 26) and ($cacah_siswa > 0))
 {
 ?>
@@ -70,7 +70,8 @@ if(($cacah_siswa < 26) and ($cacah_siswa > 0))
 									<td width="100"><img src="../assets/images/logo_kiri.png" height="75"></td>
 									<td><center><strong class="f12">
 									DAFTAR HADIR PESERTA<br>
-									<?php 									$kegiatan =  $nama_ujian;
+									<?php 
+									$kegiatan =  $nama_ujian;
 									$kegiatan =  preg_replace("/<br\/>/"," ",$kegiatan);
 									$kegiatan =  preg_replace("/<br \/>/"," ",$kegiatan);
 									echo strtoupper($kegiatan);?><br />TAHUN AJARAN <?php echo $thnajaran;?></strong>
@@ -140,13 +141,15 @@ if(($cacah_siswa < 26) and ($cacah_siswa > 0))
 										}
 										
 										echo '<tr><td align="center" width="15">'.$nomor.'</td>
-											<td align="center" width="100">'.$nis.'</td><td>'.$namasiswa.'</td><td align="center"></td><td align="center">'.$nilai.'</td>';
+											<td align="center" width="100">'.$nis.'</td><td>'.$namasiswa.'</td><td align="center">'.$waktu_siswa_mengerjakan.'</td><td align="center">'.$nilai.'</td>';
 
 										echo '</tr>';
 										$nomor++;
 
 									}
 								echo '</tbody></table>';
+								$jml_tidak_hadir = $cacah_siswa - $jml_hadir;
+								$belum = $belum - $jml_tidak_hadir;
 							?>
 <br />
 							<table width="100%">
@@ -168,6 +171,12 @@ if(($cacah_siswa < 26) and ($cacah_siswa > 0))
 													<td>Jumlah Peserta Hadir</td>
 													<td>:</td>
 													<td><?php echo $jml_hadir;?> orang</td>
+													
+													</tr>
+													<tr>
+													<td>Peserta Belum Rampung</td>
+													<td>:</td>
+													<td><?php echo $belum;?> orang</td>
 													</tr>
 												</tbody>
 											</table>

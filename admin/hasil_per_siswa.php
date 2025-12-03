@@ -5,13 +5,13 @@ include '../inc/functions.php';
 check_login('admin');
 include '../inc/dataadmin.php';
 $user_id = $_SESSION['admin_id'];
-if(isset($_GET['tanggal']))
+if(isset($_GET['id_siswa']))
 {
-	$hari_ini = $_GET['tanggal'];
+	$id_siswa = $_GET['id_siswa'];
 }
 else
 {
-	$hari_ini = date("Y-m-d");
+	$id_siswa = '';
 }
 ?>
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ else
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Ujian</title>
+    <title>Hasil Ujian Per Murid</title>
     <?php include '../inc/css.php'; ?>
     <style>
         td.nilai-col {
@@ -45,33 +45,20 @@ else
                             <h5 class="card-title mb-0">Daftar Nilai Ujian</h5>
                         </div>
                         <div class="card-body">
-                        <a href="kirim_nilai.php?tanggal=<?php echo $hari_ini;?>" class="btn btn-primary mb-3"><i class="fas fa-upload"></i>
-                                        Kirim ke Sistem Informasi Madrasah</a>
-                                    <table class="table table-bordered table-responsive" id="nilaiTableData">
+                                   <table class="table table-bordered table-responsive" id="nilaiTableData">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Nama Siswa</th>
                         <th>Kode Soal</th>
-                        <th>Total Soal</th>
-                        <th>Kelas</th>
-                        <th>Nilai PG|PGX|MJD|BS</th>
-                        <th>Nilai Uraian</th>
-                        <th>Nilai Akhir</th>
+                        <th>Nama Tes</th>
                         <th>Tanggal Ujian</th>
                         <th>Kirim</th>                        
                     </tr>
                 </thead>
                 <?php
-                $where = " `tanggal_ujian` like '$hari_ini%'";
-    $query = "SELECT n.id_nilai, n.id_siswa, s.nama_siswa, s.kelas, s.rombel, n.kode_soal, n.total_soal, 
-                n.status_penilaian, n.jawaban_benar, n.jawaban_salah, n.jawaban_kurang, 
-                n.nilai, n.nilai_uraian, n.tanggal_ujian
-              FROM nilai n
-              JOIN siswa s ON n.id_siswa = s.id_siswa
-              WHERE $where
-              ORDER BY n.tanggal_ujian DESC";
-
+                $where = " `id_siswa` = '$id_siswa'";
+    $query = "SELECT * from `nilai` WHERE $where ORDER BY `tanggal_ujian` DESC";
     $result = mysqli_query($koneksi, $query);
     		?>
                 <tbody>
@@ -79,20 +66,16 @@ else
 $no = 1;
         while ($row = mysqli_fetch_assoc($result)) {
 
-            // Format Nilai
-            $nilai = number_format($row['nilai'], 2);
-            $nilai_akhir = number_format($row['nilai'] + $row['nilai_uraian'], 2);
             $tanggal_ujian = date('d M Y, H:i', strtotime($row['tanggal_ujian']));
-
+            $kode_soal = $row['kode_soal'];
+		$q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
+		$data_soal = mysqli_fetch_assoc($q_soal);
+		$nama_tes = $data_soal['nama_soal'];
             echo "<tr>
                     <td>{$no}</td>
                     <td>{$row['nama_siswa']}</td>
                     <td>{$row['kode_soal']}</td>
-                    <td>{$row['total_soal']}</td>
-                    <td>{$row['kelas']}</td>
-                    <td>{$nilai}</td>
-                    <td>{$row['nilai_uraian']}</td>
-                    <td class='nilai-col'>{$nilai_akhir}</td>
+                    <td>{$nama_tes}</td>
                     <td>{$tanggal_ujian}</td>";
 		echo '<td><a href="kirim_nilai_per_siswa_per_tes.php?id_siswa='.$row['id_siswa'].'&kode_soal='.$row['kode_soal'].'" target="_blank">Kirim</a></td> </tr>';
             $no++;
