@@ -73,6 +73,7 @@ if ($aksi == 'aktif')
                     $kunci_string = implode(',', $kunci_array);
 
                     // Update kolom kunci di tabel soal
+                    $kunci_string = mysqli_real_escape_string($koneksi,$kunci_string);
                     $updateKunci = mysqli_query($koneksi, "UPDATE soal SET kunci = '$kunci_string' WHERE id_soal = '$id_soal'");
                     if (!$updateKunci) {
                         

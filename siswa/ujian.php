@@ -114,6 +114,7 @@ $basePath = rtrim(dirname($scriptPath, 1), '/');
                     <p class="mb-1"><i class="far fa-file-alt text-secondary me-1"></i> ${ujian.mapel}</p>
                     <p class="mb-1"><i class="fas fa-stopwatch text-secondary me-1"></i> ${ujian.waktu_ujian} menit</p>
                     <p class="mb-3"><i class="far fa-calendar text-secondary me-1"></i> ${ujian.tanggal}</p>
+                    <p class="mb-3"><i class="fa fa-key text-secondary me-1"></i> ${ujian.token}</p>
                     <a href="konfirmasi_ujian.php?kode_soal=${ujian.kode_soal}" class="btn btn-outline-secondary mt-auto">
                         <i class="fa fa-sign-in-alt me-1"></i> Masuk Ujian
                     </a>

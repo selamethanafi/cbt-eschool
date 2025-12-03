@@ -51,6 +51,11 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                                 <i class="align-middle fas fa-download"></i> <span class="align-middle"> Penyiapan Bank Soal</span>
                             </a>
                         </li>
+                        <li class="sidebar-item submenu">
+                            <a class="sidebar-link" href="siswa_belum_rampung.php">
+                                <i class="align-middle fas fa-users"></i> <span class="align-middle"> Siswa belum rampung</span>
+                            </a>
+                        </li>
                     </ul>
                     </li>
                     

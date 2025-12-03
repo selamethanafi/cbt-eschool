@@ -13,6 +13,7 @@ $query = mysqli_query($koneksi, "SELECT * FROM soal WHERE status='Aktif' AND kel
 $data = [];
 while ($row = mysqli_fetch_assoc($query)) {
     $kode_soal = $row['kode_soal'];
+    $token = $row['token'];
 
     // Cek apakah siswa sudah punya nilai untuk soal ini
     $cek_nilai = mysqli_query($koneksi, "SELECT 1 FROM nilai WHERE id_siswa='$id_siswa' AND kode_soal='$kode_soal' LIMIT 1");
