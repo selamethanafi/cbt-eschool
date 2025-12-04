@@ -82,6 +82,36 @@ else
                                 <?php
                                 }
                                 ?>
+                                <div class="card-body">
+                                <div class=" table-wrapper">
+                                <h1 class="text-danger">Daftar peserta belum rampung</h1>
+                  <table id="siswaTable" class="table table-striped nowrap">
+                  <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Nama Siswa</th>
+                        <th>Kode Soal</th>
+                        <th>Nama Tes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+		<?php
+		$te = mysqli_query($koneksi, "SELECT * FROM `siswa_belum_rampung` order by `nama_siswa`");
+		$no = 1;
+		while ($data = mysqli_fetch_assoc($te)) {
+		echo "<tr>";
+                        echo "<td>{$no}</td>";
+                        echo "<td>{$data['nama_siswa']}</td>";
+                        echo "<td>{$data['kode_soal']}</td>";
+                        echo "<td>{$data['nama_soal']}</td>";
+			echo "</tr>";
+			$no++;
+		}
+		?>
+		</tbody>
+                  </table>
+                    </div>      
+                                </div>
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">Monitor Ujian</h5>
