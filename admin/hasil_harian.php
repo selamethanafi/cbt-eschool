@@ -46,7 +46,7 @@ else
                         </div>
                         <div class="card-body">
                         <a href="kirim_nilai.php?tanggal=<?php echo $hari_ini;?>" class="btn btn-primary mb-3"><i class="fas fa-upload"></i>
-                                        Kirim ke Sistem Informasi Madrasah</a>
+                                        Kirim ke Sistem Informasi Madrasah</a> <a href="kirim_nilai_semua.php?tanggal=<?php echo $hari_ini;?>" class="btn btn-success mb-3"><i class="fas fa-upload"></i>Kirim Nilai Semua ke Sistem Informasi Madrasah</a>
                                     <table class="table table-bordered table-responsive" id="nilaiTableData">
                 <thead>
                     <tr>

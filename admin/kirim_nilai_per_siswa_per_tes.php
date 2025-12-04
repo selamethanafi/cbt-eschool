@@ -285,10 +285,11 @@ while($data_jawaban = mysqli_fetch_assoc($q_jawaban))
 			'skor_per_soal' => $skor_per_soal,
 			];
 			//echo $url.' '.$kode_soal.' '.$jwb_siswa.' '.$key.'<br />';
+$hasil = postcurl($url,$params);
+//print_r($hasil);
 
-	if($hasil = postcurl($url,$params))
+	if($hasil)
 	{
-		echo $hasil;
 		$json = json_decode($hasil, true);
 		if($json)
 		{
@@ -302,21 +303,20 @@ while($data_jawaban = mysqli_fetch_assoc($q_jawaban))
 				}
 				else
 				{
-					echo 'Gagal mengirim, <a href="kirim_nilai.php?tanggal='.$tanggal.'&ke='.$ke.'">Ulang</a>';
+					echo $dt['keterangan'];
 					die();
 				}
 			}
 		}
 		else
 		{
-			echo 'Tidak terkirim <a href="kirim_nilai.php?tanggal='.$tanggal.'&ke='.$ke.'">Ulang</a>';
+			echo 'Tidak terkirim2';
 			die();
 		}
 	}
 	else
 	{
-		echo 'Hasil '.$hasil.' ';
-		echo 'Gagal terhubung ke simamad, gagal mengirim nilai <a href="kirim_nilai.php?tanggal='.$tanggal.'&ke='.$ke.'">Ulang</a>';
+		echo 'Gagal terhubung ke simamad, gagal mengirim nilai';
 		die();
 	}
 }

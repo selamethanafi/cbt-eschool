@@ -14,22 +14,6 @@ else
 {
 $ke = 0;
 }
-if(isset($_GET['tanggal']))
-{
-$tanggal = $_GET['tanggal'];
-}
-else
-{
-$tanggal = date("Y-m-d");
-}
-$year = substr($tanggal,0,4);
-$month = substr($tanggal,5,2); // February
-$day = substr($tanggal,8,2);
-if (checkdate($month, $day, $year)) {
-
-} else {
-die('tanggal salah');
-}
 function postcurl($urlsms,$params) 
 	{
 		$ch = curl_init($urlsms);
@@ -42,18 +26,6 @@ function postcurl($urlsms,$params)
 		curl_close($ch);
 		return $result;
 	}
-function via_curl($url_ard_unduh)
-{
-	$file = $url_ard_unduh;
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $file);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$xmldata = curl_exec($ch);
-	curl_close($ch);
-	$json = json_decode($xmldata, true);
-	return $json;	
-}
-
 $ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi_kode` = 'app_key_server_cbt_lokal'");
 $da = mysqli_fetch_assoc($ta);
 $key = $da['konfigurasi_isi'];
@@ -61,39 +33,45 @@ $ta = mysqli_query($koneksi, "SELECT * FROM `cbt_konfigurasi` WHERE `konfigurasi
 $da = mysqli_fetch_assoc($ta);
 $sianis = $da['konfigurasi_isi'];
 //echo $sianis.'<br />';
-$ta = mysqli_query($koneksi, "SELECT * FROM `nilai` WHERE `tanggal_ujian` like '$tanggal%' limit $ke,1");
-//die("SELECT * FROM `nilai` WHERE `tanggal_ujian` like '$tanggal%' limit $ke,1");
-if(mysqli_num_rows($ta) == 0)
+$tab = mysqli_query($koneksi, "SELECT * FROM `nilai`");
+$total = mysqli_num_rows($tab);
+$ta = mysqli_query($koneksi, "SELECT * FROM `nilai` limit $ke,1");
+if($ke < $total)
 {
-	if($ke>0)
-	{
-		
-	?>
-		<script>setTimeout(function () {
-		 window.location.href= 'reset_credential.php';
-			},<?php echo $waktu;?>);
-			</script>
-		<?php	
-	}
-	else
-	{
-		 echo 'Rampung <a href="dashboard.php">Kembali</a>';
-	}
- 
-}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mengirim Semua Nilai</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<?php
 
 while($da = mysqli_fetch_assoc($ta))
 {
+    $progress = ($total > 0) ? round(($ke / $total) * 100) : 0;
+
+?>
+<div class="container-fluid">
+<h1>Mengirim semua nilai</h1>
+<div class="progress" style="width: 300px;">
+  <div class="progress-bar" role="progressbar" style="width: <?= $progress ?>%;" aria-valuenow="<?= $progress ?>" aria-valuemin="0" aria-valuemax="<?= $total;?>">
+    <?= $progress ?>%
+  </div>
+</div>
+</div>
+<?php
 	$nilai = $da['nilai'];
 	echo $da['nama_siswa'];
-	$token = substr(str_shuffle('ABCDEFGHJKLMNPQRSTWXYZ123456789'), 0, 6);
 	$kode_soal = $da['kode_soal'];
 	$id_siswa = $da['id_siswa'];
 	$tb = mysqli_query($koneksi, "SELECT * FROM `siswa` WHERE `id_siswa` = '$id_siswa'");
 	$db = mysqli_fetch_assoc($tb);
 	$nis = $db['nis'];
 	$nomor_peserta = $db['username'];
-$q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
+	$q_soal = mysqli_query($koneksi, "SELECT * FROM soal WHERE kode_soal = '$kode_soal'");
 $data_soal = mysqli_fetch_assoc($q_soal);
 $kode_soal = $data_soal['kode_soal'];
 $q_jawaban = mysqli_query($koneksi, "SELECT * FROM nilai WHERE kode_soal = '$kode_soal' AND id_siswa='$id_siswa'");
@@ -361,45 +339,24 @@ if($hasil = postcurl($url,$params))
 		echo 'Gagal terhubung ke simamad, gagal mengirim nilai <a href="kirim_nilai.php?tanggal='.$tanggal.'&ke='.$ke.'">Ulang</a>';
 		die();
 	}
-	$url_cek_absen = $sianis.'/tukardata/ambilkehadirantes/'.$key.'/'.$token.'/'.$nomor_peserta.'/'.$tanggal;
-	$hadir = '';
-	$json = via_curl($url_cek_absen);
-	if(!$json)
-	{
-		echo 'Gagal terhubung ke simamad, gagal mengambil data kehadiran, <a href="kirim_nilai.php?tanggal='.$tanggal.'&ke='.$ke.'">Ulang</a>';
-		die();
-	}
-	else
-	{
-		foreach($json as $dt)
-		{
-			$pesan = $dt['pesan'];
-			if($pesan == 'ada')
-			{
-				$hadir = $dt['hadir'];
-			}
-			
-		}
-	}
-	if(($hadir == 'NN') or ($hadir == 'N'))
-	{
-		//echo 'kurang dari 85%';
-		 // Enkripsi password
-		$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
-		$encrypted = openssl_encrypt($token, $method, $rahasia, 0, $iv);
-		$final = base64_encode($iv . $encrypted);
-		//echo $final;
-		$sql = "update `siswa` set `password` = '$final' where `nis` = '$nis'";
-		//$insert = mysqli_query($koneksi, $sql);                                            
-	}
 	$ke++;
 	?>
 		<script>setTimeout(function () {
-		 window.location.href= 'kirim_nilai.php?tanggal=<?php echo $tanggal;?>&ke=<?php echo $ke;?>';
+		 window.location.href= 'kirim_nilai_semua.php?ke=<?php echo $ke;?>';
 			},<?php echo $waktu;?>);
 			</script>
 		<?php
 }
+}
+else
+{
+?>
+		<script>setTimeout(function () {
+		 window.location.href= 'siswa_belum_rampung.php?';
+			},<?php echo $waktu;?>);
+			</script>
+		<?php
+		}
 ?>
 
 

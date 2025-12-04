@@ -42,8 +42,6 @@ if($id < $total)
 </head>
 <body>
 <?php
-$ta = mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS `siswa_belum_rampung` (`id_siswa` int NOT NULL, `nama_siswa` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `kode_soal` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, `nama_soal` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
-
 	$tb = mysqli_query($koneksi, "SELECT * FROM `jawaban_siswa` order by `id_jawaban` limit $id,1");
 	$db = mysqli_fetch_assoc($tb);
 	$id_siswa = $db['id_siswa'];

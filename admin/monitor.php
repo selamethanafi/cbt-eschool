@@ -81,6 +81,9 @@ else
                                 </div>
                                 <?php
                                 }
+                               $te = mysqli_query($koneksi, "SELECT * FROM `siswa_belum_rampung` order by `nama_siswa`");
+                                if(mysqli_num_rows($te) > 0)
+				{
                                 ?>
                                 <div class="card-body">
                                 <div class=" table-wrapper">
@@ -96,7 +99,7 @@ else
                     </thead>
                     <tbody>
 		<?php
-		$te = mysqli_query($koneksi, "SELECT * FROM `siswa_belum_rampung` order by `nama_siswa`");
+
 		$no = 1;
 		while ($data = mysqli_fetch_assoc($te)) {
 		echo "<tr>";
@@ -112,6 +115,9 @@ else
                   </table>
                     </div>      
                                 </div>
+                                <?php
+                                } // kalau ada yang belum rampung
+                                ?>
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="card-title mb-0">Monitor Ujian</h5>
