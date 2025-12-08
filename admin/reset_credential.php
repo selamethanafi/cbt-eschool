@@ -12,6 +12,6 @@ if (mysqli_query($koneksi, $query)) {
     $_SESSION['error'] = 'Gagal mereset credential: ' . mysqli_error($koneksi);
 }
 
-header('Location: monitor.php');
+header('Location: siswa_belum_rampung.php');
 exit;
 ?>
