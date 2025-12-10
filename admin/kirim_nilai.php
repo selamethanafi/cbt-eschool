@@ -474,12 +474,14 @@ $query_soal = mysqli_query($koneksi, "SELECT * FROM butir_soal WHERE kode_soal='
 		$final = base64_encode($iv . $encrypted);
 		//echo $final;
 		$sql = "update `siswa` set `password` = '$final' where `nis` = '$nis'";
-		//$insert = mysqli_query($koneksi, $sql);                                            
+		$insert = mysqli_query($koneksi, $sql); 
+		echo ' password berubah';
+		$waktu = 1000;                                        
 	}
 	
 	$ke++;
 	?>
-		<script>setTimeout(function () {
+		<script>setT$meimeout(function () {
 		 window.location.href= 'kirim_nilai.php?tanggal=<?php echo $tanggal;?>&ke=<?php echo $ke;?>';
 			},<?php echo $waktu;?>);
 			</script>
